@@ -39,6 +39,17 @@ public interface ServiceDao extends AbstractJpaDao<Service>
 	 *           the file type
 	 * @return the org.guce.siat.common.model. service
 	 */
-	org.guce.siat.common.model.Service findServiceByFileType(FileType fileType);
+	List<org.guce.siat.common.model.Service> findServiceByFileType(FileType fileType);
+
+	/**
+	 * Find service by file type.
+	 *
+	 * @param fileType
+	 *           the file type
+	 * @param ministry
+	 *           the ministry
+	 * @return the org.guce.siat.common.model. service
+	 */
+	org.guce.siat.common.model.Service findServiceByFileTypeAndMinistry(FileType fileType, String ministryCode);
 
 }

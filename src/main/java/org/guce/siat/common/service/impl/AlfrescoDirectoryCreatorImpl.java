@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("alfrescoDirectoryCreator")
 @Transactional(readOnly = true)
-@PropertySources(value = @PropertySource("classpath:alfresco-config.properties"))
+@PropertySources(value = @PropertySource("classpath:global-config.properties"))
 public class AlfrescoDirectoryCreatorImpl implements AlfrescoDirectoryCreator
 {
 

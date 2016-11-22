@@ -539,11 +539,10 @@ public enum StepCode
 	ST_CC_70("Rejet Final"),
 
 	/** The S t_ c c_71. */
-	ST_CC_71("Signature Suite contre analyse");
+	ST_CC_71("Signature Suite contre analyse"),
 
-
-
-
+	/** The S t_ c c_72. */
+	ST_CC_72("Acceptation suite analyse");
 
 	/** The label. */
 	private final String label;

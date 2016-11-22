@@ -9,7 +9,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 
 import org.guce.siat.common.dao.ParamsDao;
-import org.guce.siat.common.dao.exception.DAOException;
 import org.guce.siat.common.model.Params;
 import org.guce.siat.common.utils.enums.ParamsCategory;
 import org.slf4j.Logger;
@@ -41,7 +40,7 @@ public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsD
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.dao.ParamsDao#findParamsByName(java.lang.String)
 	 */
 	@Override
@@ -57,13 +56,13 @@ public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsD
 		catch (final NoResultException | NonUniqueResultException e)
 		{
 			LOG.info(Objects.toString(e));
-			throw new DAOException(e);
+			return null;
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.dao.ParamsDao#findParamsByCategory(org.guce.siat.common.utils.enums.ParamsCategory)
 	 */
 	@Override

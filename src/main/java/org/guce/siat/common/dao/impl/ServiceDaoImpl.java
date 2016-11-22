@@ -5,11 +5,9 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.ServiceDao;
 import org.guce.siat.common.dao.exception.DAOException;
 import org.guce.siat.common.model.FileType;
-import org.guce.siat.common.model.FileTypeService;
 import org.guce.siat.common.model.Organism;
 import org.guce.siat.common.model.Service;
 import org.guce.siat.common.model.SubDepartment;
@@ -42,7 +40,7 @@ public class ServiceDaoImpl extends AbstractJpaDaoImpl<Service> implements Servi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.dao.ServiceDao#findServicesByOrganism(org.guce.siat.common.model.Organism)
 	 */
 	@Override
@@ -60,7 +58,7 @@ public class ServiceDaoImpl extends AbstractJpaDaoImpl<Service> implements Servi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.dao.ServiceDao#findNonAffectedBySubDepartment(org.guce.siat.common.model.SubDepartment)
 	 */
 	@Override
@@ -92,19 +90,39 @@ public class ServiceDaoImpl extends AbstractJpaDaoImpl<Service> implements Servi
 	 * @see org.guce.siat.common.dao.ServiceDao#findServiceByFileType(org.guce.siat.common.model.FileType)
 	 */
 	@Override
-	public Service findServiceByFileType(final FileType fileType)
+	public List<Service> findServiceByFileType(final FileType fileType)
 	{
 		if (fileType != null)
 		{
-			final String hqlString = "FROM FileTypeService s WHERE s.fileType.id = :fileTypeId ";
-			final TypedQuery<FileTypeService> query = super.entityManager.createQuery(hqlString, FileTypeService.class);
+			final TypedQuery<Service> query = super.entityManager.createQuery(
+					"SELECT s.service FROM FileTypeService s WHERE s.fileType.id = :fileTypeId ", Service.class);
 			query.setParameter("fileTypeId", fileType.getId());
-			final List<FileTypeService> serviceList = query.getResultList();
-			if (CollectionUtils.isNotEmpty(serviceList))
-			{
-				return serviceList.get(0).getService();
-			}
+			return query.getResultList();
 		}
 		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.ServiceDao#findServiceByFileTypeAndMinistry(org.guce.siat.common.model.FileType,
+	 * org.guce.siat.common.model.Ministry)
+	 */
+	@Override
+	public Service findServiceByFileTypeAndMinistry(final FileType fileType, final String ministryCode)
+	{
+		//TODO add Column code in table ministry  (labelFr may be changed)
+		if (fileType != null && ministryCode != null)
+		{
+			final TypedQuery<Service> query = super.entityManager
+					.createQuery(
+							"SELECT s.service FROM FileTypeService s WHERE s.fileType.id = :fileTypeId AND s.service.subDepartment.organism.ministry.labelFr = :ministryCode",
+							Service.class);
+			query.setParameter("fileTypeId", fileType.getId());
+			query.setParameter("ministryCode", ministryCode);
+			return query.getSingleResult();
+		}
+		return null;
+
 	}
 }

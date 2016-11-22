@@ -5,8 +5,7 @@ package org.guce.siat.common.service;
 /**
  * The Interface ApplicationPropretiesService.
  */
-public interface ApplicationPropretiesService
-{
+public interface ApplicationPropretiesService {
 
 	/**
 	 * Gets the column separator.
@@ -16,11 +15,25 @@ public interface ApplicationPropretiesService
 	String getColumnSeparator();
 
 	/**
+	 * Gets the column separator.
+	 *
+	 * @return the custom column separator
+	 */
+	String getCustomColumnSeparator();
+
+	/**
 	 * Gets the row separator.
 	 *
 	 * @return the row separator
 	 */
 	String getRowSeparator();
+
+	/**
+	 * Gets the row separator.
+	 *
+	 * @return the custom row separator
+	 */
+	String getCustomRowSeparator();
 
 	/**
 	 * Gets the app version.

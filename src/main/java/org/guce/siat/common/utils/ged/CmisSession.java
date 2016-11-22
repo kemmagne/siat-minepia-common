@@ -50,7 +50,7 @@ public final class CmisSession
 	{
 
 		final Properties prop = new Properties();
-		final String filename = "alfresco-config.properties";
+		final String filename = "global-config.properties";
 		try (InputStream input = CmisSession.class.getClassLoader().getResourceAsStream(filename))
 		{
 

@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("mailService")
 @Transactional(readOnly = true)
-@PropertySource("classpath:params-mail-core.properties")
+@PropertySource("classpath:global-config.properties")
 public class MailServiceImpl implements MailService
 {
 
@@ -39,7 +39,7 @@ public class MailServiceImpl implements MailService
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.mailService#sendMail(java.util.Map)
 	 */
 	@Override
@@ -72,7 +72,7 @@ public class MailServiceImpl implements MailService
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.MailService#getFromValue()
 	 */
 	@Override
@@ -83,7 +83,7 @@ public class MailServiceImpl implements MailService
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.MailService#getReplyToValue()
 	 */
 	@Override

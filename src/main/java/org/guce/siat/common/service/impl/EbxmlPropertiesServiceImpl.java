@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("ebxmlPropertiesService")
 @Transactional(readOnly = true)
-@PropertySource("classpath:siat-jms.properties")
+@PropertySource("classpath:global-config.properties")
 public class EbxmlPropertiesServiceImpl implements EbxmlPropertiesService
 {
 
@@ -58,7 +58,7 @@ public class EbxmlPropertiesServiceImpl implements EbxmlPropertiesService
 	@Value("${attachement.folder}")
 	private String attachementFolder;
 
-	
+
 
 	/**
 	 * Gets the from party id.

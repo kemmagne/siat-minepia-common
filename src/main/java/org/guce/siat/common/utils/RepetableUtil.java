@@ -18,13 +18,11 @@ import org.guce.siat.common.model.FileItemFieldValue;
 import org.guce.siat.common.service.ApplicationPropretiesService;
 
 
-
 /**
  * The Class JsfUtil.
  */
 public final class RepetableUtil
 {
-
 
 	/**
 	 * Instantiates a new jsf util.
@@ -50,8 +48,6 @@ public final class RepetableUtil
 	//	{
 	//		abstractReportInvoker.exportReportToPdf();
 	//	}
-
-
 	public static String[] generateArrayValues(final FileFieldValue fileFieldValue, final String rowSeparator)
 	{
 		String[] arrayValues = null;
@@ -63,8 +59,6 @@ public final class RepetableUtil
 
 		return arrayValues;
 	}
-
-
 
 	/**
 	 * Generate array item values.
@@ -87,7 +81,6 @@ public final class RepetableUtil
 		return arrayValues;
 	}
 
-
 	/**
 	 * Generate array item values.
 	 *
@@ -107,7 +100,6 @@ public final class RepetableUtil
 		}
 		return arrayValues;
 	}
-
 
 	/**
 	 * Generate table content.
@@ -153,12 +145,11 @@ public final class RepetableUtil
 		return list;
 	}
 
-
-	/** The application propreties service. */
+	/**
+	 * The application propreties service.
+	 */
 	static ApplicationPropretiesService applicationPropretiesService;
 	private static FileItem selectedFileItem;
-
-
 
 	/**
 	 * Inits the dynamic tabs.
@@ -209,9 +200,8 @@ public final class RepetableUtil
 					arrayValues[j] = colunmsFk[j];
 				}
 
-				final List<Map<Integer, String>> tableContent = generateTableContent(arrayValues, applicationPropretiesService
-
-				.getColumnSeparator());
+				final List<Map<Integer, String>> tableContent = generateTableContent(arrayValues,
+						applicationPropretiesService.getColumnSeparator());
 				if (row != null)
 				{
 					final List<Integer> fils = recupererFilsByParent(row, repeatablefileFieldValueList2.get(i));
@@ -288,12 +278,26 @@ public final class RepetableUtil
 				final List<TableColHeader> colHeaders = new ArrayList<TableColHeader>();
 				// if(repeatablefileFieldValueList.get(i).getValue().contains("#"));
 				// tab.setFils(true);
+				final String[] colunmsFk;
+				final String[] column;
 
-				final String[] colunmsFk = generateArrayItemValues(repeatablefileFieldValueList2.get(i),
-						applicationPropretiesService.getRowSeparator());
+				if (repeatablefileFieldValueList2.get(i).getFileField().getCode().equals("ACTIVITES_ACTIVITE"))
+				{
+					colunmsFk = generateArrayItemValues(repeatablefileFieldValueList2.get(i),
+							applicationPropretiesService.getCustomRowSeparator());
 
-				final String[] column = colunmsFk[0].split(applicationPropretiesService.getColumnSeparator() + ""
-						+ applicationPropretiesService.getRepeatableSeparator());
+					column = colunmsFk[0].split(applicationPropretiesService.getCustomColumnSeparator() + ""
+							+ applicationPropretiesService.getRepeatableSeparator());
+				}
+				else
+				{
+					colunmsFk = generateArrayItemValues(repeatablefileFieldValueList2.get(i),
+							applicationPropretiesService.getRowSeparator());
+
+					column = colunmsFk[0].split(applicationPropretiesService.getColumnSeparator() + ""
+							+ applicationPropretiesService.getRepeatableSeparator());
+				}
+
 				if (column.length > 1)
 				{ // détécter si il y a un bloc répétable
 				  // sup
@@ -313,27 +317,38 @@ public final class RepetableUtil
 					arrayValues[j] = colunmsFk[j];
 				}
 
-				final List<Map<Integer, String>> tableContent = generateTableContent(arrayValues, applicationPropretiesService
+				final List<Map<Integer, String>> tableContent;
+				String[] columns = null;
 
-				.getColumnSeparator());
+				if (repeatablefileFieldValueList2.get(i).getFileField().getCode().equals("ACTIVITES_ACTIVITE"))
+				{
+					tableContent = generateTableContent(arrayValues, applicationPropretiesService.getCustomColumnSeparator());
+					if (arrayValues != null)
+					{
+						columns = arrayValues[0].split(applicationPropretiesService.getCustomColumnSeparator());
+					}
+				}
+				else
+				{
+					tableContent = generateTableContent(arrayValues, applicationPropretiesService.getColumnSeparator());
+					if (arrayValues != null)
+					{
+						columns = arrayValues[0].split(applicationPropretiesService.getColumnSeparator());
+					}
+				}
 
 				tab.setTable(tableContent);
 
-				if (arrayValues != null)
+				if (columns != null)
 				{
-					final String[] columns = arrayValues[0].split(applicationPropretiesService.getColumnSeparator());
-
-					if (columns != null)
+					for (int j = 0; j < columns.length; j++)
 					{
-						for (int j = 0; j < columns.length; j++)
-						{
-							final TableColHeader tableColHeader = new TableColHeader();
-							tableColHeader.setLabelFr(columns[j]);
-							tableColHeader.setLabelEn(columns[j]);
+						final TableColHeader tableColHeader = new TableColHeader();
+						tableColHeader.setLabelFr(columns[j]);
+						tableColHeader.setLabelEn(columns[j]);
 
-							colHeaders.add(tableColHeader);
+						colHeaders.add(tableColHeader);
 
-						}
 					}
 				}
 				// si le nombre des columns est supérieur à 3
@@ -357,7 +372,6 @@ public final class RepetableUtil
 		}
 		return tabList;
 	}
-
 
 	/**
 	 * Recuperer fils by parent.
@@ -387,8 +401,6 @@ public final class RepetableUtil
 		}
 		return rows;
 	}
-
-
 
 	/**
 	 * Group file item field values.
@@ -430,8 +442,6 @@ public final class RepetableUtil
 					// tabs.add(initDynamicTabs(listFileFieldValues).get(0));
 				}
 			}
-
-
 
 			for (final FileFieldValue repFileItemFieldValue : repetablefileFiledValues)
 			{
@@ -564,7 +574,6 @@ public final class RepetableUtil
 		}
 		return fileFieldGroupDtos;
 	}
-
 
 	/**
 	 * Group file field values.

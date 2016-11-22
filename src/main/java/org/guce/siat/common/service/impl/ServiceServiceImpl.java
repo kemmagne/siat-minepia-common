@@ -49,7 +49,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#getJpaDao()
 	 */
 	@Override
@@ -60,7 +60,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#setJpaDao(org.guce.siat.common.dao.AbstractJpaDao)
 	 */
 	@Override
@@ -71,7 +71,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#find(java.lang.Long)
 	 */
 	@Override
@@ -106,7 +106,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#findAll()
 	 */
 	@Override
@@ -157,7 +157,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#findActiveItems()
 	 */
 	@Override
@@ -209,7 +209,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.ServiceService#findServiceByUser(org.guce.siat.common.model.User)
 	 */
 	@Override
@@ -233,7 +233,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.ServiceService#findServicesByOrganism(org.guce.siat.common.model.Organism)
 	 */
 	@Override
@@ -269,7 +269,8 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 				{
 					service.setHeadService(user);
 				}
-				else if (service.getCentralBureau().getId().equals(user.getAdministration().getId()))
+				else if (service.getCentralBureau() != null
+						&& service.getCentralBureau().getId().equals(user.getAdministration().getId()))
 				{
 					service.getCentralBureau().setHeadOffice(user);
 				}
@@ -281,7 +282,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.guce.siat.common.service.ServiceService#findNonAffectedBySubDepartment(org.guce.siat.common.model.SubDepartment
 	 * )
@@ -301,7 +302,7 @@ public class ServiceServiceImpl extends AbstractServiceImpl<Service> implements 
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.guce.siat.common.service.ServiceService#findServicesIdsByAdministration(org.guce.siat.common.model.Administration
 	 * )

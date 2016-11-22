@@ -39,6 +39,9 @@ public class DataType extends AbstractModel implements Serializable
 	@Column(name = "LABEL", length = 150)
 	private String label;
 
+	/** The label. */
+	@Column(name = "LABEL_EN", length = 150)
+	private String labelEn;
 	/** The type. */
 	@Column(name = "TYPE", length = 100)
 	private String type;
@@ -47,6 +50,7 @@ public class DataType extends AbstractModel implements Serializable
 	@Column(name = "REQUIRED")
 	private Boolean required;
 
+	/** The object type. */
 	@Column(name = "OBJECT_TYPE")
 	private String objectType;
 
@@ -169,6 +173,28 @@ public class DataType extends AbstractModel implements Serializable
 	public void setRequired(final Boolean required)
 	{
 		this.required = required;
+	}
+
+
+	/**
+	 * Gets the label en.
+	 *
+	 * @return the label en
+	 */
+	public String getLabelEn()
+	{
+		return labelEn;
+	}
+
+	/**
+	 * Sets the label en.
+	 *
+	 * @param labelEn
+	 *           the new label en
+	 */
+	public void setLabelEn(final String labelEn)
+	{
+		this.labelEn = labelEn;
 	}
 
 	/*

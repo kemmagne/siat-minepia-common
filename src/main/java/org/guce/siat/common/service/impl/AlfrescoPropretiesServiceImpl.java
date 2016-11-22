@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("alfrescoPropretiesService")
 @Transactional(readOnly = true)
-@PropertySource("classpath:alfresco-config.properties")
+@PropertySource("classpath:global-config.properties")
 public class AlfrescoPropretiesServiceImpl implements AlfrescoPropretiesService
 {
 
