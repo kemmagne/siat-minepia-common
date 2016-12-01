@@ -30,7 +30,10 @@ public enum InformationSystemCode
 	SF("Suivi Financiers"),
 
 	/** The cc. */
-	CC("Cacao Café");
+	CC("Cacao Café"),
+
+	/** Bultin de qualité CC suite d'activation de la décision par article **/
+	BQ("Bultin de qualité CC");
 
 	/** The label. */
 	private String label;
@@ -44,7 +47,7 @@ public enum InformationSystemCode
 	 */
 	private InformationSystemCode(final String label)
 	{
-		this.label = label;
+		this.label = label.intern();
 
 	}
 

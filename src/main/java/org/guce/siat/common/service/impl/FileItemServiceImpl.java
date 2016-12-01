@@ -84,7 +84,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
 
 	/** The Constant FILETYPE_CC_CODE_LIST. */
 	private static final List<FileTypeCode> FILETYPE_CC_CODE_LIST = Arrays.asList(FileTypeCode.CC_DV, FileTypeCode.CC_DE,
-			FileTypeCode.CC_BQ, FileTypeCode.CC_COCAC, FileTypeCode.CC_COCAF);
+	/* FileTypeCode.CC_BQ, */FileTypeCode.CC_COCAC, FileTypeCode.CC_COCAF);
 
 
 
@@ -254,6 +254,11 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
 			fileTypeCodeList = FILETYPE_CC_CODE_LIST;
 			excludedStepList.add(StepCode.ST_CC_44);
 		}
+		else if (InformationSystemCode.BQ.equals(informationSystemCode))
+		{
+			fileTypeCodeList = Arrays.asList(FileTypeCode.CC_BQ);
+			excludedStepList.add(StepCode.ST_CC_44);
+		}
 		fileItemsWithoutDraft = fileItemDao.findFileItemByServiceAndAuthoritiesAndFileType(bureaus, loggedUser, fileTypeCodeList,
 				excludedStepList);
 
@@ -411,15 +416,15 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
 					break;
 				}
 			}
-			
-			
+
+
 		}
 		return returnFileItems;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.FileItemService#findFileItemFieldValueByFieldCode(java.lang.Long,
 	 * java.lang.Long)
 	 */
