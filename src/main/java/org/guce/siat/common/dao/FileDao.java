@@ -1,6 +1,7 @@
 package org.guce.siat.common.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Company;
@@ -126,4 +127,14 @@ public interface FileDao extends AbstractJpaDao<File>
 	 */
 	File findMatchingBetweenFimexAndPriorNotice(String numContribuable, List<FileTypeCode> fileTypeCodeList);
 
+
+	/**
+	 * Update specific column.
+	 *
+	 * @param paramsMap
+	 *           the params map
+	 * @param file
+	 *           the file
+	 */
+	void updateSpecificColumn(Map<String, ?> paramsMap, File file);
 }

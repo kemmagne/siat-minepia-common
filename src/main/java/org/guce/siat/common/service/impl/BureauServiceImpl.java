@@ -40,7 +40,7 @@ public class BureauServiceImpl extends AbstractServiceImpl<Bureau> implements Bu
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * org.guce.siat.common.service.BureauService#findBureauByTypeAndOrganism(org.guce.siat.common.utils.enums.BureauType
 	 * , org.guce.siat.common.model.Organism)
@@ -77,7 +77,7 @@ public class BureauServiceImpl extends AbstractServiceImpl<Bureau> implements Bu
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#getJpaDao()
 	 */
 	@Override
@@ -88,7 +88,7 @@ public class BureauServiceImpl extends AbstractServiceImpl<Bureau> implements Bu
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#setJpaDao(org.guce.siat.common.dao.AbstractJpaDao)
 	 */
 	@Override
@@ -101,7 +101,7 @@ public class BureauServiceImpl extends AbstractServiceImpl<Bureau> implements Bu
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#find(java.lang.Long)
 	 */
 	@Override
@@ -127,4 +127,5 @@ public class BureauServiceImpl extends AbstractServiceImpl<Bureau> implements Bu
 		}
 		return bureau;
 	}
+
 }

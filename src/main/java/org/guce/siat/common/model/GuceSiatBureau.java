@@ -3,7 +3,10 @@ package org.guce.siat.common.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -17,21 +20,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class GuceSiatBureau extends AbstractModel implements Serializable
 {
 
-	/**
-	 *
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/** The id. */
+	@Id
+	@Column(name = "ID")
+	@SequenceGenerator(name = "GUCE_SIAT_BUREAU_SEQ", sequenceName = "GUCE_SIAT_BUREAU_SEQ", allocationSize = 1, initialValue = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GUCE_SIAT_BUREAU_SEQ")
+	private Long id;
 
 	/** The bureau guce code. */
 	@Column(name = "BUREAU_GUCE")
-	@Id
 	private String bureauGuceCode;
 
 	/** The siat bureau. */
-	@Column(name = "BUREAU_SIAT")
+	@Column(name = "BUREAU_SIAT", unique = true)
 	private String siatBureau;
 
 
+	@Override
+	public Long getId()
+	{
+		return id;
+	}
+
+	@Override
+	public void setId(final Long id)
+	{
+		this.id = id;
+	}
 
 	/**
 	 * Instantiates a new bureau.

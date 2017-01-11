@@ -104,6 +104,17 @@ public class File extends AbstractModel implements Serializable
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
+	/** The signature date. */
+	@Column(name = "SIGNATURE_DATE")
+	@Temporal(TemporalType.DATE)
+	private Date signatureDate;
+
+
+	/** The validity date. */
+	@Column(name = "VALIDITY_DATE ")
+	@Temporal(TemporalType.DATE)
+	private Date validityDate;
+
 	/** The bureau. */
 	@ManyToOne
 	@JoinColumn(name = "BUREAU_ID", referencedColumnName = "ID")
@@ -823,9 +834,52 @@ public class File extends AbstractModel implements Serializable
 		this.fileTypeGucePaiement = fileTypeGucePaiement;
 	}
 
+
+	/**
+	 * Gets the signature date.
+	 *
+	 * @return the signatureDate
+	 */
+	public Date getSignatureDate()
+	{
+		return signatureDate;
+	}
+
+	/**
+	 * Sets the signature date.
+	 *
+	 * @param signatureDate
+	 *           the signatureDate to set
+	 */
+	public void setSignatureDate(final Date signatureDate)
+	{
+		this.signatureDate = signatureDate;
+	}
+
+	/**
+	 * Gets the validity date.
+	 *
+	 * @return the validityDate
+	 */
+	public Date getValidityDate()
+	{
+		return validityDate;
+	}
+
+	/**
+	 * Sets the validity date.
+	 *
+	 * @param validityDate
+	 *           the validityDate to set
+	 */
+	public void setValidityDate(final Date validityDate)
+	{
+		this.validityDate = validityDate;
+	}
+
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -839,7 +893,7 @@ public class File extends AbstractModel implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -859,7 +913,7 @@ public class File extends AbstractModel implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

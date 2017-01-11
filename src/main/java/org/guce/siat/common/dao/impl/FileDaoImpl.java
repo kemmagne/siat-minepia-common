@@ -14,9 +14,11 @@ import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.model.Administration;
@@ -280,10 +282,13 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao
 	@Override
 	public Long findCountByFileType(final FileTypeCode fileTypeCode)
 	{
-		final List<StepCode> excludedSteps=Arrays.asList(StepCode.ST_CC_46,StepCode.ST_CC_47,StepCode.ST_CC_48,StepCode.ST_CC_49,StepCode.ST_CC_50,StepCode.ST_CC_51,StepCode.ST_CC_52,StepCode.ST_CC_53);
-		final List<StepCode> etudeSteps=Arrays.asList(StepCode.ST_CC_48,StepCode.ST_CC_49,StepCode.ST_CC_50,StepCode.ST_CC_51,StepCode.ST_CC_52,StepCode.ST_CC_53);
+		final List<StepCode> excludedSteps = Arrays.asList(StepCode.ST_CC_46, StepCode.ST_CC_47, StepCode.ST_CC_48,
+				StepCode.ST_CC_49, StepCode.ST_CC_50, StepCode.ST_CC_51, StepCode.ST_CC_52, StepCode.ST_CC_53);
+		final List<StepCode> etudeSteps = Arrays.asList(StepCode.ST_CC_48, StepCode.ST_CC_49, StepCode.ST_CC_50, StepCode.ST_CC_51,
+				StepCode.ST_CC_52, StepCode.ST_CC_53);
 
-		final TypedQuery<Long> query = entityManager.createQuery(
+		final TypedQuery<Long> query = entityManager
+				.createQuery(
 						"SELECT COUNT(f) FROM File f JOIN f.fileItemsList fil WHERE (fil.step.stepCode NOT IN (:excludedSteps) OR (fil.step.stepCode IN (:etudeSteps) AND fil.draft= true)) AND f.fileType.code= :fileTypeCode",
 						Long.class);
 		query.setParameter("excludedSteps", excludedSteps);
@@ -337,6 +342,32 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao
 		{
 			LOG.info(Objects.toString(e));
 			return null;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.FileDao#updateSpecificColumn(java.util.Map)
+	 */
+	@Override
+	public void updateSpecificColumn(final Map<String, ?> paramsMap, final File file)
+	{
+		if (MapUtils.isNotEmpty(paramsMap))
+		{
+			final StringBuilder sqlBuilder = new StringBuilder("UPDATE FILES F SET ");
+			for (final Entry<String, ?> entry : paramsMap.entrySet())
+			{
+				sqlBuilder.append(entry.getKey()).append("=:").append(entry.getKey());
+			}
+			sqlBuilder.append(" WHERE F.ID=").append(file.getId());
+
+			final Query query = entityManager.createNativeQuery(sqlBuilder.toString());
+			for (final Entry<String, ?> entry : paramsMap.entrySet())
+			{
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+			query.executeUpdate();
 		}
 	}
 }

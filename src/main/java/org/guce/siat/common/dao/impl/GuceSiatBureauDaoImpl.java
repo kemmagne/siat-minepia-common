@@ -9,7 +9,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.GuceSiatBureauDao;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.GuceSiatBureau;
@@ -49,7 +48,7 @@ public class GuceSiatBureauDaoImpl extends AbstractJpaDaoImpl<GuceSiatBureau> im
 	{
 		final TypedQuery<GuceSiatBureau> query = entityManager.createQuery(
 				"SELECT b FROM GuceSiatBureau b WHERE b.siatBureau=:siatBureau", GuceSiatBureau.class);
-		query.setParameter("siatBureau", bureau);
+		query.setParameter("siatBureau", bureau.getCode());
 		try
 		{
 			return query.getSingleResult();
@@ -70,12 +69,26 @@ public class GuceSiatBureauDaoImpl extends AbstractJpaDaoImpl<GuceSiatBureau> im
 	@Override
 	public GuceSiatBureau findByBureauGuce(final String bureauGuceCode)
 	{
-		if (StringUtils.isNotBlank(bureauGuceCode))
+
+		try
 		{
-			return entityManager.find(GuceSiatBureau.class, bureauGuceCode);
+			final String hqlString = "SELECT b FROM GuceSiatBureau b WHERE b.bureauGuceCode = :bureauGuceCode";
+			final TypedQuery<GuceSiatBureau> query = super.entityManager.createQuery(hqlString, GuceSiatBureau.class);
+			query.setParameter("bureauGuceCode", bureauGuceCode);
+			return query.getSingleResult();
 		}
-		return null;
+		catch (NoResultException | NonUniqueResultException e)
+		{
+			LOG.info(Objects.toString(e));
+			return null;
+		}
+
+		/*
+		 * if (StringUtils.isNotBlank(bureauGuceCode)) { try { final TypedQuery<GuceSiatBureau> query =
+		 * entityManager.createQuery( "SELECT b FROM GuceSiatBureau b WHERE b.bureauGuceCode= :bureauGuceCode",
+		 * GuceSiatBureau.class); query.setParameter("bureauGuceCode", bureauGuceCode); return query.getSingleResult(); }
+		 * catch (NoResultException | NonUniqueResultException e) { //throw new
+		 * ValidationException("code bureau invalide"); LOG.error("code bureau invalide"); } } return null;
+		 */
 	}
-
-
 }

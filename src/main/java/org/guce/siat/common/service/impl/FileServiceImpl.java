@@ -1,6 +1,7 @@
 package org.guce.siat.common.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
@@ -166,5 +167,17 @@ public class FileServiceImpl extends AbstractServiceImpl<File> implements FileSe
 	public File findMatchingBetweenFimexAndPriorNotice(final String numContribuable, final List<FileTypeCode> fileTypeCodeList)
 	{
 		return fileDao.findMatchingBetweenFimexAndPriorNotice(numContribuable, fileTypeCodeList);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.service.FileService#updateSpecificColumn(java.util.Map, org.guce.siat.common.model.File)
+	 */
+	@Override
+	public void updateSpecificColumn(final Map<String, ?> paramsMap, final File file)
+	{
+		fileDao.updateSpecificColumn(paramsMap, file);
+
 	}
 }
