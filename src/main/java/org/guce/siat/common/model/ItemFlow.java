@@ -87,6 +87,13 @@ public class ItemFlow extends AbstractModel implements Serializable
 	{
 	}
 
+
+	public ItemFlow(final Long id)
+	{
+		this.id = id;
+	}
+
+
 	/**
 	 * Gets the id.
 	 *
@@ -281,7 +288,7 @@ public class ItemFlow extends AbstractModel implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -294,7 +301,7 @@ public class ItemFlow extends AbstractModel implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -314,7 +321,7 @@ public class ItemFlow extends AbstractModel implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
