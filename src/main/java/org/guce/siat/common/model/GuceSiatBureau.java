@@ -84,7 +84,7 @@ public class GuceSiatBureau extends AbstractModel implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.model.Entity#hashCode()
 	 */
 	@Override
@@ -98,7 +98,7 @@ public class GuceSiatBureau extends AbstractModel implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.model.Entity#equals(java.lang.Object)
 	 */
 	@Override
@@ -130,7 +130,5 @@ public class GuceSiatBureau extends AbstractModel implements Serializable
 		}
 		return true;
 	}
-
-
 
 }
