@@ -420,17 +420,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService
 				&& (!FileTypeCode.AM_MANIFEST.equals(extractFileItemsResult.get(0).getFile().getFileType().getCode())
 						&& !isInitiatorFlow(rootElement) && contentHasSiatNumber(rootElement) && validateFlow(rootElement)
 						&& contentHasCodeDecision(rootElement) && !isCancelFlux(rootElement) && !isPaymentRequest(rootElement) && correspondenceFileAndFileItems(rootElement));
-                LOG.info("#####validateGeneralInformations workflowValidation InitiatorFlow : " + isInitiatorFlow(rootElement));
-                LOG.info("#####validateGeneralInformations workflowValidation CollectionUtils.isNotEmpty(extractFileItemsResult): " + CollectionUtils.isNotEmpty(extractFileItemsResult));
-                LOG.info("#####validateGeneralInformations workflowValidation : !FileTypeCode.AM_MANIFEST" + !FileTypeCode.AM_MANIFEST.equals(extractFileItemsResult.get(0).getFile().getFileType().getCode()));
-                LOG.info("#####validateGeneralInformations workflowValidation : !isInitiatorFlow(rootElement))" + !isInitiatorFlow(rootElement));
-                LOG.info("#####validateGeneralInformations workflowValidation : contentHasSiatNumber(rootElement))" + contentHasSiatNumber(rootElement));
-		LOG.info("#####validateGeneralInformations workflowValidation : validateFlow(rootElement))" + validateFlow(rootElement));
-		LOG.info("#####validateGeneralInformations workflowValidation : contentHasCodeDecision(rootElement)" + contentHasCodeDecision(rootElement));
-		LOG.info("#####validateGeneralInformations workflowValidation : !isCancelFlux(rootElement))" + !isCancelFlux(rootElement));
-		LOG.info("#####validateGeneralInformations workflowValidation : !isPaymentRequest(rootElement))" + !isPaymentRequest(rootElement));
-		LOG.info("#####validateGeneralInformations workflowValidation : correspondenceFileAndFileItems(rootElement))" + correspondenceFileAndFileItems(rootElement));
-		LOG.info("#####validateGeneralInformations workflowValidation : + workflowValidation)" + workflowValidation);
+		LOG.info("#####validateGeneralInformations workflowValidation : " + workflowValidation);
 		return commonValidation && workflowValidation;
 
 
