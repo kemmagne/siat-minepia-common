@@ -48,6 +48,21 @@ public final class FileFieldValueUtils {
         }
         return "-";
     }
+    /**
+     * Format date pattern.
+     *
+     * @param date the date
+     * @return the string
+     */
+    public static String guceFormatDatePattern(final String date) {
+        final StringBuilder builder = new StringBuilder();
+
+        if (date != null && date.length() == 8) {
+            builder.append(date.substring(0, 2)).append("/").append(date.substring(2, 4)).append("/").append(date.substring(4, 8));
+            System.out.println(builder.toString());
+        }
+        return "-";
+    }
 
     /**
      * Format date signataire pattern.
