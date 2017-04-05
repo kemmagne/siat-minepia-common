@@ -59,7 +59,7 @@ public final class FileFieldValueUtils {
 
         if (date != null && date.length() == 8) {
             builder.append(date.substring(0, 2)).append("/").append(date.substring(2, 4)).append("/").append(date.substring(4, 8));
-            System.out.println(builder.toString());
+            return builder.toString();
         }
         return "-";
     }
