@@ -24,24 +24,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class ControllerHolidayDaoImpl.
  */
 @Repository("controllerHolidayDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class ControllerHolidayDaoImpl extends AbstractJpaDaoImpl<ControllerHoliday> implements ControllerHolidayDao
-{
+public class ControllerHolidayDaoImpl extends AbstractJpaDaoImpl<ControllerHoliday> implements ControllerHolidayDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(ControllerHolidayDaoImpl.class);
-
 
 	/**
 	 * Instantiates a new controller holiday dao impl.
 	 */
-	public ControllerHolidayDaoImpl()
-	{
+	public ControllerHolidayDaoImpl() {
 		super();
 		setClasse(ControllerHoliday.class);
 	}
@@ -54,10 +52,8 @@ public class ControllerHolidayDaoImpl extends AbstractJpaDaoImpl<ControllerHolid
 	 * java.util.Date, java.util.Date)
 	 */
 	@Override
-	public List<ControllerHoliday> findHolidayByControllerAndDates(final User user, final Date beginDate, final Date endDate)
-	{
-		if (user != null)
-		{
+	public List<ControllerHoliday> findHolidayByControllerAndDates(final User user, final Date beginDate, final Date endDate) {
+		if (user != null) {
 			final StringBuilder hqlBuilder = new StringBuilder();
 
 			hqlBuilder.append("SELECT h FROM ControllerHoliday h ");
@@ -91,17 +87,13 @@ public class ControllerHolidayDaoImpl extends AbstractJpaDaoImpl<ControllerHolid
 	 * @see org.guce.siat.common.dao.ControllerHolidayDao#findHolidaysByListController(java.util.List)
 	 */
 	@Override
-	public List<ControllerHoliday> findHolidaysByListController(final List<User> controllerList)
-	{
-		if (controllerList != null && !controllerList.isEmpty())
-		{
+	public List<ControllerHoliday> findHolidaysByListController(final List<User> controllerList) {
+		if (controllerList != null && !controllerList.isEmpty()) {
 			final String hqlString = "SELECT h FROM ControllerHoliday h WHERE h.user IN (:controllerList)";
 			final TypedQuery<ControllerHoliday> query = super.entityManager.createQuery(hqlString, ControllerHoliday.class);
 			query.setParameter("controllerList", controllerList);
 			return query.getResultList();
-		}
-		else
-		{
+		} else {
 			return Collections.emptyList();
 		}
 	}
@@ -114,20 +106,15 @@ public class ControllerHolidayDaoImpl extends AbstractJpaDaoImpl<ControllerHolid
 	 * java.util.Date)
 	 */
 	@Override
-	public ControllerHoliday findHolidayByControllerAndDay(final User controller, final Date date)
-	{
-		if (!Objects.equals(controller, null))
-		{
-			try
-			{
+	public ControllerHoliday findHolidayByControllerAndDay(final User controller, final Date date) {
+		if (!Objects.equals(controller, null)) {
+			try {
 				final String hqlString = "SELECT h FROM ControllerHoliday h WHERE h.user.id=:controllerId AND :date BETWEEN h.fromDate AND h.toDate";
 				final TypedQuery<ControllerHoliday> query = super.entityManager.createQuery(hqlString, ControllerHoliday.class);
 				query.setParameter("controllerId", controller.getId());
 				query.setParameter("date", date, TemporalType.DATE);
 				return query.getSingleResult();
-			}
-			catch (final NoResultException | NonUniqueResultException e)
-			{
+			} catch (final NoResultException | NonUniqueResultException e) {
 				LOG.info(Objects.toString(e));
 			}
 		}
@@ -140,15 +127,13 @@ public class ControllerHolidayDaoImpl extends AbstractJpaDaoImpl<ControllerHolid
 	 * @see org.guce.siat.common.dao.ControllerHolidayDao#findByOrganism(org.guce.siat.common.model.Organism)
 	 */
 	@Override
-	public List<ControllerHoliday> findByOrganism(Organism organism)
-	{
-		if (organism != null)
-		{
+	public List<ControllerHoliday> findByOrganism(Organism organism) {
+		if (organism != null) {
 			TypedQuery<ControllerHoliday> query = entityManager.createQuery(
 					"SELECT c FROM ControllerHoliday c WHERE c.user.administration IN (:administrationList)", ControllerHoliday.class);
 			query.setParameter("administrationList", SiatUtils.getRecursiveSubAdministations(Collections.singletonList(organism)));
 			return query.getResultList();
-}
+		}
 		return Collections.emptyList();
 	}
 

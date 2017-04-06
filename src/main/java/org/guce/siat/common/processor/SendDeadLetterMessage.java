@@ -22,20 +22,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-
 /**
  * The Class SendDeadLetterMessage.
  */
-public class SendDeadLetterMessage implements Processor
-{
+public class SendDeadLetterMessage implements Processor {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(SendDeadLetterMessage.class);
 
-	/** The Constant EMAIL_BODY_PASSWORD. */
+	/**
+	 * The Constant EMAIL_BODY_PASSWORD.
+	 */
 	private static final String EMAIL_BODY_ADMINISTRATOR = "emailBodyAdministrator.vm";
 
-	/** The mail service. */
+	/**
+	 * The mail service.
+	 */
 	@Autowired
 	private MailService mailService;
 
@@ -47,13 +51,12 @@ public class SendDeadLetterMessage implements Processor
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void process(final Exchange exchange) throws Exception
-	{
+	public void process(final Exchange exchange) throws Exception {
 		final Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
 		final HashMap<String, Object> ebxml = (exchange.getIn().getBody() != null ? (HashMap<String, Object>) exchange.getIn()
 				.getBody() : null);
 		LOG.error("### is there an exception ? {}", (cause != null ? "true" : "false"));
-		LOG.error("###SendDeadLetterMessage Error message : {}", Objects.toString(cause));
+		LOG.error("###SendDeadLetterMessage Error message : ", cause);
 
 		final String referenceSiat = retrieveReferenceSiat(ebxml);
 		final String display = StringUtils.isNotBlank(referenceSiat) ? "inline" : "none";
@@ -77,23 +80,16 @@ public class SendDeadLetterMessage implements Processor
 	/**
 	 * Retrieve reference siat.
 	 *
-	 * @param exchange
-	 *           the exchange
+	 * @param exchange the exchange
 	 * @return the string
-	 * @throws SOAPException
-	 *            the SOAP exception
-	 * @throws IOException
-	 *            Signals that an I/O exception has occurred.
-	 * @throws TransformerException
-	 *            the transformer exception
-	 * @throws SAXException
-	 *            the SAX exception
-	 * @throws ParserConfigurationException
-	 *            the parser configuration exception
+	 * @throws SOAPException the SOAP exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TransformerException the transformer exception
+	 * @throws SAXException the SAX exception
+	 * @throws ParserConfigurationException the parser configuration exception
 	 */
 	private String retrieveReferenceSiat(final HashMap<String, Object> ebxml) throws SOAPException, IOException,
-			TransformerException, SAXException, ParserConfigurationException
-	{
+			TransformerException, SAXException, ParserConfigurationException {
 		final byte[] flow = (byte[]) ebxml.get(ESBConstants.FLOW);
 		final String xmlContent = new String(flow, "ISO-8859-1");
 		final Element rootElement = XmlXPathUtils.stringToXMLDOM(xmlContent).getDocumentElement();

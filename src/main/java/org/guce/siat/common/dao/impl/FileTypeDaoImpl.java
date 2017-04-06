@@ -23,24 +23,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class FileDaoImpl.
  */
 @Repository("fileTypeDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements FileTypeDao
-{
+public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements FileTypeDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(FileTypeDaoImpl.class);
 
 	/**
 	 * Instantiates a new file type dao impl.
 	 */
-
-	public FileTypeDaoImpl()
-	{
+	public FileTypeDaoImpl() {
 		super();
 		setClasse(FileType.class);
 	}
@@ -51,12 +49,9 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	 * @see org.guce.siat.core.ct.dao.FileTypeDao#findFileTypeByMinestry(org.guce.siat.common.model.Ministry)
 	 */
 	@Override
-	public List<FileType> findFileTypeByMinistry(final Ministry ministry)
-	{
-		try
-		{
-			if (ministry != null)
-			{
+	public List<FileType> findFileTypeByMinistry(final Ministry ministry) {
+		try {
+			if (ministry != null) {
 				final StringBuilder hqlQuery = new StringBuilder();
 				hqlQuery.append("SELECT f.primaryKey.fileType FROM MinistryFileType f WHERE f.primaryKey.ministry.id = :minestiryId");
 
@@ -64,9 +59,7 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 				query.setParameter("minestiryId", ministry.getId());
 				return query.getResultList();
 			}
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			LOG.info(e.getMessage(), e);
 			throw new DAOException(e);
 		}
@@ -79,22 +72,17 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	 * @see org.guce.siat.common.dao.FileTypeDao#findByCode(org.guce.siat.common.utils.enums.FileTypeCode)
 	 */
 	@Override
-	public FileType findByCode(final FileTypeCode code)
-	{
-		try
-		{
+	public FileType findByCode(final FileTypeCode code) {
+		try {
 			final String hqlQuery = "SELECT ft FROM FileType ft WHERE ft.code = :code ";
 			TypedQuery<FileType> query = entityManager.createQuery(hqlQuery.toString(), FileType.class);
 			query = super.entityManager.createQuery(hqlQuery, FileType.class);
 			query.setParameter("code", code);
 			return query.getSingleResult();
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
-
 
 	}
 
@@ -105,21 +93,16 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	 * @see org.guce.siat.common.dao.FileTypeDao#findAuthoritiesByFileType(org.guce.siat.common.model.FileType)
 	 */
 	@Override
-	public List<Authority> findAuthoritiesByFileType(final FileType filetype)
-	{
-		try
-		{
-			if (filetype != null)
-			{
+	public List<Authority> findAuthoritiesByFileType(final FileType filetype) {
+		try {
+			if (filetype != null) {
 				final StringBuilder hqlQuery = new StringBuilder();
 				hqlQuery.append("SELECT a FROM FileType f LEFT OUTER JOIN f.roleList a WHERE f=:filetype");
 				final TypedQuery<Authority> query = entityManager.createQuery(hqlQuery.toString(), Authority.class);
 				query.setParameter("filetype", filetype);
 				return query.getResultList();
 			}
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			LOG.info(e.getMessage(), e);
 			throw new DAOException(e);
 		}
@@ -132,26 +115,20 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	 * @see org.guce.siat.common.dao.FileTypeDao#findFileTypesByCodes(java.lang.String[])
 	 */
 	@Override
-	public List<FileType> findFileTypesByCodes(final FileTypeCode... fileTypeCodes)
-	{
+	public List<FileType> findFileTypesByCodes(final FileTypeCode... fileTypeCodes) {
 		final StringBuilder hqlQuery = new StringBuilder();
-		try
-		{
+		try {
 			hqlQuery.append("SELECT ft FROM FileType ft ");
-			if (!ArrayUtils.isEmpty(fileTypeCodes))
-			{
+			if (!ArrayUtils.isEmpty(fileTypeCodes)) {
 				hqlQuery.append("WHERE ft.code IN ( :codes )");
 			}
 			TypedQuery<FileType> query = entityManager.createQuery(hqlQuery.toString(), FileType.class);
 			query = super.entityManager.createQuery(hqlQuery.toString(), FileType.class);
-			if (!ArrayUtils.isEmpty(fileTypeCodes))
-			{
+			if (!ArrayUtils.isEmpty(fileTypeCodes)) {
 				query.setParameter("codes", Arrays.asList(fileTypeCodes));
 			}
 			return query.getResultList();
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
@@ -159,20 +136,18 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	}
 
 	@Override
-	public void update(final FileType selected, final List<FileTypeStep> targetFileTypeStep)
-	{
-		try{
+	public void update(final FileType selected, final List<FileTypeStep> targetFileTypeStep) {
+		try {
 			entityManager.merge(selected);
-		for(final FileTypeStep fileTypeStep:selected.getFileTypeStepList()){
-			entityManager.remove(entityManager.merge(fileTypeStep));
-		}
-		for(final FileTypeStep fileTypeStep:targetFileTypeStep){
-			fileTypeStep.setIsApDecision(false);
-			entityManager.persist(fileTypeStep);
-			entityManager.flush();
-		}
-		}catch (final Exception e)
-		{
+			for (final FileTypeStep fileTypeStep : selected.getFileTypeStepList()) {
+				entityManager.remove(entityManager.merge(fileTypeStep));
+			}
+			for (final FileTypeStep fileTypeStep : targetFileTypeStep) {
+				fileTypeStep.setIsApDecision(false);
+				entityManager.persist(fileTypeStep);
+				entityManager.flush();
+			}
+		} catch (final Exception e) {
 			LOG.info(e.getMessage(), e);
 			throw new DAOException(e);
 		}

@@ -33,23 +33,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
 /**
  * The Class FileItemDaoImpl.
  */
 @Repository("fileItemDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements FileItemDao
-{
-	/** The Constant LOG. */
+public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements FileItemDao {
+
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(FileItemDaoImpl.class);
 
 	/**
 	 * Instantiates a new file item dao impl.
 	 */
-	public FileItemDaoImpl()
-	{
+	public FileItemDaoImpl() {
 		super();
 		setClasse(FileItem.class);
 	}
@@ -60,10 +59,8 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 * @see org.guce.siat.core.ct.dao.FileItemDao#findFileItemsByFile(org.guce.siat.core.ct.model.File)
 	 */
 	@Override
-	public List<FileItem> findFileItemsByFile(final File file)
-	{
-		if (file != null)
-		{
+	public List<FileItem> findFileItemsByFile(final File file) {
+		if (file != null) {
 			final String hqlString = "FROM FileItem fi WHERE fi.file.id = :fileId";
 			final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlString, FileItem.class);
 			query.setParameter("fileId", file.getId());
@@ -78,10 +75,8 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findDraftFileItemsByFile(org.guce.siat.core.ct.model.File)
 	 */
 	@Override
-	public List<FileItem> findDraftFileItemsByFile(final File file)
-	{
-		if (file != null)
-		{
+	public List<FileItem> findDraftFileItemsByFile(final File file) {
+		if (file != null) {
 			final String qlString = "SELECT i.fileItem FROM ItemFlow i WHERE i.fileItem.file.id= :fileItemId  AND i.sent = false";
 			final TypedQuery<FileItem> query = super.entityManager.createQuery(qlString, FileItem.class);
 			query.setParameter("fileItemId", file.getId());
@@ -98,8 +93,7 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 */
 	@Override
 	public List<FileItem> findFileItemByServiceAndAuthoritiesAndFileType(final List<Bureau> bureauList, final User loggedUser,
-			final List<FileTypeCode> fileTypeCodeList, final List<StepCode> excludedStepList)
-	{
+			final List<FileTypeCode> fileTypeCodeList, final List<StepCode> excludedStepList) {
 		final StringBuilder hqlBuilder = new StringBuilder();
 		hqlBuilder.append("FROM FileItem fi ");
 		hqlBuilder.append("WHERE fi.file.bureau IN (:bureauList) ");
@@ -132,14 +126,10 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 * java.lang.String)
 	 */
 	@Override
-	public FileItemFieldValue findFileItemFieldValueByFieldCode(final FileItem fileItem, final String fieldCode)
-	{
-		if (StringUtils.isNotEmpty(fieldCode))
-		{
-			for (final FileItemFieldValue fv : fileItem.getFileItemFieldValueList())
-			{
-				if (StringUtils.equals(fieldCode, fv.getFileItemField().getCode()))
-				{
+	public FileItemFieldValue findFileItemFieldValueByFieldCode(final FileItem fileItem, final String fieldCode) {
+		if (StringUtils.isNotEmpty(fieldCode)) {
+			for (final FileItemFieldValue fv : fileItem.getFileItemFieldValueList()) {
+				if (StringUtils.equals(fieldCode, fv.getFileItemField().getCode())) {
 					return fv;
 				}
 			}
@@ -153,10 +143,8 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 * @see org.guce.siat.common.dao.FileItemDao#findFileItemByNumEbmsMsg(java.lang.String)
 	 */
 	@Override
-	public List<FileItem> findFileItemByNumEbmsMsg(final String numEbmsMsg)
-	{
-		if (StringUtils.isNotBlank(numEbmsMsg))
-		{
+	public List<FileItem> findFileItemByNumEbmsMsg(final String numEbmsMsg) {
+		if (StringUtils.isNotBlank(numEbmsMsg)) {
 			final String qlString = "SELECT fi FROM FileItem fi WHERE fi.numEbmsMessage = :numEbmsMsg";
 			final TypedQuery<FileItem> query = super.entityManager.createQuery(qlString, FileItem.class);
 			query.setParameter("numEbmsMsg", numEbmsMsg);
@@ -174,8 +162,7 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 */
 	@Override
 	public List<FileItem> findFileItemForRetreiveByFilter(final List<Bureau> bureaus, final User loggedUser,
-			final List<FileTypeCode> fileTypeCodeList, final StepCode stepApAcceptation, final RetrieveSearchFilter filter)
-	{
+			final List<FileTypeCode> fileTypeCodeList, final StepCode stepApAcceptation, final RetrieveSearchFilter filter) {
 		final Map<String, Object> params = new HashMap<String, Object>();
 		final StringBuilder hqlBuilder = new StringBuilder();
 
@@ -192,22 +179,18 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 		hqlBuilder.append("AND authFi.primaryKey.fileType.code IN (:listFileTypeCode) ");
 		hqlBuilder.append(')');
 
-
-		if (filter.getFromDate() != null && filter.getToDate() == null)
-		{
+		if (filter.getFromDate() != null && filter.getToDate() == null) {
 			hqlBuilder.append(" AND fi.file.createdDate >= TO_DATE(:createdDate,'");
 			hqlBuilder.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 			hqlBuilder.append("')");
 			params.put("createdDate", DateUtils.formatSimpleDateForOracle(filter.getFromDate()));
 		}
 
-		if (filter.getFromDate() == null && filter.getToDate() != null)
-		{
+		if (filter.getFromDate() == null && filter.getToDate() != null) {
 			hqlBuilder.append(" AND fi.file.createdDate <:createDate");
 			params.put("createDate", DateUtils.addDays(filter.getToDate(), 1));
 		}
-		if (filter.getFromDate() != null && filter.getToDate() != null)
-		{
+		if (filter.getFromDate() != null && filter.getToDate() != null) {
 			hqlBuilder.append(" AND fi.file.createdDate >= :fromDate");
 			hqlBuilder.append(" AND fi.file.createdDate <:toDate");
 			params.put("fromDate", filter.getFromDate());
@@ -222,8 +205,7 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 		query.setParameter("listFileTypeCode", fileTypeCodeList);
 		query.setParameter("stepApAcceptation", stepApAcceptation);
 
-		for (final Entry<String, Object> entry : params.entrySet())
-		{
+		for (final Entry<String, Object> entry : params.entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
 		return query.getResultList();
@@ -235,17 +217,13 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 * @see org.guce.siat.common.dao.FileItemDao#findFileItemFieldValueByFieldCode(java.lang.Long, java.lang.Long)
 	 */
 	@Override
-	public FileItemFieldValue findFileItemFieldValueByFieldCode(final Long idFileItem, final Long idItemField)
-	{
-		try
-		{
+	public FileItemFieldValue findFileItemFieldValueByFieldCode(final Long idFileItem, final Long idItemField) {
+		try {
 			final String jpql = "FROM FileItemFieldValue f WHERE f.primaryKey.fileItem.id = :fileItem AND f.primaryKey.fileItemField.id=:itemField";
 			final TypedQuery<FileItemFieldValue> query = super.entityManager.createQuery(jpql, FileItemFieldValue.class);
 			query.setParameter("fileItem", idFileItem).setParameter("itemField", idItemField);
 			return query.getSingleResult();
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
@@ -257,27 +235,20 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 * @see org.guce.siat.common.dao.FileItemDao#findByLineNumberAndNumSiat(java.util.List, java.lang.String)
 	 */
 	@Override
-	public List<FileItem> findByLineNumberAndNumSiat(final List<Integer> lineNumberList, final String refSiat)
-	{
+	public List<FileItem> findByLineNumberAndNumSiat(final List<Integer> lineNumberList, final String refSiat) {
 		TypedQuery<FileItem> query = null;
-		if (CollectionUtils.isEmpty(lineNumberList))
-		{
+		if (CollectionUtils.isEmpty(lineNumberList)) {
 			final String jpql = "SELECT f FROM FileItem f WHERE f.file.referenceSiat=:refSiat";
 			query = super.entityManager.createQuery(jpql, FileItem.class);
 			query.setParameter("refSiat", refSiat);
-		}
-		else
-		{
+		} else {
 			final String jpql = "SELECT f FROM FileItem f WHERE f.lineNumber IN (:lineNumberList) AND f.file.referenceSiat=:refSiat";
 			query = super.entityManager.createQuery(jpql, FileItem.class);
 			query.setParameter("lineNumberList", lineNumberList).setParameter("refSiat", refSiat);
 		}
-		if (CollectionUtils.isNotEmpty(query.getResultList()))
-		{
+		if (CollectionUtils.isNotEmpty(query.getResultList())) {
 			return query.getResultList();
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}

@@ -24,23 +24,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class AppointmentDaoImpl.
  */
 @Repository("appointmentDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implements AppointmentDao
-{
+public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implements AppointmentDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(AppointmentDaoImpl.class);
 
 	/**
 	 * Instantiates a new appointment DAO impl.
 	 */
-	public AppointmentDaoImpl()
-	{
+	public AppointmentDaoImpl() {
 		super();
 		setClasse(Appointment.class);
 	}
@@ -51,8 +50,7 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * @see org.guce.siat.common.dao.AppointmentDao#delete(org.guce.siat.common.model.AppointmentItemFlow)
 	 */
 	@Override
-	public void delete(final AppointmentItemFlow appointmentItemFlow)
-	{
+	public void delete(final AppointmentItemFlow appointmentItemFlow) {
 		entityManager.remove(appointmentItemFlow);
 	}
 
@@ -62,11 +60,9 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * @see org.guce.siat.common.dao.AppointmentDao#findAppointmentsByControllerList(java.util.List)
 	 */
 	@Override
-	public List<Appointment> findAppointmentsByControllerList(final List<User> controllerList)
-	{
+	public List<Appointment> findAppointmentsByControllerList(final List<User> controllerList) {
 
-		if (CollectionUtils.isNotEmpty(controllerList))
-		{
+		if (CollectionUtils.isNotEmpty(controllerList)) {
 			final StringBuilder hqlBuilder = new StringBuilder();
 			hqlBuilder.append("SELECT a FROM Appointment a ");
 			hqlBuilder.append("WHERE a.controller IN (:controllerList) ");
@@ -87,12 +83,9 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * @see org.guce.siat.core.ct.dao.AppointmentDao#finAppointmentsByItemFlowList(java.util.List)
 	 */
 	@Override
-	public Appointment findAppointmentByItemFlowList(final List<ItemFlow> itemFlows)
-	{
-		if (CollectionUtils.isNotEmpty(itemFlows))
-		{
-			try
-			{
+	public Appointment findAppointmentByItemFlowList(final List<ItemFlow> itemFlows) {
+		if (CollectionUtils.isNotEmpty(itemFlows)) {
+			try {
 				final StringBuilder hqlBuilder = new StringBuilder();
 				hqlBuilder.append("SELECT a.primaryKey.appointment FROM AppointmentItemFlow a ");
 				hqlBuilder.append("WHERE a.deleted=false AND a.primaryKey.itemFlow  ");
@@ -103,9 +96,7 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 
 				return query.getSingleResult();
 
-			}
-			catch (final Exception e)
-			{
+			} catch (final Exception e) {
 				LOG.error(Objects.toString(e));
 			}
 
@@ -119,12 +110,9 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * @see org.guce.siat.common.dao.AppointmentDao#findAppointmentByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public Appointment findAppointmentByItemFlow(final ItemFlow itemFlow)
-	{
-		if (!Objects.equals(itemFlow, null))
-		{
-			try
-			{
+	public Appointment findAppointmentByItemFlow(final ItemFlow itemFlow) {
+		if (!Objects.equals(itemFlow, null)) {
+			try {
 				final StringBuilder hqlBuilder = new StringBuilder();
 				hqlBuilder.append("SELECT a.primaryKey.appointment FROM AppointmentItemFlow a ");
 				hqlBuilder.append("WHERE a.deleted=false AND a.primaryKey.itemFlow.id  ");
@@ -135,9 +123,7 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 
 				return query.getSingleResult();
 
-			}
-			catch (final Exception e)
-			{
+			} catch (final Exception e) {
 				LOG.error(Objects.toString(e));
 			}
 
@@ -152,10 +138,8 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * org.guce.siat.common.dao.AppointmentDao#findAppointmentItemFlowByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public AppointmentItemFlow findAppointmentItemFlowByItemFlow(final ItemFlow itemFlow)
-	{
-		if (!Objects.equals(itemFlow, null))
-		{
+	public AppointmentItemFlow findAppointmentItemFlowByItemFlow(final ItemFlow itemFlow) {
+		if (!Objects.equals(itemFlow, null)) {
 			final StringBuilder hqlBuilder = new StringBuilder();
 			hqlBuilder.append("SELECT a FROM AppointmentItemFlow a ");
 			hqlBuilder.append("WHERE a.deleted=false AND a.primaryKey.itemFlow.id  ");
@@ -164,12 +148,9 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 			final TypedQuery<AppointmentItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(),
 					AppointmentItemFlow.class);
 			query.setParameter("itemFlowId", itemFlow.getId());
-			try
-			{
+			try {
 				return query.getSingleResult();
-			}
-			catch (NoResultException | NonUniqueResultException e)
-			{
+			} catch (NoResultException | NonUniqueResultException e) {
 				LOG.error(Objects.toString(e));
 			}
 
@@ -185,10 +166,8 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * model.ItemFlow)
 	 */
 	@Override
-	public AppointmentItemFlow findDeletedAppointmentItemFlowAppointmentByAppointment(final Appointment appointment)
-	{
-		if (!Objects.equals(appointment, null))
-		{
+	public AppointmentItemFlow findDeletedAppointmentItemFlowAppointmentByAppointment(final Appointment appointment) {
+		if (!Objects.equals(appointment, null)) {
 			final StringBuilder hqlBuilder = new StringBuilder();
 			hqlBuilder.append("SELECT a FROM AppointmentItemFlow a ");
 			hqlBuilder.append("WHERE a.deleted=true AND a.primaryKey.appointment.id= :appointmentId ");
@@ -198,12 +177,9 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 					AppointmentItemFlow.class);
 			query.setParameter("appointmentId", appointment.getId());
 
-			try
-			{
+			try {
 				return query.getResultList().get(0);
-			}
-			catch (final Exception e)
-			{
+			} catch (final Exception e) {
 				LOG.error(Objects.toString(e));
 			}
 		}
@@ -216,12 +192,9 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * @see org.guce.siat.common.dao.AppointmentDao#findAppointmentsByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public Appointment findAppointmentsByItemFlow(final ItemFlow itemFlow)
-	{
-		if (!Objects.equals(itemFlow, null))
-		{
-			try
-			{
+	public Appointment findAppointmentsByItemFlow(final ItemFlow itemFlow) {
+		if (!Objects.equals(itemFlow, null)) {
+			try {
 				final String hqlString = "SELECT a.primaryKey.appointment FROM AppointmentItemFlow a "
 						+ "WHERE a.deleted=false AND a.primaryKey.itemFlow.id = :itemFlowId AND a.primaryKey.appointment.deleted=false";
 				final TypedQuery<Appointment> query = super.entityManager.createQuery(hqlString, Appointment.class);
@@ -229,9 +202,7 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 
 				return query.getSingleResult();
 
-			}
-			catch (NoResultException | NonUniqueResultException e)
-			{
+			} catch (NoResultException | NonUniqueResultException e) {
 				LOG.error(Objects.toString(e));
 			}
 
@@ -246,23 +217,19 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * org.guce.siat.common.model.User)
 	 */
 	@Override
-	public Appointment findAppoitmentByFileItemAndController(final List<FileItem> fileItems, final User controller)
-	{
+	public Appointment findAppoitmentByFileItemAndController(final List<FileItem> fileItems, final User controller) {
 		final StringBuilder hqlBuilder = new StringBuilder();
 		hqlBuilder.append("SELECT a.primaryKey.appointment FROM AppointmentItemFlow a  ");
 		hqlBuilder.append("WHERE a.deleted=false AND a.primaryKey.appointment.deleted=false ");
 		hqlBuilder.append("AND a.primaryKey.appointment.controller.id= :controllerId ");
 		hqlBuilder.append("AND a.primaryKey.itemFlow.fileItem IN (:fileItems)");
 
-		try
-		{
+		try {
 			final TypedQuery<Appointment> query = entityManager.createQuery(hqlBuilder.toString(), Appointment.class);
 			query.setParameter("controllerId", controller.getId());
 			query.setParameter("fileItems", fileItems);
 			return query.getSingleResult();
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
@@ -275,8 +242,7 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * @see org.guce.siat.common.dao.AppointmentDao#update(org.guce.siat.common.model.AppointmentItemFlow)
 	 */
 	@Override
-	public void update(final AppointmentItemFlow appointmentItemFlow)
-	{
+	public void update(final AppointmentItemFlow appointmentItemFlow) {
 		entityManager.merge(appointmentItemFlow);
 	}
 
@@ -286,12 +252,9 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 	 * @see org.guce.siat.common.dao.AppointmentDao#findLastAppointmentByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public Appointment findLastAppointmentByItemFlow(final ItemFlow itemFlow)
-	{
-		if (!Objects.equals(itemFlow, null))
-		{
-			try
-			{
+	public Appointment findLastAppointmentByItemFlow(final ItemFlow itemFlow) {
+		if (!Objects.equals(itemFlow, null)) {
+			try {
 				final String hqlString = "SELECT a.primaryKey.appointment FROM AppointmentItemFlow a "
 						+ "WHERE a.primaryKey.itemFlow.id = :itemFlowId AND a.primaryKey.appointment.deleted=false";
 				final TypedQuery<Appointment> query = super.entityManager.createQuery(hqlString, Appointment.class);
@@ -299,9 +262,7 @@ public class AppointmentDaoImpl extends AbstractJpaDaoImpl<Appointment> implemen
 
 				return query.getSingleResult();
 
-			}
-			catch (NoResultException | NonUniqueResultException e)
-			{
+			} catch (NoResultException | NonUniqueResultException e) {
 				LOG.error(Objects.toString(e));
 			}
 

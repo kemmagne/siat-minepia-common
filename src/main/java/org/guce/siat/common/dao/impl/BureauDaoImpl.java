@@ -19,23 +19,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class BureauDaoImpl.
  */
 @Repository("bureauDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class BureauDaoImpl extends AbstractJpaDaoImpl<Bureau> implements BureauDao
-{
+public class BureauDaoImpl extends AbstractJpaDaoImpl<Bureau> implements BureauDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(BureauDaoImpl.class);
 
 	/**
 	 * Instantiates a new bureau dao impl.
 	 */
-	public BureauDaoImpl()
-	{
+	public BureauDaoImpl() {
 		super();
 		setClasse(Bureau.class);
 	}
@@ -47,20 +46,16 @@ public class BureauDaoImpl extends AbstractJpaDaoImpl<Bureau> implements BureauD
 	 * org.guce.siat.common.model.Organism)
 	 */
 	@Override
-	public List<Bureau> findBureauByTypeAndOrganism(final BureauType bureauType, final Organism organism)
-	{
-		if (organism != null)
-		{
+	public List<Bureau> findBureauByTypeAndOrganism(final BureauType bureauType, final Organism organism) {
+		if (organism != null) {
 			final StringBuilder hqlQuery = new StringBuilder();
 			hqlQuery.append("FROM Bureau b WHERE b.deleted = false AND b.service.subDepartment.organism.id = :organismId ");
-			if (bureauType != null)
-			{
+			if (bureauType != null) {
 				hqlQuery.append("AND b.bureauType = :bureauType");
 			}
 			final TypedQuery<Bureau> query = super.entityManager.createQuery(hqlQuery.toString(), Bureau.class);
 			query.setParameter("organismId", organism.getId());
-			if (bureauType != null)
-			{
+			if (bureauType != null) {
 				query.setParameter("bureauType", bureauType);
 			}
 			return query.getResultList();
@@ -74,18 +69,14 @@ public class BureauDaoImpl extends AbstractJpaDaoImpl<Bureau> implements BureauD
 	 * @see org.guce.siat.common.dao.BureauDao#findByServiceAndCode(org.guce.siat.common.model.Service, java.lang.String)
 	 */
 	@Override
-	public Bureau findByServiceAndCode(final Service service, final String codeBureau)
-	{
+	public Bureau findByServiceAndCode(final Service service, final String codeBureau) {
 		final TypedQuery<Bureau> query = entityManager.createQuery(
 				"SELECT b FROM Bureau b WHERE b.service= :service AND b.code= :codeBureau", Bureau.class);
 		query.setParameter("service", service);
 		query.setParameter("codeBureau", codeBureau);
-		try
-		{
+		try {
 			return query.getSingleResult();
-		}
-		catch (NoResultException | NonUniqueResultException e)
-		{
+		} catch (NoResultException | NonUniqueResultException e) {
 			LOG.error(Objects.toString(e));
 			return null;
 		}

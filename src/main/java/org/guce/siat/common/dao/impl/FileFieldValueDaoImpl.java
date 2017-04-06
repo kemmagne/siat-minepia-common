@@ -22,22 +22,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class FileFieldValueDaoImpl.
  */
 @Repository("fileFieldValueDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> implements FileFieldValueDao
-{
-	/** The Constant LOG. */
+public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> implements FileFieldValueDao {
+
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(FileFieldValueDaoImpl.class);
 
 	/**
 	 * Instantiates a new file field value dao impl.
 	 */
-	public FileFieldValueDaoImpl()
-	{
+	public FileFieldValueDaoImpl() {
 		super();
 		setClasse(FileFieldValue.class);
 	}
@@ -49,11 +49,9 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 	 * java.lang.String, org.guce.siat.common.utils.enums.FileTypeCode)
 	 */
 	@Override
-	public File retriveFileByFileFieldCodeAndValue(final String fileFieldCode, final String value, final FileTypeCode fileTypeCode)
-	{
+	public File retriveFileByFileFieldCodeAndValue(final String fileFieldCode, final String value, final FileTypeCode fileTypeCode) {
 
-		try
-		{
+		try {
 
 			final StringBuilder hqlQuery = new StringBuilder();
 			hqlQuery.append("SELECT ffv.primaryKey.file FROM FileFieldValue ffv ");
@@ -69,9 +67,7 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 
 			return query.getSingleResult();
 
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
@@ -83,20 +79,16 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 	 * @see org.guce.siat.common.dao.FileFieldValueDao#findFieldByCode(java.lang. String)
 	 */
 	@Override
-	public FileField findFieldByCode(final String fieldCode)
-	{
+	public FileField findFieldByCode(final String fieldCode) {
 
-		try
-		{
+		try {
 
 			final TypedQuery<FileField> query = entityManager.createQuery("SELECT f FROM FileField f WHERE f.code= :fieldCode",
 					FileField.class);
 			query.setParameter("fieldCode".intern(), fieldCode);
 			return query.getSingleResult();
 
-		}
-		catch (NoResultException | NonUniqueResultException e)
-		{
+		} catch (NoResultException | NonUniqueResultException e) {
 			return null;
 		}
 
@@ -109,11 +101,9 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 	 * org.guce.siat.common.model.FileItem)
 	 */
 	@Override
-	public FileItemFieldValue findFileItemFieldValueByCodeAndFileItem(final String code, final FileItem fileItem)
-	{
+	public FileItemFieldValue findFileItemFieldValueByCodeAndFileItem(final String code, final FileItem fileItem) {
 
-		try
-		{
+		try {
 
 			final TypedQuery<FileItemFieldValue> query = entityManager
 					.createQuery(
@@ -123,9 +113,7 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 			query.setParameter("fileItem".intern(), fileItem);
 			return query.getSingleResult();
 
-		}
-		catch (NoResultException | NonUniqueResultException e)
-		{
+		} catch (NoResultException | NonUniqueResultException e) {
 			return null;
 		}
 
@@ -138,25 +126,19 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 	 * org.guce.siat.common.model.File)
 	 */
 	@Override
-	public FileFieldValue findValueByFileFieldAndFile(final String fileFieldCode, final File file)
-	{
-		try
-		{
+	public FileFieldValue findValueByFileFieldAndFile(final String fileFieldCode, final File file) {
+		try {
 			final String hqlString = "FROM FileFieldValue f WHERE f.primaryKey.fileField.code = :fileFieldCode AND f.primaryKey.file.id = :fileId ";
 			final TypedQuery<FileFieldValue> query = super.entityManager.createQuery(hqlString, FileFieldValue.class);
 			query.setParameter("fileFieldCode", fileFieldCode);
 			query.setParameter("fileId", file.getId());
 			return query.getSingleResult();
 
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
 
 	}
-
-
 
 }

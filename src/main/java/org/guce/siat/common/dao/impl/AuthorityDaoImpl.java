@@ -21,24 +21,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
 /**
  * The Class AuthorityDaoImpl.
  */
 @Repository("authorityDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class AuthorityDaoImpl extends AbstractJpaDaoImpl<Authority> implements AuthorityDao
-{
+public class AuthorityDaoImpl extends AbstractJpaDaoImpl<Authority> implements AuthorityDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(AuthorityDaoImpl.class);
 
 	/**
 	 * Instantiates a new authority dao impl.
 	 */
-	public AuthorityDaoImpl()
-	{
+	public AuthorityDaoImpl() {
 		super();
 		setClasse(Authority.class);
 	}
@@ -49,8 +47,7 @@ public class AuthorityDaoImpl extends AbstractJpaDaoImpl<Authority> implements A
 	 *
 	 * @see org.guce.siat.common.dao.AuthorityDao#findByAuthoritiesType()
 	 */
-	public List<Authority> findByAuthoritiesType()
-	{
+	public List<Authority> findByAuthoritiesType() {
 		final String hqlString = "SELECT a FROM Authority a WHERE a.authorityType = :cotation OR a.authorityType= :decision ";
 		final TypedQuery<Authority> query = super.entityManager.createQuery(hqlString, Authority.class);
 		query.setParameter("cotation", AuthorityType.COTATION);
@@ -65,18 +62,14 @@ public class AuthorityDaoImpl extends AbstractJpaDaoImpl<Authority> implements A
 	 * @see org.guce.siat.common.dao.AuthorityDao#findAuthorityByCode(java.lang.String)
 	 */
 	@Override
-	public Authority findAuthorityByCode(final String authorityCode)
-	{
-		try
-		{
+	public Authority findAuthorityByCode(final String authorityCode) {
+		try {
 			final String hqlString = "SELECT a FROM Authority a WHERE a.role = :authorityCode";
 			final TypedQuery<Authority> query = super.entityManager.createQuery(hqlString, Authority.class);
 			query.setParameter("authorityCode", authorityCode);
 
 			return query.getSingleResult();
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
@@ -90,17 +83,13 @@ public class AuthorityDaoImpl extends AbstractJpaDaoImpl<Authority> implements A
 	 * )
 	 */
 	@Override
-	public List<Authority> findDistinctAutoritiesByPosition(final PositionType post)
-	{
-		try
-		{
+	public List<Authority> findDistinctAutoritiesByPosition(final PositionType post) {
+		try {
 			final String hqlString = "SELECT a.primaryKey.authority FROM PositionAuthority a WHERE a.primaryKey.positionType = :positionType";
 			final TypedQuery<Authority> query = super.entityManager.createQuery(hqlString, Authority.class);
 			query.setParameter("positionType", post);
 			return query.getResultList();
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			LOG.info(e.getMessage(), e);
 			throw new DAOException(e);
 		}
@@ -114,17 +103,13 @@ public class AuthorityDaoImpl extends AbstractJpaDaoImpl<Authority> implements A
 	 * @see org.guce.siat.common.dao.AuthorityDao#findAuthoritiesByAuthorityList(java.util.List)
 	 */
 	@Override
-	public List<Authority> findAuthoritiesByAuthorityList(final List<String> authorityList)
-	{
-		try
-		{
+	public List<Authority> findAuthoritiesByAuthorityList(final List<String> authorityList) {
+		try {
 			final String hqlString = "SELECT a FROM Authority a WHERE a.role IN (:authorityList) ";
 			final TypedQuery<Authority> query = super.entityManager.createQuery(hqlString, Authority.class);
 			query.setParameter("authorityList", authorityList);
 			return query.getResultList();
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			LOG.info(e.getMessage(), e);
 			throw new DAOException(e);
 		}

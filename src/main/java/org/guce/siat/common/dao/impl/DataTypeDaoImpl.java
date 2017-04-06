@@ -16,23 +16,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class DataTypeDaoImpl.
  */
 @Repository("dataTypeDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class DataTypeDaoImpl extends AbstractJpaDaoImpl<DataType> implements DataTypeDao
-{
+public class DataTypeDaoImpl extends AbstractJpaDaoImpl<DataType> implements DataTypeDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(UserDaoImpl.class);
 
 	/**
 	 * Instantiates a new flow dao impl.
 	 */
-	public DataTypeDaoImpl()
-	{
+	public DataTypeDaoImpl() {
 		super();
 		setClasse(DataType.class);
 	}
@@ -43,22 +42,17 @@ public class DataTypeDaoImpl extends AbstractJpaDaoImpl<DataType> implements Dat
 	 * @see org.guce.siat.common.dao.DataTypeDao#findDataTypeByNameAndFlowCode(org.guce.siat.common.model.Flow)
 	 */
 	@Override
-	public DataType findDataTypeByNameAndFlowCode(final Flow flow, final DataTypeNameEnnumeration dataTypeNameEnnumeration)
-	{
+	public DataType findDataTypeByNameAndFlowCode(final Flow flow, final DataTypeNameEnnumeration dataTypeNameEnnumeration) {
 
-		if (flow != null)
-		{
-			try
-			{
+		if (flow != null) {
+			try {
 				final String hqlString = "SELECT d FROM DataType d WHERE d.flow.id = :flowId AND d.label = :dataTypeNameEnnumeration ";
 				final TypedQuery<DataType> query = super.entityManager.createQuery(hqlString, DataType.class);
 				query.setParameter("flowId", flow.getId());
 				query.setParameter("dataTypeNameEnnumeration", dataTypeNameEnnumeration.getCode());
 
 				return query.getSingleResult();
-			}
-			catch (final NoResultException | NonUniqueResultException e)
-			{
+			} catch (final NoResultException | NonUniqueResultException e) {
 				LOG.error(Objects.toString(e));
 			}
 		}

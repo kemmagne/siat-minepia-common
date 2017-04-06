@@ -18,23 +18,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class FileFieldValueDaoImpl.
  */
 @Repository("fileFieldDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class FileFieldDaoImpl extends AbstractJpaDaoImpl<FileField> implements FileFieldDao
-{
-	/** The Constant LOG. */
-	private static final Logger LOG = LoggerFactory.getLogger(FileFieldDaoImpl.class);
+public class FileFieldDaoImpl extends AbstractJpaDaoImpl<FileField> implements FileFieldDao {
 
+	/**
+	 * The Constant LOG.
+	 */
+	private static final Logger LOG = LoggerFactory.getLogger(FileFieldDaoImpl.class);
 
 	/**
 	 * Instantiates a new file field dao impl.
 	 */
-	public FileFieldDaoImpl()
-	{
+	public FileFieldDaoImpl() {
 		super();
 		setClasse(FileField.class);
 	}
@@ -44,23 +43,18 @@ public class FileFieldDaoImpl extends AbstractJpaDaoImpl<FileField> implements F
 	 * @see org.guce.siat.common.dao.FileFieldDao#findFileFieldByCodeAndFileType(java.lang.String, org.guce.siat.common.utils.enums.FileTypeCode)
 	 */
 	@Override
-	public FileField findFileFieldByCodeAndFileType(final String fileFieldCode, final FileTypeCode fileTypeCode)
-	{
-		try
-		{
+	public FileField findFileFieldByCodeAndFileType(final String fileFieldCode, final FileTypeCode fileTypeCode) {
+		try {
 			final String hqlString = "SELECT f FROM FileField f WHERE f.code = :fileFieldCode AND f.fileType.code = :fileTypeCode ";
 			final TypedQuery<FileField> query = super.entityManager.createQuery(hqlString, FileField.class);
 			query.setParameter("fileFieldCode", fileFieldCode);
 			query.setParameter("fileTypeCode", fileTypeCode);
 			return query.getSingleResult();
 
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
 	}
-
 
 }

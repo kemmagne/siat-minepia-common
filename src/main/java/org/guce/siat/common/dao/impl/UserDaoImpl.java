@@ -41,31 +41,34 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class UserDaoImpl.
  */
 @Repository("userDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, UserDetailsService
-{
+public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, UserDetailsService {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(UserDaoImpl.class);
 
-	/** The encoder. */
+	/**
+	 * The encoder.
+	 */
 	@Autowired
 	private ShaPasswordEncoder encoder;
 
-	/** The params dao. */
+	/**
+	 * The params dao.
+	 */
 	@Autowired
 	private ParamsDao paramsDao;
 
 	/**
 	 * Instantiates a new user dao impl.
 	 */
-	public UserDaoImpl()
-	{
+	public UserDaoImpl() {
 		super();
 		setClasse(User.class);
 	}
@@ -76,10 +79,8 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#loadUserByUsername(java.lang.String)
 	 */
 	@Transactional(readOnly = false)
-	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException
-	{
-		try
-		{
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		try {
 			final User domainUser = getUserByLogin(username);
 			final boolean enabled = true;
 			final boolean accountNonExpired = true;
@@ -88,16 +89,13 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 			final org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(
 					domainUser.getLogin(), domainUser.getPassword().toLowerCase(), enabled, accountNonExpired, credentialsNonExpired,
 					domainUser.getAccountNonLocked(), domainUser.getUserAuthorityList());
-			if (LOG.isDebugEnabled())
-			{
+			if (LOG.isDebugEnabled()) {
 				LOG.debug("Returned Password : {}", user.getPassword());
 			}
 
 			return user;
 
-		}
-		catch (final Exception exception)
-		{
+		} catch (final Exception exception) {
 			LOG.error("Error : {}", exception.getMessage());
 			throw new DAOException(exception.getMessage(), exception);
 		}
@@ -109,18 +107,15 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#createUser(org.guce.siat.common.model.User)
 	 */
 	@Transactional(readOnly = false)
-	public void createUser(final User user)
-	{
+	public void createUser(final User user) {
 		final User user1 = user;
-		if (LOG.isDebugEnabled())
-		{
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("initial password : {}", user1.getPassword());
 		}
 
 		// encode password before sending to database.
 		user1.setPassword(encoder.encodePassword(user.getPassword(), user.getLogin()));
-		if (LOG.isDebugEnabled())
-		{
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("encrypted password : {}", user1.getPassword());
 		}
 
@@ -133,20 +128,17 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#updateUser(org.guce.siat.common.model.User)
 	 */
 	@Transactional(readOnly = false)
-	public void updateUser(final User user)
-	{
+	public void updateUser(final User user) {
 		final User user1 = user;
 
-		if (LOG.isDebugEnabled())
-		{
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("initial password : {}", user1.getPassword());
 		}
 
 		// encode password before sending to database.
 		user1.setPassword(encoder.encodePassword(user.getPassword(), user.getLogin()));
 
-		if (LOG.isDebugEnabled())
-		{
+		if (LOG.isDebugEnabled()) {
 			LOG.debug("encrypted password : {}", user1.getPassword());
 		}
 		update(user1);
@@ -158,18 +150,14 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#getUserByLogin(java.lang.String)
 	 */
 	@Override
-	public User getUserByLogin(final String username)
-	{
-		try
-		{
+	public User getUserByLogin(final String username) {
+		try {
 			final String qlString = "SELECT u FROM User u WHERE u.login = :login AND u.deleted = false AND u.enabled = true";
 			final TypedQuery<User> query = super.entityManager.createQuery(qlString, User.class);
 			query.setParameter("login", username);
 
 			return query.getSingleResult();
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
@@ -181,18 +169,14 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#findByMail(java.lang.String)
 	 */
 	@Override
-	public User findByMail(final String email)
-	{
-		try
-		{
+	public User findByMail(final String email) {
+		try {
 			final String qlString = "SELECT u FROM User u WHERE u.email = :email";
 			final TypedQuery<User> query = super.entityManager.createQuery(qlString, User.class);
 			query.setParameter("email", email);
 
 			return query.getSingleResult();
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
+		} catch (final NoResultException | NonUniqueResultException e) {
 			LOG.info(Objects.toString(e));
 			return null;
 		}
@@ -204,30 +188,23 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#updateFailAttempts(org.guce.siat.common.model.User)
 	 */
 	@Override
-	public User updateFailAttempts(final User user)
-	{
+	public User updateFailAttempts(final User user) {
 
 		// retrieve the max number of failed connection before locking the user account
 		Integer maxAttempts;
 		final Params maxAttemptsUserConnexion = paramsDao.findParamsByName("MaxAttemptsUserConnexion");
-		try
-		{
+		try {
 			maxAttempts = Integer.parseInt(maxAttemptsUserConnexion.getValue());
-		}
-		catch (final NumberFormatException nfe)
-		{
-			LOG.info(Objects.toString(nfe));
+		} catch (final NumberFormatException nfe) {
+			LOG.warn(Objects.toString(nfe), nfe);
 			maxAttempts = Constants.THREE;
 		}
 
-		if (user.getAttempts() < maxAttempts - 1)
-		{
+		if (user.getAttempts() < maxAttempts - 1) {
 			user.setAttempts(user.getAttempts() + 1);
 			user.setLastAttemptsTime(new Date());
 			update(user);
-		}
-		else
-		{
+		} else {
 			user.setAttempts(user.getAttempts() + 1);
 			user.setAccountNonLocked(false);
 			user.setLastAttemptsTime(new Date());
@@ -243,8 +220,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#findUsersByAuthorities(java.lang.String[])
 	 */
 	@Override
-	public List<User> findUsersByAuthorities(final String... authoritiesList)
-	{
+	public List<User> findUsersByAuthorities(final String... authoritiesList) {
 		final StringBuilder hqlQuery = new StringBuilder();
 
 		hqlQuery.append("SELECT DISTINCT u FROM User u FULL JOIN u.userAuthorityList aut ");
@@ -265,10 +241,8 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 */
 	@Override
 	public List<User> findUsersByAdministrationsAndPositions(final List<Long> administrationIds,
-			final PositionType... positionList)
-	{
-		if (CollectionUtils.isNotEmpty(administrationIds))
-		{
+			final PositionType... positionList) {
+		if (CollectionUtils.isNotEmpty(administrationIds)) {
 			final StringBuilder hqlQuery = new StringBuilder();
 
 			hqlQuery.append("FROM User u ");
@@ -292,10 +266,8 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#findUsersByAdministrationIds(java.lang.Long[])
 	 */
 	@Override
-	public List<User> findUsersByAdministrationsIds(final Long... administrationIds)
-	{
-		if (CollectionUtils.isNotEmpty(Arrays.asList(administrationIds)))
-		{
+	public List<User> findUsersByAdministrationsIds(final Long... administrationIds) {
+		if (CollectionUtils.isNotEmpty(Arrays.asList(administrationIds))) {
 			final StringBuilder hqlQuery = new StringBuilder();
 
 			hqlQuery.append("SELECT u FROM User u  ");
@@ -317,15 +289,12 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 */
 	@Override
 	public List<User> findUsersByAdministrationsAndPositions(final Administration administration,
-			final PositionType... positionList)
-	{
+			final PositionType... positionList) {
 		StringBuilder hqlQuery;
 		TypedQuery<User> query;
 		final List<User> usersList = new ArrayList<User>();
 
-
-		if (administration instanceof Organism)
-		{
+		if (administration instanceof Organism) {
 			//Select users attached to the organism
 			hqlQuery = new StringBuilder();
 			hqlQuery.append("SELECT u FROM User u JOIN TREAT(u.administration AS Organism) o WHERE o.id = :administrationId ");
@@ -349,7 +318,6 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 			query.setParameter("administrationId", administration.getId());
 			usersList.addAll(query.getResultList());
 
-
 			//Select users attached to the organism servicves
 			hqlQuery = new StringBuilder();
 			hqlQuery
@@ -361,7 +329,6 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 			query.setParameter("listPostes", Arrays.asList(positionList));
 			query.setParameter("administrationId", administration.getId());
 			usersList.addAll(query.getResultList());
-
 
 			//Select users attached to the bureau
 			hqlQuery = new StringBuilder();
@@ -385,16 +352,12 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#removeAllGrantedAuthorities(org.guce.siat.common.model.User)
 	 */
 	@Override
-	public void removeAllGrantedAuthorities(final User user)
-	{
-		try
-		{
+	public void removeAllGrantedAuthorities(final User user) {
+		try {
 			final StringBuilder builder = new StringBuilder();
 			builder.append("DELETE FROM UserAuthority WHERE user.id=:userId");
 			entityManager.createQuery(builder.toString()).setParameter("userId", user.getId()).executeUpdate();
-		}
-		catch (final Exception e)
-		{
+		} catch (final Exception e) {
 			throw new DAOException(e);
 		}
 	}
@@ -408,28 +371,24 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<User> findUsersByAdministrationAndAuthorities(final List<Long> administrationIds, final String... authorities)
-	{
+	public List<User> findUsersByAdministrationAndAuthorities(final List<Long> administrationIds, final String... authorities) {
 		final StringBuilder hqlQuery = new StringBuilder();
 		final Map<String, Object> params = new HashedMap();
 
 		hqlQuery.append("SELECT DISTINCT u FROM User u INNER JOIN u.userAuthorityList aut ");
 		hqlQuery.append("WHERE u.deleted = false ");
-		if (CollectionUtils.isNotEmpty(Arrays.asList(authorities)))
-		{
+		if (CollectionUtils.isNotEmpty(Arrays.asList(authorities))) {
 			hqlQuery.append("AND aut.authorityGranted.role IN (:authorities) ");
 			params.put("authorities", Arrays.asList(authorities));
 		}
-		if (CollectionUtils.isNotEmpty(administrationIds))
-		{
+		if (CollectionUtils.isNotEmpty(administrationIds)) {
 			hqlQuery.append("AND u.administration.id IN (:administrationIds) ");
 			params.put("administrationIds", administrationIds);
 		}
 
 		final TypedQuery<User> query = super.entityManager.createQuery(hqlQuery.toString(), User.class);
 
-		for (final Entry<String, Object> entry : params.entrySet())
-		{
+		for (final Entry<String, Object> entry : params.entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
 
@@ -444,14 +403,12 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * java.util.List)
 	 */
 	public List<User> findByStepAndFileTypeAndAdministration(final Long stepId, final Long fileTypeId,
-			final List<Bureau> bureauList)
-	{
+			final List<Bureau> bureauList) {
 
 		List<User> users = null;
 
 		final List<Long> bureauIdList = new ArrayList<Long>();
-		for (final Bureau bureau : bureauList)
-		{
+		for (final Bureau bureau : bureauList) {
 			bureauIdList.add(bureau.getId());
 		}
 
@@ -473,8 +430,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 		@SuppressWarnings("unchecked")
 		final List<Object[]> resultList = query.getResultList();
 		users = new ArrayList<User>();
-		for (final Object[] usr : resultList)
-		{
+		for (final Object[] usr : resultList) {
 			final User user = new User();
 			user.setPreferedLanguage(String.valueOf(usr[0]));
 			user.setEmail(String.valueOf(usr[1]));
@@ -485,14 +441,14 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 		return users;
 
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.guce.siat.common.dao.UserDao#findSuperUserByFileType(org.guce.siat.common.utils.enums.FileTypeCode)
 	 */
-	public List<User> findSuperUserByFileType(FileTypeCode fileTypeCode, Long bureauId){
-		
+	public List<User> findSuperUserByFileType(FileTypeCode fileTypeCode, Long bureauId) {
+
 		List<User> users = null;
-		
+
 		final StringBuilder sqlQuery = new StringBuilder();
 
 		sqlQuery.append("select usrs.EMAIL, usrs.FIRST_NAME, usrs.ADMINISTRATION_ID, usrs.PREFERED_LANGUAGE ");
@@ -509,20 +465,19 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 		sqlQuery.append(" and service.id=entity.service_id");
 		sqlQuery.append(" and SERVICE.SUB_DEPARTMENT_ID=SUB_DEPARTMENT.id ");
 		sqlQuery.append(" and ORGANISM.id= SUB_DEPARTMENT.ORGANISM_ID)");
-		
+
 		final Query query = super.entityManager.createNativeQuery(sqlQuery.toString());
 		query.setParameter("fileTypeCode", fileTypeCode.name());
 		query.setParameter("bureauId", bureauId);
-		
+
 		@SuppressWarnings("unchecked")
 		final List<Object[]> resultList = query.getResultList();
 		users = new ArrayList<User>();
-		for (final Object[] usr : resultList)
-		{
+		for (final Object[] usr : resultList) {
 			final User user = new User();
 			user.setEmail(String.valueOf(usr[0]));
 			user.setFirstName(String.valueOf(usr[1]));
-			user.setAdministration(new Administration(Long.valueOf(usr[2]+"")));
+			user.setAdministration(new Administration(Long.valueOf(usr[2] + "")));
 			user.setPreferedLanguage(String.valueOf(usr[3]));
 			users.add(user);
 		}
