@@ -338,11 +338,14 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
         public void updateSpecificColumn(final Map<String, ?> paramsMap, final File file) {
                 if (MapUtils.isNotEmpty(paramsMap)) {
                         final StringBuilder sqlBuilder = new StringBuilder("UPDATE FILES F SET ");
+                        int nbElts = paramsMap.size();
                         for (final Entry<String, ?> entry : paramsMap.entrySet()) {
                                 sqlBuilder.append(entry.getKey()).append("=:").append(entry.getKey());
+                                if (--nbElts > 0) {
+                                        sqlBuilder.append(" , ");
+                                }
                         }
                         sqlBuilder.append(" WHERE F.ID=").append(file.getId());
-
                         final Query query = entityManager.createNativeQuery(sqlBuilder.toString());
                         for (final Entry<String, ?> entry : paramsMap.entrySet()) {
                                 query.setParameter(entry.getKey(), entry.getValue());
