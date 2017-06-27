@@ -8,14 +8,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.guce.siat.common.utils.enums.ParamsCategory;
-
 
 /**
  * The Class Params.
@@ -23,23 +25,32 @@ import org.guce.siat.common.utils.enums.ParamsCategory;
 @Entity
 @Table(name = "PARAMS")
 @XmlRootElement
-public class Params extends AbstractModel implements Serializable
-{
+public class Params extends AbstractModel implements Serializable {
 
-	/** The Constant serialVersionUID. */
+	/**
+	 * The Constant serialVersionUID.
+	 */
 	private static final long serialVersionUID = 1L;
 
-	/** The id. */
+	/**
+	 * The id.
+	 */
 	@Id
 	@Basic(optional = false)
 	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PARAMS_SEQ")
+	@SequenceGenerator(name = "PARAMS_SEQ", sequenceName = "PARAMS_SEQ", allocationSize = 1, initialValue = 1000)
 	private Long id;
 
-	/** The name. */
+	/**
+	 * The name.
+	 */
 	@Column(name = "NAME")
 	private String name;
 
-	/** The value. */
+	/**
+	 * The value.
+	 */
 	@Column(name = "VALUE")
 	private String value;
 
@@ -47,15 +58,16 @@ public class Params extends AbstractModel implements Serializable
 	@Column(name = "CATEGORY")
 	private ParamsCategory paramsCategory;
 
-	/** The params organism list. */
+	/**
+	 * The params organism list.
+	 */
 	@OneToMany(mappedBy = "param")
 	private List<ParamsOrganism> paramsOrganismList;
 
 	/**
 	 * Instantiates a new params.
 	 */
-	public Params()
-	{
+	public Params() {
 	}
 
 	/**
@@ -64,20 +76,17 @@ public class Params extends AbstractModel implements Serializable
 	 * @return the id
 	 */
 	@Override
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
 	/**
 	 * Sets the id.
 	 *
-	 * @param id
-	 *           the id to set
+	 * @param id the id to set
 	 */
 	@Override
-	public void setId(final Long id)
-	{
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -86,19 +95,16 @@ public class Params extends AbstractModel implements Serializable
 	 *
 	 * @return the name
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 
 	/**
 	 * Sets the name.
 	 *
-	 * @param name
-	 *           the new name
+	 * @param name the new name
 	 */
-	public void setName(final String name)
-	{
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -107,19 +113,16 @@ public class Params extends AbstractModel implements Serializable
 	 *
 	 * @return the value
 	 */
-	public String getValue()
-	{
+	public String getValue() {
 		return value;
 	}
 
 	/**
 	 * Sets the value.
 	 *
-	 * @param value
-	 *           the new value
+	 * @param value the new value
 	 */
-	public void setValue(final String value)
-	{
+	public void setValue(final String value) {
 		this.value = value;
 	}
 
@@ -129,19 +132,16 @@ public class Params extends AbstractModel implements Serializable
 	 * @return the params organism list
 	 */
 	@XmlTransient
-	public List<ParamsOrganism> getParamsOrganismList()
-	{
+	public List<ParamsOrganism> getParamsOrganismList() {
 		return paramsOrganismList;
 	}
 
 	/**
 	 * Sets the params organism list.
 	 *
-	 * @param paramsOrganismList
-	 *           the new params organism list
+	 * @param paramsOrganismList the new params organism list
 	 */
-	public void setParamsOrganismList(final List<ParamsOrganism> paramsOrganismList)
-	{
+	public void setParamsOrganismList(final List<ParamsOrganism> paramsOrganismList) {
 		this.paramsOrganismList = paramsOrganismList;
 	}
 
@@ -151,8 +151,7 @@ public class Params extends AbstractModel implements Serializable
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		int hash = 0;
 		hash += (id != null ? id.hashCode() : 0);
 		return hash;
@@ -164,15 +163,12 @@ public class Params extends AbstractModel implements Serializable
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(final Object object)
-	{
-		if (!(object instanceof Params))
-		{
+	public boolean equals(final Object object) {
+		if (!(object instanceof Params)) {
 			return false;
 		}
 		final Params other = (Params) object;
-		if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())))
-		{
+		if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
 			return false;
 		}
 		return true;
@@ -181,17 +177,14 @@ public class Params extends AbstractModel implements Serializable
 	/**
 	 * @return the paramsCategory
 	 */
-	public ParamsCategory getParamsCategory()
-	{
+	public ParamsCategory getParamsCategory() {
 		return paramsCategory;
 	}
 
 	/**
-	 * @param paramsCategory
-	 *           the paramsCategory to set
+	 * @param paramsCategory the paramsCategory to set
 	 */
-	public void setParamsCategory(final ParamsCategory paramsCategory)
-	{
+	public void setParamsCategory(final ParamsCategory paramsCategory) {
 		this.paramsCategory = paramsCategory;
 	}
 
@@ -201,8 +194,7 @@ public class Params extends AbstractModel implements Serializable
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Params [id=");
 		builder.append(id);
