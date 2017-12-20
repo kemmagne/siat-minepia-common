@@ -131,6 +131,9 @@ public enum FileTypeCode
 
 	/** The di mincommerce. */
 	DI_MINCOMMERCE("Declarations of Import MINCOMMERCE", "Déclarations d’Importation MINCOMMERCE"),
+	
+	/* Inscription au régistre des poids et mesures */
+	IRMP_MINCOMMERCE("Iscription au Régistre des Poids et Mesures", "Iscription au Régistre des Poids et Mesures"),
 
 	/** The de mincommerce. */
 	DE_MINCOMMERCE("Declarations of Export MINCOMMERCE", "Déclarations d’Exportation MINCOMMERCE"),
@@ -143,7 +146,7 @@ public enum FileTypeCode
 
 	/** The fimex wf. */
 	FIMEX_WF("Subscription to exporters/importers file process", "Processus d’inscription au fichier des importateurs/exportateurs"),
-
+        
 	//	SUIVIE FINANCIERS
 
 	/** The sf gve. */
