@@ -515,6 +515,34 @@ public enum FlowCode
 	FL_AP_167("paiement"),
 
 	FL_AP_168("validation pour paiement"),
+	
+	FL_AP_169("Autorisation AP Suite Etude Recevabilite"),
+	FL_AP_170("Autorisation AP Suite Cotation 1"),
+	FL_AP_171("Autorisation AP Suite Cotation 2"),
+	FL_AP_172("Autorisation AP Suite Cotation 3"),
+	FL_AP_173("Autorisation AP Suite Cotation 4"),
+	FL_AP_174("Autorisation AP Suite Cotation 5"),
+	
+	FL_AP_175("Rejet Suite Etude AP"),
+	FL_AP_176("Complément d''information Suite Etude Recevabilité"),
+	FL_AP_177("Rejet Suite Cotation"),
+	FL_AP_178("Complément d''information Suite Cotation"),
+	FL_AP_179("Rejet Suite Cotation"),
+	FL_AP_180("Complément d''information Suite Cotation"),
+	FL_AP_181("Rejet Suite Cotation"),
+	FL_AP_182("Complément d''information Suite Cotation"),
+	FL_AP_183("Rejet Suite Cotation"),
+	FL_AP_184("Complément d''information Suite Cotation"),
+	FL_AP_185("Rejet Suite Cotation"),
+	FL_AP_186("Complément d''information Suite Cotation"),
+	
+	FL_AP_187("Réponse CI Suite Etude AP"),
+	FL_AP_188("Réponse CI Suite Etude AP"),
+	FL_AP_189("Réponse CI Suite Etude AP"),
+	FL_AP_190("Réponse CI Suite Etude AP"),
+	FL_AP_191("Réponse CI Suite Etude AP"),
+	FL_AP_192("Réponse CI Suite Etude AP"),
+	
 	/** The F l_ a p_85. */
 	FL_CO_85("Dépot dossier CO"),
 

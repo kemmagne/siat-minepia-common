@@ -129,6 +129,9 @@ public final class ConstantsXsdPaths
 
 	/** The Constant AS_MINCOMMERCE_XSD_PATH. */
 	public static final String AS_MINCOMMERCE_XSD_PATH = "xsd/CT/MONITORING/AS_MINCOMMERCE.xsd";
+	
+	/** The Constant IRPM_MINCOMMERCE_XSD_PATH. */
+	public static final String IRPM_MINCOMMERCE_XSD_PATH = "xsd/CT/MONITORING/IRPM_MINCOMMERCE.xsd";
 
 	/** The Constant CO_GCO_XSD_PATH. */
 	public static final String CO_GCO_XSD_PATH = "xsd/CO/CO_GCO.xsd";
@@ -189,7 +192,7 @@ public final class ConstantsXsdPaths
 
 	/** The Constant APERAK_DF_XSD_PATH. */
 	public static final String APERAK_XSD_PATH = "xsd/aperak/aperak.xsd";
-
+	
 	/**
 	 * hide the default contractor.
 	 */
