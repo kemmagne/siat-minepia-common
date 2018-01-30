@@ -542,6 +542,8 @@ public enum FlowCode
 	FL_AP_190("Réponse CI Suite Etude AP"),
 	FL_AP_191("Réponse CI Suite Etude AP"),
 	FL_AP_192("Réponse CI Suite Etude AP"),
+	FL_AP_193("Facturation"),
+	FL_AP_194("Facturation"),
 	
 	/** The F l_ a p_85. */
 	FL_CO_85("Dépot dossier CO"),
