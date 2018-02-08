@@ -83,9 +83,16 @@ public class FileType extends AbstractModel implements Serializable
 	@OneToMany(mappedBy = "primaryKey.fileType", fetch = FetchType.LAZY)
 	private List<FileTypeStep> fileTypeStepList;
 
+	/** file type flow list. */
+	@OneToMany(mappedBy = "pk.fileType", fetch = FetchType.LAZY)
+	private List<FileTypeFlow> fileTypeFlowList;
+
 
 	@Transient
 	private List<Step> stepList;
+	
+	@Transient
+	private List<Flow> flowList;
 
 	/*
 	 * (non-Javadoc)
@@ -306,6 +313,35 @@ public class FileType extends AbstractModel implements Serializable
 	{
 		this.stepList = stepList;
 	}
+
+	public List<FileTypeFlow> getFileTypeFlowList() {
+		return fileTypeFlowList;
+	}
+
+	public void setFileTypeFlowList(List<FileTypeFlow> fileTypeFlowList) {
+		this.fileTypeFlowList = fileTypeFlowList;
+	}
+
+	public List<Flow> getFlowList() {
+		if (flowList == null)
+		{
+			flowList = (List<Flow>) CollectionUtils.collect(fileTypeFlowList, new Transformer()
+			{
+				@Override
+				public Object transform(final Object fileTypeFlow)
+				{
+					return ((FileTypeFlow) fileTypeFlow).getPk().getFlow();
+				}
+			});
+		}
+		return flowList;
+	}
+
+	public void setFlowList(List<Flow> flowList) {
+		this.flowList = flowList;
+	}
+	
+	
 
 	/*
 	 * (non-Javadoc)
