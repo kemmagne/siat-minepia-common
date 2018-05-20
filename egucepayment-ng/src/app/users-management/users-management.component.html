@@ -1,0 +1,180 @@
+<div class="card">
+    <div class="card-header h5">{{(activation ? 'accounts.activation' : 'users.management') | translate}}</div>
+    <div class="card-block">
+        <form *ngIf="!activation" #filterForm="ngForm" (submit)="filterUsers()" role="form" class="form-validation">
+            <p-fieldset legend="{{'filter.by.role' | translate}}" [toggleable]="true">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <p-radioButton class="col-md-4" name="userRole" value="ALL" label="{{'all' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="ADMIN" label="{{'Admin' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="DONNEUR_ORDRE" label="{{'principal' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="CONTROLEUR_DONNEUR_ORDRE" label="{{'principal.controller' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="AUDITEUR_DONNEUR_ORDRE" label="{{'principal.auditor' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="CAISSIER" label="{{'cashier' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="CONTROLEUR_AGENCE" label="{{'agency.controller' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="CONTROLEUR_BANQUE" label="{{'bank.controller' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="AUDITEUR_BANQUE" label="{{'bank.auditor' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="BENEFICIAIRE" label="{{'beneficiary' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                            <p-radioButton class="col-md-4" name="userRole" value="DECIDEUR" label="{{'decision.maker' | translate}}" [(ngModel)]="userRole"></p-radioButton>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <button *ngIf="true" type="submit" pButton label="{{'filter' | translate}}" icon="ui-icon-search"></button>
+            </p-fieldset>
+        </form>
+        <hr/>
+        <button *ngIf="!activation" type="button" pButton (click)="newUser()" icon="ui-icon-person-add" label="{{'new.user' | translate}}"></button>
+        <hr/>
+        <p-messages [(value)]="msgs"></p-messages>
+        <p-dataTable [value]="users" dataKey="id" rows="10" [paginator]="true" [pageLinks]="10" [responsive]="true"
+          emptyMessage="{{'no.user' | translate}}" [rowsPerPageOptions]="[5,10,20]" [rowStyleClass]="lockUserStyle" #usersTable>
+          <p-header>
+              <span *ngIf="!activation">{{'users.list' | translate}}</span>
+              <span *ngIf="activation">{{'desactivated.users' | translate}} ({{users?.length || 0}})</span>
+          </p-header>
+          <p-column field="login" header="{{'user.login'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+          <p-column field="firstName" header="{{'first.name'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+          <p-column field="lastName" header="{{'last.name'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+          <p-column field="email" header="{{'Email'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+          <p-column header="{{'partner'| translate}}">
+              <ng-template let-user="rowData" pTemplate="body">{{user.partner.name}}</ng-template>
+          </p-column>
+          <p-column header="{{'locked' | translate}}" [hidden]="activation" [filter]="false">
+              <ng-template pTemplate="filter">
+                    <p-triStateCheckbox *ngIf="false" [(ngModel)]="value" (onChange)="filterByLockedState($event, usersTable)"></p-triStateCheckbox>
+              </ng-template>
+              <ng-template let-user="rowData" pTemplate="body">{{(user.locked ? 'yes' : 'no') | translate}}</ng-template>
+          </p-column>
+          <p-column styleClass="col-button bg-white" [style]="{'width':'15%'}">
+              <ng-template let-user="rowData" pTemplate="body">
+                  <button type="button" pButton (click)="viewUser(user)" icon="ui-icon-visibility" data-toggle="tooltip" data-placement="top" title="{{'view.user' | translate}}"></button>
+                  <button *ngIf="canLockUser(user)" type="button" pButton (click)="askLockConfirmation(user)" icon="{{user.locked ? 'ui-icon-lock-open' : 'ui-icon-lock-outline'}}" data-toggle="tooltip" data-placement="top" title="{{(user.locked ? 'unlock.user' : 'lock.user') | translate}}"></button>
+                  <button *ngIf="activation" type="button" pButton (click)="askActiveConfirmation(user)" icon="ui-icon-check" data-toggle="tooltip" data-placement="top" title="{{'activate.user' | translate}}"></button>
+                  <button *ngIf="!activation" type="button" pButton (click)="askConfirmResetPass(user)" icon="ui-icon-cached" data-toggle="tooltip" data-placement="top" title="{{'reset.password' | translate}}"></button>        
+              </ng-template>
+          </p-column>
+      </p-dataTable>
+
+      <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirm" (onConfirm)="onConfirm($event)"></app-confirm-dialog>
+      <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmActive" (onCancel)="onCancelActive($event)"
+      (onClose)="onCloseActive($event)" (onConfirm)="onConfirmActive($event)"></app-confirm-dialog>
+      <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmLock" (onCancel)="onCancelLock($event)"
+      (onClose)="onCloseLock($event)" (onConfirm)="onConfirmLock($event)"></app-confirm-dialog>
+      <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmResetPass" (onConfirm)="onConfirmResetPass($event)"></app-confirm-dialog>
+
+      <!-- dialogue d'édition des types de factures' -->
+      <p-dialog [(visible)]="!!selectedUser" [modal]="true" width="800" [responsive]="true" (onHide)="onDialogHide($event)">
+            <app-alert [(message)]="alertMessage"></app-alert>
+            <div class="card">
+                <div class="card-header h5">{{'user.save' | translate}}</div>
+                <div class="card-block">
+                    <form *ngIf="selectedUser" #userForm="ngForm" (submit)="askConfirm()" role="form" class="form-validation">
+                        <div class="row form-group">
+                            <label for="userLogin" class="col-md-4 control-label">
+                                {{'user.login' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="userLogin" [required]="true" [(ngModel)]="selectedUser.login" name="userLogin">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="firstName" class="col-md-4 control-label">{{'first.name' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="firstName" [(ngModel)]="selectedUser.firstName" name="firstName">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="lastName" class="col-md-4 control-label">
+                                {{'last.name' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="lastName" [(ngModel)]="selectedUser.lastName" [required]="true" name="lastName">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="email" class="col-md-4 control-label">
+                                {{'Email' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="email" class="form-control" id="email" [(ngModel)]="selectedUser.email" [required]="true" name="email">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="roles" class="col-md-4 control-label">
+                                {{'Role' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" [(ngModel)]="role" [required]="true" name="roles" id="roles" (change)="onUserRoleChange($event)">
+                                    <option value="{{r.name}}" *ngFor="let r of roles">{{r.description}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div *ngIf="canSetPartner()" class="row form-group">
+                            <label class="col-md-4 control-label">
+                                {{'partner' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col">
+                                <input type="text" class="form-control" value="{{selectedUser?.partner?.code}}" [readonly]="true">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" value="{{selectedUser?.partner?.name}}" [readonly]="true">
+                            </div>
+                            <div class="col-md-1">
+                                <button pButton type="button" icon="ui-icon-edit" (click)="showPartnerEdition()"></button>
+                            </div>
+                        </div>
+                        <span class="float-right">
+                            <button *ngIf="!selectedUser.id" class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                            <button *ngIf="!!selectedUser.id" class="ui-button-danger" pButton type="button" (click)="selectedUser=null" label="{{'cancel' | translate}}" icon="ui-icon-undo"></button>
+                            <button [disabled]="!userForm.valid" pButton type="submit" label="{{'save' | translate}}" icon="ui-icon-save"></button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+      </p-dialog>
+
+      <p-dialog [(visible)]="partners" [modal]="true" width="{{isPrincipal() || isAgency() ? 800 : 600}}" [responsive]="true">
+          <div class="card">
+              <div class="card-header h5">{{'partner.edition' | translate}}</div>
+              <div class="card-block">
+                  <div *ngIf="isPrincipal()">
+                  <p-fieldset legend="{{'filtres' | translate}}" [toggleable]="true">
+                        <form (submit)="search()" role="form" class="form-validation">
+                            <div class="row form-group">
+                                <label for="partnerCode" class="col-md-3 control-label">{{'Code' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="partnerCode" [(ngModel)]="partnerCode" name="partnerCode">
+                                </div>
+                                <button pButton type="submit" icon="ui-icon-search"></button>
+                                <button pButton type="button" (click)="countPrincipals()" icon="ui-icon-cached"></button>
+                            </div>
+                        </form>
+                    </p-fieldset>
+                  </div>
+                    <hr/>
+                  <p-dataTable [value]="partners" dataKey="id" rows="5" [paginator]="true" [pageLinks]="10" [responsive]="true"
+                  emptyMessage="{{'no.partner' | translate}}" [lazy]="isPrincipal()" (onLazyLoad)="loadPartnerLazy($event)" [totalRecords]="nbPartners">
+                      <p-column field="code" header="{{'Code'| translate}}" [filter]="!isPrincipal()" filterMatchMode="contains"></p-column>
+                      <p-column field="name" header="{{'name'| translate}}" [filter]="!isPrincipal()" filterMatchMode="contains"></p-column>
+                      <p-column field="taxPayerNumber" header="{{'taxpayernumber'| translate}}" [hidden]="!isPrincipal()"></p-column>
+                      <p-column [hidden]="!isAgency()" header="{{'bank' | translate}}">
+                          <ng-template let-partner="rowData" pTemplate="body">{{partner.parent?.name}}</ng-template>
+                      </p-column>
+                      <p-column styleClass="col-button" [style]="{'width':'10%'}">
+                          <ng-template let-partner="rowData" pTemplate="body">
+                              <button type="button" pButton (click)="chooseUserPartner(partner)" icon="ui-icon-check"></button>
+                          </ng-template>
+                      </p-column>
+                  </p-dataTable>
+              </div>
+          </div>
+      </p-dialog>
+    </div>
+</div>

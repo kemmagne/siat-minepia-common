@@ -1,0 +1,384 @@
+﻿@charset "utf-8";
+
+/* default style define */
+/*body {margin:0;background:#ccc;}*/
+.nx-pki-ui-wrapper * {margin:0;padding:0;}
+.nx-pki-ui-wrapper ul,
+.nx-pki-ui-wrapper ol,
+.nx-pki-ui-wrapper li {list-style:none;}
+.nx-pki-ui-wrapper caption,
+.nx-pki-ui-wrapper hr,
+.nx-pki-ui-wrapper legend {visibility:hidden;width:0;height:0;line-height:0;font-size:0;}
+.nx-pki-ui-wrapper img,
+.nx-pki-ui-wrapper fieldset {border:none;}
+.nx-pki-ui-wrapper input {vertical-align:middle;font-family:'맑은 고딕',MalgunGothic,'돋움',Dotum,'굴림',Gulim,tahoma,verdana,Apple Gothic,sans-serif;}
+.nx-pki-ui-wrapper button {cursor:pointer;vertical-align:middle;font-family:'맑은 고딕',MalgunGothic,'돋움',Dotum,'굴림',Gulim,tahoma,verdana,Apple Gothic,sans-serif;}
+.nx-pki-ui-wrapper a {color:#000;text-decoration:none;text-overflow:ellipsis;cursor:pointer;}
+.nx-pki-ui-wrapper a:link,
+.nx-pki-ui-wrapper a:visited,
+.nx-pki-ui-wrapper a:hover,
+.nx-pki-ui-wrapper a:active {color:#000;text-decoration:none;}
+
+.nx-pki-ui-wrapper input::-ms-clear {display:none;}
+.nx-pki-ui-wrapper input[type="text"],
+.nx-pki-ui-wrapper input[type="password"],
+.nx-pki-ui-wrapper input[type="file"] {border:1px solid #b0b0b0;padding:0 5px;height:25px;line-height:1.2;background:#fff;width:100%;box-sizing:border-box;}
+.nx-pki-ui-wrapper input[readonly='readonly'] {background:#eaeaea !important;}
+.nx-pki-ui-wrapper {font-size:12px;color:#000;font-family:'맑은 고딕',MalgunGothic,'돋움',Dotum,'굴림',Gulim,tahoma,verdana,Apple Gothic,sans-serif;line-height:1;*line-height:1.2;}
+
+/* common class define */
+.nx-pki-ui-wrapper .ellipsis {overflow:hidden;white-space:nowrap;-o-text-overflow:ellipsis;-ms-text-overflow:ellipsis;text-overflow:ellipsis;word-wrap:normal;/* *white-space:normal; */}
+.nx-pki-ui-wrapper .wbreak {word-break:break-all;word-wrap:break-word;white-space:normal;}
+.nx-pki-ui-wrapper .mt20 {margin-top:20px;}
+.nx-pki-ui-wrapper .mb20 {margin-bottom:20px;}
+.nx-pki-ui-wrapper .mt30 {margin-top:30px;}
+.nx-pki-ui-wrapper .mb30 {margin-bottom:30px;}
+.nx-pki-ui-wrapper .txt-c {text-align:center;}
+.nx-pki-ui-wrapper .txt-r {text-align:right;}
+.nx-pki-ui-wrapper .txt-l {text-align:left;}
+
+/* input file attach : 버튼길이 50px 기본*/
+.nx-pki-ui-wrapper .file-type-wrap {padding-right:60px;position:relative;}
+.nx-pki-ui-wrapper .file-type-wrap .btn-file:before {content:"";display:block;width:80px;height:25px;position:absolute;right:50px;z-index:10;}
+.nx-pki-ui-wrapper .file-type-wrap .btn-file {display:inline-block;position:absolute;right:0;top:0;min-width:50px;height:25px;}
+.nx-pki-ui-wrapper .file-type-wrap .btn-file input {position:absolute;right:0;top:0;filter:alpha(opacity=0);opacity:0;cursor:pointer;width:130px;height:25px;margin-left:-50px;z-index:1;}
+.nx-pki-ui-wrapper .file-type-wrap.w75 {padding-right:85px;}
+.nx-pki-ui-wrapper .file-type-wrap.w75 .btn-file:before {width:75px;right:75px;}
+.nx-pki-ui-wrapper .file-type-wrap.w75 .btn-file {min-width:75px;}
+.nx-pki-ui-wrapper .file-type-wrap.w75 .btn-file input {width:150px;margin-left:-75px;}
+
+
+/* 기본 타입 레이아웃*/
+.nx-pki-ui-wrapper {position:fixed;left:0;top:0;width:100%;height:100%;font-size:12px;color:#000;font-family:'맑은 고딕',MalgunGothic,'돋움',Dotum,'굴림',Gulim,tahoma,verdana,Apple Gothic,sans-serif;line-height:1;*line-height:1.2; z-index:999;}
+.nx-pki-ui-wrapper .pki-wrap {margin:0 auto; position:absolute;left:50%;top:10%;margin-left:-225px;width:460px;/*border:2px solid #1b6cc7;*//*background:#fff;*//*box-shadow:3px 3px 20px #666, -3px 3px 20px #666;*/}
+/*.nx-pki-ui-wrapper .pki-wrap {width:460px;margin:0 auto;}*/
+.nx-pki-ui-wrapper .logo-area { height:100px; background:url(../images/title_01.png) no-repeat;}
+.nx-pki-ui-wrapper .pki-bottom-img {background:url(../images/bg_bottom_01.png) left bottom no-repeat;width:460px;height:20px;}
+.nx-pki-ui-wrapper .pki-head {height:50px; padding:0;position:relative; background-image:url(../images/bg_header_01.png); background-repeat:repeat-x; }
+.nx-pki-ui-wrapper .pki-head .btn-setting {position:absolute;right:17px;top:10px;width:43px;height:28px;background:url(../images/btn_setting.png) center center no-repeat;font-size:0;line-height:0;}
+.nx-pki-ui-wrapper .pki-head h1 {font-size:19px;padding:15px 0 0 17px;font-weight:bold;color:#fff;}
+.nx-pki-ui-wrapper .pki-head h1 span {font-size:14px;font-weight:normal;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-head h2 span {font-size:11px;font-weight:normal;color:#000;}
+.nx-pki-ui-wrapper .pki-body:after {content:" ";display:block;clear:both;}
+.nx-pki-ui-wrapper .pki-body {background:#fff;padding:17px 15px 0 15px;border:2px solid #fff;border-width:0 2px;*zoom:1;}
+.nx-pki-ui-wrapper .pki-body .tit1 { font-size:15px; font-weight:bold; margin:0 0 7px 0;}
+*:first-child+html .nx-pki-ui-wrapper .pki-body .tit1 { font-size:12px;}    /** IE7 대응 **/
+.nx-pki-ui-wrapper .pki-body .noti { font-size:12px; padding-left:20px; margin:10px 0 0px 0; color:#666666; background:url(../images/ico_01.png) no-repeat; height:20px;}
+.nx-pki-ui-wrapper .pki-bottom {text-align:center;padding:15px 0 10px 15px;background:#fff;border:2px solid #fff;border-width:0 2px;}
+.nx-pki-ui-wrapper .pki-bottom button {width:117px; height:30px; padding-bottom:4px; line-height:1.2; font-weight:bold; font-size:13px; color:#fff; border:1px solid #003674; cursor:pointer;}
+.nx-pki-ui-wrapper .pki-bottom button:hover {background-color:#fff;  color:#323232;}
+.nx-pki-ui-wrapper .pki-bottom .btn-ok {background-color:#266ab7;}
+.nx-pki-ui-wrapper .pki-bottom .btn-ok:hover{ border-color:#194a82;}
+.nx-pki-ui-wrapper .pki-bottom .btn-cancel {background-color:#919191; border-color:#636363;}
+.nx-pki-ui-wrapper .pki-bottom .btn-cancel:hover{border-color:#727272;}
+
+/* 인증서위치 선택영역 */
+.nx-pki-ui-wrapper .cert-location-area {padding:0 0 5px 0; text-align:center;}
+.nx-pki-ui-wrapper .cert-location-area > ul {position:relative;}
+.nx-pki-ui-wrapper .cert-location-area > ul > li {display:inline-block;margin:0 -1px;*display:inline;zoom:1;}
+.nx-pki-ui-wrapper .cert-location-area button {width:82px; height:85px; cursor:pointer;border:none; padding-top : 52px;font-size: 12px; vertical-align:text-bottom; background:#fff url(../images/ico_cert_1.png) left top no-repeat; border:1px solid #919191;}
+.nx-pki-ui-wrapper .cert-location-area button:hover { background-position:-83px -1px; border:2px solid #118cff;}
+.nx-pki-ui-wrapper .cert-location-area button.active { background-position:-83px -1px; background-color:#eeeeee; border:2px solid #118cff;}
+.nx-pki-ui-wrapper .cert-location-area button[disabled] {opacity:0.4;filter:alpha(opacity=40);cursor:default;}
+.nx-pki-ui-wrapper .cert-location-area button[disabled]:hover {background-position:left top; background-color:#fff; border:1px solid #919191;}
+.nx-pki-ui-wrapper .cert-location-area button:last-child { margin:0;}
+
+/** 인증서위치 선택영역 확장매체 레이어 **/
+.nx-pki-ui-wrapper .cert-location-area .sub-layer {position:absolute;right:0;top:0;width:100%;text-align:right;display:none;}
+.nx-pki-ui-wrapper .cert-location-area .sub-layer .inner {display:inline-block;padding:20px 5px 5px 5px;background:#fff;box-shadow:1px 1px 5px #999, -1px -1px 5px #999;}
+.nx-pki-ui-wrapper .cert-location-area .sub-layer .inner .btn-close {display:inline-block;font-size:0;line-height:0;width:12px;height:12px;background:url(../images/btn_x.png) center center no-repeat;position:absolute;right:5px;top:5px;}
+.nx-pki-ui-wrapper .cert-location-area .noti-box {text-align:left;background:#f4f4f4;padding:15px 20px;border-radius:5px;margin-top:15px;}
+.nx-pki-ui-wrapper .cert-location-area .noti-txt {font-size:14px;color:#000;font-weight:normal;padding:0 0 2px 20px;background:url(../images/bul_v.png) left 2px no-repeat;}
+
+/* 인증서위치 선택영역 - 타켓 미디어 */
+.nx-pki-ui-wrapper .cert-location-area-targetMedia {padding:0 0 5px 0; text-align:center;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia > ul {position:relative;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia > ul > li {display:inline-block;margin:0 -1px;*display:inline;zoom:1;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia button {width:82px; height:85px; cursor:pointer;border:none; padding-top : 52px;font-size: 12px; vertical-align:text-bottom; background:#fff url(../images/ico_cert_1.png) left top no-repeat; border:1px solid #919191;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia button:hover { background-position:-83px -1px; border:2px solid #118cff;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia button.active { background-position:-83px -1px; background-color:#eeeeee; border:2px solid #118cff;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia button[disabled] {opacity:0.4;filter:alpha(opacity=40);cursor:default;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia button[disabled]:hover {background-position:left top; background-color:#fff; border:1px solid #919191;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia button:last-child { margin:0;}
+
+/** 인증서위치 선택영역 확장매체 레이어 - 타켓 미디어 **/
+.nx-pki-ui-wrapper .cert-location-area-targetMedia .sub-layer {position:absolute;right:0;top:0;width:100%;text-align:right;display:none;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia .sub-layer .inner {display:inline-block;padding:20px 5px 5px 5px;background:#fff;box-shadow:1px 1px 5px #999, -1px -1px 5px #999;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia .sub-layer .inner .btn-close {display:inline-block;font-size:0;line-height:0;width:12px;height:12px;background:url(../images/btn_x.png) center center no-repeat;position:absolute;right:5px;top:5px;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia .noti-box {text-align:left;background:#f4f4f4;padding:15px 20px;border-radius:5px;margin-top:15px;}
+.nx-pki-ui-wrapper .cert-location-area-targetMedia .noti-txt {font-size:14px;color:#000;font-weight:normal;padding:0 0 2px 20px;background:url(../images/bul_v.png) left 2px no-repeat;}
+
+/* 인증서위치 선택영역 - 인증서 선택창 미디어 */
+.nx-pki-ui-wrapper .cert-location-area-select-media {padding:0 0 5px 0; text-align:center;}
+.nx-pki-ui-wrapper .cert-location-area-select-media > ul {position:relative;}
+.nx-pki-ui-wrapper .cert-location-area-select-media > ul > li {display:inline-block;margin:0 -1px;*display:inline;zoom:1;}
+.nx-pki-ui-wrapper .cert-location-area-select-media button {width:82px; height:85px; cursor:pointer;border:none; padding-top : 52px;font-size: 12px; vertical-align:text-bottom; background:#fff url(../images/ico_cert_1.png) left top no-repeat; border:1px solid #919191;}
+.nx-pki-ui-wrapper .cert-location-area-select-media button:hover { background-position:-83px -1px; border:2px solid #118cff;}
+.nx-pki-ui-wrapper .cert-location-area-select-media button.active { background-position:-83px -1px; background-color:#eeeeee; border:2px solid #118cff;}
+.nx-pki-ui-wrapper .cert-location-area-select-media button[disabled] {opacity:0.4;filter:alpha(opacity=40);cursor:default;}
+.nx-pki-ui-wrapper .cert-location-area-select-media button[disabled]:hover {background-position:left top; background-color:#fff; border:1px solid #919191;}
+.nx-pki-ui-wrapper .cert-location-area-select-media button:last-child { margin:0;}
+
+/** 인증서위치 선택영역 확장매체 레이어 - 인증서 선택창 미디어 **/
+.nx-pki-ui-wrapper .cert-location-area-select-media .sub-layer {position:absolute;right:0;top:0;width:100%;text-align:right;display:none;}
+.nx-pki-ui-wrapper .cert-location-area-select-media .sub-layer .inner {display:inline-block;padding:20px 5px 5px 5px;background:#fff;box-shadow:1px 1px 5px #999, -1px -1px 5px #999;}
+.nx-pki-ui-wrapper .cert-location-area-select-media .sub-layer .inner .btn-close {display:inline-block;font-size:0;line-height:0;width:12px;height:12px;background:url(../images/btn_x.png) center center no-repeat;position:absolute;right:5px;top:5px;}
+.nx-pki-ui-wrapper .cert-location-area-select-media .noti-box {text-align:left;background:#f4f4f4;padding:15px 20px;border-radius:5px;margin-top:15px;}
+.nx-pki-ui-wrapper .cert-location-area-select-media .noti-txt {font-size:14px;color:#000;font-weight:normal;padding:0 0 2px 20px;background:url(../images/bul_v.png) left 2px no-repeat;}
+
+
+/** 인증서 선택영역 **/
+.nx-pki-ui-wrapper .cert-select-area {border:1px solid #c0c0c0;margin-bottom:5px;height:140px;overflow-y:auto;background:#fff; width:100%;}
+.nx-pki-ui-wrapper .cert-select-area table {table-layout:fixed;width:100%;border-width:0;border-spacing:0;}
+.nx-pki-ui-wrapper .cert-select-area table th {background:#f6f6f6;border-bottom:1px solid #c0c0c0;border-left:1px solid #c0c0c0;height:24px;padding:0 5px;font-weight:bold; text-align:center;}
+.nx-pki-ui-wrapper .cert-select-area table td {background:#fff;border-left:1px solid #fff;height:24px;padding:0 5px; cursor:pointer}
+.nx-pki-ui-wrapper .cert-select-area table td div {width:100%;padding-bottom:1px;overflow:hidden;white-space:nowrap;-o-text-overflow:ellipsis;-ms-text-overflow:ellipsis;text-overflow:ellipsis;word-wrap:normal;}
+.nx-pki-ui-wrapper .cert-select-area table td div * {vertical-align:top;}
+.nx-pki-ui-wrapper .cert-select-area table td img {vertical-align:middle;}
+.nx-pki-ui-wrapper .cert-select-area table th:first-child,
+.nx-pki-ui-wrapper .cert-select-area table td:first-child {border-left:none;}
+.nx-pki-ui-wrapper .cert-select-area table tr.even td {background:#f3f6fa;}
+.nx-pki-ui-wrapper .cert-select-area table tbody tr.on td {color:#fff;background:#6c9cda;}
+
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table {table-layout:fixed;width:100%;border-width:0;border-spacing:0;}
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table th {background:#f5f5f5;border-bottom:1px solid #c7c7c7;border-left:1px solid #e3e3e3;height:27px;padding:0 5px;font-weight:bold;}
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table td {background:#fff;border-bottom:1px solid #e3e3e3;border-left:1px solid #e3e3e3;height:20px;padding:0 5px;}
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table td div {width:100%;padding-bottom:1px;overflow:hidden;white-space:nowrap;-o-text-overflow:ellipsis;-ms-text-overflow:ellipsis;text-overflow:ellipsis;word-wrap:normal;}
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table td div * {vertical-align:top;}
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table th:first-child,
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table td:first-child {border-left:none;}
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table tbody tr {cursor:pointer;}
+.nx-pki-ui-wrapper .pki-wrapA .pki-body .cert-select-area table tbody tr.on td {color:#fff;background:#6c9cda;}
+
+.nx-pki-ui-wrapper .cert-button-block {width:100%;text-align:right;padding-bottom:17px;}
+.nx-pki-ui-wrapper .cert-button-block button {background-color: #fff; color:#666; border:solid 1px #bbb; font-size:13px; height:20px; width:83px; padding-bottom:2px; line-height:1.2;}	
+.nx-pki-ui-wrapper .cert-password-area{width:100%;}
+.nx-pki-ui-wrapper .cert-password-area input[type="password"] {border-color:#2897ff;}
+
+/* 인증서 관리창 */
+.nx-pki-ui-wrapper .btn-style1 {font-size:12px;background: url(../images/btn_bg.png) left bottom repeat-x; padding: 0px 12px; padding-bottom:2px; border-radius: 3px; border: 1px solid #888; height: 25px; text-align: center;box-sizing: border-box;}
+.nx-pki-ui-wrapper .pki-tab {height:23px;}
+.nx-pki-ui-wrapper .pki-tab li {float:left;}
+.nx-pki-ui-wrapper .pki-tab li a {display:block;height:17px;padding:5px 10px 0 10px;border:1px solid #999;border-width:1px 1px 0 1px;border-top-left-radius:6px;border-top-right-radius:6px;}
+.nx-pki-ui-wrapper .pki-tab li a.on {border:1px solid #6c9cda;background:#6c9cda;color:#fff;}
+.nx-pki-ui-wrapper .pki-tab-con {padding:20px;border:2px solid #6c9cda;border-top-right-radius:12px;border-bottom-left-radius:12px;border-bottom-right-radius:12px; height:492px}
+.nx-pki-ui-wrapper .pki-tab-con .cert-content {display:none;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-tit {font-weight:bold;font-size:14px;color:#0066cc;padding-bottom:5px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box {padding:10px 17px;line-height:1.4;height:370px;overflow-y:auto;margin-bottom:15px;background:#f4f4f4;border-radius:3px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box dl {margin-top:20px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box dl dt {font-size:14px;padding-bottom:6px;font-weight:bold;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box .cert-hash-input {width:100%;margin-top:10px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box .cert-hash-input td {width:25%;padding:2px 0;text-align:center;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box .cert-hash-input td input {box-sizing:border-box;font-size:12px;width:82px;height:22px;line-height:20px;text-align:center;border:1px solid #999;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box .go-link {padding-top:16px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box .go-link a {color:#0061c3;text-decoration:underline;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box2 ul li span {display:inline-block;font-size:14px;font-weight:bold;color:#0063c8;background:url(../images/bul_dot.png) left 5px no-repeat;padding-left:9px;margin-top:10px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box2 ul li:first-child {margin-top:0;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box2 ul li .btn-style1 {margin-left:10px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box2 .version-box {background:#f4f4f4;border-radius:3px;padding:10px 15px;font-size:12px;color:#000;margin-top:10px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box3 {padding:10px 17px;line-height:1.4;height:450px;overflow-y:auto;margin-bottom:15px;background:#f4f4f4;border-radius:3px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box3 dl {margin-top:20px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box3 dl dt {font-size:14px;padding-bottom:6px;font-weight:bold;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box3 .cert-hash-input {width:100%;margin-top:10px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box3 .cert-hash-input td {width:25%;padding:2px 0;text-align:center;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box3 .cert-hash-input td input {box-sizing:border-box;font-size:12px;width:82px;height:22px;line-height:20px;text-align:center;border:1px solid #999;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box3 .go-link {padding-top:16px;}
+.nx-pki-ui-wrapper .pki-tab-con .cert-info-box3 .go-link a {color:#0061c3;text-decoration:underline;}
+
+/* 인증서 내보내기 등 기타창 */
+.nx-pki-ui-wrapper .pki-con-wrap {padding:10px 15px;}
+.nx-pki-ui-wrapper .pki-con-wrap .tit2 {font-size:14px;color:#000;font-weight:normal;padding:0 0 10px 20px;background:url(../images/bul_v.png) left 2px no-repeat;}
+.nx-pki-ui-wrapper .pki-con-wrap .tit2 strong.red {color:#fe0000;}
+.nx-pki-ui-wrapper .pki-con-wrap .txt2 {font-size:14px;line-height:1.4;padding:0 0 0 20px;background:url(../images/bul_v.png) left 5px no-repeat;margin-bottom:25px;}
+.nx-pki-ui-wrapper .pki-con-wrap .txt2 strong.red {color:#fe0000;}
+.nx-pki-ui-wrapper .pki-con-wrap .inline-tit {display:inline-block;font-size:14px;color:#000;font-weight:normal;padding:0 0 0 20px;background:url(../images/bul_v.png) left 2px no-repeat;}
+.nx-pki-ui-wrapper .pki-con-wrap .gray-box {background:#f4f4f4;padding:20px 34px;border-radius:5px;}
+.nx-pki-ui-wrapper .pki-con-wrap .gray-box p {font-size:14px;color:#666;line-height:1.7;}
+.nx-pki-ui-wrapper .pki-con-wrap .gray-box2 {background:#f4f4f4;padding:16px 13px;border-radius:5px;}
+.nx-pki-ui-wrapper .pki-con-wrap .gray-box2 p {font-size:14px;color:#666;}
+.nx-pki-ui-wrapper .pki-con-wrap .gray-box:first-child,
+.nx-pki-ui-wrapper .pki-con-wrap .gray-box2:first-child {margin-top:0;}
+.nx-pki-ui-wrapper .pki-con-wrap .dl-style1 dt {font-size:14px;font-weight:bold;color:#0063c8;padding-bottom:12px;}
+.nx-pki-ui-wrapper .pki-con-wrap .dl-style1 dt.typ2 {font-size:14px;color:#000;font-weight:normal;padding:0 0 12px 20px;background:url(../images/bul_v.png) left 2px no-repeat;}
+.nx-pki-ui-wrapper .pki-con-wrap .dl-style1 + .dl-style1 {margin-top:24px;}
+.nx-pki-ui-wrapper .pki-con-wrap .dl-style1.radio dt {text-align:center;}
+.nx-pki-ui-wrapper .pki-con-wrap .dl-style1.radio dd {padding:5px;}
+.nx-pki-ui-wrapper .pki-con-wrap .dl-style1.radio dd input[type="radio"] {width:13px;height:13px;vertical-align:middle;margin-right:8px;margin-top:-2px;}
+.nx-pki-ui-wrapper .pki-con-wrap .tbl-style {width:100%;}
+.nx-pki-ui-wrapper .pki-con-wrap .tbl-style th {font-size:14px;font-weight:bold;color:#0063c8;text-align:left;}
+.nx-pki-ui-wrapper .pki-con-wrap .tbl-style td {padding:6px 0;}
+.nx-pki-ui-wrapper .pki-con-wrap ul.bul-list-dot {margin:5px 0 0 20px;}
+.nx-pki-ui-wrapper .pki-con-wrap ul.bul-list-dot li {background:url(../images/bul_dot.png) left 7px no-repeat;padding:0 0 0 9px;line-height:1.6;color:#5c5b5b;}
+.nx-pki-ui-wrapper .pki-con-wrap ol.decimal {margin:5px 0 0 40px;list-style-type:decimal;}
+.nx-pki-ui-wrapper .pki-con-wrap ol.decimal li {list-style-type:decimal;line-height:1.6;color:#5c5b5b;}
+.nx-pki-ui-wrapper .pki-con-wrap .bg-img-area {height:110px;text-align:center;}
+
+
+/* ==============================================================================
+ * 타입 a : typeA 클래스 적용. 기본타입에서 재정의
+ * ============================================================================== */
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head {background-image:url(../images/bg_header_01.png);}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head .btn-setting {background-image:url(../images/btn_setting.png);}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head h1 {font-size:20px;color:#0066cc;padding-top:12px;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head h1 span {font-size:14px;font-weight:normal;color:#333;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-head2 {height:50px; padding:0;position:relative; background-image:url(../images/bg_header_01.png); background-repeat:repeat-x; }
+.nx-pki-ui-wrapper .pki-head2 .btn-setting {position:absolute;right:17px;top:10px;width:43px;height:28px;background:url(../images/btn_setting.png) center center no-repeat;font-size:0;line-height:0;}
+.nx-pki-ui-wrapper .pki-head2 h1 {font-size:19px;padding:15px 0 0 17px;font-weight:bold;color:#fff;}
+.nx-pki-ui-wrapper .pki-head2 h1 span {font-size:14px;font-weight:normal;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-head2 h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head2 {background-image:url(../images/bg_header_02.png);}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head2 .btn-setting {background-image:url(../images/btn_setting.png);}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head2 h1 {font-size:23px;color:#0066cc;padding-top:12px;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head2 h1 span {font-size:14px;font-weight:normal;color:#333;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-head2 h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-body {border-color:#3366cc;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-bottom-img {background-image:url(../images/bg_bottom_01.png);}
+/*.nx-pki-ui-wrapper .pki-wrap.typeA .logo-area { background-image:url(../images/title_01.png);}*/
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-bottom {border-color:#3366cc;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-bottom button {width:70px; height:28px; color:#fff; border:none;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-bottom button:hover {background-color:none; color:#fff;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-bottom .btn-ok {background:transparent url(../images/bg_btn1.png) center center no-repeat;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-bottom .btn-cancel {background:transparent url(../images/bg_btn2.png) center center no-repeat;color:#000;}
+.nx-pki-ui-wrapper .pki-wrap.typeA .pki-bottom .btn-cancel:hover{color:#000;}
+
+
+/************** 매체선택팝업 ****************/
+.nx-pki-ui-wrapper .pki-wrap3 {width:260px;margin:0 auto; display:none; position:absolute; margin:-30px 0 0 90px; text-align:left;}
+.nx-pki-ui-wrapper .pki-bottom-img3 {background:url(../images/bg_bottom_02.png) left bottom no-repeat;width:260px;height:20px;}
+
+
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-body3 {border-color:#3366cc;}
+.nx-pki-ui-wrapper .pki-body3 {background:#fff;padding:17px 15px 0px 15px;border:2px solid #fff;border-width:0 2px;*zoom:1;}
+.nx-pki-ui-wrapper .pki-body3 .tit1 { background:#eeeeee; font-size:15px; font-weight:bold; display:block; padding:7px 10px;}
+.nx-pki-ui-wrapper .pki-body3 .titwrap {border:1px solid #c0c0c0;}
+.nx-pki-ui-wrapper .pki-body3 .noti { font-size:12px; padding-left:20px; margin:10px 0 0px 0; color:#666666; background:url(../images/ico_01.png) no-repeat; height:20px;}
+.nx-pki-ui-wrapper .pki-head3 .btn-close1 {position:absolute;right:17px;top:10px;width:26px;height:26px;background:url(../images/btn_close1.png) center center no-repeat;font-size:0;line-height:0;}
+
+
+.nx-pki-ui-wrapper .cert-select-area3 {height:95px;overflow-y:auto;background:#fff; width:100%;}
+.nx-pki-ui-wrapper .cert-select-area3 table {table-layout:fixed;width:100%;border-width:0;border-spacing:0;}
+.nx-pki-ui-wrapper .cert-select-area3 table th {background:#f6f6f6;border-bottom:1px solid #c0c0c0;border-left:1px solid #c0c0c0;height:24px;padding:0 5px;font-weight:bold; text-align:center;}
+.nx-pki-ui-wrapper .cert-select-area3 table td {background:#fff;border-left:1px solid #fff;height:24px;padding:0 5px; cursor:pointer;}
+.nx-pki-ui-wrapper .cert-select-area3 table td div {width:100%;padding-bottom:1px;overflow:hidden;white-space:nowrap;-o-text-overflow:ellipsis;-ms-text-overflow:ellipsis;text-overflow:ellipsis;word-wrap:normal;}
+.nx-pki-ui-wrapper .cert-select-area3 table td div * {vertical-align:top;}
+.nx-pki-ui-wrapper .cert-select-area3 table td img {vertical-align:middle;}
+.nx-pki-ui-wrapper .cert-select-area3 table th:first-child,
+.nx-pki-ui-wrapper .cert-select-area3 table td:first-child {border-left:none;}
+.nx-pki-ui-wrapper .cert-select-area3 table tr.even td {background:#f3f6fa;}
+.nx-pki-ui-wrapper .cert-select-area3 table tbody tr.on td {color:#fff;background:#6c9cda;}
+
+.nx-pki-ui-wrapper .pki-head3 {height:50px; padding:0;position:relative; background-image:url(../images/bg_header_03.png); background-repeat:repeat-x; }
+.nx-pki-ui-wrapper .pki-head3 h1 {font-size:19px;padding:15px 0 0 17px;font-weight:bold;color:#fff;}
+.nx-pki-ui-wrapper .pki-head3 h1 span {font-size:14px;font-weight:normal;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-head3 h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-head3 {background-image:url(../images/bg_header_03.png); letter-spacing:-1px}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-head3 .btn-setting {background-image:url(../images/btn_setting.png);}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-head3 h1 {font-size:18px;color:#0066cc;padding-top:15px;}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-head3 h1 span {font-size:14px;font-weight:normal;color:#333;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-head3 h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-body {border-color:#3366cc;}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-bottom-img {background-image:url(../images/bg_bottom_02.png);}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-bottom3 {background:#fff;border:2px solid #fff;border-width:0 2px; border-color:#3366cc; padding:10px 10px 0 10px; text-align:center;}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-bottom3 button {width:70px; height:28px; color:#fff; border:none; padding:0 0 4px 0; line-height:1.2; font-size:11px;}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-bottom3 button:hover {background-color:none; color:#fff;}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-bottom3 .btn-ok {background:transparent url(../images/bg_btn1.png) center center no-repeat;}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-bottom3 .btn-cancel {background:transparent url(../images/bg_btn2.png) center center no-repeat;color:#000;}
+.nx-pki-ui-wrapper .pki-wrap3.typeA .pki-bottom3 .btn-cancel:hover{color:#000;}
+
+
+/********** Target Media 창 매체 선택 ************/
+.nx-pki-ui-wrapper .pki-wrap4 {width:260px;margin:0 auto; display:none; position:absolute; margin:-170px 0 0 90px; text-align:left;}
+.nx-pki-ui-wrapper .pki-bottom-img4 {background:url(../images/bg_bottom_02.png) left bottom no-repeat;width:260px;height:20px;}
+
+
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-body4 {border-color:#3366cc;}
+.nx-pki-ui-wrapper .pki-body4 {background:#fff;padding:17px 15px 0px 15px;border:2px solid #fff;border-width:0 2px;*zoom:1;}
+.nx-pki-ui-wrapper .pki-body4 .tit1 { background:#eeeeee; font-size:15px; font-weight:bold; display:block; padding:7px 10px;}
+.nx-pki-ui-wrapper .pki-body4 .titwrap {border:1px solid #c0c0c0;}
+.nx-pki-ui-wrapper .pki-body4 .noti { font-size:12px; padding-left:20px; margin:10px 0 0px 0; color:#666666; background:url(../images/ico_01.png) no-repeat; height:20px;}
+.nx-pki-ui-wrapper .pki-head4 .btn-close1 {position:absolute;right:17px;top:10px;width:26px;height:26px;background:url(../images/btn_close1.png) center center no-repeat;font-size:0;line-height:0;}
+
+.nx-pki-ui-wrapper .cert-select-area4 {height:90px;overflow-y:auto;background:#fff; width:100%;}
+.nx-pki-ui-wrapper .cert-select-area4 table {table-layout:fixed;width:100%;border-width:0;border-spacing:0;}
+.nx-pki-ui-wrapper .cert-select-area4 table th {background:#f6f6f6;border-bottom:1px solid #c0c0c0;border-left:1px solid #c0c0c0;height:24px;padding:0 5px;font-weight:bold; text-align:center;}
+.nx-pki-ui-wrapper .cert-select-area4 table td {background:#fff;border-left:1px solid #fff;height:24px;padding:0 5px; cursor:pointer;}
+.nx-pki-ui-wrapper .cert-select-area4 table td div {width:100%;padding-bottom:1px;overflow:hidden;white-space:nowrap;-o-text-overflow:ellipsis;-ms-text-overflow:ellipsis;text-overflow:ellipsis;word-wrap:normal;}
+.nx-pki-ui-wrapper .cert-select-area4 table td div * {vertical-align:top;}
+.nx-pki-ui-wrapper .cert-select-area4 table td img {vertical-align:middle;}
+.nx-pki-ui-wrapper .cert-select-area4 table th:first-child,
+.nx-pki-ui-wrapper .cert-select-area4 table td:first-child {border-left:none;}
+.nx-pki-ui-wrapper .cert-select-area4 table tr.even td {background:#f3f6fa;}
+.nx-pki-ui-wrapper .cert-select-area4 table tbody tr.on td {color:#fff;background:#6c9cda;}
+
+.nx-pki-ui-wrapper .pki-head4 {height:50px; padding:0;position:relative; background-image:url(../images/bg_header_03.png); background-repeat:repeat-x; }
+.nx-pki-ui-wrapper .pki-head4 h1 {font-size:19px;padding:15px 0 0 17px;font-weight:bold;color:#fff;}
+.nx-pki-ui-wrapper .pki-head4 h1 span {font-size:14px;font-weight:normal;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-head4 h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-head4 {background-image:url(../images/bg_header_03.png); letter-spacing:-1px}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-head4 .btn-setting {background-image:url(../images/btn_setting.png);}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-head4 h1 {font-size:16px;color:#0066cc;padding-top:15px;}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-head4 h1 span {font-size:14px;font-weight:normal;color:#333;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-head4 h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-body4 {border-color:#3366cc;}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-bottom-img {background-image:url(../images/bg_bottom_02.png);}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-bottom4 {background:#fff;border:2px solid #fff;border-width:0 2px; border-color:#3366cc; padding:10px 10px 0 10px; text-align:center;}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-bottom4 button {width:70px; height:28px; color:#fff; border:none; padding:0 0 4px 0; line-height:1.2; font-size:11px;}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-bottom4 button:hover {background-color:none; color:#fff;}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-bottom4 .btn-ok {background:transparent url(../images/bg_btn1.png) center center no-repeat;}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-bottom4 .btn-cancel {background:transparent url(../images/bg_btn2.png) center center no-repeat;color:#000;}
+.nx-pki-ui-wrapper .pki-wrap4.typeA .pki-bottom4 .btn-cancel:hover{color:#000;}
+
+
+/********** 갱신 안내 창 매체 선택 ************/
+.nx-pki-ui-wrapper .pki-wrap5 {width:260px;margin:0 auto; display:none; position:absolute; margin:-170px 0 0 90px; text-align:left;}
+.nx-pki-ui-wrapper .pki-bottom-img5 {background:url(../images/bg_bottom_02.png) left bottom no-repeat;width:260px;height:20px;}
+
+
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-body4 {border-color:#3366cc;}
+.nx-pki-ui-wrapper .pki-body5 {background:#fff;padding:17px 15px 0px 15px;border:2px solid #fff;border-width:0 2px;*zoom:1;}
+.nx-pki-ui-wrapper .pki-body5 .tit1 { background:#eeeeee; font-size:15px; font-weight:bold; display:block; padding:7px 10px;}
+.nx-pki-ui-wrapper .pki-body5 .titwrap {border:1px solid #c0c0c0;}
+.nx-pki-ui-wrapper .pki-body5 .noti { font-size:12px; padding-left:20px; margin:10px 0 0px 0; color:#666666; background:url(../images/ico_01.png) no-repeat; height:20px;}
+.nx-pki-ui-wrapper .pki-head5 .btn-close1 {position:absolute;right:17px;top:10px;width:26px;height:26px;background:url(../images/btn_close1.png) center center no-repeat;font-size:0;line-height:0;}
+
+.nx-pki-ui-wrapper .pki-head5 {height:50px; padding:0;position:relative; background-image:url(../images/bg_header_03.png); background-repeat:repeat-x; }
+.nx-pki-ui-wrapper .pki-head5 h1 {font-size:19px;padding:15px 0 0 17px;font-weight:bold;color:#fff;}
+.nx-pki-ui-wrapper .pki-head5 h1 span {font-size:14px;font-weight:normal;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-head5 h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-head5 {background-image:url(../images/bg_header_03.png); letter-spacing:-1px}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-head5 .btn-setting {background-image:url(../images/btn_setting.png);}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-head5 h1 {font-size:18px;color:#0066cc;padding-top:15px;}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-head5 h1 span {font-size:14px;font-weight:normal;color:#333;margin-left:10px;}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-head5 h2 span {font-size:11px;font-weight:normal;color:#000;}
+
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-body5 {border-color:#3366cc;}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-bottom-img {background-image:url(../images/bg_bottom_02.png);}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-bottom5 {background:#fff;border:2px solid #fff;border-width:0 2px; border-color:#3366cc; padding:10px 10px 0 10px; text-align:center;}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-bottom5 button {width:70px; height:28px; color:#fff; border:none; padding:0 0 4px 0; line-height:1.2; font-size:11px;}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-bottom5 button:hover {background-color:none; color:#fff;}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-bottom5 .btn-ok {background:transparent url(../images/bg_btn1.png) center center no-repeat;}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-bottom5 .btn-cancel {background:transparent url(../images/bg_btn2.png) center center no-repeat;color:#000;}
+.nx-pki-ui-wrapper .pki-wrap5.typeA .pki-bottom5 .btn-cancel:hover{color:#000;}
+
+.gray-box2 {background:#f4f4f4;padding:10px 13px;border-radius:5px;}
+.gray-box2 p {font-size:14px;color:#666;}
+.width260	{width:260px; margin:0 auto;}
+.width280   {width:280px; margin:0 auto;}
+.mb10		{margin-bottom:10px;}
+
+
+
+/********** 갱신 안내 ************/
+
+
+/** 클라이언트 로딩 전 화면 이벤트 차단을 위해 추가 **/
+.nxs_loading_block {position:absolute; width:100%; height:100%; left:0px; top:0px; z-index:9999; background:url(../images/progressCircle.gif) no-repeat center center;}

@@ -1,0 +1,127 @@
+<p-growl [(value)]="msgs" [life]="9000"></p-growl>
+<div class="card subscription-panel">
+    <div class="ui-g-12">
+                  <span class="float-right">
+                      <a style="color:#000000;text-decoration:none;" href="javascript:void(0)" (click)="changeLanguage('fr')">fr</a> | 
+                      <a style="color:#000000;text-decoration:none;" href="javascript:void(0)" (click)="changeLanguage('en')">en</a>
+                  </span>
+                  <img src="assets/layout/images/logo-guce.png">
+                  <h1 class="mt-4 app-title">e-GUCE PAYMENT SYSTEM</h1>
+                  <div class="card-header">
+                      <h2 class="mt-3 app-title">{{'creation.account.request' | translate}}</h2>
+                  </div>
+              </div>
+              <form *ngIf="selectedUser" #userForm="ngForm" (submit)="askConfirm()" role="form" class="form-validation">
+                  <div class="row form-group">
+                            <label for="userLogin" class="col-md-4 control-label">
+                                {{'user.login' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="userLogin" [required]="true" [(ngModel)]="selectedUser.login" name="userLogin">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="firstName" class="col-md-4 control-label">{{'first.name' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="firstName" [(ngModel)]="selectedUser.firstName" name="firstName">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="lastName" class="col-md-4 control-label">
+                                {{'last.name' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="lastName" [(ngModel)]="selectedUser.lastName" [required]="true" name="lastName">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="email" class="col-md-4 control-label">
+                                {{'Email' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="email" class="form-control" id="email" [(ngModel)]="selectedUser.email" [required]="true" name="email">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="newPasswordFirst" class="col-md-4 control-label">
+                                {{'new.password.first' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control" id="newPasswordFirst" [(ngModel)]="newPasswordFirst" [required]="true" name="newPasswordFirst">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="newPasswordSecond" class="col-md-4 control-label">
+                                {{'new.password.second' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control" id="newPasswordSecond" [(ngModel)]="newPasswordSecond" [required]="true" name="newPasswordSecond">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="roles" class="col-md-4 control-label">
+                                {{'Role' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" [(ngModel)]="userRole" [required]="true" name="roles" id="roles" (change)="onUserRoleChange($event)">
+                                    <option value="{{r.name}}" *ngFor="let r of roles">{{r.description}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div *ngIf="canSetPartner()" class="row form-group">
+                            <label class="col-md-4 control-label">
+                                {{'partner' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col">
+                                <input type="text" class="form-control" value="{{selectedUser?.partner?.code}}" [readonly]="true">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" value="{{selectedUser?.partner?.name}}" [readonly]="true">
+                            </div>
+                            <div class="col-md-1">
+                                <button pButton type="button" icon="ui-icon-edit" (click)="showPartnerEdition()"></button>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div>
+                            <span class="float-right">
+                                <button class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                                <button [disabled]="!userForm.valid" pButton type="submit" label="{{'save' | translate}}" icon="ui-icon-save"></button>
+                            </span>
+                        </div>
+              </form>
+              <hr/>
+              <div class="ui-g-12">
+                  <span class="float-right">
+                      <a style="color:rgb(0, 51, 102);text-decoration:none;" [routerLink]="['/login']" class="">{{'sign.in' | translate}}</a>
+                  </span>
+              </div>
+</div>
+  <div style="text-align: center" class="mt-3">Copyright © GUCE-GIE - {{'december' | translate}} 2017 - {{'copyright' | translate}} - e-GUCE PAYMENT Version 1.0</div>
+
+  <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirm" (onConfirm)="onConfirm($event)"></app-confirm-dialog>
+
+  <p-dialog [(visible)]="partners" [modal]="true" width="600" [responsive]="true">
+          <div class="card">
+              <div class="card-header h5">{{'partner.edition' | translate}}</div>
+              <div class="card-block">
+                  <p-dataTable [value]="partners" dataKey="id" rows="5" [paginator]="true" [pageLinks]="10" [responsive]="true"
+                  emptyMessage="{{'no.partner' | translate}}" [lazy]="isPrincipalal()" (onLazyLoad)="loadPartnerLazy($event)" [totalRecords]="nbPartners">
+                      <p-column field="code" header="{{'code'| translate}}"></p-column>
+                      <p-column field="name" header="{{'name'| translate}}"></p-column>
+                      <p-column styleClass="col-button">
+                          <ng-template let-partner="rowData" pTemplate="body">
+                              <button type="button" pButton (click)="chooseUserPartner(partner)" icon="ui-icon-check"></button>
+                          </ng-template>
+                      </p-column>
+                  </p-dataTable>
+              </div>
+          </div>
+      </p-dialog>

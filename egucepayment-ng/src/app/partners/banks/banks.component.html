@@ -1,0 +1,7 @@
+<div class="card">
+    <div class="card-header h5">{{'banks.management' | translate}}</div>
+    <div class="card-block">
+        <app-partners-table [partners]="partners" (onPartnerSave)="onPartnerSave()" [partnerType]="'BANK'" [emptyTableTitle]="'no.bank'"
+        [hasBas]="true" [newMsg]="'new.bank'" [headerMsg]="'banks.list'" [saveMsg]="'banks.save'"></app-partners-table>
+    </div>
+</div>

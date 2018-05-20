@@ -1,0 +1,39 @@
+<div class="card">
+    <div class="card-header h5">{{'sitting.date.management' | translate}}</div>
+    <div class="card-block">
+        <app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>
+        <p-fieldset legend="{{'new.sitting' | translate}}" [toggleable]="true">
+            <form #sittingDateForm="ngForm" (submit)="showConfirm=true" role="form" class="form-validation">
+                        <div class="row">
+                            <label for="minDate" class="col control-label">{{'min.hour' | translate}}</label>
+                            <div class="col">
+                                <p-inputMask [(ngModel)]="sittingDate.minDate" mask="99:99" [required]="true" name="minDate" id="minDate" slotChar=" "></p-inputMask>
+                            </div>
+                            <label for="maxDate" class="col control-label">{{'max.hour' | translate}}</label>
+                            <div class="col">
+                                <p-inputMask [(ngModel)]="sittingDate.maxDate" mask="99:99" [required]="true" name="maxDate" id="maxDate" slotChar=" "></p-inputMask>
+                            </div>
+                            <div class="col">
+                                <button *ngIf="false" class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                                <button [disabled]="!sittingDateForm.valid" pButton type="submit" label="{{'save' | translate}}" icon="ui-icon-save"></button>
+                            </div>
+                        </div>
+            </form>
+        </p-fieldset>
+        <hr/>
+        <p-dataTable [value]="sittingDates" dataKey="id" rows="10" [paginator]="true" [pageLinks]="5" [responsive]="true"
+          emptyMessage="{{'no.sitting.date' | translate}}" [rowsPerPageOptions]="[5,10]" resizableColumns="true" columnResizeMode="fit">
+            <p-header>{{'sitting.date.modif.history' | translate}}</p-header>
+            <p-column header="{{'N°'| translate}}" [style]="{'width':'5%'}">
+                <ng-template let-sd="rowData" pTemplate="body">{{sittingDates?.indexOf(sd) + 1}}</ng-template>
+            </p-column>
+            <p-column field="minDate" header="{{'Min'| translate}}"></p-column>
+            <p-column field="maxDate" header="{{'Max'| translate}}"></p-column>
+            <p-column header="{{'insertion.date'| translate}}">
+                <ng-template let-sd="rowData" pTemplate="body">{{sd.insertionDate}}</ng-template>
+            </p-column>
+        </p-dataTable>
+
+        <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirm" (onConfirm)="onConfirmSave($event)"></app-confirm-dialog>
+    </div>
+</div>

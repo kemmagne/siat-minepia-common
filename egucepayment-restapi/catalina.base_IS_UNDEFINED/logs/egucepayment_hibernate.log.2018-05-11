@@ -1,0 +1,13 @@
+2018-05-11 18:50:03 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: 942, SQLState: 42000 
+ 2018-05-11 18:50:03 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - ORA-00942: Table ou vue inexistante
+ 
+ 2018-05-11 18:51:41 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: 942, SQLState: 42000 
+ 2018-05-11 18:51:41 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - ORA-00942: Table ou vue inexistante
+ 
+ 2018-05-11 18:52:57 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: 942, SQLState: 42000 
+ 2018-05-11 18:52:57 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - ORA-00942: Table ou vue inexistante
+ 
+ 2018-05-11 19:16:21 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: 942, SQLState: 42000 
+ 2018-05-11 19:16:21 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - ORA-00942: Table ou vue inexistante
+ 
+ 

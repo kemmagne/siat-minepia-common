@@ -1,0 +1,202 @@
+<div class="card">
+    <div class="card-header h5">{{'invoice.state' | translate}}</div>
+    <div class="card-block">
+        <form (submit)="countInvoices()" role="form">
+              <div class="row">
+                  <div class="col-md-8">
+                  <p-fieldset legend="{{'general.infos' | translate}}" [toggleable]="true">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="invoiceNumber" class="col-md-4 control-label">{{'invoice.number' | translate}}</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="invoiceNumber" [(ngModel)]="invoiceNumber" name="invoiceNumber">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="invoiceTypeCode" class="col-md-4 col-form-label">{{'invoice.type.label' | translate}}</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" [(ngModel)]="invoiceTypeCode" name="invoiceTypeCode" id="invoiceTypeCode">
+                                            <option value="{{ivt.code}}" *ngFor="let ivt of invoicesTypes">{{ivt.label}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="mention" class="col-md-4 col-form-label">{{'Mention' | translate}}</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" [(ngModel)]="mention" name="mention" id="mention">
+                                            <option value="{{m.code}}" *ngFor="let m of mentions">{{m.label}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="beneficiary" class="col-md-4 col-form-label">{{'beneficiary' | translate}}</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" [(ngModel)]="beneficiaryCode" name="beneficiary" id="beneficiary">
+                                            <option value="{{benef.code}}" *ngFor="let benef of beneficiaryPartners">{{benef.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="taxPayerNumber" class="col-md-4 col-form-label">{{'taxpayernumber' | translate}}</label>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="taxPayerNumber" [(ngModel)]="taxPayerNumber" name="taxPayerNumber">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  </p-fieldset>
+                </div>
+                <div class="col-md-4">
+                  <p-fieldset legend="{{'amount' | translate}}" [toggleable]="true">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label for="invoiceMinAmount" class="col-md-4 col-form-label">{{'min.amount' | translate}}</label>
+                                    <div class="col-md-8">
+                                        <!--<input type="text" class="form-control" id="invoiceMinAmount" [(ngModel)]="invoiceMinAmount"
+                                         name="invoiceMinAmount">
+                                        <p-spinner id="invoiceMinAmount" [(ngModel)]="invoiceMinAmount" name="invoiceMinAmount"
+                                        decimalSeparator="{{'decimal.separator' | translate}}"
+                                        thousandSeparator="{{'thousand.separator' | translate}}"></p-spinner>-->
+                                        <p-inputMask [(ngModel)]="invoiceMinAmount" name="invoiceMinAmount" mask="9?999999999999" slotChar=" "></p-inputMask>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label for="invoiceMaxAmount" class="col-md-4 col-form-label">{{'max.amount' | translate}}</label>
+                                    <div class="col-md-8">
+                                        <!--<input type="text" class="form-control" [(ngModel)]="invoiceMaxAmount" name="invoiceMaxAmount">
+                                        <p-spinner id="invoiceMaxAmount" [(ngModel)]="invoiceMaxAmount" name="invoiceMaxAmount"
+                                        decimalSeparator="{{'decimal.separator' | translate}}"
+                                        thousandSeparator="{{'thousand.separator' | translate}}"></p-spinner>-->
+                                        <p-inputMask [(ngModel)]="invoiceMaxAmount" name="invoiceMaxAmount" mask="9?999999999999" slotChar=" "></p-inputMask>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  </p-fieldset>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                    <p-fieldset legend="{{'status' | translate}}" [toggleable]="true">
+                        <div class="row">
+                            <p-radioButton class="col-md-3" name="invoiceStatus" value="ALL" label="{{'all' | translate}}" [(ngModel)]="invoiceStatus"></p-radioButton>
+                            <p-radioButton class="col-md-3" name="invoiceStatus" value="UNPAID" label="{{'unpaid' | translate}}" [(ngModel)]="invoiceStatus"></p-radioButton>
+                            <p-radioButton class="col-md-3" name="invoiceStatus" value="PAID" label="{{'paid' | translate}}" [(ngModel)]="invoiceStatus"></p-radioButton>
+                            <p-radioButton class="col-md-3" name="invoiceStatus" value="PAYMENT_STARTED" label="{{'payment.started' | translate}}" [(ngModel)]="invoiceStatus"></p-radioButton>
+                            <!--<p-radioButton name="invoiceStatus" value="PAYMENT_CANCELED" label="{{'payment.canceled' | translate}}" [(ngModel)]="invoiceStatus"></p-radioButton>
+                            <p-radioButton name="invoiceStatus" value="PAYMENT_REJECTED" label="{{'payment.rejected' | translate}}" [(ngModel)]="invoiceStatus"></p-radioButton>
+                            <p-radioButton name="invoiceStatus" value="CLEARED" label="{{'cleared' | translate}}" [(ngModel)]="invoiceStatus"></p-radioButton>-->
+                        </div>
+                    </p-fieldset>
+                  </div>
+              </div>
+              <hr/>
+              <span class="pull-right">
+                  <button class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                  <button pButton type="submit" label="{{'search' | translate}}" icon="ui-icon-search"></button>
+              </span>
+        </form>
+        <hr/>
+        <p-dataTable [value]="invoicesFound" dataKey="id" rows="10" [paginator]="true" [pageLinks]="10" [responsive]="true"
+        emptyMessage="{{'no.invoices' | translate}}" [rowsPerPageOptions]="[5,10,20,30]" [lazy]="!!invoicesFound" [totalRecords]="nbInvoices"
+        (onLazyLoad)="onLazyLoadInvoices($event)">
+            <p-header>
+                <span *ngIf="!!invoicesFound">{{'invoices.found' | translate}} ({{nbInvoices || 0}})</span>
+            </p-header>
+            <p-column field="invoiceNumber" header="{{'invoice.number' | translate}}" [style]="{'width':'20%'}"></p-column>
+            <p-column header="{{'invoice.type'| translate}}" [style]="{'width':'15%'}">
+                <ng-template let-invoice="rowData" pTemplate="body">{{invoice.invoiceType?.label || ''}}</ng-template>
+            </p-column>
+            <p-column header="{{'taxpayer'| translate}}" [style]="{'width':'20%'}">
+                <ng-template let-invoice="rowData" pTemplate="body">{{invoice.owner.name}}</ng-template>
+            </p-column>
+            <p-column header="{{'beneficiary'| translate}}" [style]="{'width':'15%'}">
+                <ng-template let-invoice="rowData" pTemplate="body">{{invoice.beneficiary?.name || ''}}</ng-template>
+            </p-column>
+            <p-column header="{{'invoice.amount'| translate}}" [style]="{'width':'15%'}">
+                <ng-template let-invoice="rowData" pTemplate="body">{{invoice.totalAmount | moneyFormat}}</ng-template>
+            </p-column>
+            <p-column header="{{'status'| translate}}">
+                <ng-template let-invoice="rowData" pTemplate="body">{{invoice.status | getLabel | translate}}</ng-template>
+            </p-column>
+            <p-column header="{{'details'| translate}}">
+                <ng-template let-invoice="rowData" pTemplate="body">
+                    <button type="button" pButton (click)="showInvoiceDetails(invoice)" icon="ui-icon-dehaze"></button>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+        <p-dialog [(visible)]="viewInvoiceDetails" [modal]="true" width="800" [responsive]="true">
+            <div class="card">
+                <div class="card-header h5">{{'invoice.details' | translate}}</div>
+                <div class="card-block">
+                    <div class="row h6">
+                        <label class="col-md-4">{{('invoice.number' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.invoiceNumber}}</label>
+                    </div>
+                    <div class="row h6">
+                        <label class="col-md-4">{{('invoice.type' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.invoiceType.label}}</label>
+                    </div>
+                    <div class="row h6">
+                        <label class="col-md-4">{{('Mention' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.subType?.label || ''}}</label>
+                    </div>
+                    <div class="row h6">
+                        <label class="col-md-4">{{('taxpayer' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.owner.name}}</label>
+                    </div>
+                    <div class="row h6">
+                        <label class="col-md-4">{{('beneficiary' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.beneficiary?.name || ''}}</label>
+                    </div>
+                    <div class="row h6">
+                        <label class="col-md-4">{{('invoice.amount' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.totalAmount | moneyFormat}}</label>
+                    </div>
+                    <div class="row h6">
+                        <label class="col-md-4">{{('paid.amount' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.paidAmount | moneyFormat}}</label>
+                    </div>
+                    <div class="row h6">
+                        <label class="col-md-4">{{('amount.to.pay' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.amountToPay | moneyFormat}}</label>
+                    </div>
+                    <div class="row h6">
+                        <label class="col-md-4">{{('status' | translate) + ' : '}}</label>
+                        <label class="col-md-8">{{currentInvoice?.status | getLabel | translate}}</label>
+                    </div>
+                    <hr/>
+                    <p-dataTable [value]="currentInvoice?.subInvoices" dataKey="id" rows="5" [paginator]="true" [pageLinks]="3" [responsive]="true"
+                    emptyMessage="{{'no.sub.invoice' | translate}}">
+                        <p-header>{{'sub.invoices' | translate}}</p-header>
+                        <p-column field="invoiceNumber" header="{{'invoice.number'| translate}}"></p-column>
+                        <p-column header="{{'beneficiary'| translate}}">
+                            <ng-template let-invoice="rowData" pTemplate="body">{{invoice.beneficiary.name}}</ng-template>
+                        </p-column>
+                        <p-column header="{{'invoice.amount'| translate}}">
+                            <ng-template let-invoice="rowData" pTemplate="body">{{invoice.totalAmount | moneyFormat}}</ng-template>
+                        </p-column>
+                        <p-column header="{{'amount.payed'| translate}}">
+                            <ng-template let-invoice="rowData" pTemplate="body">{{invoice.paidAmount | moneyFormat}}</ng-template>
+                        </p-column>
+                        <p-column header="{{'amount.to.pay'| translate}}">
+                            <ng-template let-invoice="rowData" pTemplate="body">{{invoice.amountToPay | moneyFormat}}</ng-template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+        </p-dialog>
+    </div>
+</div>

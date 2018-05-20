@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="card-header h5">{{'agencies.management' | translate}}</div>
+    <div class="card-block">
+        <div class="row form-group">
+            <label for="bank" class="col-md-4 control-label">{{'bank' | translate}}</label>
+            <div class="col-md-8">
+                <select class="form-control" [(ngModel)]="selectedBank" name="bank" id="bank" (change)="onBankChange($event)">
+                    <option value="{{bank.code}}" *ngFor="let bank of banks">{{bank.name}}</option>
+                </select>
+            </div>
+        </div>
+        <hr/>
+        <app-partners-table [partners]="partners" (onPartnerSave)="onPartnerSave($event)" [partnerType]="'BANK_AGENCY'" [emptyTableTitle]="'no.agency'"
+        [hasBas]="true" [newMsg]="'new.agency'" [headerMsg]="'agencies.list'" [saveMsg]="'agencies.save'"></app-partners-table>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="card">
+    <div class="card-header h5">{{'receipts.monitoring' | translate}}</div>
+    <div class="card-block">
+        <div class="form-group row">
+            <label for="invoicetype" class="col-md-4 col-form-label">{{'invoice.type' | translate}}</label>
+            <div class="col-md-8">
+                <select class="form-control" [(ngModel)]="invoicetype" id="invoicetype" (change)="invoiceTypeChange($event)">
+                    <option value="{{ivt.code}}" *ngFor="let ivt of invoicesTypes">{{ivt.label}}</option>
+                </select>
+            </div>
+        </div>
+        <hr/>
+        <p-dataTable [value]="receipts" dataKey="id" rows="10" [paginator]="true" [pageLinks]="10" [responsive]="true"
+          emptyMessage="{{'no.receipt' | translate}}" [rowsPerPageOptions]="[5,10,20]">
+            <p-header>{{'invoice.type.receipts.list' | translate}}</p-header>
+            <p-column field="number" header="{{'number'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+            <p-column header="{{'Date'| translate}}">
+                <ng-template let-receipt="rowData" pTemplate="body">{{receipt.date}}</ng-template>
+            </p-column>
+            <p-column header="{{'invoice.number'| translate}}">
+                <ng-template let-receipt="rowData" pTemplate="body">{{receipt.invoice.invoiceNumber}}</ng-template>
+            </p-column>
+            <p-column header="{{'invoice.type'| translate}}">
+                <ng-template let-receipt="rowData" pTemplate="body">{{receipt.invoice.invoiceType.label}}</ng-template>
+            </p-column>
+            <p-column header="{{'beneficiary'| translate}}">
+                <ng-template let-receipt="rowData" pTemplate="body">{{receipt.invoice.beneficiary.name}}</ng-template>
+            </p-column>
+        </p-dataTable>
+    </div>
+</div>

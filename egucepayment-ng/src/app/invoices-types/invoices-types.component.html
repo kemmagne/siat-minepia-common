@@ -1,0 +1,165 @@
+<div class="card">
+    <div class="card-header h5">{{'invoice.type.management' | translate}}</div>
+    <div class="card-block">
+        <button type="button" pButton (click)="newInvoiceType()" icon="fa-plus" label="{{'new.invoice.type' | translate}}"></button>
+        <hr/>
+        <p-dataTable [value]="InvoicesTypes" dataKey="code" rows="10" [paginator]="true" [pageLinks]="3" [responsive]="true"
+        emptyMessage="{{'no.ivt' | translate}}" [rowsPerPageOptions]="[5,10]">
+          <p-header>{{'invoice.types.list' | translate}}</p-header>
+          <p-column field="code" header="{{'code.ivt' | translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+          <p-column field="label" header="{{'label.ivt' | translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+          <p-column styleClass="col-button" [style]="{'width':'25%'}">
+              <ng-template let-ivt="rowData" pTemplate="body">
+                  <button type="button" pButton (click)="viewInvoiceType(ivt)" icon="ui-icon-visibility" data-toggle="tooltip" data-placement="top" title="{{'consult.invoice.type' | translate}}"></button>
+                  <button type="button" pButton (click)="editBankAccount(ivt)" icon="ui-icon-edit" data-toggle="tooltip" data-placement="top" title="{{'edit.debit.account' | translate}}"></button>
+                  <button type="button" pButton (click)="addBanks(ivt)" icon="ui-icon-account-balance" data-toggle="tooltip" data-placement="top" title="{{'associate.banks' | translate}}"></button>
+                  <button type="button" pButton (click)="setDecisionMakers(ivt)" icon="ui-icon-person" data-toggle="tooltip" data-placement="top" title="{{'choose.decision.makers' | translate}}"></button>
+                  <button type="button" class="ui-button-danger" pButton (click)="askConfirmDeleteInvoiceType(ivt)" icon="ui-icon-delete-forever" data-toggle="tooltip" data-placement="top" title="{{'delete.invoice.type' | translate}}"></button>
+              </ng-template>
+          </p-column>
+      </p-dataTable>
+
+      <p-growl [(value)]="msgs"></p-growl>
+
+      <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirm" (onConfirm)="onConfirm($event)"></app-confirm-dialog>
+      <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmDelete" (onConfirm)="deleteInvoiceType()"></app-confirm-dialog>
+
+      <!-- dialogue d'édition des types de factures' -->
+      <p-dialog [(visible)]="ivtView" [modal]="true" width="600" [responsive]="true" (onHide)="onDialogHide($event)">
+          <app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>
+            <div class="card">
+                <div class="card-header h5">{{'invoice.type.save' | translate}}</div>
+                <div class="card-block">
+                    <form *ngIf="selectedInvoiceType" #invoiceTypeForm="ngForm" (submit)="showConfirm = true" role="form" class="form-validation">
+                        <div class="row form-group">
+                            <label for="ivtCode" class="col-md-4 control-label">{{'code.ivt' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="ivtCode" [(ngModel)]="selectedInvoiceType.code" [required]="true" name="ivtCode">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="ivtLabel" class="col-md-4 control-label">{{'label.ivt' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="ivtLabel" [(ngModel)]="selectedInvoiceType.label" [required]="true" name="ivtLabel">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="ivtParams" class="col-md-4 control-label">{{'params' | translate}}</label>
+                            <div class="col-md-8">
+                                <textarea type="text" class="form-control" id="ivtParams" [(ngModel)]="selectedInvoiceType.params" name="ivtParams"></textarea>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="beneficiaries" class="col-md-4 control-label">{{'beneficiairies' | translate}}</label>
+                            <div class="col-md-8">
+                                <select class="form-control" multiple [(ngModel)]="beneficiariesCodes" name="beneficiaries" id="beneficiaries">
+                                    <option value="{{benef.code}}" *ngFor="let benef of beneficiaries">{{benef.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="paymentModes" class="col-md-4 control-label">{{'payment.modes' | translate}}</label>
+                            <div class="col-md-8">
+                                <select class="form-control" multiple [(ngModel)]="paymentModesCodes" name="paymentModes" id="paymentModes">
+                                    <option value="{{pm.code}}" *ngFor="let pm of paymentModes">{{pm.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="float-right">
+                            <button *ngIf="!selectedInvoiceType.id" class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                            <button *ngIf="!!selectedInvoiceType.id" class="ui-button-danger" pButton type="button" (click)="selectedInvoiceType=null;ivtView=false" label="{{'cancel' | translate}}" icon="ui-icon-undo"></button>
+                            <button [disabled]="!invoiceTypeForm.valid" pButton type="submit" label="{{'save' | translate}}" icon="ui-icon-save"></button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+      </p-dialog>
+
+      <p-dialog [(visible)]="showSetAccountDialog" [modal]="true" width="800" [responsive]="true">
+            <app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>
+            <div class="card">
+                <div class="card-header h5">{{'invoice.type.debit.account' | translate}}</div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row form-group">
+                                <label class="col-md-4">{{'invoice.type' | translate}}</label>
+                                <label class="col-md-4">{{selectedInvoiceType?.label || ''}}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row form-group">
+                                <label for="beneficiaries" class="col-md-4 control-label">{{'beneficiairies' | translate}}</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" (change)="beneficiaryChange($event)" [(ngModel)]="selectedBeneficiary" name="beneficiaries" id="beneficiaries">
+                                        <option value="{{benef.code}}" *ngFor="let benef of invoicesTypesBenefs">{{benef.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <app-bank-account-table [headerMsg]="'beneficiary.ba.list'" [bankAccounts]="beneficiaryAccounts" [(selectedBankAccount)]="selectedBa" [showAccountInfos]="true"></app-bank-account-table>
+                <hr/>
+                <span class="float-right">
+                    <button class="ui-button-danger" pButton type="button" (click)="selectedInvoiceType=null;showSetAccountDialog=false" label="{{'cancel' | translate}}" icon="ui-icon-undo"></button>
+                    <button pButton type="button" (click)="confirmBankAccount()" label="{{'save' | translate}}" icon="ui-icon-check"></button>
+                </span>
+            </div>
+      </p-dialog>
+
+      <p-dialog [(visible)]="showAddBanksDialog" [modal]="true" width="600" [responsive]="true">
+          <app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>
+          <div class="card">
+              <div class="card-header h5">{{'invoice.type.banks.config' | translate}}</div>
+              <div class="card-block">
+                  <div class="row form-group">
+                      <label class="col-md-4">{{'invoice.type' | translate}}</label>
+                      <label class="col-md-4">{{selectedInvoiceType?.label || ''}}</label>
+                  </div>
+                  <hr/>
+                  <p-dataTable [value]="banks" dataKey="id" rows="5" [paginator]="true" [pageLinks]="3" [responsive]="true"
+                  emptyMessage="{{'no.bank' | translate}}" [rowsPerPageOptions]="[5]" [(selection)]="selectedBanks" [headerCheckboxToggleAllPages]="true">
+                        <p-header>{{'banks.list' | translate}}</p-header>
+                        <p-column [style]="{'width':'40px'}" selectionMode="multiple"></p-column>
+                        <p-column field="code" header="{{'code'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+                        <p-column field="name" header="{{'name'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+                  </p-dataTable>
+                  <hr/>
+                  <span class="float-right">
+                      <button class="ui-button-danger" pButton type="button" (click)="selectedInvoiceType=null;showAddBanksDialog=false" label="{{'cancel' | translate}}" icon="ui-icon-undo"></button>
+                      <button pButton type="button" (click)="confirmBanks()" label="{{'save' | translate}}" icon="ui-icon-check"></button>
+                  </span>
+              </div>
+          </div>
+      </p-dialog>
+
+      <p-dialog [(visible)]="showDecideursDialog" [modal]="true" width="800" [responsive]="true">
+          <app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>
+          <div class="card">
+              <div class="card-header h5">{{'invoice.type.decideurs.config' | translate}}</div>
+              <div class="card-block">
+                  <div class="row form-group">
+                      <label class="col-md-4">{{'invoice.type' | translate}}</label>
+                      <label class="col-md-4">{{selectedInvoiceType?.label || ''}}</label>
+                  </div>
+                  <hr/>
+                  <p-dataTable [value]="decideurs" dataKey="id" rows="5" [paginator]="true" [pageLinks]="3" [responsive]="true"
+                  emptyMessage="{{'no.decision.maker' | translate}}" [rowsPerPageOptions]="[5]" [(selection)]="selectedDecideurs" [headerCheckboxToggleAllPages]="true">
+                        <p-header>{{'decision.makers.list' | translate}}</p-header>
+                        <p-column [style]="{'width':'5%'}" selectionMode="multiple"></p-column>
+                        <p-column field="login" header="{{'Login'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+                        <p-column field="firstName" header="{{'first.name'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+                        <p-column field="lastName" header="{{'last.name'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+                  </p-dataTable>
+                  <hr/>
+                  <span class="float-right">
+                      <button class="ui-button-danger" pButton type="button" (click)="selectedInvoiceType=null;showDecideursDialog=false" label="{{'cancel' | translate}}" icon="ui-icon-undo"></button>
+                      <button pButton type="button" (click)="confirmDecisionMakers()" label="{{'save' | translate}}" icon="ui-icon-check"></button>
+                  </span>
+              </div>
+          </div>
+      </p-dialog>
+    </div>
+</div>

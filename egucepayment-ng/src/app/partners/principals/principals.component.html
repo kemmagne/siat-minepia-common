@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="card-header h5">{{'principals.management' | translate}}</div>
+    <div class="card-block">
+        <p-fieldset legend="{{'filtres' | translate}}" [toggleable]="true">
+            <form (submit)="search()" role="form" class="form-validation">
+                <div class="row form-group">
+                    <label for="partnerCode" class="col-md-2 control-label">{{'Code' | translate}}</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="partnerCode" [(ngModel)]="partnerCode" name="partnerCode">
+                    </div>
+                    <label for="taxPayerNumber" class="col-md-2 control-label">{{'taxpayernumber' | translate}}</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="taxPayerNumber" [(ngModel)]="taxPayerNumber" name="taxPayerNumber">
+                    </div>
+                </div>
+                    <span class="float-right">
+                        <button pButton type="submit" label="{{'search' | translate}}" icon="ui-icon-search"></button>
+                        <button pButton type="button" (click)="countPrincipals()" label="{{'reset' | translate}}" icon="ui-icon-cached"></button>
+                    </span>
+            </form>
+        </p-fieldset>
+        <hr/>
+        <app-partners-table [partners]="partners" (onPartnerSave)="onPartnerSave()" [nbPartners]="nbPartners" [lazy]="true"
+        (onLazyLoad)="onLazyLoad($event)" [partnerType]="'PRINCIPAL'" [emptyTableTitle]="'no.principal'" [hasBas]="true"
+        [newMsg]="'new.principal'" [headerMsg]="'principals.list'" [saveMsg]="'principals.save'"></app-partners-table>
+    </div>
+</div>

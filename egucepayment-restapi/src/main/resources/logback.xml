@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg %n %F line: %L %n
+            </Pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/egucepayment.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <FileNamePattern>${catalina.base}/logs/egucepayment.log.%d{yyyy-MM-dd}</FileNamePattern>
+
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger [%F line: %L] - %msg %n %ex{full}</Pattern>
+        </encoder>
+    </appender>
+    <appender name="hibernateDailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${catalina.base}/logs/egucepayment_hibernate.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <FileNamePattern>${catalina.base}/logs/egucepayment_hibernate.log.%d{yyyy-MM-dd}</FileNamePattern>
+
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <!-- <filter class="org.guce.siat.web.common.util.LogbackFilter" /> -->
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger [%F line: %L] - %msg %n %ex{full}</Pattern>
+        </encoder>
+    </appender>
+    <logger name="org.guce.epayment" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="dailyRollingFileAppender" />
+        <!-- appender-ref ref="consoleAppender" /-->
+    </logger>
+    <logger name="org.hibernate" additivity="false">
+        <level value="WARN" />
+        <appender-ref ref="hibernateDailyRollingFileAppender" />
+    </logger>
+    <!--logger name="org.hibernate.id" additivity="false">
+            <level value="DEBUG" />
+            <appender-ref ref="hibernateDailyRollingFileAppender" />
+    </logger>
+    <logger name="org.hibernate.type" additivity="false">
+            <level value="TRACE" />
+            <appender-ref ref="hibernateDailyRollingFileAppender" />
+    </logger>
+    <logger name="org.hibernate.cache" additivity="false">
+            <level value="ERROR" />
+            <appender-ref ref="hibernateDailyRollingFileAppender" />
+            <appender-ref ref="consoleAppender" />
+    </logger-->
+    <logger name="com.jolbox.bonecp" additivity="false">
+        <level value="WARN" />
+        <appender-ref ref="hibernateDailyRollingFileAppender" />
+        <!-- appender-ref ref="consoleAppender" /-->
+    </logger>
+
+    <logger name="org.springframework.jms.listener" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="dailyRollingFileAppender" />
+        <!-- appender-ref ref="consoleAppender" /-->
+    </logger>
+
+    <root>
+        <level value="INFO" />
+        <!-- appender-ref ref="consoleAppender" /-->
+        <appender-ref ref="dailyRollingFileAppender" />
+        <!--<appender-ref ref="hibernateDailyRollingFileAppender" />-->
+    </root>
+</configuration>

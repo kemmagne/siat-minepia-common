@@ -1,0 +1,7 @@
+<div class="card">
+    <div class="card-header h5">{{'to.acknowled' | translate}}</div>
+    <div class="card-block">
+        <app-transfer-orders-table [transferOrders]="transferOrders" [rows]="10" [pageLinks]="10" [rowsPerPageOptions]="[5,10,20,30]"
+        [lazy]="true" [total]="nbTransferOrders" (onLazyLoad)="onLazyLoad($event)" [headerMsg]="'to.acknowled.list'"></app-transfer-orders-table>
+    </div>
+</div>

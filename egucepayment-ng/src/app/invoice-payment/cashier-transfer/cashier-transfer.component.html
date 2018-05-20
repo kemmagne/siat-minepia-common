@@ -1,0 +1,80 @@
+<!--<app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>-->
+<div class="card">
+    <div class="card-header h5">{{'invoices.selection' | translate}}</div>
+    <div class="card-block">
+        <app-invoice-search [(invoicesFound)]="invoicesFound" [pms]="'CASH,CHECK,COUNTER_TRANSFER'"></app-invoice-search>
+    </div>
+</div>
+
+<!-- Dialogue d'affichage des factures trouvées -->
+<p-dialog [(visible)]="!!invoicesFound" [modal]="true" width="1000" [responsive]="true">
+    <div class="card">
+        <div class="card-header h5">{{invoicesFound?.length + ' '}} {{'invoices.found' | translate}}</div>
+        <div class="card-block">
+            <app-invoice-table [(invoices)]="invoicesFound" [(invoicesToPay)]="invoicesToPay" [(totalAmount)]="totalAmount" [add]="true" (onInvoicesSelected)="invoicesFound=null"></app-invoice-table>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- Affichage des factures sélectionnées -->
+<div class="card">
+    <div class="card-header h5">
+        {{'selected.invoices' | translate}}
+        <span class="float-right">{{'total.amount' | translate}} : {{totalAmount | moneyFormat}}</span>
+    </div>
+    <div class="card-block">
+        <app-invoice-table [(invoices)]="invoicesToPay" [(invoicesToPay)]="invoicesToPay" [(totalAmount)]="totalAmount" [delete]="true" [hideSubInvoices]="false" [hideStatus]="true"></app-invoice-table>
+    </div>
+</div>
+
+<!-- ordre de virement
+<app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert> -->
+<div class="card">
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="col-md-4 col-form-label">{{'payment.mode' | translate}}</label>
+                    <div class="col-md-8">
+                        <select class="form-control" [(ngModel)]="selectedPaymentMode" (change)="paymentModeChange($event)">
+                            <option value="{{pm.code}}" *ngFor="let pm of paymentModes">{{pm.label | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label for="partnerRef" class="col-md-4 col-form-label">{{partnerRefLabel | translate}}</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" [(ngModel)]="partnerRef" id="partnerRef" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-2 control-form-label">{{'debit.agency' | translate}}</label>
+            <div class="col-md-3">
+                <input class="form-control" [readonly]="true" type="text" value="{{selectedBankAccount?.agencyCode || ''}}" />
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" [readonly]="true" type="text" value="{{selectedBankAccount?.agencyLabel || ''}}" />
+            </div>
+            <button pButton type="button" (click)="findBankAccounts()" icon="ui-icon-visibility"></button>
+        </div>
+        <p-dialog [(visible)]="!!bankAccounts" [modal]="true" width="800" [responsive]="true">
+            <div class="card">
+                <div class="card-header h5">{{'bank.agencies' | translate}}</div>
+                <div class="card-block">
+                    <app-bank-account-table [bankAccounts]="bankAccounts" [(selectedBankAccount)]="selectedBankAccount" [headerMsg]="'select.debit.Agency'" (onBaSelected)="bankAccounts=null"></app-bank-account-table>
+                </div>
+            </div>
+        </p-dialog>
+        <hr/>
+        <app-confirm-dialog [contentText]="'confirm.reset.pay.form'" [(display)]="showResetDialog" (onConfirm)="showResetConfirmationDialog($event)"></app-confirm-dialog>
+        <app-confirm-dialog [contentText]="'confirm.validate.payment'" [(display)]="showValidationDialog" (onConfirm)="showValidationConfirmationDialog($event)"></app-confirm-dialog>
+        <span class="float-right">
+            <button class="ui-button-danger" pButton type="button" (click)="showResetDialog=true" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+            <button [disabled]="!canValidPayment()" pButton type="button" (click)="showValidationDialog=true" label="{{'validate' | translate}}" icon="ui-icon-check"></button>
+        </span>
+    </div>
+</div>

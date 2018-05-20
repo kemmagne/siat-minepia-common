@@ -1,0 +1,831 @@
+2018-05-11 18:05:38 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 18:05:38 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6328d34a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@145eaa29, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8b96fde, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2d2e5f00, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4c40b76e] 
+ 2018-05-11 18:05:38 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:05:38 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:05:40 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:05:46 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:05:47 [main] WARN  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 557] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional org.guce.epayment.repositories.UserRepository.findOne(java.math.BigDecimal)! No property findOne found for type User! 
+ 2018-05-11 18:05:47 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:05:47 [main] ERROR org.springframework.test.context.TestContextManager [TestContextManager.java line: 246] - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea] to prepare test instance [org.guce.epayment.repositories.RepositoriesTest@4a2929a4] 
+ java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:107)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:242)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional org.guce.epayment.repositories.UserRepository.findOne(java.math.BigDecimal)! No property findOne found for type User!
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1710)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:583)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:502)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:312)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$13/1529060733.getObject(Unknown Source)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:310)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:742)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:868)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:128)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:246)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 31 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional org.guce.epayment.repositories.UserRepository.findOne(java.math.BigDecimal)! No property findOne found for type User!
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:82)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:103)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:208)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:79)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lookupQuery(RepositoryFactorySupport.java:553)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lambda$mapMethodsToQuery$1(RepositoryFactorySupport.java:546)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor$$Lambda$236/1825811850.apply(Unknown Source)
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+	at java.util.Iterator.forEachRemaining(Iterator.java:116)
+	at java.util.Collections$UnmodifiableCollection$1.forEachRemaining(Collections.java:1049)
+	at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:512)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:502)
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.mapMethodsToQuery(RepositoryFactorySupport.java:548)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lambda$new$0(RepositoryFactorySupport.java:538)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor$$Lambda$232/927159199.apply(Unknown Source)
+	at java.util.Optional.map(Optional.java:215)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.<init>(RepositoryFactorySupport.java:538)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:317)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$3(RepositoryFactoryBeanSupport.java:287)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport$$Lambda$200/1755634886.get(Unknown Source)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:141)
+	at org.springframework.data.util.Lazy.get(Lazy.java:63)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:290)
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:102)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1706)
+	... 47 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property findOne found for type User!
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:92)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:356)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:332)
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:285)
+	at org.springframework.data.mapping.PropertyPath$$Lambda$257/1937575946.apply(Unknown Source)
+	at java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:324)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:267)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:250)
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:250)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart$$Lambda$256/2070372626.apply(Unknown Source)
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:512)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:502)
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:251)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:380)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate$$Lambda$254/1208670252.apply(Unknown Source)
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:512)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:502)
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:381)
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:93)
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:76)
+	... 76 common frames omitted
+2018-05-11 18:07:55 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 18:07:55 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6328d34a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@145eaa29, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8b96fde, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2d2e5f00, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4c40b76e] 
+ 2018-05-11 18:07:55 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:07:55 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:07:57 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:08:02 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:08:04 [main] WARN  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 557] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'credentialsRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional org.guce.epayment.repositories.CredentialsRepository.findOne(java.math.BigDecimal)! No property findOne found for type Credentials! 
+ 2018-05-11 18:08:04 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:08:04 [main] ERROR org.springframework.test.context.TestContextManager [TestContextManager.java line: 246] - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea] to prepare test instance [org.guce.epayment.repositories.RepositoriesTest@1e60b459] 
+ java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:107)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:242)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'credentialsRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional org.guce.epayment.repositories.CredentialsRepository.findOne(java.math.BigDecimal)! No property findOne found for type Credentials!
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1710)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:583)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:502)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:312)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$13/7967307.getObject(Unknown Source)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:310)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:742)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:868)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:128)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:246)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 31 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional org.guce.epayment.repositories.CredentialsRepository.findOne(java.math.BigDecimal)! No property findOne found for type Credentials!
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:82)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:103)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:208)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:79)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lookupQuery(RepositoryFactorySupport.java:553)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lambda$mapMethodsToQuery$1(RepositoryFactorySupport.java:546)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor$$Lambda$240/1181205697.apply(Unknown Source)
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+	at java.util.Iterator.forEachRemaining(Iterator.java:116)
+	at java.util.Collections$UnmodifiableCollection$1.forEachRemaining(Collections.java:1049)
+	at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:512)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:502)
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.mapMethodsToQuery(RepositoryFactorySupport.java:548)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.lambda$new$0(RepositoryFactorySupport.java:538)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor$$Lambda$236/386478079.apply(Unknown Source)
+	at java.util.Optional.map(Optional.java:215)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.<init>(RepositoryFactorySupport.java:538)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:317)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$3(RepositoryFactoryBeanSupport.java:287)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport$$Lambda$204/5933746.get(Unknown Source)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:141)
+	at org.springframework.data.util.Lazy.get(Lazy.java:63)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:290)
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:102)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1706)
+	... 47 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property findOne found for type Credentials!
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:92)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:356)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:332)
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:285)
+	at org.springframework.data.mapping.PropertyPath$$Lambda$261/2078396010.apply(Unknown Source)
+	at java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:324)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:267)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:250)
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:250)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart$$Lambda$260/1991537156.apply(Unknown Source)
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:512)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:502)
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:251)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:380)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate$$Lambda$258/301552475.apply(Unknown Source)
+	at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+	at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+	at java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:512)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:502)
+	at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:499)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:381)
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:93)
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:76)
+	... 76 common frames omitted
+2018-05-11 18:11:24 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 18:11:24 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6328d34a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@145eaa29, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8b96fde, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2d2e5f00, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4c40b76e] 
+ 2018-05-11 18:11:24 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:11:24 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:11:26 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:11:30 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:11:32 [main] INFO  org.springframework.security.web.DefaultSecurityFilterChain [DefaultSecurityFilterChain.java line: 43] - Creating filter chain: org.springframework.security.web.util.matcher.AnyRequestMatcher@1, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@35ef439e, org.springframework.security.web.context.SecurityContextPersistenceFilter@6215366a, org.springframework.security.web.header.HeaderWriterFilter@3472947a, org.springframework.security.web.authentication.logout.LogoutFilter@26ca61bf, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@36e43829, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@68dd39d2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4997552e, org.springframework.security.web.session.SessionManagementFilter@31a2a9fa, org.springframework.security.web.access.ExceptionTranslationFilter@78422efb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6dd36ab6] 
+ 2018-05-11 18:11:33 [main] INFO  org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping [AbstractHandlerMethodMapping.java line: 549] - Mapped "{[/hello/{player}]}" onto public org.guce.epayment.Message org.guce.epayment.TestController.message(java.lang.String) 
+ 2018-05-11 18:11:33 [main] INFO  org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping [AbstractHandlerMethodMapping.java line: 549] - Mapped "{[/hello]}" onto public java.lang.String org.guce.epayment.TestController.welcome() 
+ 2018-05-11 18:11:33 [main] WARN  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 557] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'resourceHandlerMapping' defined in org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.servlet.HandlerMapping]: Factory method 'resourceHandlerMapping' threw exception; nested exception is java.lang.IllegalStateException: No ServletContext set 
+ 2018-05-11 18:11:33 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:11:33 [main] ERROR org.springframework.test.context.TestContextManager [TestContextManager.java line: 246] - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea] to prepare test instance [org.guce.epayment.repositories.RepositoriesTest@2e43c38d] 
+ java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:107)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:242)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'resourceHandlerMapping' defined in org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.servlet.HandlerMapping]: Factory method 'resourceHandlerMapping' threw exception; nested exception is java.lang.IllegalStateException: No ServletContext set
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:587)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1250)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1099)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:545)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:502)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:312)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$13/7967307.getObject(Unknown Source)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:310)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:758)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:868)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:128)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:246)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 31 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.servlet.HandlerMapping]: Factory method 'resourceHandlerMapping' threw exception; nested exception is java.lang.IllegalStateException: No ServletContext set
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:185)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:579)
+	... 49 common frames omitted
+Caused by: java.lang.IllegalStateException: No ServletContext set
+	at org.springframework.util.Assert.state(Assert.java:73)
+	at org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport.resourceHandlerMapping(WebMvcConfigurationSupport.java:485)
+	at org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration$$EnhancerBySpringCGLIB$$b9e4743.CGLIB$resourceHandlerMapping$33(<generated>)
+	at org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration$$EnhancerBySpringCGLIB$$b9e4743$$FastClassBySpringCGLIB$$495435c8.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:228)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:361)
+	at org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration$$EnhancerBySpringCGLIB$$b9e4743.resourceHandlerMapping(<generated>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154)
+	... 50 common frames omitted
+2018-05-11 18:12:34 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 18:12:34 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6328d34a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@145eaa29, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8b96fde, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2d2e5f00, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4c40b76e] 
+ 2018-05-11 18:12:34 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:12:34 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:12:35 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:12:40 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:12:41 [Thread-2] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 989] - Closing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:12:34 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:12:41 [Thread-2] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:49:57 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 18:49:57 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6328d34a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@145eaa29, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8b96fde, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2d2e5f00, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4c40b76e] 
+ 2018-05-11 18:49:57 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:49:57 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:49:59 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:50:03 [main] WARN  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 557] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in org.guce.epayment.config.DataBaseConfig: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory 
+ 2018-05-11 18:50:04 [main] ERROR org.springframework.test.context.TestContextManager [TestContextManager.java line: 246] - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea] to prepare test instance [org.guce.epayment.repositories.RepositoriesTest@34819867] 
+ java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:107)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:242)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in org.guce.epayment.config.DataBaseConfig: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1710)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:583)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:502)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:312)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$13/609962972.getObject(Unknown Source)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:310)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1085)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:858)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:128)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:246)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 31 common frames omitted
+Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.persistenceException(EntityManagerFactoryBuilderImpl.java:970)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:895)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:387)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1706)
+	... 47 common frames omitted
+Caused by: org.hibernate.exception.SQLGrammarException: Unable to build DatabaseInformation
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:63)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:111)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:97)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:140)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:183)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:72)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:312)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:462)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:892)
+	... 54 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: ORA-00942: Table ou vue inexistante
+
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:447)
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:396)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:951)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:513)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:227)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:531)
+	at oracle.jdbc.driver.T4CStatement.doOall8(T4CStatement.java:195)
+	at oracle.jdbc.driver.T4CStatement.executeForDescribe(T4CStatement.java:876)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:1175)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1296)
+	at oracle.jdbc.driver.OracleStatement.executeQuery(OracleStatement.java:1498)
+	at oracle.jdbc.driver.OracleStatementWrapper.executeQuery(OracleStatementWrapper.java:406)
+	at com.jolbox.bonecp.StatementHandle.executeQuery(StatementHandle.java:464)
+	at org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorLegacyImpl.extractMetadata(SequenceInformationExtractorLegacyImpl.java:42)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.initializeSequences(DatabaseInformationImpl.java:65)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.<init>(DatabaseInformationImpl.java:59)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:132)
+	... 60 common frames omitted
+2018-05-11 18:51:36 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 18:51:36 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6328d34a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@145eaa29, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8b96fde, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2d2e5f00, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4c40b76e] 
+ 2018-05-11 18:51:37 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:51:37 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:51:38 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:51:41 [main] WARN  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 557] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in org.guce.epayment.config.DataBaseConfig: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory 
+ 2018-05-11 18:51:42 [main] ERROR org.springframework.test.context.TestContextManager [TestContextManager.java line: 246] - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea] to prepare test instance [org.guce.epayment.repositories.RepositoriesTest@4ca8dbfa] 
+ java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:107)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:242)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in org.guce.epayment.config.DataBaseConfig: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1710)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:583)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:502)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:312)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$13/1529060733.getObject(Unknown Source)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:310)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1085)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:858)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:128)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:246)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 31 common frames omitted
+Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.persistenceException(EntityManagerFactoryBuilderImpl.java:970)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:895)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:387)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1706)
+	... 47 common frames omitted
+Caused by: org.hibernate.exception.SQLGrammarException: Unable to build DatabaseInformation
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:63)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:111)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:97)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:140)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:183)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:72)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:312)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:462)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:892)
+	... 54 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: ORA-00942: Table ou vue inexistante
+
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:447)
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:396)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:951)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:513)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:227)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:531)
+	at oracle.jdbc.driver.T4CStatement.doOall8(T4CStatement.java:195)
+	at oracle.jdbc.driver.T4CStatement.executeForDescribe(T4CStatement.java:876)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:1175)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1296)
+	at oracle.jdbc.driver.OracleStatement.executeQuery(OracleStatement.java:1498)
+	at oracle.jdbc.driver.OracleStatementWrapper.executeQuery(OracleStatementWrapper.java:406)
+	at com.jolbox.bonecp.StatementHandle.executeQuery(StatementHandle.java:464)
+	at org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorLegacyImpl.extractMetadata(SequenceInformationExtractorLegacyImpl.java:42)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.initializeSequences(DatabaseInformationImpl.java:65)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.<init>(DatabaseInformationImpl.java:59)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:132)
+	... 60 common frames omitted
+2018-05-11 18:52:52 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 18:52:52 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6328d34a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@145eaa29, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8b96fde, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2d2e5f00, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4c40b76e] 
+ 2018-05-11 18:52:52 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:52:52 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:52:53 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:52:57 [main] WARN  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 557] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in org.guce.epayment.config.DataBaseConfig: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory 
+ 2018-05-11 18:52:57 [main] ERROR org.springframework.test.context.TestContextManager [TestContextManager.java line: 246] - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea] to prepare test instance [org.guce.epayment.repositories.RepositoriesTest@34819867] 
+ java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:107)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:242)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in org.guce.epayment.config.DataBaseConfig: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1710)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:583)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:502)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:312)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$13/609962972.getObject(Unknown Source)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:310)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1085)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:858)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:128)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:246)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 31 common frames omitted
+Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.persistenceException(EntityManagerFactoryBuilderImpl.java:970)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:895)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:387)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1706)
+	... 47 common frames omitted
+Caused by: org.hibernate.exception.SQLGrammarException: Unable to build DatabaseInformation
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:63)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:111)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:97)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:140)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:183)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:72)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:312)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:462)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:892)
+	... 54 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: ORA-00942: Table ou vue inexistante
+
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:447)
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:396)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:951)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:513)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:227)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:531)
+	at oracle.jdbc.driver.T4CStatement.doOall8(T4CStatement.java:195)
+	at oracle.jdbc.driver.T4CStatement.executeForDescribe(T4CStatement.java:876)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:1175)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1296)
+	at oracle.jdbc.driver.OracleStatement.executeQuery(OracleStatement.java:1498)
+	at oracle.jdbc.driver.OracleStatementWrapper.executeQuery(OracleStatementWrapper.java:406)
+	at com.jolbox.bonecp.StatementHandle.executeQuery(StatementHandle.java:464)
+	at org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorLegacyImpl.extractMetadata(SequenceInformationExtractorLegacyImpl.java:42)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.initializeSequences(DatabaseInformationImpl.java:65)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.<init>(DatabaseInformationImpl.java:59)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:132)
+	... 60 common frames omitted
+2018-05-11 18:57:11 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 18:57:11 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@6328d34a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@145eaa29, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextTestExecutionListener@8b96fde, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2d2e5f00, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4c40b76e] 
+ 2018-05-11 18:57:11 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:57:11 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:57:12 [main] INFO  org.springframework.jdbc.datasource.DriverManagerDataSource [DriverManagerDataSource.java line: 133] - Loaded JDBC driver: org.hsqldb.jdbcDriver 
+ 2018-05-11 18:57:13 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [mode.sql] 
+ 2018-05-11 18:57:13 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [mode.sql] in 8 ms. 
+ 2018-05-11 18:57:13 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [sample_data_test.sql] 
+ 2018-05-11 18:57:13 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [sample_data_test.sql] in 0 ms. 
+ 2018-05-11 18:57:13 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:57:15 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 18:57:17 [Thread-1] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 989] - Closing org.springframework.context.support.GenericApplicationContext@21507a04: startup date [Fri May 11 18:57:11 WAT 2018]; root of context hierarchy 
+ 2018-05-11 18:57:17 [Thread-1] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:04:16 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 19:04:16 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 2018-05-11 19:04:16 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:04:16 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:04:17 [main] INFO  org.springframework.jdbc.datasource.DriverManagerDataSource [DriverManagerDataSource.java line: 133] - Loaded JDBC driver: org.hsqldb.jdbcDriver 
+ 2018-05-11 19:04:18 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [mode.sql] 
+ 2018-05-11 19:04:18 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [mode.sql] in 10 ms. 
+ 2018-05-11 19:04:18 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [sample_data_test.sql] 
+ 2018-05-11 19:04:18 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [sample_data_test.sql] in 4 ms. 
+ 2018-05-11 19:04:18 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:04:20 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:04:22 [Thread-1] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 989] - Closing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:04:16 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:04:22 [Thread-1] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:05:53 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 19:05:54 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 2018-05-11 19:05:54 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:05:54 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:05:55 [main] INFO  org.springframework.jdbc.datasource.DriverManagerDataSource [DriverManagerDataSource.java line: 133] - Loaded JDBC driver: org.hsqldb.jdbcDriver 
+ 2018-05-11 19:05:56 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [mode.sql] 
+ 2018-05-11 19:05:56 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [mode.sql] in 9 ms. 
+ 2018-05-11 19:05:56 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [sample_data_test.sql] 
+ 2018-05-11 19:05:56 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [sample_data_test.sql] in 4 ms. 
+ 2018-05-11 19:05:56 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:05:59 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:06:01 [Thread-1] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 989] - Closing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:05:54 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:06:01 [Thread-1] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:06:49 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 19:06:49 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 2018-05-11 19:06:49 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:06:49 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:06:50 [main] INFO  org.springframework.jdbc.datasource.DriverManagerDataSource [DriverManagerDataSource.java line: 133] - Loaded JDBC driver: org.hsqldb.jdbcDriver 
+ 2018-05-11 19:06:50 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [mode.sql] 
+ 2018-05-11 19:06:50 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [mode.sql] in 7 ms. 
+ 2018-05-11 19:06:50 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [sample_data_test.sql] 
+ 2018-05-11 19:06:50 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [sample_data_test.sql] in 4 ms. 
+ 2018-05-11 19:06:51 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:06:53 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:06:55 [Thread-1] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 989] - Closing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:06:49 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:06:55 [Thread-1] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:16:16 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 19:16:16 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 2018-05-11 19:16:17 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:16:17 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:16:18 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:16:21 [main] WARN  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 557] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in org.guce.epayment.config.DataBaseConfig: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory 
+ 2018-05-11 19:16:21 [main] ERROR org.springframework.test.context.TestContextManager [TestContextManager.java line: 246] - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00] to prepare test instance [org.guce.epayment.repositories.RepositoriesTest@45d64d27] 
+ java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:107)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:242)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:227)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:289)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:291)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:246)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in org.guce.epayment.config.DataBaseConfig: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1710)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:583)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:502)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:312)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$13/371800738.getObject(Unknown Source)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:228)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:310)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1085)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:858)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:549)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:128)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:246)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:99)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:117)
+	... 31 common frames omitted
+Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.persistenceException(EntityManagerFactoryBuilderImpl.java:970)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:895)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:387)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1706)
+	... 47 common frames omitted
+Caused by: org.hibernate.exception.SQLGrammarException: Unable to build DatabaseInformation
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:63)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:111)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:97)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:140)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:183)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:72)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:312)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:462)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:892)
+	... 54 common frames omitted
+Caused by: java.sql.SQLSyntaxErrorException: ORA-00942: Table ou vue inexistante
+
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:447)
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:396)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:951)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:513)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:227)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:531)
+	at oracle.jdbc.driver.T4CStatement.doOall8(T4CStatement.java:195)
+	at oracle.jdbc.driver.T4CStatement.executeForDescribe(T4CStatement.java:876)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:1175)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1296)
+	at oracle.jdbc.driver.OracleStatement.executeQuery(OracleStatement.java:1498)
+	at oracle.jdbc.driver.OracleStatementWrapper.executeQuery(OracleStatementWrapper.java:406)
+	at com.jolbox.bonecp.StatementHandle.executeQuery(StatementHandle.java:464)
+	at org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorLegacyImpl.extractMetadata(SequenceInformationExtractorLegacyImpl.java:42)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.initializeSequences(DatabaseInformationImpl.java:65)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.<init>(DatabaseInformationImpl.java:59)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:132)
+	... 60 common frames omitted
+2018-05-11 19:17:10 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 19:17:10 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 2018-05-11 19:17:11 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:17:11 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:17:12 [main] INFO  org.springframework.jdbc.datasource.DriverManagerDataSource [DriverManagerDataSource.java line: 133] - Loaded JDBC driver: org.hsqldb.jdbcDriver 
+ 2018-05-11 19:17:12 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [mode.sql] 
+ 2018-05-11 19:17:12 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [mode.sql] in 9 ms. 
+ 2018-05-11 19:17:12 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [sample_data_test.sql] 
+ 2018-05-11 19:17:12 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [sample_data_test.sql] in 2 ms. 
+ 2018-05-11 19:17:13 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:17:15 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:17:17 [Thread-1] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 989] - Closing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:17:11 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:17:17 [Thread-1] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:18:09 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 19:18:09 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 2018-05-11 19:18:09 [main] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 589] - Refreshing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:18:09 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:18:10 [main] INFO  org.springframework.jdbc.datasource.DriverManagerDataSource [DriverManagerDataSource.java line: 133] - Loaded JDBC driver: org.hsqldb.jdbcDriver 
+ 2018-05-11 19:18:11 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [mode.sql] 
+ 2018-05-11 19:18:11 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [mode.sql] in 7 ms. 
+ 2018-05-11 19:18:11 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 442] - Executing SQL script from class path resource [sample_data_test.sql] 
+ 2018-05-11 19:18:11 [main] INFO  org.springframework.jdbc.datasource.init.ScriptUtils [ScriptUtils.java line: 508] - Executed SQL script from class path resource [sample_data_test.sql] in 3 ms. 
+ 2018-05-11 19:18:11 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [LocalContainerEntityManagerFactoryBean.java line: 361] - Building JPA container EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:18:13 [main] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 393] - Initialized JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:18:15 [Thread-1] INFO  org.springframework.context.support.GenericApplicationContext [AbstractApplicationContext.java line: 989] - Closing org.springframework.context.support.GenericApplicationContext@436a4e4b: startup date [Fri May 11 19:18:09 WAT 2018]; root of context hierarchy 
+ 2018-05-11 19:18:15 [Thread-1] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [AbstractEntityManagerFactoryBean.java line: 571] - Closing JPA EntityManagerFactory for persistence unit 'default' 
+ 2018-05-11 19:20:28 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 19:20:29 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 2018-05-11 20:41:02 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 20:41:02 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 2018-05-11 22:15:09 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 257] - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] 
+ 2018-05-11 22:15:09 [main] INFO  org.springframework.test.context.support.DefaultTestContextBootstrapper [AbstractTestContextBootstrapper.java line: 184] - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@15bb6bea, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@8b96fde, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@2d2e5f00, org.springframework.test.context.support.DirtiesContextTestExecutionListener@4c40b76e, org.springframework.test.context.transaction.TransactionalTestExecutionListener@2ea6137, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@41ee392b] 
+ 

@@ -1,0 +1,82 @@
+<div class="card">
+    <div class="card-header h5">{{'invoices.selection' | translate}}</div>
+    <div class="card-block">
+        <app-invoice-search [(invoicesFound)]="invoicesFound" [pms]="'PRINCIPAL_TRANSFER'"></app-invoice-search>
+    </div>
+</div>
+
+<!-- Dialogue d'affichage des factures trouvées -->
+<p-dialog [(visible)]="!!invoicesFound" [modal]="true" width="1000" [responsive]="true">
+    <div class="card">
+        <div class="card-header h5">{{invoicesFound?.length + ' '}} {{'invoices.found' | translate}}</div>
+        <div class="card-block">
+            <app-invoice-table [manyTaxPayers]="true" [(invoices)]="invoicesFound" [(invoicesToPay)]="invoicesToPay" [(totalAmount)]="totalAmount" [add]="true"></app-invoice-table>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- Affichage des factures sélectionnées -->
+<div class="card">
+    <div class="card-header h5">
+        {{'selected.invoices' | translate}}
+        <span class="float-right">{{'total.amount' | translate}} : {{totalAmount | moneyFormat}}</span>
+    </div>
+    <div class="card-block">
+        <app-invoice-table [(invoices)]="invoicesToPay" [(invoicesToPay)]="invoicesToPay" [(totalAmount)]="totalAmount" [delete]="true" [hideStatus]="true"></app-invoice-table>
+    </div>
+</div>
+
+<!-- ordre de virement -->
+<div class="card">
+    <div class="card-block">
+        <div class="card-header h6">{{'debit.account' | translate}}</div>
+        <div class="mt-3"></div>
+        <div class="form-group row">
+            <label class="col-md-2 control-form-label">{{'bank.code' | translate}}</label>
+            <div class="col-md-2">
+                <input class="form-control" [readonly]="true" type="text" value="{{debitAccount?.bankCode || ''}}" />
+            </div>
+            <label class="col-md-2 control-form-label">{{'bank.label' | translate}}</label>
+            <div class="col-md-6">
+                <input class="form-control" [readonly]="true" type="text" value="{{debitAccount?.bankLabel || ''}}" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 control-form-label">{{'agency.code' | translate}}</label>
+            <div class="col-md-2">
+                <input class="form-control" [readonly]="true" type="text" value="{{debitAccount?.agencyCode || ''}}" />
+            </div>
+            <label class="col-md-2 control-form-label">{{'agency.label' | translate}}</label>
+            <div class="col-md-6">
+                <input class="form-control" [readonly]="true" type="text" value="{{debitAccount?.agencyLabel || ''}}" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 control-form-label">{{'account.number' | translate}}</label>
+            <div class="col-md-5">
+                <input class="form-control" [readonly]="true" type="text" value="{{debitAccount?.accountNumber || ''}}" />
+            </div>
+            <label class="col-md-2 control-form-label">{{'account.key' | translate}}</label>
+            <div class="col-md-2">
+                <input class="form-control" [readonly]="true" type="text" value="{{debitAccount?.accountKey || ''}}" />
+            </div>
+            <button pButton type="button" (click)="findBankAccounts()" icon="ui-icon-visibility"></button>
+        </div>
+        <p-dialog [(visible)]="bankAccounts" [modal]="true" width="800" [responsive]="true">
+            <div class="card">
+                <div class="card-header h5">{{'principals.bas.list' | translate}}</div>
+                <div class="card-block">
+                    <app-bank-account-table [bankAccounts]="bankAccounts" [(selectedBankAccount)]="debitAccount" [headerMsg]="'select.debit.account'"
+                    (onBaSelected)="bankAccounts=null" [showAccountInfos]="true"></app-bank-account-table>
+                </div>
+            </div>
+        </p-dialog>
+        <hr/>
+        <app-confirm-dialog [contentText]="'confirm.reset.pay.form'" [(display)]="showResetDialog" (onConfirm)="showResetConfirmationDialog($event)"></app-confirm-dialog>
+        <app-confirm-dialog [contentText]="'confirm.validate.payment'" [(display)]="showValidationDialog" (onConfirm)="showValidationConfirmationDialog($event)"></app-confirm-dialog>
+        <span class="float-right">
+            <button class="ui-button-danger" pButton type="button" (click)="showResetDialog=true" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+            <button [disabled]="!canValidPayment()" class="guce-blue" pButton type="button" (click)="showValidationDialog=true" label="{{'validate' | translate}}" icon="ui-icon-check"></button>
+        </span>
+    </div>
+</div>

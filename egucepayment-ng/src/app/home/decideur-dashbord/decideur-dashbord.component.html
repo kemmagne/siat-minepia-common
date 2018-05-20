@@ -1,0 +1,9 @@
+<app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>
+<div class="card">
+    <div class="card-header h5">{{'last.operations.list' | translate}}</div>
+    <div class="card-block">
+        <app-transfer-orders-table [transferOrders]="statistics" [rows]="10" [pageLinks]="2" [rowsPerPageOptions]="[5,10]"></app-transfer-orders-table>
+        <hr/>
+        <p-chart *ngIf="chartData" type="bar" [data]="chartData"></p-chart>
+    </div>
+</div>

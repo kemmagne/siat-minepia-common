@@ -1,0 +1,56 @@
+<app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>
+<div class="card">
+    <div class="card-header h5">{{'' | translate}}</div>
+    <div class="card-block">
+        <div class="row">
+            <div class="col-md-6">
+                <p-fieldset legend="{{'general.infos' | translate}}">
+                    <div class="row">
+                        <label class="col-md-4">{{('name' | translate) + ' :'}}</label>
+                        <label class="col-md-8">{{(currentUser?.fistName || '') + ' ' + (currentUser?.lastName || '')}}</label>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-4">{{'Login :'}}</label>
+                        <label class="col-md-8">{{currentUser?.login}}</label>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-4">{{('partner' | translate) + ' :'}}</label>
+                        <label class="col-md-8">{{currentUser?.partner.name}}</label>
+                    </div>
+                </p-fieldset>
+            </div>
+
+            <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirm" (onConfirm)="onConfirm($event)"></app-confirm-dialog>
+
+            <div class="col-md-6">
+                <p-fieldset legend="{{'password.update' | translate}}">
+                    <form #passwordForm="ngForm" (submit)="showConfirm=true" role="form">
+                        <div class="form-group row">
+                            <label for="actualPassword" class="col-md-4 control-label">{{'actual.password' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control" [required]="true" id="actualPassword" [(ngModel)]="actualPassword" name="actualPassword">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="passwordFirst" class="col-md-4 control-label">{{'new.password' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control" [required]="true" id="passwordFirst" [(ngModel)]="passwordFirst" name="passwordFirst">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="passwordSecond" class="col-md-4 control-label">{{'type.again' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control" [required]="true" id="passwordSecond" [(ngModel)]="passwordSecond" name="passwordSecond">
+                            </div>
+                        </div>
+                        <hr/>
+                        <span class="pull-right">
+                            <button class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                            <button pButton [disabled]="!passwordForm.valid" type="submit" label="{{'validate' | translate}}" icon="ui-icon-check"></button>
+                        </span>
+                    </form>
+                </p-fieldset>
+            </div>
+        </div>
+    </div>
+</div>

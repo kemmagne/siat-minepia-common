@@ -1,0 +1,118 @@
+<div class="card">
+    <div class="card-header h5">{{'tos.history' | translate}}</div>
+    <div class="card-block">
+        <form #filterForm="ngForm" (submit)="countTos()" role="form">
+            <div class="row">
+                <div class="col">
+                    <div class="row form-group">
+                        <label for="toReference" class="col-md-4 control-label">{{'to.reference' | translate}}</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="toReference" [(ngModel)]="toReference" name="toReference">
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row form-group">
+                        <label for="taxPayerNumber" class="col-md-4 control-label">{{'taxpayernumber' | translate}}</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="taxPayerNumber" [(ngModel)]="taxPayerNumber" name="taxPayerNumber">
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row form-group">
+                        <label for="beneficiary" class="col-md-4 control-label">{{'beneficiary' | translate}}</label>
+                        <div class="col-md-8">
+                            <select class="form-control" [(ngModel)]="beneficiaryCode" name="beneficiary" id="beneficiary">
+                                <option value="{{benef.code}}" *ngFor="let benef of beneficiaryPartners">{{benef.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row form-group">
+                        <label for="invoiceTypeCode" class="col-md-4 control-label">{{'invoice.type' | translate}}</label>
+                        <div class="col-md-8">
+                            <select class="form-control" [(ngModel)]="invoiceTypeCode" name="invoiceTypeCode" id="invoiceTypeCode">
+                                <option value="{{ivt.code}}" *ngFor="let ivt of invoicesTypes">{{ivt.label}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="1 !== type" class="col">
+                    <div class="row form-group">
+                        <label for="bankCode" class="col-md-4 control-label">{{'bank' | translate}}</label>
+                        <div class="col-md-8">
+                            <select class="form-control" [(ngModel)]="bankCode" name="bankCode" id="bankCode">
+                                <option value="{{bank.code}}" *ngFor="let bank of banks">{{bank.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p-fieldset>
+                        <div class="row form-group">
+                            <label for="minDate" class="col-md-4 control-label">{{'min.date' | translate}}</label>
+                            <div class="col-md-8">
+                                <p-calendar [(ngModel)]="minDate" [showTime]="true" name="minDate" id="minDate" dateFormat="{{'date.format' | translate}}"></p-calendar>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="maxDate" class="col-md-4 control-label">{{'max.date' | translate}}</label>
+                            <div class="col-md-8">
+                                <p-calendar [(ngModel)]="maxDate" [showTime]="true" name="maxDate" id="maxDate" dateFormat="{{'date.format' | translate}}"></p-calendar>
+                            </div>
+                        </div>
+                    </p-fieldset>
+                </div>
+                <div class="col-md-6">
+                    <p-fieldset>
+                        <div class="row form-group">
+                            <label for="minAmount" class="col-md-4 control-label">{{'min.amount' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" id="minAmount" [(ngModel)]="minAmount" name="minAmount">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="maxAmount" class="col-md-4 control-label">{{'max.amount' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" id="maxAmount" [(ngModel)]="maxAmount" name="maxAmount">
+                            </div>
+                        </div>
+                    </p-fieldset>
+                </div>
+            </div>
+            <hr *ngIf="2 !== type" />
+            <div *ngIf="2 !== type" class="row">
+                <p-radioButton class="col" name="toStatus" value="ALL" label="{{'all' | translate}}" [(ngModel)]="toStatus"></p-radioButton>
+                <p-radioButton class="col" name="toStatus" value="PENDING" label="{{'pending' | translate}}" [(ngModel)]="toStatus"></p-radioButton>
+                <p-radioButton class="col" name="toStatus" value="VALIDATED" label="{{'validated' | translate}}" [(ngModel)]="toStatus"></p-radioButton>
+                <p-radioButton class="col" name="toStatus" value="REJECTED" label="{{'rejected' | translate}}" [(ngModel)]="toStatus"></p-radioButton>
+                <p-radioButton class="col" name="toStatus" value="CANCELED" label="{{'canceled' | translate}}" [(ngModel)]="toStatus"></p-radioButton>
+            </div>
+            <hr/>
+            <span class="pull-right">
+                  <button class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                  <button pButton type="submit" label="{{'search' | translate}}" icon="ui-icon-search"></button>
+            </span>
+        </form>
+        <hr/>
+        <app-transfer-orders-table [transferOrders]="transferOrders" [rows]="10" [pageLinks]="10" [rowsPerPageOptions]="[5,10,20,30]"
+        [lazy]="true" [total]="nbTransferOrders" (onLazyLoad)="onLazyLoad($event)" [headerMsg]="'to.found'"></app-transfer-orders-table>
+        <hr/>
+        <app-alert *ngIf="alertMessage" [(message)]="alertMessage"></app-alert>
+        <span class="pull-right">
+            <button type="button" (click)="exportPdf()"><img src="assets/layout/images/pdf.png" /></button>
+            <button type="button" (click)="exportExcel()"><img src="assets/layout/images/excel.png" /></button>
+        </span>
+        <hr/>
+        <p-fieldset legend="{{'periodic.report' | translate}}">
+            <button pButton type="button" label="{{'daily' | translate}}" icon="ui-icon-date-range" (click)="countByPeriod(1)"></button>
+            <button pButton type="button" label="{{'weekly' | translate}}" icon="ui-icon-date-range" (click)="countByPeriod(7)"></button>
+            <button pButton type="button" label="{{'monthly' | translate}}" icon="ui-icon-date-range" (click)="countByPeriod(5)"></button>
+            <button pButton type="button" label="{{'yearly' | translate}}" icon="ui-icon-date-range" (click)="countByPeriod(6)"></button>
+        </p-fieldset>
+    </div>
+</div>

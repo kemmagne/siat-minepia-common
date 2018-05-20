@@ -1,0 +1,19 @@
+2018-05-16 21:13:44 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: -104, SQLState: 23505 
+ 2018-05-16 21:13:44 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - integrity constraint violation: unique constraint or index violation; UK_HU987P8V0H1H21SD4N3BV3LP2 table: ROLES 
+ 2018-05-16 21:13:44 [main] ERROR org.hibernate.internal.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java line: 39] - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement] 
+ 2018-05-16 21:13:44 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: -104, SQLState: 23505 
+ 2018-05-16 21:13:44 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - integrity constraint violation: unique constraint or index violation; UK_HU987P8V0H1H21SD4N3BV3LP2 table: ROLES 
+ 2018-05-16 21:13:44 [main] ERROR org.hibernate.internal.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java line: 39] - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement] 
+ 2018-05-16 21:16:39 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: -104, SQLState: 23505 
+ 2018-05-16 21:16:39 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - integrity constraint violation: unique constraint or index violation; UK_HU987P8V0H1H21SD4N3BV3LP2 table: ROLES 
+ 2018-05-16 21:16:39 [main] ERROR org.hibernate.internal.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java line: 39] - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement] 
+ 2018-05-16 21:16:39 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: -104, SQLState: 23505 
+ 2018-05-16 21:16:39 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - integrity constraint violation: unique constraint or index violation; UK_HU987P8V0H1H21SD4N3BV3LP2 table: ROLES 
+ 2018-05-16 21:16:39 [main] ERROR org.hibernate.internal.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java line: 39] - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement] 
+ 2018-05-16 21:17:44 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: -104, SQLState: 23505 
+ 2018-05-16 21:17:44 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - integrity constraint violation: unique constraint or index violation; UK_HU987P8V0H1H21SD4N3BV3LP2 table: ROLES 
+ 2018-05-16 21:17:44 [main] ERROR org.hibernate.internal.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java line: 39] - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement] 
+ 2018-05-16 21:17:44 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 129] - SQL Error: -104, SQLState: 23505 
+ 2018-05-16 21:17:44 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [SqlExceptionHelper.java line: 131] - integrity constraint violation: unique constraint or index violation; UK_HU987P8V0H1H21SD4N3BV3LP2 table: ROLES 
+ 2018-05-16 21:17:44 [main] ERROR org.hibernate.internal.ExceptionMapperStandardImpl [ExceptionMapperStandardImpl.java line: 39] - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement] 
+ 

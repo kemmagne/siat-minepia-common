@@ -1,0 +1,94 @@
+<div class="card">
+    <div class="card-block">
+        <form #paymentRequestForm="ngForm" (submit)="sendFirstRequest()" role="form" class="form-validation">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="countryCode" class="col-md-4 control-label">
+                            {{'country.code' | translate}}&nbsp;
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="countryCode" [(ngModel)]="countryCode" name="countryCode" [required]="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="phoneNumber" class="col-md-4 control-label">
+                            {{'phone.number' | translate}}&nbsp;
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="phoneNumber" name="phoneNumber" [required]="true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <app-confirm-dialog [contentText]="'confirm.reset.pay.form'" [(display)]="showResetDialog" (onConfirm)="resetPaymentForm()"></app-confirm-dialog>
+            <span class="float-right">
+                <button class="ui-button-danger" pButton type="button" label="{{'reset' | translate}}" icon="ui-icon-undo" (click)="showResetDialog=true"></button>
+                <button [disabled]="!paymentRequestForm.valid" pButton type="submit" label="{{'validate' | translate}}" icon="ui-icon-check"></button>
+            </span>
+        </form>
+        <p-dialog header="{{'payment.confirmation' | translate}}" [(visible)]="showConfirm" [modal]="true" [responsive]="true" [closable]="false" [closeOnEscape]="false">
+            <form #confirmationForm="ngForm" role="form" (submit)="confirmPayment()" class="form-validation">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="pacCodeOne" class="col-md-4 control-label">
+                                {{pacCodeOneLabel}}&nbsp;<span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="pacCodeOne" [(ngModel)]="pacCodeOne" name="pacCodeOne" [required]="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="pacCodeTwo" class="col-md-4 control-label">
+                                {{pacCodeTwoLabel}}&nbsp;<span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="pacCodeTwo" [(ngModel)]="pacCodeTwo" name="pacCodeTwo" [required]="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label">{{'amount' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" [(ngModel)]="amount" name="amount" [readonly]="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label">{{'currency' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" value="XAF" [readonly]="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label">{{'card.number.part' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" [(ngModel)]="cardNumberPart" name="cardNumberPart" [readonly]="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <app-confirm-dialog [contentText]="'confirm.cancel.pay.form'" [(display)]="showCancelDialog" (onConfirm)="cancelPayment()"></app-confirm-dialog>
+                <span class="float-right">
+                    <button class="ui-button-danger" pButton type="button" label="{{'cancel' | translate}}" icon="ui-icon-undo" (click)="showCancelDialog=true"></button>
+                    <button [disabled]="!confirmationForm.valid" pButton type="submit" label="{{'confirm' | translate}}" icon="ui-icon-check"></button>
+                </span>
+              </form>
+        </p-dialog>
+    </div>
+</div>

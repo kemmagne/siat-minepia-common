@@ -1,0 +1,91 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+    	http://www.springframework.org/schema/tx
+    	http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+    	http://www.springframework.org/schema/data/jpa
+    	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <context:property-placeholder location="classpath:global-config.properties" />
+
+    <!-- For consider the using of annotations for defining Spring Bean -->
+    <context:annotation-config />
+
+    <!-- enable JPA repostiries -->
+    <jpa:repositories base-package="org.guce.epayment.core.repositories" />
+    <jpa:repositories base-package="org.guce.epayment.campost.repositories" />
+
+    <!-- For defining Spring Bean -->
+    <!--core-->
+    <context:component-scan base-package="org.guce.epayment.core.dao" />
+    <context:component-scan base-package="org.guce.epayment.core.services" />
+    <!--transfer-->
+    <context:component-scan base-package="org.guce.epayment.transfer.dao" />
+    <context:component-scan base-package="org.guce.epayment.transfer.services" />
+    <!--campost-->
+    <context:component-scan base-package="org.guce.epayment.campost.services" />
+    <!--security -->
+    <context:component-scan base-package="org.guce.epayment.security.core.config" />
+    <context:component-scan base-package="org.guce.epayment.security.services" />
+    <!--mail-->
+    <context:component-scan base-package="org.guce.epayment.core.mail.config" />
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+        <property name="url" value="jdbc:hsqldb:mem:test;" />
+        <property name="username" value="sa" />
+        <property name="password" value="sa" />
+    </bean>
+
+    <bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="false" />
+        <property name="generateDdl" value="true" />
+        <property name="databasePlatform" value="org.hibernate.dialect.HSQLDialect" />
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="persistenceUnitName" value="jpaData" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+            </props>
+        </property>
+        <!-- spring based scanning for entity classes -->
+        <property name="packagesToScan">
+            <list>
+                <value>org.guce.epayment.core.entities</value>
+                <value>org.guce.epayment.transfer.entities</value>
+                <value>org.guce.epayment.campost.entities</value>
+            </list>
+        </property>
+    </bean>
+    <jdbc:initialize-database data-source="dataSource" enabled="true">
+        <jdbc:script location="classpath:./mode.sql" />
+        <jdbc:script location="classpath:./sample_data_test.sql" />
+    </jdbc:initialize-database>
+
+    <!-- Hibernate transaction management -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <!-- Counter for consumer to increment and test to verify count -->
+    <bean id="counter" class="java.util.concurrent.atomic.AtomicInteger" />
+</beans>

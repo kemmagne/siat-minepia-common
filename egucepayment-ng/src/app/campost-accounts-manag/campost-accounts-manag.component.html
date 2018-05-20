@@ -1,0 +1,93 @@
+<div class="card">
+    <div class="card-header h5">{{'campost.accounts.management' | translate}}</div>
+    <div class="card-block">
+        <button type="button" pButton (click)="newAccount()" icon="ui-icon-person-add" label="{{'new.account' | translate}}"></button>
+        <hr/>
+        <p-dataTable [value]="accounts" dataKey="id" rows="10" [paginator]="true" [pageLinks]="10" [responsive]="true"
+          emptyMessage="{{'no.account' | translate}}" [rowsPerPageOptions]="[5,10]">
+          <p-header>{{'campost.accounts.list' | translate}}</p-header>
+          <p-column header="{{'beneficiary'| translate}}">
+              <ng-template let-account="rowData" pTemplate="body">{{account.beneficiary.name}}</ng-template>
+          </p-column>
+          <p-column field="merchantid" header="{{'merchantid'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+          <p-column field="izenid" header="{{'izenid'| translate}}" [filter]="true" filterMatchMode="contains"></p-column>
+          <p-column header="{{'secret.key'| translate}}">
+              <ng-template let-account="rowData" pTemplate="body">***</ng-template>
+          </p-column>
+          <p-column header="{{'IV'| translate}}">
+              <ng-template let-account="rowData" pTemplate="body">***</ng-template>
+          </p-column>
+          <p-column styleClass="col-button">
+              <ng-template let-account="rowData" pTemplate="body">
+                  <button type="button" pButton (click)="viewAccount(account)" icon="ui-icon-visibility" data-toggle="tooltip" data-placement="top" title="{{'view.account' | translate}}"></button>
+                  <button *ngIf="false" type="button" pButton class="ui-button-danger" (click)="askDeleteConfirmation(account)" icon="ui-icon-delete-forever" data-toggle="tooltip" data-placement="top" title="{{'delete.account' | translate}}"></button>
+              </ng-template>
+          </p-column>
+      </p-dataTable>
+
+      <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirm" (onConfirm)="saveAccount()"></app-confirm-dialog>
+      <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmDelete" (onConfirm)="deleteAccount()"></app-confirm-dialog>
+
+      <p-dialog [(visible)]="!!currentAccount" [modal]="true" width="600" [responsive]="true" (onHide)="onDialogHide()">
+            <div class="card">
+                <div class="card-header h5">{{'account.save' | translate}}</div>
+                <div class="card-block">
+                    <form *ngIf="!!currentAccount" #accountForm="ngForm" (submit)="showConfirm=true" role="form" class="form-validation">
+                        <div class="row form-group">
+                            <label for="beneficiary" class="col-md-4 control-label">
+                                {{'beneficiary' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <select class="form-control" [(ngModel)]="beneficiary" name="beneficiary" [required]="true" id="beneficiary">
+                                    <option value="{{benef.id}}" *ngFor="let benef of beneficiaries">{{benef.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="merchantid" class="col-md-4 control-label">
+                                {{'merchantid' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="merchantid" [(ngModel)]="currentAccount.merchantid" [required]="true" name="merchantid">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="izenid" class="col-md-4 control-label">
+                                {{'izenid' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="izenid" [(ngModel)]="currentAccount.izenid" [required]="true" name="izenid">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="secretKey" class="col-md-4 control-label">
+                                {{'secret.key' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="secretKey" [(ngModel)]="currentAccount.secretKey" [required]="true" name="secretKey">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="initVector" class="col-md-4 control-label">
+                                {{'IV' | translate}}
+                                <span class="text-danger"> *</span>
+                            </label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="initVector" [(ngModel)]="currentAccount.initVector" [required]="true" name="initVector">
+                            </div>
+                        </div>
+                        <span class="float-right">
+                            <button *ngIf="!currentAccount.id" class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                            <button *ngIf="!!currentAccount.id" class="ui-button-danger" pButton type="button" (click)="currentAccount=null" label="{{'cancel' | translate}}" icon="ui-icon-undo"></button>
+                            <button [disabled]="!accountForm.valid" pButton type="submit" label="{{'save' | translate}}" icon="ui-icon-save"></button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+      </p-dialog>
+    </div>
+</div>

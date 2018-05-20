@@ -1,0 +1,187 @@
+<button type="button" pButton (click)="newPartner()" icon="ui-icon-person-add" label="{{newMsg | translate}}"></button>
+        <hr/>
+        <p-dataTable [value]="partners" dataKey="id" rows="10" [paginator]="true" [pageLinks]="10" [responsive]="true"
+          emptyMessage="{{emptyTableTitle | translate}}" [rowsPerPageOptions]="[5,10,20]" [lazy]="isPrincipalal()" (onLazyLoad)="loadPartnersLazy($event)" [totalRecords]="nbPartners">
+            <p-header>
+                {{headerMsg | translate}}
+                <span *ngIf="'BANK_AGENCY' === partnerType"></span>
+            </p-header>
+            <p-column field="code" header="{{'Code' | translate}}" [filter]="!isPrincipalal()" filterMatchMode="contains"></p-column>
+            <p-column field="name" header="{{'name' | translate}}" [filter]="!isPrincipalal()" filterMatchMode="contains"></p-column>
+            <p-column [hidden]="!isPrincipalal()" field="taxPayerNumber" header="{{'taxpayernumber'| translate}}" [filter]="false" filterMatchMode="contains"></p-column>
+            <p-column [hidden]="!isAgency()" header="{{'bank' | translate}}">
+                <ng-template let-partner="rowData" pTemplate="body">{{partner.parent?.name}}</ng-template>
+            </p-column>
+            <p-column styleClass="col-button" [style]="{'width':'20%'}">
+                <ng-template let-partner="rowData" pTemplate="body">
+                    <button type="button" pButton (click)="viewPartner(partner)" icon="ui-icon-visibility" data-toggle="tooltip" data-placement="top" title="{{'view.partner' | translate}}"></button>
+                    <button *ngIf="hasBas" type="button" pButton (click)="showBas(partner)" icon="ui-icon-account-balance" data-toggle="tooltip" data-placement="top" title="{{'view.accounts' | translate}}"></button>
+                    <button type="button" pButton (click)="viewValidationsLevels(partner)" icon="ui-icon-check" data-toggle="tooltip" data-placement="top" title="{{'view.validation.levels' | translate}}"></button>
+                    <button type="button" class="ui-button-danger" pButton (click)="askConfirmDeletePartner(partner)" icon="ui-icon-delete-forever" data-toggle="tooltip" data-placement="top" title="{{'delete.partner' | translate}}"></button>
+                </ng-template>
+            </p-column>
+        </p-dataTable>
+
+        <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirm" (onConfirm)="onConfirm($event)"></app-confirm-dialog>
+        <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmDelete" (onConfirm)="deletePartner(tempPartner)"></app-confirm-dialog>
+
+        <!-- dialogue d'édition des types de factures' [totalRecords]="totalRecords" (onLazyLoad)="loadCarsLazy($event)" -->
+        <p-dialog [(visible)]="!!selectedPartner" [modal]="true" width="600" [responsive]="true" (onHide)="onDialogHide($event)">
+            <div class="card">
+                <div class="card-header h5">{{saveMsg | translate}}</div>
+                <div class="card-block">
+                    <form *ngIf="selectedPartner" #partnerForm="ngForm" (submit)="showConfirm = true" role="form" class="form-validation">
+                        <div class="row form-group">
+                            <label for="partnerCode" class="col-md-4 control-label">{{'Code' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="partnerCode" [(ngModel)]="selectedPartner.code" [required]="true" name="partnerCode">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="partnerName" class="col-md-4 control-label">{{'name' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="partnerName" [(ngModel)]="selectedPartner.name" [required]="true" name="partnerName">
+                            </div>
+                        </div>
+                        <div *ngIf="isPrincipalal()" class="row form-group">
+                            <label for="taxPayerNumber" class="col-md-4 control-label">{{'taxpayernumber' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="taxPayerNumber" [(ngModel)]="selectedPartner.taxPayerNumber"
+                                [required]="true" name="taxPayerNumber">
+                            </div>
+                        </div>
+                        <div *ngIf="isAgency()" class="row form-group">
+                            <label for="parentPartner" class="col-md-4 control-label">{{'bank' | translate}}</label>
+                            <div class="col-md-8">
+                                <select class="form-control" [(ngModel)]="parentPartner" name="parentPartner" id="parentPartner">
+                                    <option value="{{partner.code}}" *ngFor="let partner of banks">{{partner.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div *ngIf="false && isPrincipalal()" class="row form-group">
+                            <label for="partnersGroups" class="col-md-4 control-label">{{'groups' | translate}}</label>
+                            <div class="col-md-8">
+                                <select class="form-control" multiple [(ngModel)]="partnerGroupsCodes" name="partnersGroups" id="partnersGroups">
+                                    <option value="{{pg.code}}" *ngFor="let pg of partnersGroups">{{pg.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="pull-right">
+                            <button *ngIf="!selectedPartner.id" class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                            <button *ngIf="!!selectedPartner.id" class="ui-button-danger" pButton type="button" (click)="selectedPartner=null" label="{{'cancel' | translate}}" icon="ui-icon-undo"></button>
+                            <button [disabled]="!partnerForm.valid" pButton type="submit" label="{{'save' | translate}}" icon="ui-icon-save"></button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+        </p-dialog>
+
+        <p-dialog [(visible)]="viewPartnerBas" [modal]="true" width="800" [responsive]="true" (onHide)="onBasDialogHide($event)">
+            <div class="card">
+                <div class="card-header h5">{{'partner.accounts.consultation' | translate}}</div>
+                <div class="card-block">
+                    <button type="button" pButton (click)="addBa(tempPartner)" icon="ui-icon-add" label="{{'new.ba' | translate}}"></button>
+                    <hr/>
+                    <app-bank-account-table (onDelete)="findPartnerAccounts(tempPartner, true)" [canDelete]="true" [headerMsg]="'partner.ba.list'" [noSelection]="true" [(bankAccounts)]="partnerAccounts" [(selectedBankAccount)]="selectedBa" [showAccountInfos]="true"></app-bank-account-table>
+                </div>
+            </div>
+        </p-dialog>
+
+        <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmSaveBa" (onConfirm)="onConfirmSaveBa($event)"></app-confirm-dialog>
+
+        <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmSaveVL" (onConfirm)="addValidationLevel($event)"></app-confirm-dialog>
+        <app-confirm-dialog [contentText]="'confirm.operation'" [(display)]="showConfirmRemoveVL" (onCancel)="tempUs=null" (onClose)="tempUs=null"
+        (onConfirm)="removeValidationLevel($event)"></app-confirm-dialog>
+
+        <p-dialog [(visible)]="viewNewBa" [modal]="true" width="600" [responsive]="true" (onHide)="onBasDialogHide($event)">
+            <div class="card">
+                <div class="card-header h5">{{'partner.accounts.save' | translate}}</div>
+                <div class="card-block">
+                    <form *ngIf="selectedBa" #partnerBaForm="ngForm" (submit)="showConfirmSaveBa=true" role="form" class="form-validation">
+                        <div class="row form-group">
+                            <label for="bankCode" class="col-md-4 control-label">{{'bank.code' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="bankCode" minlength="5" maxlength="5" [(ngModel)]="selectedBa.bankCode" [required]="true" name="bankCode">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="agencyCode" class="col-md-4 control-label">{{'agency.code' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="agencyCode" minlength="1" maxlength="5" [(ngModel)]="selectedBa.agencyCode" [required]="true" name="agencyCode">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="accountNumber" class="col-md-4 control-label">{{'account.number' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="accountNumber" minlength="11" maxlength="11" [(ngModel)]="selectedBa.accountNumber" [required]="true" name="accountNumber">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="accountKey" class="col-md-4 control-label">{{'account.key' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="accountKey" minlength="2" maxlength="2" [(ngModel)]="selectedBa.accountKey" [required]="true" name="accountKey">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="accountLabel" class="col-md-4 control-label">{{'account.label' | translate}}</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="accountLabel" maxlength="255" [(ngModel)]="selectedBa.accountLabel" [required]="true" name="accountLabel">
+                            </div>
+                        </div>
+                        <span class="pull-right">
+                            <button class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                            <button [disabled]="!partnerBaForm.valid" pButton type="submit" label="{{'save' | translate}}" icon="ui-icon-save"></button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+        </p-dialog>
+
+        <p-dialog [(visible)]="showValidLevels" [modal]="true" width="600" [responsive]="true" (onHide)="onValidLevelsDialogHide($event)">
+            <div class="card">
+                <div class="card-header h6">{{('validaton.levels.management' | translate) + ' (' + tempPartner?.name + ' : ' + tempPartner?.code + ')'}}</div>
+                <div class="card-block">
+                    <button type="button" pButton (click)="newValidationLevel()" icon="ui-icon-add"></button>
+                    <hr/>
+                    <form *ngIf="showValidationLevelForm" #validationLevelForm="ngForm" (submit)="showConfirmSaveVL=true" role="form" class="form-validation">
+                        <div class="row form-group">
+                            <label for="validationUser" class="col-md-4 control-label">{{'user' | translate}}</label>
+                            <div class="col-md-8">
+                                <select class="form-control" [required]="true" [(ngModel)]="validationUser" name="validationUser" id="validationUser">
+                                    <option value="{{user.login}}" *ngFor="let user of partnerUsers">{{(!user.firstName ? '' : user.firstName + ' ') + user.lastName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label for="paymentMode" class="col-md-4 control-label">{{'payment.mode' | translate}}</label>
+                            <div class="col-md-8">
+                                <select class="form-control" [(ngModel)]="paymentMode" name="paymentMode" id="paymentMode">
+                                    <option value="{{pm.code}}" *ngFor="let pm of paymentModes">{{pm.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="pull-right">
+                            <button class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
+                            <button [disabled]="!validationLevelForm.valid" pButton type="submit" label="{{'save' | translate}}" icon="ui-icon-save"></button>
+                        </span>
+                    </form>
+                    <hr/>
+                    <p-dataTable [value]="validationsLevels" dataKey="id" rows="10" [paginator]="true" [pageLinks]="5" [responsive]="true"
+                    emptyMessage="{{'no.validation.level' | translate}}">
+                        <p-header>{{'saved.validation.levels' | translate}}</p-header>
+                        <p-column field="level" header="{{'level' | translate}}"></p-column>
+                        <p-column header="{{'user' | translate}}">
+                            <ng-template let-us="rowData" pTemplate="body">{{us.user.lastName}}</ng-template>
+                        </p-column>
+                        <p-column header="{{'payment.mode' | translate}}">
+                            <ng-template let-us="rowData" pTemplate="body">{{us.paymentMode?.label}}</ng-template>
+                        </p-column>
+                        <p-column styleClass="col-button" [hidden]="false">
+                            <ng-template let-us="rowData" pTemplate="body">
+                                <button type="button" pButton (click)="askConfirmRemoveVL(us)" icon="ui-icon-remove" class="ui-button-danger"></button>
+                            </ng-template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+        </p-dialog>
