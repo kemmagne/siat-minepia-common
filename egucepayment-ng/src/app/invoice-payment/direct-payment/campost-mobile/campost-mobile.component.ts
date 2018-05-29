@@ -63,7 +63,7 @@ export class CampostMobileComponent implements OnInit, OnDestroy {
             invoices: this.invoicesToPay,
             mobile: this.countryCode.trim() + this.phoneNumber.trim()
         };
-        this.sendFirstRequestSub = this.http.post('payment/campost/request/first', campostMobileFirstReq).subscribe(
+        this.sendFirstRequestSub = this.http.postData('public/payment/campost/wallet/request/first', campostMobileFirstReq).subscribe(
             res => {
                 let response = res.json();
                 if(response.data) {
@@ -110,7 +110,7 @@ export class CampostMobileComponent implements OnInit, OnDestroy {
             pacCodeTwo: this.pacCodeTwo,
             cancel: cancel
         };
-        this.sendFinalResponseSub = this.http.post('payment/campost/request/second', campostMobileSecondReq).subscribe(
+        this.sendFinalResponseSub = this.http.postData('public/payment/campost/wallet/request/second', campostMobileSecondReq).subscribe(
             res => {
                 let responseCode = +res.json().data;
                 if(1 === responseCode) {

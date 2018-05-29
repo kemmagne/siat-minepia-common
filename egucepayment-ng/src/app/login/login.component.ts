@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.persistenceService.set('test', 'test', {type: StorageType.MEMORY});
         this.loginSub = this.loginService.login(this.userLogin, this.password).subscribe(
             res => {
+                console.info(res);
                 let response = res;
                 if(response.data) {
                     if(0 === +response.data) {

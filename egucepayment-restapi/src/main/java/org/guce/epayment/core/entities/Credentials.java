@@ -1,6 +1,7 @@
 package org.guce.epayment.core.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,10 +34,10 @@ public class Credentials implements Serializable {
      * The id.
      */
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     @SequenceGenerator(name = "CREDENTIALS_SEQ", sequenceName = "CREDENTIALS_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CREDENTIALS_SEQ")
-    private Long id;
+    private BigDecimal id;
 
     @ManyToOne
     @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID", nullable = false)

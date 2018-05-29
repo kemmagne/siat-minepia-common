@@ -1,4 +1,4 @@
-package org.guce.epayment.rest.controllers;
+package org.guce.epayment.rest.controllers.jwt;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,14 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @author tadzotsa
  */
 @RestController
-@RequestMapping("admin")
+@RequestMapping("jwt/admin")
 public class ReceiptController {
 
     @Autowired
     private CoreService coreService;
 
     @ResponseBody
-    @RequestMapping("receipts/by-invoice-type/{invoiceTypeCode}")
+    @RequestMapping(path = "receipts/by-invoice-type/{invoiceTypeCode}", method = RequestMethod.GET)
     public ResponseEntity<List<ReceiptDto>> findReceiptByInvoiceType(@PathVariable String invoiceTypeCode) throws Exception {
 
         final List<RepReceipt> receiptsByInvoiceType = coreService.findReceiptsByInvoiceType(invoiceTypeCode);

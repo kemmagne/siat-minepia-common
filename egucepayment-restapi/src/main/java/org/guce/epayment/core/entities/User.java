@@ -39,22 +39,22 @@ public class User implements Serializable {
      * The id.
      */
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
     private BigDecimal id;
 
-    @Column(name = "LOGIN", unique = true, nullable = false)
+    @Column(name = "LOGIN", unique = true, nullable = false, length = 100)
     private String login;
-    @Column(name = "TITLE", nullable = false)
+    @Column(name = "TITLE", nullable = false, length = 5)
     private String title;
-    @Column(name = "LOCALE", nullable = false)
+    @Column(name = "LOCALE", nullable = false, length = 2)
     private String locale;
-    @Column(name = "FIRST_NAME")
+    @Column(name = "FIRST_NAME", length = 100)
     private String firstName;
-    @Column(name = "LAST_NAME", nullable = false)
+    @Column(name = "LAST_NAME", nullable = false, length = 100)
     private String lastName;
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false, length = 100)
     private String email;
     @Column(name = "RESET_PASSWORD")
     private boolean resetPassword;
@@ -64,6 +64,9 @@ public class User implements Serializable {
     private boolean active;
     @Column(name = "CREATION_DATE", nullable = false)
     private LocalDateTime creationDate;
+    @JoinColumn(name = "PARTNER_ID", nullable = false)
+    @ManyToOne
+    private Partner partner;
 
     @JoinTable(name = "USER_ROLE", joinColumns = {
         @JoinColumn(name = "USER_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
@@ -75,9 +78,6 @@ public class User implements Serializable {
     @OrderBy("creationDate DESC")
     private List<Credentials> credentialses;
 
-    @JoinColumn(name = "PARTNER_ID")
-    @ManyToOne
-    private Partner partner;
     @OneToMany(mappedBy = "user")
     private List<Signature> signatures;
     @OneToMany(mappedBy = "user")

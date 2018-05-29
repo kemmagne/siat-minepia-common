@@ -87,11 +87,9 @@ export class UserSubscriptionComponent implements OnInit, OnDestroy {
             return;
         }
         //this.selectedUser.partner = {id: this.partnerCode};
-        this.selectedUser.active = false;
-        this.selectedUser.passwordToBeReset = false;
         this.selectedUser.password = this.newPasswordFirst;
         this.selectedUser.roles = [this.userRole];
-        this.saveUserSub = this.http.post('users', this.selectedUser).subscribe(
+        this.saveUserSub = this.http.postData('public/users', this.selectedUser).subscribe(
             res => {
                 let response = res.json();
                 if(response.data) {
@@ -122,7 +120,7 @@ export class UserSubscriptionComponent implements OnInit, OnDestroy {
     }
 
     private findRoles() {
-        this.findRolesSub = this.http.get('users/roles/all').subscribe(
+        this.findRolesSub = this.http.getData('public/users/roles/all').subscribe(
             data => {
                 this.roles = data.json();
             },
@@ -171,7 +169,7 @@ export class UserSubscriptionComponent implements OnInit, OnDestroy {
     }
 
     countPrincipals() {
-        this.countPrincipalsSub = this.http.get('partners/principals/count').subscribe(
+        this.countPrincipalsSub = this.http.getData('public/partners/principals/count').subscribe(
             res => {
                 this.nbPartners = +res.json().data;
                 this.findPartners(0, 0);
@@ -191,14 +189,14 @@ export class UserSubscriptionComponent implements OnInit, OnDestroy {
         }
         let url: string;
         if(Config.PARTNER_TYPE_PRINCIPAL !== this.partnerType) {
-            url = `partners/by-types/${this.partnerType}/${start}/${end}`;
+            url = `public/partners/by-types/${this.partnerType}/${start}/${end}`;
         } else {
             if(start === end) {
                 end = 5;
             }
-            url = `partners/principals/${start}/${end}`;
+            url = `public/partners/principals/${start}/${end}`;
         }
-        this.findPartnersSub = this.http.get(url).subscribe(
+        this.findPartnersSub = this.http.getData(url).subscribe(
             data => {
                 this.partners = data.json();
             },

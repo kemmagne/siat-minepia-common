@@ -38,7 +38,7 @@ export class BeneficiaireDashboardComponent implements OnInit, OnDestroy {
     }
 
     private findStats() {
-        this.findStatsSub = this.http.get(`statistics/transfer/orders/by-beneficiary/last/${this.max}/${this.translateService.currentLang}`, true).subscribe(
+        this.findStatsSub = this.http.getData(`statistics/transfer/orders/by-beneficiary/last/${this.max}`, true).subscribe(
             data => {
                 this.statistics = data.json();
             },

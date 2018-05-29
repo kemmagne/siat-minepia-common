@@ -25,7 +25,7 @@ public class PartnerStep implements Serializable {
     @Id
     @SequenceGenerator(name = "PARTNER_STEP_SEQ", sequenceName = "PARTNER_STEP_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PARTNER_STEP_SEQ")
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
     @JoinColumn(name = "PARTNER_ID", nullable = false)

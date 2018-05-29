@@ -200,7 +200,7 @@ export class PartnersTableComponent implements OnInit {
             this.selectedPartner.parent = {};
             this.selectedPartner.parent.code = this.parentPartner;
         }
-        this.savePartnerSub = this.http.post('partners', this.selectedPartner).subscribe(
+        this.savePartnerSub = this.http.postData('admin/partners', this.selectedPartner).subscribe(
             res => {
                 let response = res.json();
                 if(response.data) {
@@ -227,7 +227,7 @@ export class PartnersTableComponent implements OnInit {
     }
 
     private findPartnersGroups() {
-        this.findPartnersGroupsSub = this.http.get('partners/groups/all', true).subscribe(
+        this.findPartnersGroupsSub = this.http.getData('partners/groups/all', true).subscribe(
             data => {
                 this.partnersGroups = data.json();
             },
@@ -257,7 +257,7 @@ export class PartnersTableComponent implements OnInit {
     }
 
     findPartnerAccounts(partner, view?: boolean) {
-        this.findPartnerAccountsSub = this.http.get(`banks/accounts/by-owner/${partner.code}`, true).subscribe(
+        this.findPartnerAccountsSub = this.http.getData(`banks/accounts/by-owner/${partner.code}`, true).subscribe(
             data => {
                 this.partnerAccounts = data.json();
             },
@@ -272,7 +272,7 @@ export class PartnersTableComponent implements OnInit {
     }
 
     private savePartnerAccount(partner) {
-        this.savePartnerAccountSub = this.http.post(`banks/accounts/by-owner/${partner.code}`, this.selectedBa).subscribe(
+        this.savePartnerAccountSub = this.http.postData(`banks/accounts/by-owner/${partner.code}`, this.selectedBa).subscribe(
             res => {
                 let response = res.json();
                 if(0 === +response.data) {
@@ -309,7 +309,7 @@ export class PartnersTableComponent implements OnInit {
     }
 
     private findValidationsLevels(partner, show?: boolean) {
-        this.findValidationsLevelsSub = this.http.get(`multiple/validation/user/status/by-partner/${partner.id}`, true).subscribe(
+        this.findValidationsLevelsSub = this.http.getData(`admin/multiple/validation/user/step/by-partner/${partner.id}`, true).subscribe(
             data => {
                 this.validationsLevels = data.json();
             },
@@ -324,7 +324,7 @@ export class PartnersTableComponent implements OnInit {
     }
 
     removeValidationLevel(event) {
-        this.removeValidationsLevelsSub = this.http.post(`multiple/validation/user/status/by-partner/${this.tempPartner.id}/${this.partnerType}/${false}`, this.tempUs).subscribe(
+        this.removeValidationsLevelsSub = this.http.postData(`admin/multiple/validation/user/step/by-partner/${this.tempPartner.id}/${this.partnerType}/${false}`, this.tempUs).subscribe(
             res => {
                 let response = res.json();
                 this.validationUser = null;
@@ -355,7 +355,7 @@ export class PartnersTableComponent implements OnInit {
             roles = Config.ROLE_CONTROLEUR_DONNEUR_ORDRE;
         }
         let url = `users/by-partner/${this.tempPartner.id}/${roles}`;
-        this.findPartnerUsersSub = this.http.get(url, true).subscribe(
+        this.findPartnerUsersSub = this.http.getData(url, true).subscribe(
             data => {
                 this.partnerUsers = data.json();
             },
@@ -367,7 +367,7 @@ export class PartnersTableComponent implements OnInit {
     }
 
     private findPaymentModes() {
-        this.findPaymentModesSub = this.http.get(`payment/modes/by-direct/${false}`).subscribe(
+        this.findPaymentModesSub = this.http.getData(`public/payment/modes/by-direct/${false}`).subscribe(
             data => {
                 this.paymentModes = [{code: 'null', label: ''}];
                 this.paymentModes = this.paymentModes.concat(data.json());
@@ -411,7 +411,7 @@ export class PartnersTableComponent implements OnInit {
             validationLevel.level = this.countVlWithoutPm() + 1;
         }
         let ok = false;
-        this.addValidationsLevelsSub = this.http.post(`multiple/validation/user/status/by-partner/${this.tempPartner.id}/${this.partnerType}/${true}`, validationLevel).subscribe(
+        this.addValidationsLevelsSub = this.http.postData(`admin/multiple/validation/user/step/by-partner/${this.tempPartner.id}/${this.partnerType}/${true}`, validationLevel).subscribe(
             res => {
                 let response = res.json();
                 this.validationUser = null;
@@ -487,7 +487,7 @@ export class PartnersTableComponent implements OnInit {
     }
 
     deletePartner(partner) {
-        this.deletePartnerSub = this.http.delete(`partners/${partner.id}`).subscribe(
+        this.deletePartnerSub = this.http.delete(`admin/partners/${partner.id}`).subscribe(
             res => {
                 let response = res.json().data;
                 this.layout.diplayGrowlMessage('success', 'operation.succeeded', 'partner.deleted');
@@ -505,7 +505,7 @@ export class PartnersTableComponent implements OnInit {
     }
 
     private findBanks() {
-        this.findBanksSub = this.http.get(`partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`, true).subscribe(
+        this.findBanksSub = this.http.getData(`public/partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`, true).subscribe(
             data => {
                 this.banks = data.json();
             },

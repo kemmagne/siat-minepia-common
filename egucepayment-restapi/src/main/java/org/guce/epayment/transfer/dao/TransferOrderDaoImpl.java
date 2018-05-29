@@ -137,9 +137,12 @@ public class TransferOrderDaoImpl implements TransferOrderDao {
     }
 
     @Override
-    public Object filterTransferOrders(final FilterTransferOrder filter, final String code, final Integer type,
-            final int start, final int end, final boolean count) {
+    public Object filterTransferOrders(final FilterTransferOrder filter, final String code) {
 
+        final int start = filter.getStart();
+        final int end = filter.getEnd();
+        final boolean count = filter.isCount();
+        final Integer type = filter.getType();
         final StringBuilder queryBuilder = new StringBuilder("SELECT ");
 
         queryBuilder.append(count ? "COUNT(to)" : "to").append(" FROM TransferOrder to WHERE ");

@@ -27,6 +27,7 @@
         <hibernate.version>5.2.17.Final</hibernate.version>
         <oracle.version>11.2.0.4.0</oracle.version>
         <arquillian.version>11.2.0.4.0</arquillian.version>
+        <apache.poi.version>3.15</apache.poi.version>
         <resource.dir>src/main/resources</resource.dir>
         <application.version>${project.version}</application.version>
     </properties>
@@ -49,14 +50,14 @@
             <id>profile-development</id>
             <properties>
                 <environment>dev</environment>
-                <db.username>TEST_WEBAPP</db.username>
+                <db.username>E_PAYMENT</db.username>
                 <db.password>admin</db.password>
                 <db.url>jdbc:oracle:thin:@vm:1521:GUCE</db.url>
                 <db.showSql>true</db.showSql>
+                <hibernate.default_schema>E_PAYMENT</hibernate.default_schema>
                 <jwt.token.encryption>false</jwt.token.encryption>
                 <jwt.token.revocation>false</jwt.token.revocation>
                 <version>${application.version}</version>
-                <hibernate.default_schema>TEST_WEBAPP</hibernate.default_schema>
                 <mailSender.host>guce-mail1.guce.local</mailSender.host>
                 <mailSender.port>587</mailSender.port>
                 <mailSender.username>siat</mailSender.username>
@@ -418,12 +419,12 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.7</version>
+            <version>${apache.poi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>3.7</version>
+            <version>${apache.poi.version}</version>
         </dependency>
 
         <dependency>
@@ -550,7 +551,6 @@
 
     <build>
         <finalName>${project.name}</finalName>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

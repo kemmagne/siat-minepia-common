@@ -1,7 +1,6 @@
 package org.guce.epayment.security.rest.auth.jwt;
 
 import org.apache.commons.lang3.StringUtils;
-import org.guce.epayment.security.rest.auth.TokenExtractor;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package org.guce.epayment.security.rest.auth;
+package org.guce.epayment.security.rest.auth.ajax;
 
 import org.guce.epayment.security.rest.auth.models.UserContext;
 import java.util.HashMap;
@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.guce.epayment.core.entities.User;
-import org.guce.epayment.core.repositories.UserRepository;
+import org.guce.epayment.core.services.CoreService;
+import org.guce.epayment.core.utils.Constants;
 import org.guce.epayment.rest.controllers.utils.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,15 +28,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AjaxAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private CoreService coreService;
 
     @Autowired
-    public AjaxAuthenticationProvider(final UserRepository userRepository, final PasswordEncoder passwordEncoder) {
-
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -43,7 +40,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
         final String login = (String) authentication.getPrincipal();
         final Map<String, String> creds = (Map<String, String>) authentication.getCredentials();
 
-        User user = userRepository.findByLogin(login)
+        final User user = coreService.findByUniqueKey(Constants.UK_USER_LOGIN, login, User.class)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + login));
         user.getCredentialses().stream().findFirst()
                 .filter(credentials -> passwordEncoder.matches(creds.get("password"), credentials.getPassword()))
@@ -57,7 +54,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
         infos.put(RestConstants.BROWSER_FINGER_PRINT, creds.get(RestConstants.BROWSER_FINGER_PRINT));
         infos.put(RestConstants.REMOTE_ADR, creds.get(RestConstants.REMOTE_ADR));
 
-        final UserContext userContext = UserContext.create(user.getLogin(), authorities, infos);
+        final UserContext userContext = UserContext.create(login, authorities, infos);
 
         return new UsernamePasswordAuthenticationToken(userContext, null, authorities);
     }

@@ -146,7 +146,7 @@ export class TransferOrdersTableComponent implements OnInit, OnDestroy {
             privateKey: "privateKey",
             valid: valid
         };
-        this.http.post("transfers/orders/validations", transferValidation).subscribe(
+        this.http.postData("transfers/orders/validations", transferValidation).subscribe(
             res => {
                 let response = res.json();
                 let toIndex: number;

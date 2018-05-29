@@ -3,7 +3,9 @@ package org.guce.epayment.campost.services;
 import java.util.Map;
 import org.guce.epayment.campost.documents.TRANSNET;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service("campostWalletService")
 public class CampostWalletService extends AbstractCampostService {
 

@@ -36,6 +36,10 @@ public interface Constants {
 
     static final String UK_ROLE_NAME = "name".intern();
 
+    static final String UK_CODE = "code".intern();
+
+    static final String UK_TAX_PAYER_NUMBER = "taxPayerNumber".intern();
+
     static final String LOCALE_FR = "fr".intern();
 
     static final String LOCALE_EN = "en".intern();

@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import java.util.Map;
+import org.guce.epayment.rest.controllers.utils.RestConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,10 +26,10 @@ public class RawAccessJwtToken implements JwtToken {
     public Jws<Claims> parseClaims(final String signingKey, final Map<String, Object> infos) {
         try {
             return Jwts.parser()
-                    .requireSubject(infos.get("login").toString())
-                    .requireIssuer(infos.get("application_issuer").toString())
-                    .require("browser_finger_print", infos.get("browser_finger_print"))
-                    .require("remote_address", infos.get("remote_address"))
+                    .requireSubject(infos.get(RestConstants.LOGIN).toString())
+                    .requireIssuer(infos.get(RestConstants.APPLICATION_ISSUER).toString())
+                    .require(RestConstants.BROWSER_FINGER_PRINT, infos.get(RestConstants.BROWSER_FINGER_PRINT))
+                    .require(RestConstants.REMOTE_ADR, infos.get(RestConstants.REMOTE_ADR))
                     .setSigningKey(signingKey).parseClaimsJws(this.token);
         } catch (Exception ex) {
             LOGGER.error("Invalid JWT Token", ex);

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.Data;
@@ -36,7 +37,7 @@ public class Partner implements Serializable {
      * The id.
      */
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     @SequenceGenerator(name = "PARTNER_SEQ", sequenceName = "PARTNER_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PARTNER_SEQ")
     private BigDecimal id;
@@ -59,12 +60,15 @@ public class Partner implements Serializable {
     private String address;
     @Column(name = "TAX_PAYER_NUMBER", nullable = false, unique = true, length = 20)
     private String taxPayerNumber;
-
-    @OneToMany(mappedBy = "partner")
-    private List<User> users;
     @JoinColumn(name = "PARENT_ID")
     @ManyToOne
     private Partner parent;
+    @JoinColumn(name = "MAIN_BANK_ACCOUNT_ID")
+    @OneToOne
+    private BankAccount principalBankAccount;
+
+    @OneToMany(mappedBy = "partner")
+    private List<User> users;
     @OneToMany(mappedBy = "parent")
     private List<Partner> children;
     @OneToMany(mappedBy = "commiter")
@@ -88,9 +92,18 @@ public class Partner implements Serializable {
     private List<Asset> assetsClaimed;
     @OneToMany(mappedBy = "declarer")
     private List<Asset> assetsDeclared;
-    @JoinColumn(name = "PRINCIPAL_BANK_ACCOUNT")
-    @OneToOne
-    private BankAccount principalBankAccount;
     @OneToMany(mappedBy = "owner")
     private List<BankAccount> bankAccounts;
+
+    @PrePersist
+    private void prePersist() {
+
+        if (taxPayerNumber == null) {
+            taxPayerNumber = code;
+        }
+
+        if (code == null) {
+            code = taxPayerNumber;
+        }
+    }
 }

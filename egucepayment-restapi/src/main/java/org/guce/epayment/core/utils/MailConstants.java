@@ -16,6 +16,8 @@ public interface MailConstants {
 
     static final String EMAIL = "email".intern();
 
-    final String FTL = "ftl".intern();
+    static final String FTL = "ftl".intern();
+
+    static final String DEFAULT_EMAIL = "email@email.com".intern();
 
 }

@@ -24,7 +24,7 @@ export class ToValidationComponent implements OnInit, OnDestroy {
     }
 
     private findTransferOrders() {
-        this.findTransferOrdersSub = this.http.get(`transfers/orders/${true}/${0}/${0}/${false}`, true).subscribe(
+        this.findTransferOrdersSub = this.http.getData(`transfers/orders/${true}/${0}/${0}/${false}`, true).subscribe(
             data => {
                 this.transferOrders = data.json();
             },

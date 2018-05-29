@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.guce.epayment.core.entities.Credentials;
 import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.repositories.UserRepository;
+import org.guce.epayment.core.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Transactional
-@Service("authenticationService")
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
@@ -43,6 +44,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 user.setCredentialses(new ArrayList<>(1));
             }
             user.getCredentialses().add(credentials);
+        }
+
+        if (Constants.BIG_DECIMAL_MINUS_ONE.equals(user.getId())) { // a new user
+            user.setId(null);
         }
 
         userRepository.save(user);

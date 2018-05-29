@@ -103,7 +103,7 @@ export class CashierTransferComponent implements OnInit, OnDestroy {
             originMessage: 'originMessage',
             privateKey: 'privateKey'
         };
-        this.validPaymentSub = this.http.post(`transfers/orders/initiation/${true}`, transferInfos).subscribe(
+        this.validPaymentSub = this.http.postData(`transfers/orders/initiation/${true}`, transferInfos).subscribe(
             res => {
                 let response = res.json();
                 let responseData = response.data;
@@ -139,7 +139,7 @@ export class CashierTransferComponent implements OnInit, OnDestroy {
     }
 
     findBankAccounts() {
-        this.findBankAccountsSub = this.http.get('banks/accounts', true).subscribe(
+        this.findBankAccountsSub = this.http.getData('cashier/banks/accounts', true).subscribe(
             data => {
                 let response = data.json();
                 if(response.data) {

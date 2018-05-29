@@ -1,4 +1,4 @@
-package org.guce.epayment.rest.controllers;
+package org.guce.epayment.rest.controllers.jwt;
 
 import org.guce.epayment.rest.dto.Message;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Transactional
 @RestController
+@RequestMapping("jwt")
 public class TestController {
 
     @RequestMapping("hello")

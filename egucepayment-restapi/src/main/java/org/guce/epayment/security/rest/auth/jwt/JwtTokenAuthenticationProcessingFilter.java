@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.guce.epayment.rest.controllers.utils.RestConstants;
 import org.guce.epayment.rest.controllers.utils.RestUtils;
 import org.guce.epayment.security.rest.auth.models.RawAccessJwtToken;
-import org.guce.epayment.security.rest.auth.TokenExtractor;
 import org.guce.epayment.security.rest.config.RestSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

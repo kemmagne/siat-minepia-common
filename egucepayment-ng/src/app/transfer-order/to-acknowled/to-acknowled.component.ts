@@ -27,7 +27,7 @@ export class ToAcknowledComponent implements OnInit, OnDestroy {
     }
     
     private countTransferOders() {
-        this.findTransferOdersSub = this.http.get(`transfers/orders/acknowled/${0}/${0}/${true}`, true).subscribe(
+        this.findTransferOdersSub = this.http.getData(`transfers/orders/acknowled/${0}/${0}/${true}`, true).subscribe(
             res => {
                 this.nbTransferOrders = +res.json().data;
                 this.findTransferOders(0, 10);
@@ -40,7 +40,7 @@ export class ToAcknowledComponent implements OnInit, OnDestroy {
     }
     
     private findTransferOders(start, end: number) {
-        this.findTransferOdersSub = this.http.get(`transfers/orders/acknowled/${start}/${end}/${false}`, true).subscribe(
+        this.findTransferOdersSub = this.http.getData(`transfers/orders/acknowled/${start}/${end}/${false}`, true).subscribe(
             data => {
                 this.transferOrders = data.json();
             },

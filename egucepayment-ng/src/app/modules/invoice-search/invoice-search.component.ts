@@ -76,9 +76,13 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy/*, OnChanges*/ 
             invoiceMaxAmount: null,
             invoiceStatus: null,
             subTypeCode: this.mention,
-            groups: this.groups
+            groups: this.groups,
+            child: false,
+            start: 0,
+            end: 0,
+            count: false
         };
-        this.searchInvoicesSub = this.http.post(`invoices/filter/${0}/${0}/${false}`, this.filterInvoices).subscribe(
+        this.searchInvoicesSub = this.http.postData(`invoices/filter`, this.filterInvoices).subscribe(
             data => {
                 this.invoicesFound = data.json();
                 this.invoicesFoundChange.emit(this.invoicesFound);
@@ -91,7 +95,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy/*, OnChanges*/ 
     }
 
     private findInvoicesTypes() {
-        this.findInvoicesTypesSub = this.http.get(`invoices/types/by-pms/${this.pms}`, true).subscribe(
+        this.findInvoicesTypesSub = this.http.getData(`invoices/types/by-pms/${this.pms}`, true).subscribe(
             data => {
                 this.invoicesTypes = data.json();
             },
@@ -103,7 +107,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy/*, OnChanges*/ 
     }
 
     private findMentions() {
-        this.findMentionsSub = this.http.get(`invoices/types/${false}/${true}`, true).subscribe(
+        this.findMentionsSub = this.http.getData(`invoices/types/${false}/${true}`, true).subscribe(
             data => {
                 this.mentions = [{code: 'null', label: ''}];
                 this.mentions = this.mentions.concat(data.json());
@@ -116,7 +120,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy/*, OnChanges*/ 
     }
 
     private findBeneficiaries() {
-        this.findBeneficiariesSub = this.http.get(`partners/beneficiaries/${this.invoiceTypeCode}`, true).subscribe(
+        this.findBeneficiariesSub = this.http.getData(`partners/beneficiaries/${this.invoiceTypeCode}`, true).subscribe(
             data => {
                 this.beneficiaryPartners = [{code: 'null', name: ''}]
                 this.beneficiaryPartners = this.beneficiaryPartners.concat(data.json());

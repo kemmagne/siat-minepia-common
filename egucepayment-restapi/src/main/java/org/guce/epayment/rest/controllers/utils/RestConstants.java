@@ -1,5 +1,7 @@
 package org.guce.epayment.rest.controllers.utils;
 
+import org.guce.epayment.rest.dto.DefaultDto;
+
 /**
  *
  * @author tadzotsa
@@ -22,7 +24,7 @@ public interface RestConstants {
 
     static final String FILE_DOWNLOAD_HEADER_VALUE_FORMAT = "attachment;filename=%s".intern();
 
-    static final String LOGIN = "login".intern();
+    static final String LOGIN = "login";
 
     static final String TOKEN = "token".intern();
 
@@ -36,14 +38,22 @@ public interface RestConstants {
 
     static final String ROLES = "roles".intern();
 
-    static final String LOCALE = "locale".intern();
+    static final String LOCALE = "locale";
 
     static final String UNAUTHORIZED = "Unauthorized".intern();
+
+    static final String LOGIN_PATTERN = "/^[a-z0-9_-]{3,16}$/".intern();
 
     static final String EMAIL_PATTERN = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])".intern();
 
     static final String DEFAULT_PASSWORD = "0123456789".intern();
 
-    static final String DEFAULT_RESPONSE_BODY = "OK".intern();
+    static final DefaultDto DEFAULT_RESPONSE_BODY = DefaultDto.of("OK");
+
+    static final String SUB_INVOICE_TYPE_CODE_FORMAT = "FACTURE_%s_%s".intern();
+
+    static final String SUB_INVOICE_NUMBER_FORMAT = "%s_%s_%s".intern();
+
+    static final String SUB_INVOICE_TYPE_NAME_PREFIX = "Facture ".intern();
 
 }

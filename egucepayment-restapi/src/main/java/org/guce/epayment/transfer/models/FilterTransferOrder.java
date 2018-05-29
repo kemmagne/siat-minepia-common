@@ -26,4 +26,12 @@ public class FilterTransferOrder {
 
     private String bank;
 
+    private int start;
+    private int end;
+
+    private boolean count;
+
+    private int type;
+    private int period;
+
 }

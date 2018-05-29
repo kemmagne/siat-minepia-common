@@ -71,7 +71,7 @@ export class PrincipalTransferComponent implements OnInit, OnDestroy {
             originMessage: 'originMessage',
             privateKey: 'privateKey'
         };
-        this.validPaymentSub = this.http.post(`transfers/orders/initiation/${false}`, transferInfos).subscribe(
+        this.validPaymentSub = this.http.postData(`transfers/orders/initiation/${false}`, transferInfos).subscribe(
             res => {
                 let response = res.json();
                 let responseData = response.data;
@@ -107,7 +107,7 @@ export class PrincipalTransferComponent implements OnInit, OnDestroy {
     }
 
     findBankAccounts() {
-        this.findBankAccountsSub = this.http.get(`banks/accounts/by-owner/${null}`, true).subscribe(
+        this.findBankAccountsSub = this.http.getData(`banks/accounts/by-owner/${null}`, true).subscribe(
             data => {
                 this.bankAccounts = data.json();
             },

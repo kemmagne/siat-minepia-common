@@ -45,7 +45,7 @@ public class Payment implements Serializable {
     @Id
     @SequenceGenerator(name = "PAYMENT_SEQ_GEN", sequenceName = "PAYMENT_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENT_SEQ_GEN")
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
     @Column(name = "P_REFERENCE", nullable = false, unique = true, length = 30)

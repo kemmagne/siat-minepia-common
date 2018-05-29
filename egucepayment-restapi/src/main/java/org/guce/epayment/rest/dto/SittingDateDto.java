@@ -1,6 +1,5 @@
 package org.guce.epayment.rest.dto;
 
-import java.math.BigDecimal;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = {"id"})
 public class SittingDateDto {
 
-    private BigDecimal id;
+    private Integer id;
     private String insertionDate;
     private String minTime;
     private String maxTime;
@@ -20,14 +19,14 @@ public class SittingDateDto {
     public SittingDateDto() {
     }
 
-    private SittingDateDto(BigDecimal id, String insertionDate, String minTime, String maxTime) {
+    private SittingDateDto(Integer id, String insertionDate, String minTime, String maxTime) {
         this.id = id;
         this.insertionDate = insertionDate;
         this.minTime = minTime;
         this.maxTime = maxTime;
     }
 
-    public static SittingDateDto of(BigDecimal id, String insertionDate, String minTime, String maxTime) {
+    public static SittingDateDto of(Integer id, String insertionDate, String minTime, String maxTime) {
 
         return new SittingDateDto(id, insertionDate, minTime, maxTime);
     }

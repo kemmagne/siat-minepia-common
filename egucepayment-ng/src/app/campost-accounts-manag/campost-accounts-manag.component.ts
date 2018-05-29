@@ -56,7 +56,7 @@ export class CampostAccountsManagComponent implements OnInit, OnDestroy {
     }
 
     deleteAccount() {
-        this.deleteAccountSub = this.http.delete(`campost/accounts/${this.tempAccount.id}`).subscribe(
+        this.deleteAccountSub = this.http.delete(`admin/campost/accounts/${this.tempAccount.id}`).subscribe(
             res => {
                 let response = res.json();
                 this.layout.diplayGrowlMessage('success', 'operation.succeeded', 'account.removed');
@@ -76,7 +76,7 @@ export class CampostAccountsManagComponent implements OnInit, OnDestroy {
 
     saveAccount() {
         this.currentAccount.beneficiary = {id: this.beneficiary};
-        this.saveAccountSub = this.http.post(`campost/accounts`, this.currentAccount).subscribe(
+        this.saveAccountSub = this.http.postData(`admin/campost/accounts`, this.currentAccount).subscribe(
             res => {
                 let response = res.json();
                 this.layout.diplayGrowlMessage('success', 'operation.succeeded', 'account.saved');
@@ -91,7 +91,7 @@ export class CampostAccountsManagComponent implements OnInit, OnDestroy {
     }
 
     private findAccounts() {
-        this.findAccountsSub = this.http.get(`campost/accounts`, true).subscribe(
+        this.findAccountsSub = this.http.getData(`admin/campost/accounts/all`, true).subscribe(
             data => {
                 this.accounts = data.json();
             },
@@ -103,7 +103,7 @@ export class CampostAccountsManagComponent implements OnInit, OnDestroy {
     }
 
     private findBeneficiaries() {
-        this.findBeneficiariesSub = this.http.get(`partners/by-types/${Config.PARTNER_TYPE_BENEFICIARY}/${0}/${0}`, false).subscribe(
+        this.findBeneficiariesSub = this.http.getData(`public/partners/by-types/${Config.PARTNER_TYPE_BENEFICIARY}/${0}/${0}`, false).subscribe(
             data => {
                 this.beneficiaries = data.json();
             },

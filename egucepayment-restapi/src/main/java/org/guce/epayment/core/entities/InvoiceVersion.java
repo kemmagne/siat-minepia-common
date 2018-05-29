@@ -30,7 +30,7 @@ public class InvoiceVersion implements Serializable {
     @Id
     @SequenceGenerator(name = "INVOICE_VERSION_SEQ", sequenceName = "INVOICE_VERSION_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INVOICE_VERSION_SEQ")
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
     @JoinColumn(name = "INVOICE_ID", nullable = false)
@@ -38,8 +38,6 @@ public class InvoiceVersion implements Serializable {
     private Invoice invoice;
     @Column(name = "VERSION_NUMBER", nullable = false)
     private int number;
-    @Column(name = "GUCE_REFERENCE", length = 50)
-    private String guceReference;
     @Column(name = "VERSION_DATE", nullable = false)
     private LocalDateTime date;
     @Column(name = "VERSION_AMOUNT", nullable = false, precision = 38, scale = 4)

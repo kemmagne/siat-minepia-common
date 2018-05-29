@@ -18,8 +18,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+@Transactional
 @Service
 @PropertySources(value = @PropertySource("classpath:global-config.properties"))
 public class EmailServiceImpl implements EmailService {

@@ -163,8 +163,9 @@ public abstract class AbstractCampostService implements CampostService {
         final String requestString = CoreUtils.mapToString(requestParams, "&");
         final String enc = SecurityUtils.symetricEncrypt(requestString, account.getSecretKey(), account.getInitVector());
         final String izenid = account.getIzenid();
-        final Params campostUrlParam = paramsRepository.getOne(CAMPOST_BASE_URL);
-        final String postUrl = String.format("%s?izenid=%s&enc=%s", campostUrlParam.getValue(), izenid, enc);
+        final Params campostUrlParam = paramsRepository.findById(CAMPOST_BASE_URL)
+                .orElseThrow(() -> new NullPointerException("The campost base url hasn't been set"));
+        final String postUrl = String.format("%s?izenid=%s&enc=%s", campostUrlParam.getValue().trim(), izenid, enc);
         String response;
 
         try {

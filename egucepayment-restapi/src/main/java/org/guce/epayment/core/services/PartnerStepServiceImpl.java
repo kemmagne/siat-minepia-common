@@ -8,7 +8,9 @@ import org.guce.epayment.core.entities.Step;
 import org.guce.epayment.core.repositories.PartnerStepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class PartnerStepServiceImpl implements PartnerStepService {
 

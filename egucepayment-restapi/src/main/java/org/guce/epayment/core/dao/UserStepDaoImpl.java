@@ -15,7 +15,9 @@ import org.guce.epayment.core.repositories.PartnerStepRepository;
 import org.guce.epayment.core.repositories.UserStepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Repository
 public class UserStepDaoImpl implements UserStepDao {
 

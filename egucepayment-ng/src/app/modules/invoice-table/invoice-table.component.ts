@@ -204,7 +204,7 @@ export class InvoiceTableComponent implements OnInit, OnDestroy {
             let actualAmount = this.totalAmount;
             let newAmount = invoice.amountToPay;
             let operation = "add";
-            this.addAmountSubscription = this.http.get(`computing/amount/${actualAmount}/${newAmount}/${operation}`).subscribe(
+            this.addAmountSubscription = this.http.getData(`public/computing/amount/${actualAmount}/${newAmount}/${operation}`).subscribe(
                 total => {
                     this.invoicesToPay.push(invoice);
                     let temp = Object.assign([], this.invoicesToPay);
@@ -238,7 +238,7 @@ export class InvoiceTableComponent implements OnInit, OnDestroy {
         let actualAmount = this.totalAmount;
         let newAmount = invoice.amountToPay;
         let operation = 'subtract';
-        this.subtractAmountSubscription = this.http.get(`computing/amount/${actualAmount}/${newAmount}/${operation}`).subscribe(
+        this.subtractAmountSubscription = this.http.getData(`public/computing/amount/${actualAmount}/${newAmount}/${operation}`).subscribe(
             total => {
                 this.invoicesToPay.splice(invoiceIndex, 1);
                 let temp = Object.assign([], this.invoicesToPay);

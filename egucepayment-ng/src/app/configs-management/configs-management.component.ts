@@ -21,7 +21,7 @@ export class ConfigsManagementComponent implements OnInit, OnDestroy {
     }
 
     private findConfigs() {
-        this.findConfigsSub = this.http.get('admin/configs/all', true).subscribe();
+        this.findConfigsSub = this.http.getData('admin/configs/all', true).subscribe();
     }
 
 }

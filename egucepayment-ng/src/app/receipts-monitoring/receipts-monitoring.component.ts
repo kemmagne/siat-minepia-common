@@ -31,7 +31,7 @@ export class ReceiptsMonitoringComponent implements OnInit, OnDestroy {
     }
 
     private findInvoicesTypes() {
-        this.findInvoicesTypesSub = this.http.get(`invoices/types/${true}/${false}`, true).subscribe(
+        this.findInvoicesTypesSub = this.http.getData(`invoices/types/${true}/${false}`, true).subscribe(
             data => {
                 this.invoicesTypes = data.json();
             },
@@ -43,7 +43,7 @@ export class ReceiptsMonitoringComponent implements OnInit, OnDestroy {
     }
 
     invoiceTypeChange(event) {
-        this.findReceiptsSub = this.http.get(`admin/receipts/by-invoice-type/${this.invoicetype}`, true).subscribe(
+        this.findReceiptsSub = this.http.getData(`admin/receipts/by-invoice-type/${this.invoicetype}`, true).subscribe(
             data => {
                 this.receipts = data.json();
             },

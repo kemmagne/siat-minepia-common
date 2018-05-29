@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -43,7 +42,7 @@ public class Invoice implements Serializable {
     @Id
     @SequenceGenerator(name = "INVOICE_SEQ_GEN", sequenceName = "INVOICE_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INVOICE_SEQ_GEN")
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
     @Column(name = "INVOICE_NUMBER", nullable = false, length = 50)
@@ -61,34 +60,35 @@ public class Invoice implements Serializable {
     @JoinColumn(name = "TYPE_ID", nullable = false)
     @ManyToOne
     private InvoiceType type;
-    @JoinColumn(name = "SUB_TYPE")
+    @JoinColumn(name = "SUB_TYPE_ID")
     @ManyToOne
     private InvoiceType subType;
     @JoinColumn(name = "OWNER_ID", nullable = false)
     @ManyToOne
     private Partner owner;
-    @JoinColumn(name = "BENEFICIARY")
+    @JoinColumn(name = "BENEFICIARY_ID")
     @ManyToOne
     private Partner beneficiary;
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "invoice", cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private List<InvoiceVersion> invoiceVersions;
     @JoinColumn(name = "PARENT_ID")
     @ManyToOne
     private Invoice parent;
     @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Invoice> subInvoices;
-    @Column(name = "EXPEDITION_NUMBER", length = 20)
-    private String expeditionNumber;
-    @Lob
-    @Column(name = "OTHERS_PROPERTIES")
-    private String othersProperties;
+    @Column(name = "BENEF_REFERENCE", length = 30)
+    private String benefReference;
+    @Column(name = "OLD_NUMBER", length = 100)
+    private String oldNumber;
 
     @PrePersist
     private void prePersist() {
+
         paidAmount = BigDecimal.ZERO;
         status = INVOICE_UNPAID;
         lastVersionDate = LocalDateTime.now();
         lastVersionNumber = 1;
+
         forSubInvoice();
     }
 
@@ -98,10 +98,15 @@ public class Invoice implements Serializable {
     }
 
     private void forSubInvoice() {
+
         if (parent != null) {
-            setStatus(parent.getStatus());
-            setLastVersionDate(parent.getLastVersionDate());
-            setLastVersionNumber(parent.getLastVersionNumber());
+
+            if (!paidAmount.equals(amount)) {
+                status = parent.getStatus();
+            }
+
+            lastVersionDate = parent.getLastVersionDate();
+            lastVersionNumber = parent.getLastVersionNumber();
         }
     }
 

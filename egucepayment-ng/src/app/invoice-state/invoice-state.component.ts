@@ -96,9 +96,13 @@ export class InvoiceStateComponent implements OnInit, OnDestroy {
             invoiceMaxAmount: this.invoiceMaxAmount,
             invoiceStatus: this.invoiceStatus,
             subTypeCode: this.mention,
-            groups: false
+            groups: false,
+            child: true,
+            start: 0,
+            end: 0,
+            count: true
         };
-        this.searchInvoicesSub = this.http.post(`invoices/filter/${0}/${0}/${true}`, this.filterInvoices).subscribe(
+        this.searchInvoicesSub = this.http.postData(`invoices/filter`, this.filterInvoices).subscribe(
             res => {
                 this.nbInvoices = +res.json().data;
                 this.searchInvoices(0, 10);
@@ -120,9 +124,13 @@ export class InvoiceStateComponent implements OnInit, OnDestroy {
             invoiceMaxAmount: this.invoiceMaxAmount,
             invoiceStatus: this.invoiceStatus,
             subTypeCode: this.mention,
-            groups: false
+            groups: false,
+            child: true,
+            start: start,
+            end: end,
+            count: false
         };
-        this.searchInvoicesSub = this.http.post(`invoices/filter/${start}/${end}/${false}`, this.filterInvoices).subscribe(
+        this.searchInvoicesSub = this.http.postData(`invoices/filter`, this.filterInvoices).subscribe(
             data => {
                 this.invoicesFound = data.json();
             },
@@ -134,7 +142,7 @@ export class InvoiceStateComponent implements OnInit, OnDestroy {
     }
 
     private findInvoicesTypes() {
-        this.findInvoicesTypesSub = this.http.get(`invoices/types/${true}/${false}`, true).subscribe(
+        this.findInvoicesTypesSub = this.http.getData(`invoices/types/${true}/${false}`, true).subscribe(
             data => {
                 this.invoicesTypes = [{code: 'null', label: ''}];
                 this.invoicesTypes = this.invoicesTypes.concat(data.json());
@@ -147,7 +155,7 @@ export class InvoiceStateComponent implements OnInit, OnDestroy {
     }
 
     private findMentions() {
-        this.findMentionsSub = this.http.get(`invoices/types/${false}/${true}`, true).subscribe(
+        this.findMentionsSub = this.http.getData(`invoices/types/${false}/${true}`, true).subscribe(
             data => {
                 this.mentions = [{code: 'null', label: ''}];
                 this.mentions = this.mentions.concat(data.json());
@@ -160,7 +168,7 @@ export class InvoiceStateComponent implements OnInit, OnDestroy {
     }
 
     private findBeneficiaries() {
-        this.findBeneficiariesSub = this.http.get(`partners/by-types/${Config.PARTNER_TYPE_BENEFICIARY}/${0}/${0}`, false).subscribe(
+        this.findBeneficiariesSub = this.http.getData(`public/partners/by-types/${Config.PARTNER_TYPE_BENEFICIARY}/${0}/${0}`, false).subscribe(
             data => {
                 this.beneficiaryPartners = [{code: 'null', name: ''}]
                 this.beneficiaryPartners = this.beneficiaryPartners.concat(data.json());

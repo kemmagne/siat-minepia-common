@@ -48,7 +48,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             actual: this.actualPassword,
             update: this.passwordFirst
         }
-        this.setPasswordSub = this.http.post('users/password', setPasswordDto).subscribe(
+        this.setPasswordSub = this.http.postData('users/password', setPasswordDto).subscribe(
             res => {
                 let response = res.json();
                 if(0 === +response.data) {
@@ -72,7 +72,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
 
     private findUser() {
-        this.findUserSub = this.http.get('users/by-login', true).subscribe(
+        this.findUserSub = this.http.getData('users/by-login', true).subscribe(
             data => {
                 let response = data.json();
                 if(response.data) {

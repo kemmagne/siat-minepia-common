@@ -21,11 +21,10 @@ public class PartnerType implements Serializable {
 
     private static final long serialVersionUID = -288718007278303785L;
 
-    public static final String PARTNER_TYPE_PRINCIPAL = "PRINCIPAL";
-    public static final String PARTNER_TYPE_BENEFICIARY = "BENEFICIARY";
-    public static final String PARTNER_TYPE_BANK = "BANK";
-    public static final String PARTNER_TYPE_BANK_AGENCY = "BANK_AGENCY";
-    public static final String PARTNER_TYPE_ADMIN = "ADMIN";
+    public static final String PARTNER_TYPE_PRINCIPAL = "DONNEUR_ORDRE";
+    public static final String PARTNER_TYPE_BENEFICIARY = "BENEFICIAIRE";
+    public static final String PARTNER_TYPE_BANK = "BANQUE";
+    public static final String PARTNER_TYPE_BANK_AGENCY = "AGENCE_BANQUE";
 
     @Id
     @SequenceGenerator(name = "PARTNER_TYPE_SEQ", sequenceName = "PARTNER_TYPE_SEQ", allocationSize = 1)

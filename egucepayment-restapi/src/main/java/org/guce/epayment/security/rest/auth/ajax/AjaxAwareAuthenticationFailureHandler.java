@@ -1,4 +1,4 @@
-package org.guce.epayment.security.rest.auth;
+package org.guce.epayment.security.rest.auth.ajax;
 
 import org.guce.epayment.security.rest.auth.models.ErrorResponse;
 import org.guce.epayment.security.rest.auth.models.ErrorCode;

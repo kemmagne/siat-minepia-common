@@ -39,7 +39,7 @@ export class DecideurDashbordComponent implements OnInit {
     }
 
     private findStats() {
-        this.findStatsSub = this.http.get(`statistics/transfer/orders/by-decision-maker/last/${this.max}/${this.translateService.currentLang}`, true).subscribe(
+        this.findStatsSub = this.http.getData(`statistics/transfer/orders/by-decision-maker/last/${this.max}`, true).subscribe(
             data => {
                 this.statistics = data.json();
             },

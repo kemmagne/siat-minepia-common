@@ -106,7 +106,7 @@ export class DirectPaymentComponent implements OnInit, OnDestroy {
         if(!this.invoiceNumber) {
             this.invoiceNumber = null;
         }
-        this.http.get(`invoices/by-number/${this.invoiceNumber}`).subscribe(
+        this.http.getData(`public/invoices/by-number/${this.invoiceNumber}`).subscribe(
             data => {
                 this.invoicesFound = data.json();
             },
@@ -118,7 +118,7 @@ export class DirectPaymentComponent implements OnInit, OnDestroy {
     }
 
     private findDirectPaymentModes() {
-        this.findDirectPaymentModesSub = this.http.get(`payment/modes/by-direct/${true}`).subscribe(
+        this.findDirectPaymentModesSub = this.http.getData(`public/payment/modes/by-direct/${true}`).subscribe(
             data => {
                 this.directPaymentModes = [];
                 this.directPaymentModes = this.directPaymentModes.concat(data.json());

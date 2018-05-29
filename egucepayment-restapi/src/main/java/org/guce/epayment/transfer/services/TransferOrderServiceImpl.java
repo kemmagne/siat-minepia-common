@@ -1,6 +1,5 @@
 package org.guce.epayment.transfer.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -31,25 +30,26 @@ import org.guce.epayment.core.services.UserStepService;
 import org.guce.epayment.core.utils.Constants;
 import org.guce.epayment.core.utils.CoreUtils;
 import org.guce.epayment.core.utils.DateUtils;
-import org.guce.epayment.exceptions.BadStatusException;
+import org.guce.epayment.exceptions.BadStepException;
 import org.guce.epayment.exceptions.NotCreditAccountException;
 import org.guce.epayment.transfer.dao.TransferOrderDao;
 import org.guce.epayment.transfer.entities.TransferOrder;
+import org.guce.epayment.transfer.models.FilterTransferOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Transactional
+@Service
 public class TransferOrderServiceImpl implements TransferOrderService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransferOrderServiceImpl.class);
 
     private static final String TO_REF_PREFIX = "TO".intern();
     private static final String TO_SEQ = "TRANSFER_ORDER_SEQ".intern();
-    private static final String IVT_LAST_STATUS_PARAM_KEY = "transfer.last.status".intern();
+    private static final String IVT_LAST_STEP_PARAM_KEY = "transfer.last.step".intern();
     private static final String IVT_BENEFICIARY_AGENCY_PARAM_KEY = "beneficiary.agency".intern();
 
     @Autowired
@@ -106,7 +106,7 @@ public class TransferOrderServiceImpl implements TransferOrderService {
         final Properties ivtProps = CoreUtils.getParams(Optional.ofNullable(invoiceType.getParameters()));
         // recherche du premier status suivant le mode de payment et le type de facture
         final String globalFlow = paymentMode.getGlobalFlow();
-        final String ivtLastStepCode = ivtProps.getProperty(IVT_LAST_STATUS_PARAM_KEY, "");
+        final String ivtLastStepCode = ivtProps.getProperty(IVT_LAST_STEP_PARAM_KEY, "");
         final String subFlow = globalFlow.substring(0, globalFlow.indexOf(ivtLastStepCode) + ivtLastStepCode.length());
         final String transferFlow = subFlow.isEmpty() ? globalFlow : subFlow;
         // flux à prendre en compte
@@ -135,8 +135,7 @@ public class TransferOrderServiceImpl implements TransferOrderService {
         final String firstStepCode = flowTab[0];
         final Step firstStep = stepRepository.findByCode(firstStepCode).get();
         final Signature userSignature = paymentService.buildUserSignature(originMessage, signature, 0, connectedUser, firstStep, transferOrder);
-        transferOrder.setSignatures(new ArrayList<>());
-        transferOrder.getSignatures().add(userSignature);
+        transferOrder.setSignatures(Arrays.asList(userSignature));
         /**
          * il est possible qu'à ce niveau les factures soient marquées payées
          * pour deux cas :
@@ -211,7 +210,7 @@ public class TransferOrderServiceImpl implements TransferOrderService {
             }
 
             if (!userStep.isPresent()) {
-                throw new BadStatusException("The user " + connectedUser.getLogin() + " doesn't have status " + (null != step ? step.getCode() : "") + " and validation level " + level + " and is trying to validate a transfer order");
+                throw new BadStepException("The user " + connectedUser.getLogin() + " doesn't have step " + (null != step ? step.getCode() : "") + " and validation level " + level + " and is trying to validate a transfer order");
             }
 
             userSignature = paymentService.buildUserSignature(originMessage, signature, level, connectedUser, step, transferOrder);
@@ -293,6 +292,46 @@ public class TransferOrderServiceImpl implements TransferOrderService {
         if (!sittingDates.isEmpty()) {
             transferOrder.setSittingDate(DateUtils.getSittingDate(sittingDates.get(0).getMinTime(), sittingDates.get(0).getMaxTime()));
         }
+    }
+
+    @Override
+    public List<TransferOrder> findPartnerTransferOrders(User connectedUser, int start, int end, boolean count) {
+        return transferOrderDao.findPartnerTransferOrders(connectedUser, start, end, count);
+    }
+
+    @Override
+    public List<TransferOrder> findPartnerTransferOrders(User connectedUser, boolean toValidate, int start, int end, boolean count) {
+        return transferOrderDao.findPartnerTransferOrders(connectedUser, toValidate, start, end, count);
+    }
+
+    @Override
+    public Object filterTransferOrders(FilterTransferOrder filter, String code) {
+        return transferOrderDao.filterTransferOrders(filter, code);
+    }
+
+    @Override
+    public Object findTransferOrdersPeriodically(int type, int period, String code, int start, int end, boolean count) {
+        return transferOrderDao.findTransferOrdersPeriodically(type, period, code, start, end, count);
+    }
+
+    @Override
+    public List<TransferOrder> findLastTransferOrders(int type, String code, int number) {
+        return transferOrderDao.findLastTransferOrders(type, code, number);
+    }
+
+    @Override
+    public Object findByTosUser(String userLogin, int start, int end, boolean count) {
+        return transferOrderDao.findByTosUser(userLogin, start, end, count);
+    }
+
+    @Override
+    public List getTosStats(int type, boolean bank) {
+        return transferOrderDao.getTosStats(type, bank);
+    }
+
+    @Override
+    public Object getAcknowledTransferOrders(String benefCode, int start, int end, boolean count) {
+        return transferOrderDao.getAcknowledTransferOrders(benefCode, start, end, count);
     }
 
 }

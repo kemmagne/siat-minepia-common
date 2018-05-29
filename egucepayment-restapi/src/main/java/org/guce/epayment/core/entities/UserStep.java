@@ -25,7 +25,7 @@ public class UserStep implements Serializable {
     @Id
     @SequenceGenerator(name = "USER_STEP_SEQ", sequenceName = "USER_STEP_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_STEP_SEQ")
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
     @JoinColumn(name = "USER_ID", nullable = false)

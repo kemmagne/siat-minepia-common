@@ -43,7 +43,7 @@ export class PrincipalsComponent implements OnInit, OnDestroy {
     countPrincipals() {
         this.partnerCode = null;
         this.taxPayerNumber = null;
-        this.countPrincipalsSub = this.http.get('partners/principals/count').subscribe(
+        this.countPrincipalsSub = this.http.getData('public/partners/principals/count').subscribe(
             res => {
                 this.nbPartners = +res.json().data;
                 this.findPartners(0, 10);
@@ -56,7 +56,7 @@ export class PrincipalsComponent implements OnInit, OnDestroy {
     }
 
     private findPartners(start, end: number) {
-        this.findPartnersSub = this.http.get(`partners/principals/${start}/${end}`).subscribe(
+        this.findPartnersSub = this.http.getData(`public/partners/principals/${start}/${end}`).subscribe(
             data => {
                 this.partners = data.json();
             },
@@ -75,7 +75,7 @@ export class PrincipalsComponent implements OnInit, OnDestroy {
             this.taxPayerNumber = null;
         }
         this.nbPartners = null;
-        this.searchSub = this.http.get(`partners/by-code/${this.partnerCode}/${this.taxPayerNumber}`).subscribe(
+        this.searchSub = this.http.getData(`public/partners/by-code/${this.partnerCode}/${this.taxPayerNumber}`).subscribe(
             data => {
                 this.partners = data.json();
             },

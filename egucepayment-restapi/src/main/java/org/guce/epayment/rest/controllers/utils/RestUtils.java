@@ -54,7 +54,7 @@ public interface RestUtils {
 
         if (list && null != parent) {
 
-            partnerDto.setParent(PartnerDto.of(parent.getCode(), parent.getName()));
+            partnerDto.setParent(PartnerDto.of(parent.getId(), parent.getCode(), parent.getName()));
 
             final String[] codeParts = StringUtils.split(code, Constants.GLOBAL_SEPERATOR);
 
@@ -95,7 +95,7 @@ public interface RestUtils {
         userDto.setLocale(user.getLocale());
         userDto.setLocked(user.isLocked());
         userDto.setLogin(user.getLogin());
-        userDto.setPartner(Optional.of(user.getPartner()).map(partner -> PartnerDto.of(partner.getId(), partner.getCode(), partner.getName())).get());
+        userDto.setPartner(PartnerDto.of(user.getPartner().getId(), user.getPartner().getCode(), user.getPartner().getName()));
         userDto.setResetPassword(user.isResetPassword());
         userDto.setRoleDtos(user.getRoles().stream().map(role -> RoleDto.of(role.getName(), role.getDescription())).collect(Collectors.toList()));
         userDto.setRoles(user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()));
@@ -124,7 +124,7 @@ public interface RestUtils {
 
             invoiceTypeDto.setPaymentModes(invoiceType.getPaymentModes().stream().map(pm -> PaymentModeDto.of(pm.getCode(), pm.getLabel())).collect(Collectors.toList()));
             invoiceTypeDto.setBeneficiaries(invoiceType.getBeneficiaries().stream().map(ivtb -> getPartnerDto(ivtb.getBeneficiary(), false)).collect(Collectors.toList()));
-            invoiceTypeDto.setBanks(invoiceType.getBanks().stream().map(bank -> getPartnerDto(bank, false)).collect(Collectors.toList()));
+            invoiceTypeDto.setBanks(invoiceType.getUnauthorizedBanks().stream().map(bank -> getPartnerDto(bank, false)).collect(Collectors.toList()));
             invoiceTypeDto.setDecisionMakers(invoiceType.getDecisionMakers().stream().map(user -> getUserDto(user, Optional.empty())).collect(Collectors.toList()));
         }
 
@@ -199,10 +199,10 @@ public interface RestUtils {
         return accountDto;
     }
 
-    static TransferOrderDto getTransferOrderDto(TransferOrder transferOrder, String lang) {
+    static TransferOrderDto getTransferOrderDto(TransferOrder transferOrder, String locale) {
 
         final TransferOrderDto transferOrderDto = new TransferOrderDto();
-        final NumberFormat nf = NumberFormat.getNumberInstance(Locale.forLanguageTag(lang));
+        final NumberFormat nf = NumberFormat.getNumberInstance(Locale.forLanguageTag(locale));
 
         transferOrderDto.setReference(transferOrder.getReference());
         transferOrderDto.setPartnerReference(transferOrder.getPartnerReference());

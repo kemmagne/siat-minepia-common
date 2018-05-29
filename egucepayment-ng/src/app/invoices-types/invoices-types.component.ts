@@ -99,7 +99,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     private findInvoicesTypes() {
-        this.findInvoicesTypesSub = this.http.get(`invoices/types/all`, true).subscribe(
+        this.findInvoicesTypesSub = this.http.getData(`invoices/types/all`, true).subscribe(
             ivts => {
                 this.InvoicesTypes = ivts.json();
                 this.ivtView = false;
@@ -113,7 +113,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
 
     private findBeneficiaries() {
         let partnerType = Config.PARTNER_TYPE_BENEFICIARY;
-        this.findBeneficiariesSub = this.http.get(`partners/by-types/${partnerType}/${0}/${0}`, true).subscribe(
+        this.findBeneficiariesSub = this.http.getData(`public/partners/by-types/${partnerType}/${0}/${0}`, true).subscribe(
             data => {
                 this.beneficiaries = data.json();
             },
@@ -125,7 +125,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     private findPaymentModes() {
-        this.findPaymentModesSub = this.http.get('payment/modes/all', true).subscribe(
+        this.findPaymentModesSub = this.http.getData('admin/payment/modes/all', true).subscribe(
             data => {
                 this.paymentModes = data.json();
             },
@@ -194,7 +194,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
                 }
             }
         }
-        this.http.post('invoices/types', this.selectedInvoiceType).subscribe(
+        this.http.postData('admin/invoices/types', this.selectedInvoiceType).subscribe(
             res => {
                 let ivt = res.json();
                 if(!this.selectedInvoiceType.id) {
@@ -239,7 +239,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     private findPartnersAccounts() {
-        this.findPartnersAccountsSub = this.http.get(`banks/accounts/by-owner/${this.selectedBeneficiary}`, true).subscribe(
+        this.findPartnersAccountsSub = this.http.getData(`banks/accounts/by-owner/${this.selectedBeneficiary}`, true).subscribe(
             data => {
                 this.beneficiaryAccounts = data.json();
             },
@@ -262,7 +262,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
             console.info('no account');
             return;
         }
-        this.confirmBankAccountSub = this.http.post(`invoices/types/accounts/${this.selectedInvoiceType.code}/${this.selectedBeneficiary}`,
+        this.confirmBankAccountSub = this.http.postData(`admin/invoices/types/accounts/${this.selectedInvoiceType.code}/${this.selectedBeneficiary}`,
         this.selectedBa).subscribe(
             res => {
                 let response = res.json();
@@ -284,7 +284,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     private findBanks(ivt, view?: boolean) {
-        this.findBanksSub = this.http.get(`partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`, true).subscribe(
+        this.findBanksSub = this.http.getData(`public/partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`, true).subscribe(
             data => {
                 this.banks = data.json();
                 this.selectedBanks = Object.assign([], ivt.banks);
@@ -308,7 +308,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     confirmBanks() {
-        this.confirmBanksSub = this.http.post(`invoices/types/banks/${this.selectedInvoiceType.code}`, this.selectedBanks).subscribe(
+        this.confirmBanksSub = this.http.postData(`admin/invoices/types/banks/${this.selectedInvoiceType.code}`, this.selectedBanks).subscribe(
             res => {
                 let response = res.json();
                 this.layout.diplayGrowlMessage('success', 'operation.succeeded', 'update.done');
@@ -322,7 +322,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     private findDebitAccount() {
-        this.findDebitAccountSub = this.http.get(`invoices/types/accounts/${this.selectedInvoiceType.code}/${this.selectedBeneficiary}`, true).subscribe(
+        this.findDebitAccountSub = this.http.getData(`admin/invoices/types/accounts/${this.selectedInvoiceType.code}/${this.selectedBeneficiary}`, true).subscribe(
             data => {
                 let ba = data.json();
                 if(ba.id) {
@@ -337,7 +337,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     private findDecideurs(ivt, view?: boolean) {
-        this.findDecideursSub = this.http.get(`users/by-roles/${Config.ROLE_DECIDEUR}`, true).subscribe(
+        this.findDecideursSub = this.http.getData(`users/by-roles/${Config.ROLE_DECIDEUR}`, true).subscribe(
             data => {
                 this.decideurs = data.json();
                 this.selectedDecideurs = Object.assign([], ivt.decideurs);
@@ -358,7 +358,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     confirmDecisionMakers() {
-        this.confirmDecideursSub = this.http.post(`invoices/types/decideurs/${this.selectedInvoiceType.code}`, this.selectedDecideurs).subscribe(
+        this.confirmDecideursSub = this.http.postData(`admin/invoices/types/decision-makers/${this.selectedInvoiceType.code}`, this.selectedDecideurs).subscribe(
             res => {
                 let response = res.json();
                 this.layout.diplayGrowlMessage('success', 'operation.succeeded', 'update.done');
@@ -377,7 +377,7 @@ export class InvoicesTypesComponent implements OnInit, OnDestroy {
     }
 
     deleteInvoiceType() {
-        this.deleteInvoiceTypeSub = this.http.delete(`invoices/types/${this.selectedInvoiceType.id}`).subscribe(
+        this.deleteInvoiceTypeSub = this.http.delete(`admin/invoices/types/${this.selectedInvoiceType.id}`).subscribe(
             res => {
                 let response = res.json().data;
                 this.layout.diplayGrowlMessage('success', 'operation.succeeded', 'invoice.type.deleted');

@@ -30,7 +30,7 @@ public class Asset implements Serializable {
     @Id
     @SequenceGenerator(name = "ASSET_SEQ", sequenceName = "ASSET_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ASSET_SEQ")
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
     @Column(name = "REFERENCE", nullable = false, length = 50)

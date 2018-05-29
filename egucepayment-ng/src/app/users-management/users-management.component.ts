@@ -126,7 +126,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
 
     private updateLockedState(user) {
         user.locked = !user.locked;
-        this.updateLockedStateSub = this.http.post('users/locked', user).subscribe(
+        this.updateLockedStateSub = this.http.postData('admin/users/locked', user).subscribe(
             res => {
                 let response = res.json();
                 this.layout.diplayGrowlMessage('success', 'operation.succeeded', user.locked ? 'user.locked' : 'user.unlocked');
@@ -144,7 +144,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
 
     private updateActiveState(user) {
         user.active = !user.active;
-        this.updateActiveStateSub = this.http.post('users/active', user).subscribe(
+        this.updateActiveStateSub = this.http.postData('admin/users/active', user).subscribe(
             res => {
                 let response = res.json();
                 this.findUsersToActive();
@@ -161,7 +161,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
     }
 
     private findAllUsers() {
-        this.findUsersSub = this.http.get('users/all', true).subscribe(
+        this.findUsersSub = this.http.getData('admin/users/all', true).subscribe(
             res => {
                 this.users = res.json();
             },
@@ -242,7 +242,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
 
     countPrincipals() {
         this.partnerCode = null;
-        this.countPrincipalsSub = this.http.get('partners/principals/count').subscribe(
+        this.countPrincipalsSub = this.http.getData('public/partners/principals/count').subscribe(
             res => {
                 this.nbPartners = +res.json().data;
                 this.findPartners(0, 5);
@@ -261,11 +261,11 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
         }
         let url: string;
         if(!this.isPrincipal()) {
-            url = `partners/by-types/${this.partnerType}/${start}/${end}`;
+            url = `public/partners/by-types/${this.partnerType}/${start}/${end}`;
         } else {
-            url = `partners/principals/${start}/${end}`;
+            url = `public/partners/principals/${start}/${end}`;
         }
-        this.findPartnersSub = this.http.get(url).subscribe(
+        this.findPartnersSub = this.http.getData(url).subscribe(
             data => {
                 this.partners = data.json();
             },
@@ -277,7 +277,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
     }
 
     private findRoles() {
-        this.findRolesSub = this.http.get('users/roles/all').subscribe(
+        this.findRolesSub = this.http.getData('public/users/roles/all').subscribe(
             data => {
                 this.roles = data.json();
             },
@@ -298,7 +298,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
             this.selectedUser.roles = [this.role];
         }
         this.selectedUser.passwordToBeReset = !this.selectedUser.id;
-        this.saveUserSub = this.http.post('users', this.selectedUser).subscribe(
+        this.saveUserSub = this.http.postData('admin/users', this.selectedUser).subscribe(
             res => {
                 let response = res.json();
                 if(response.data) {
@@ -340,7 +340,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
     }
 
     private findUsersToActive() {
-        this.findUsersSub = this.http.get('users/desactivated', true).subscribe(
+        this.findUsersSub = this.http.getData('admin/users/desactivated', true).subscribe(
             res => {
                 this.users = res.json();
             },
@@ -355,7 +355,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
         if('ALL' === this.userRole) {
             this.findAllUsers();
         } else {
-            this.filterUsersSub = this.http.get(`users/by-roles/${this.userRole}`, true).subscribe(
+            this.filterUsersSub = this.http.getData(`users/by-roles/${this.userRole}`, true).subscribe(
                 data => {
                     this.users = data.json();
                 },
@@ -368,7 +368,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
     }
 
     findUsersToUnlock() {
-        this.findUsersSub = this.http.get('users/locked', true).subscribe(
+        this.findUsersSub = this.http.getData('admin/users/locked', true).subscribe(
             res => {
                 this.users = res.json();
             },
@@ -404,7 +404,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
     }
 
     private resetPassword() {
-        this.resetPasswordSub = this.http.post('users/password/reset', this.tempUser).subscribe(
+        this.resetPasswordSub = this.http.postData('admin/users/password/reset', this.tempUser).subscribe(
             res => {
                 let data: string = res.json().data;
                 if("OK" === data) {
@@ -458,7 +458,7 @@ export class UsersManagementComponent implements OnInit, OnDestroy {
 
     search() {
         this.nbPartners = null;
-        this.searchSub = this.http.get(`partners/by-code/${this.partnerCode}/${null}`).subscribe(
+        this.searchSub = this.http.getData(`public/partners/by-code/${this.partnerCode}/${null}`).subscribe(
             data => {
                 this.partners = data.json();
             },

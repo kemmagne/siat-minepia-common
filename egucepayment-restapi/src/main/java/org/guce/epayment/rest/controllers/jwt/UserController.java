@@ -1,4 +1,4 @@
-package org.guce.epayment.rest.controllers;
+package org.guce.epayment.rest.controllers.jwt;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -44,6 +44,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Transactional
 @RestController
+@RequestMapping("jwt")
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -58,7 +59,7 @@ public class UserController {
     private EmailService emailService;
 
     @ResponseBody
-    @RequestMapping("admin/users/all")
+    @RequestMapping(path = "admin/users/all", method = RequestMethod.GET)
     public ResponseEntity<List<UserDto>> findAllUsers() throws Exception {
 
         final List<User> allUsers = coreService.findAll(User.class);
@@ -110,7 +111,7 @@ public class UserController {
         user.setLastName(userDto.getLastName());
         user.setActive(userDto.isActive());
         user.setEmail(userDto.getEmail());
-        user.setResetPassword(userDto.isResetPassword());
+        user.setResetPassword(admin);
         user.setPartner(coreService.findById(userDto.getPartner().getId(), Partner.class).get());
         user.setRoles(userDto.getRoles().stream().map(
                 roleName -> coreService.findByUniqueKey(Constants.UK_ROLE_NAME, roleName, Role.class).get()
@@ -144,7 +145,7 @@ public class UserController {
 
         authenticationService.saveUser(user, null);
 
-        return ResponseEntity.ok(DefaultDto.of(RestConstants.DEFAULT_RESPONSE_BODY));
+        return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
     }
 
     @ResponseBody
@@ -157,11 +158,11 @@ public class UserController {
 
         authenticationService.saveUser(user, null);
 
-        return ResponseEntity.ok(DefaultDto.of(RestConstants.DEFAULT_RESPONSE_BODY));
+        return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
     }
 
     @ResponseBody
-    @RequestMapping
+    @RequestMapping(path = "admin/users/password/reset", method = RequestMethod.POST)
     public ResponseEntity<DefaultDto> resetPassword(@RequestBody BigDecimal userId) {
 
         final User user = coreService.findById(userId, User.class).get();
@@ -189,7 +190,7 @@ public class UserController {
 
             emailService.send(props);
 
-            return ResponseEntity.ok(DefaultDto.of(RestConstants.DEFAULT_RESPONSE_BODY));
+            return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
         } catch (final MessagingException ex) {
             LOGGER.error("Problem occured when trying to send password by mail", ex);
             return ResponseEntity.ok(DefaultDto.of(password));
@@ -197,7 +198,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("public/roles/all")
+    @RequestMapping(path = "public/roles/all", method = RequestMethod.GET)
     public ResponseEntity<List<RoleDto>> findAllRoles() throws Exception {
 
         final List<Role> allRoles = coreService.findAll(Role.class);
@@ -208,7 +209,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("users/by-roles/{roles}")
+    @RequestMapping(path = "users/by-roles/{roles}", method = RequestMethod.GET)
     public ResponseEntity<List<UserDto>> findUsersByRoles(@PathVariable String roles) {
 
         final List<User> usersByRoles = userService.findByRoles(roles);
@@ -219,7 +220,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("admin/users/desactivated")
+    @RequestMapping(path = "admin/users/desactivated", method = RequestMethod.GET)
     public ResponseEntity<List<UserDto>> findDesactivedUsers() {
 
         final List<User> desactivatedUsers = userService.findDesactivedUsers();
@@ -230,7 +231,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("admin/users/locked")
+    @RequestMapping(path = "admin/users/locked", method = RequestMethod.GET)
     public ResponseEntity<List<UserDto>> findLockedUsers() {
 
         final List<User> lockedUsers = userService.findLockedUsers();
@@ -242,7 +243,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(path = "users/password", method = RequestMethod.POST)
-    public ResponseEntity<DefaultDto> setPassword(@RequestHeader("login") String userLogin,
+    public ResponseEntity<DefaultDto> setPassword(@RequestHeader(RestConstants.LOGIN) String userLogin,
             @RequestBody SetPasswordDto passwordDto) {
 
         final String actual = passwordDto.getActual();
@@ -253,12 +254,12 @@ public class UserController {
         }
 
         authenticationService.saveUser(userOp.get(), passwordDto.getUpdate());
-        return ResponseEntity.ok(DefaultDto.of(RestConstants.DEFAULT_RESPONSE_BODY));
+        return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
     }
 
     @ResponseBody
-    @RequestMapping("users/by-login")
-    public ResponseEntity findUserByLogin(@RequestHeader("login") String userLogin) {
+    @RequestMapping(path = "users/by-login", method = RequestMethod.GET)
+    public ResponseEntity findUserByLogin(@RequestHeader(RestConstants.LOGIN) String userLogin) {
 
         final Optional<User> userOp = coreService.findByUniqueKey(Constants.UK_USER_LOGIN, userLogin, User.class);
 
@@ -270,7 +271,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("users/by-partner/{partnerId}/{roles}")
+    @RequestMapping(path = "users/by-partner/{partnerId}/{roles}", method = RequestMethod.GET)
     public ResponseEntity<List<UserDto>> findByPartnerAndRoles(@PathVariable("partnerId") BigDecimal partnerId,
             @PathVariable("roles") String roles) {
 

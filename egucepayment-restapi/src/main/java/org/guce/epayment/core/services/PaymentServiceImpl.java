@@ -18,6 +18,7 @@ import org.guce.epayment.core.entities.Step;
 import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.repositories.InvoiceRepository;
 import org.guce.epayment.core.repositories.InvoiceVersionRepository;
+import org.guce.epayment.core.repositories.PaymentModeRepository;
 import org.guce.epayment.core.repositories.PaymentRepository;
 import org.guce.epayment.core.utils.InvoiceConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class PaymentServiceImpl implements PaymentService {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private InvoiceVersionRepository invoiceVersionRepository;
+    @Autowired
+    private PaymentModeRepository paymentModeRepository;
 
     @Autowired
     private CoreDao coreDao;
@@ -180,6 +183,11 @@ public class PaymentServiceImpl implements PaymentService {
     public List<PaymentInvoiceVersion> findPivsByDecisionMaker(final String decisionMakerLogin, final String pms,
             final int max) {
         return paymentDao.findPivsByDecisionMaker(decisionMakerLogin, pms, max);
+    }
+
+    @Override
+    public List<PaymentMode> findPaymentModesByDirect(final boolean direct) {
+        return paymentModeRepository.findByDirect(direct);
     }
 
 }

@@ -25,10 +25,10 @@ public class BankAccount implements Serializable {
     @Id
     @SequenceGenerator(name = "BANK_ACCOUNT_SEQ", sequenceName = "BANK_ACCOUNT_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BANK_ACCOUNT_SEQ")
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
-    @Column(name = "ACCOUNT_KEY", length = 2)
+    @Column(name = "ACCOUNT_KEY", length = 10)
     private String key;
     @JoinColumn(name = "AGENCY_ID", nullable = false)
     @ManyToOne
@@ -36,16 +36,16 @@ public class BankAccount implements Serializable {
     @JoinColumn(name = "BANK_ID", nullable = false)
     @ManyToOne
     private Partner bank;
-    @Column(name = "ACCOUNT_NUMBER", length = 11)
+    @Column(name = "ACCOUNT_NUMBER", length = 20)
     private String number;
     @Column(name = "LABEL")
     private String label;
 
     @Column(name = "ACTIVE")
     private boolean active;
-    @Column(name = "BALANCE")
+    @Column(name = "BALANCE", precision = 38, scale = 4)
     private BigDecimal balance;
-    @JoinColumn(name = "OWNER")
+    @JoinColumn(name = "OWNER_ID")
     @ManyToOne
     private Partner owner;
     @Column(name = "OLD_ID", precision = 32)

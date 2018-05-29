@@ -18,6 +18,13 @@ public class FilterInvoice {
     private String invoiceStatus;
     private BigDecimal invoiceMinAmount;
     private BigDecimal invoiceMaxAmount;
+    private boolean child;
+    /**
+     * si ce champ est true on ne cherche que les factures qui ont les autres
+     * critères et dont les owners sont dans les mêmes groupes que le partenaire
+     * dont l'utilisateur est connecté
+     */
+    private boolean groups;
 
     private int start;
     private int end;

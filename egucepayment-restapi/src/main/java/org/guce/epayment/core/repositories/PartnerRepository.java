@@ -14,6 +14,8 @@ public interface PartnerRepository extends JpaRepository<Partner, BigDecimal> {
 
     Optional<Partner> findByCode(String code);
 
+    Optional<Partner> findByTaxPayerNumber(String taxPayerNumber);
+
     List<Partner> findByCodeOrTaxPayerNumber(String code, String taxPayerNumber);
 
 }

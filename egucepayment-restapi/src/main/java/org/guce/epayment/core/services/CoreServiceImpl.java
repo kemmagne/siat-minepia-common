@@ -1,7 +1,6 @@
 package org.guce.epayment.core.services;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.guce.epayment.core.dao.CoreDao;
@@ -44,8 +43,7 @@ public class CoreServiceImpl implements CoreService {
             return Optional.ofNullable(((Optional<T>) method.invoke(repository, uniqueValue)).orElse(null));
         } catch (Exception ex) {
             LOGGER.error(null, ex);
-
-            return Optional.empty();
+            throw new RuntimeException(ex);
         }
     }
 
@@ -60,8 +58,7 @@ public class CoreServiceImpl implements CoreService {
             return (List<T>) method.invoke(repository);
         } catch (Exception ex) {
             LOGGER.error(null, ex);
-
-            return new ArrayList<>();
+            throw new RuntimeException(ex);
         }
     }
 
@@ -72,22 +69,22 @@ public class CoreServiceImpl implements CoreService {
             return coreDao.findById(id, clazz);
         } catch (Exception ex) {
             LOGGER.error(null, ex);
-
-            return Optional.empty();
+            throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public void save(final Object entity, final Class clazz) {
+    public <T> T save(final Object entity, final Class<T> clazz) {
 
         try {
 
             final Object repository = getRepository(clazz);
-            final Method method = repository.getClass().getMethod("save", Object.class);
+            final Method method = repository.getClass().getMethod("saveAndFlush", Object.class);
 
-            method.invoke(repository, entity);
+            return (T) method.invoke(repository, entity);
         } catch (Exception ex) {
             LOGGER.error(null, ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -106,6 +103,41 @@ public class CoreServiceImpl implements CoreService {
     @Override
     public List<RepReceipt> findReceiptsByInvoiceType(final String invoiceTypeCode) {
         return receiptRepository.findByInvoiceType(invoiceTypeCode);
+    }
+
+    @Override
+    public <T> void delete(T entity, Class<T> entityClass) {
+
+        try {
+
+            final Object repository = getRepository(entityClass);
+            final Method method = repository.getClass().getMethod("delete", entityClass);
+
+            method.invoke(repository, entity);
+        } catch (Exception ex) {
+            LOGGER.error(null, ex);
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void deleteById(Object id, Class entityClass, Class idClass) {
+
+        try {
+
+            final Object repository = getRepository(entityClass);
+            final Method method = repository.getClass().getMethod("deleteById", idClass);
+
+            method.invoke(repository, id);
+        } catch (Exception ex) {
+            LOGGER.error(null, ex);
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public <T> List<T> findRange(Class<T> entityClass, int start, int end) {
+        return coreDao.findRange(entityClass, start, end);
     }
 
 }

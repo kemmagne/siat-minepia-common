@@ -30,7 +30,7 @@ export class AgenciesComponent implements OnInit, OnDestroy {
     }
 
     onBankChange(event) {
-        this.findPartnersSub = this.http.get(`partners/children/${this.selectedBank}`, true).subscribe(
+        this.findPartnersSub = this.http.getData(`partners/children/${this.selectedBank}`, true).subscribe(
             data => {
                 this.partners = data.json();
             },
@@ -42,7 +42,7 @@ export class AgenciesComponent implements OnInit, OnDestroy {
     }
 
     private findBanks() {
-        this.findBanksSub = this.http.get(`partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`, true).subscribe(
+        this.findBanksSub = this.http.getData(`public/partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`, true).subscribe(
             data => {
                 this.banks = data.json();
             },

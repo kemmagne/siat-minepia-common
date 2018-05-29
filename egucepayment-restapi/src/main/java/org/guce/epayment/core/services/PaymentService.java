@@ -35,4 +35,6 @@ public interface PaymentService {
 
     List<PaymentInvoiceVersion> findPivsByDecisionMaker(String decisionMakerLogin, String pms, int max);
 
+    List<PaymentMode> findPaymentModesByDirect(boolean direct);
+
 }

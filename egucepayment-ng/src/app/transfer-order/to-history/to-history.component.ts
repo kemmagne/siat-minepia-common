@@ -112,9 +112,14 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
             minDate: datePipe.transform(this.minDate, 'dd/MM/yyyy HH:mm'),
             maxDate: datePipe.transform(this.maxDate, 'dd/MM/yyyy HH:mm'),
             status: this.toStatus,
-            bank: this.bankCode
+            bank: this.bankCode,
+            start: 0,
+            end: 0,
+            count: true,
+            type: this.type,
+            period: this.period
         };
-        this.filterTosSub = this.http.post(`transfers/orders/filter/${this.type}/${this.period}/${0}/${0}/${true}`, this.filterDto).subscribe(
+        this.filterTosSub = this.http.postData(`transfers/orders/filter`, this.filterDto).subscribe(
             res => {
                 this.nbTransferOrders = +res.json().data;
                 this.filterTos(0, 10);
@@ -140,9 +145,14 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
             minDate: datePipe.transform(this.minDate, 'dd/MM/yyyy HH:mm'),
             maxDate: datePipe.transform(this.maxDate, 'dd/MM/yyyy HH:mm'),
             status: this.toStatus,
-            bank: this.bankCode
+            bank: this.bankCode,
+            start: start,
+            end: end,
+            count: false,
+            type: this.type,
+            period: this.period
         };
-        this.filterTosSub = this.http.post(`transfers/orders/filter/${this.type}/${this.period}/${start}/${end}/${false}`, this.filterDto).subscribe(
+        this.filterTosSub = this.http.postData(`transfers/orders/filter`, this.filterDto).subscribe(
             data => {
                 this.transferOrders = data.json();
             },
@@ -154,7 +164,7 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
     }
 
     private findBeneficiaries() {
-        this.findBeneficiariesSub = this.http.get(`partners/by-types/${Config.PARTNER_TYPE_BENEFICIARY}/${0}/${0}`).subscribe(
+        this.findBeneficiariesSub = this.http.getData(`public/partners/by-types/${Config.PARTNER_TYPE_BENEFICIARY}/${0}/${0}`).subscribe(
             data => {
                 this.beneficiaryPartners = [{code: 'null', label: ''}];
                 this.beneficiaryPartners = this.beneficiaryPartners.concat(data.json());
@@ -167,7 +177,7 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
     }
 
     private findInvoicesTypes() {
-        this.findInvoicesTypesSub = this.http.get(`invoices/types/${true}/${false}`, true).subscribe(
+        this.findInvoicesTypesSub = this.http.getData(`invoices/types/${true}/${false}`, true).subscribe(
             data => {
                 this.invoicesTypes = [{code: 'null', label: ''}];
                 this.invoicesTypes = this.invoicesTypes.concat(data.json());
@@ -181,7 +191,15 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
 
     countByPeriod(period: number) {
         this.period = period;
-        this.filterTosSub = this.http.post(`transfers/orders/filter/${this.type}/${this.period}/${0}/${0}/${true}`, null).subscribe(
+        
+        this.filterDto = {
+            start: 0,
+            end: 0,
+            count: true,
+            type: this.type,
+            period: this.period
+        };
+        this.filterTosSub = this.http.postData(`transfers/orders/filter`, this.filterDto).subscribe(
             res => {
                 this.nbTransferOrders = +res.json().data;
                 this.searchByPeriod(this.period, 0, 10);
@@ -195,7 +213,15 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
 
     searchByPeriod(period, start, end: number) {
         this.period = period;
-        this.filterTosSub = this.http.post(`transfers/orders/filter/${this.type}/${this.period}/${start}/${end}/${false}`, null).subscribe(
+        
+        this.filterDto = {
+            start: start,
+            end: end,
+            count: false,
+            type: this.type,
+            period: this.period
+        };
+        this.filterTosSub = this.http.postData(`transfers/orders/filter`, this.filterDto).subscribe(
             data => {
                 this.transferOrders = data.json();
             },
@@ -210,7 +236,7 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
         if(!this.isPeriodValid()) {
             return;
         }
-        this.exportPdfSub = this.http.download(`report/transfer/orders/pdf/${this.translateService.currentLang}/${this.type}/${this.period}`, true).subscribe(
+        this.exportPdfSub = this.http.download(`report/transfer/orders/pdf/${this.type}/${this.period}`, true).subscribe(
             res => {
                 Utils.downloadFile(res);
             },
@@ -225,7 +251,7 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
         if(!this.isPeriodValid()) {
             return;
         }
-        this.exportExcelSub = this.http.download(`report/transfer/orders/excel/${this.translateService.currentLang}/${this.type}/${this.period}`, true).subscribe(
+        this.exportExcelSub = this.http.download(`report/transfer/orders/excel/${this.type}/${this.period}`, true).subscribe(
             res => {
                 Utils.downloadFile(res);
             },
@@ -245,7 +271,7 @@ export class ToHistoryComponent implements OnInit, OnDestroy {
     }
 
     private findBanks() {
-        this.findBanksSub = this.http.get(`partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`, true).subscribe(
+        this.findBanksSub = this.http.getData(`public/partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`, true).subscribe(
             data => {
                 this.banks = [{code: 'null', label: ''}];
                 this.banks = this.banks.concat(data.json());

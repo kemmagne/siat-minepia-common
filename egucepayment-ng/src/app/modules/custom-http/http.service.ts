@@ -32,7 +32,7 @@ export class HttpService extends Http {
         super(backend, new RequestOptions());
     }
 
-    get(url: string, secured?: boolean): Observable<any> {
+    getData(url: string, secured?: boolean): Observable<any> {
         this.loaderService.showGet();
         return super.get(this.getFullUrl(url), this.requestOptions(secured))
             .catch(this.onCatch)
@@ -46,7 +46,7 @@ export class HttpService extends Http {
             });
     }
 
-    post(url: string, body: any, unsecured?: boolean): Observable<any> {
+    postData(url: string, body: any, unsecured?: boolean): Observable<any> {
         this.loaderService.showPost();
         return super.post(this.getFullUrl(url), body, this.requestOptions(!unsecured))
             .catch(this.onCatch)

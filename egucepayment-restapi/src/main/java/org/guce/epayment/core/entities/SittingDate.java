@@ -1,7 +1,6 @@
 package org.guce.epayment.core.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javax.persistence.Column;
@@ -31,7 +30,7 @@ public class SittingDate implements Serializable {
     @SequenceGenerator(name = "SITTING_DATE_SEQ", sequenceName = "SITTING_DATE_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SITTING_DATE_SEQ")
     @Column(name = "ID")
-    private BigDecimal id;
+    private Integer id;
 
     @Column(name = "MIN_TIME", updatable = false, nullable = false)
     private LocalTime minTime;

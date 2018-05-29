@@ -15,7 +15,7 @@ public interface TransferOrderDao {
 
     List<TransferOrder> findPartnerTransferOrders(User connectedUser, boolean toValidate, int start, int end, boolean count);
 
-    Object filterTransferOrders(FilterTransferOrder filter, String code, Integer type, int start, int end, boolean count);
+    Object filterTransferOrders(FilterTransferOrder filter, String code);
 
     Object findTransferOrdersPeriodically(int type, int period, String code, int start, int end, boolean count);
 

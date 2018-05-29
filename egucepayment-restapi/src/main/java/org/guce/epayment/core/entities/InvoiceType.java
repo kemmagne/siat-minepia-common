@@ -37,8 +37,7 @@ public class InvoiceType implements Serializable {
     @Column(name = "LABEL", nullable = false)
     private String label;
     /**
-     * configuration du flux du virement : transfer.last.status : chemin suivi
-     * par le paiement d'une facture de ce type
+     * dernière étape pour les factures de ce type : transfer.last.step
      *
      * agence de réception (bénéficiaire) des virements pour le paiement des
      * factures de ce type : beneficiary.agency ; le code d'une agence est
@@ -53,7 +52,7 @@ public class InvoiceType implements Serializable {
      * le séparateur est \n
      */
     @Lob
-    @Column(name = "INVOICE_TYPE_PARAMS")
+    @Column(name = "PARAMS")
     private String parameters;
 
     @JoinTable(name = "INVOICE_TYPE_PAYMENT_MODE", joinColumns = {
@@ -65,11 +64,11 @@ public class InvoiceType implements Serializable {
     @OneToMany(mappedBy = "invoiceType", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     private List<InvoiceTypeBeneficiary> beneficiaries;
 
-    @JoinTable(name = "INVOICE_TYPE_BANK", joinColumns = {
+    @JoinTable(name = "INVOICE_TYPE_EXCLUDED_BANKS", joinColumns = {
         @JoinColumn(name = "INVOICE_TYPE_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "BANK_ID", referencedColumnName = "ID")})
+        @JoinColumn(name = "EXCLUDED_BANK_ID", referencedColumnName = "ID")})
     @ManyToMany
-    private List<Partner> banks;
+    private List<Partner> unauthorizedBanks;
 
     @JoinTable(name = "INVOICE_TYPE_DECISION_MAKER", joinColumns = {
         @JoinColumn(name = "INVOICE_TYPE_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
@@ -77,7 +76,7 @@ public class InvoiceType implements Serializable {
     @ManyToMany
     private List<User> decisionMakers;
 
-    @Column(name = "STANDALONE", nullable = false)
+    @Column(name = "STANDALONE")
     private boolean standalone;
     @Column(name = "SUB_TYPE")
     private boolean subType;

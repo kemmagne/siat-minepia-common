@@ -1,4 +1,4 @@
-package org.guce.epayment.security.rest.auth;
+package org.guce.epayment.security.rest.auth.jwt;
 
 /**
  *

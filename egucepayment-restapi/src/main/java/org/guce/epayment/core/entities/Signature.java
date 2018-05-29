@@ -28,7 +28,7 @@ public class Signature implements Serializable {
     @Id
     @SequenceGenerator(name = "SIGNATURE_SEQ", sequenceName = "SIGNATURE_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SIGNATURE_SEQ")
-    @Column(name = "ID")
+    @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
     @Lob

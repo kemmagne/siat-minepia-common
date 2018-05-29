@@ -1,7 +1,7 @@
 // `${location.protocol}//${location.hostname}:${location.port}/egucepayment/restapi`
 // 'http://localhost:8090/egucepayment/restapi'
 export const Config = Object.freeze({
-    BASE_REST_API: '/egucepayment/restapi/',
+    BASE_REST_API: '/egucepayment/restapi/jwt/',
     PROTOCOL: location.protocol,
     PORT: 58080, // location.port
     REST_API_HOST: location.hostname,

@@ -42,7 +42,7 @@ export class SittingDateManagementComponent implements OnInit, OnDestroy {
     }
 
     private findSittingDates() {
-        this.findSittingDatesSub = this.http.get('sitting/date/all', true).subscribe(
+        this.findSittingDatesSub = this.http.getData('admin/sitting/date/all', true).subscribe(
             data => {
                 this.sittingDates = data.json();
             },
@@ -72,7 +72,7 @@ export class SittingDateManagementComponent implements OnInit, OnDestroy {
             this.alertMessage = {severity: 'warning', summary: 'warning', detail: 'min.hour.equals.max.hour'};
             return;
         }
-        this.saveSittingDateSub = this.http.post('sitting/date', this.sittingDate).subscribe(
+        this.saveSittingDateSub = this.http.postData('admin/sitting/date', this.sittingDate).subscribe(
             res => {
                 let response = res.json();
                 if(response.data) {

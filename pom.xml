@@ -12,6 +12,7 @@
     </properties>
 
     <modules>
+        <module>data-migrator</module>
         <module>egucepayment-restapi</module>
     </modules>
 </project>

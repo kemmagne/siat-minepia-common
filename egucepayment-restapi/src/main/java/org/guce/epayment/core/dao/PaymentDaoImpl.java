@@ -14,7 +14,9 @@ import org.guce.epayment.core.services.ApplicationService;
 import org.guce.epayment.core.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Repository
 public class PaymentDaoImpl implements PaymentDao {
 

@@ -29,7 +29,7 @@ export class TransferOrderFilterComponent implements OnInit, OnDestroy {
 
     filterTos() {
         let filter = {};
-        this.filterToSub = this.http.post('', filter).subscribe();
+        this.filterToSub = this.http.postData('', filter).subscribe();
     }
 
 }

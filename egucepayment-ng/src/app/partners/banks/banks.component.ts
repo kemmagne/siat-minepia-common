@@ -24,7 +24,7 @@ export class BanksComponent implements OnInit, OnDestroy {
     }
 
     private findPartners() {
-        this.findPartnersSub = this.http.get(`partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`).subscribe(
+        this.findPartnersSub = this.http.getData(`public/partners/by-types/${Config.PARTNER_TYPE_BANK}/${0}/${0}`).subscribe(
             data => {
                 this.partners = data.json();
             },

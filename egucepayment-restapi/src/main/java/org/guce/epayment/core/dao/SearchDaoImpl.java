@@ -7,7 +7,9 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 import org.guce.epayment.core.models.FilterInvoice;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Repository
 public class SearchDaoImpl implements SearchDao {
 

@@ -47,7 +47,7 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_SEQ")
     private Integer id;
 
-    @Column(name = "ROLE_NAME", unique = true, nullable = false)
+    @Column(name = "NAME", unique = true, nullable = false)
     private String name;
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
