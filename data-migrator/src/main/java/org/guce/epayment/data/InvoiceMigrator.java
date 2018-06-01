@@ -212,7 +212,7 @@ public class InvoiceMigrator {
                             invInsertStatement.executeUpdate();
                         } catch (SQLException ex) {
                             if (ex.getMessage().contains("ORA-01400") && ex.getMessage().contains("OWNER_ID")) {
-                                LOGGER.log(Level.INFO, "impossible d'insérer une colonne nulle", ex);
+                                LOGGER.log(Level.INFO, null, ex);
                                 continue;
                             } else {
                                 throw ex;
@@ -261,13 +261,13 @@ public class InvoiceMigrator {
         final String invInsertQuery = "INSERT INTO INVOICE (ID, AMOUNT, BENEF_REFERENCE, LAST_VERSION_DATE, "
                 + "LAST_VERSION_NUMBER, INVOICE_NUMBER, PAID_AMOUNT, STATUS, BENEFICIARY_ID, OWNER_ID, PARENT_ID, "
                 + "SUB_TYPE_ID, TYPE_ID, OLD_NUMBER) "
-                + "VALUES (?, ?, NULL, ?, ?, ?, ?, ?, (SELECT ID FROM PARTNER WHERE CODE = ?), ?, ?, ?, "
+                + "VALUES (?, ?, NULL, ?, ?, ?, ?, ?, (SELECT ID FROM PARTNER WHERE CODE = ?), ?, ?, NULL, "
                 + "(SELECT ID FROM INVOICE_TYPE WHERE CODE = ?), NULL)";
         final String selectInvVersQuery = "SELECT VERSION_NUMBER, VERSION_DATE, VERSION_AMOUNT, BALANCE_AMOUNT, "
-                + "PAYMENT_DATE FROM INVOICE_VERSION WHERE INVOICE_ID = ?";
+                + "PAYMENT_DATE, CODEDAP FROM INVOICE_VERSION WHERE INVOICE_ID = ?";
         final String invVersInsertQuery = "INSERT INTO INVOICE_VERSION (ID, BALANCE_AMOUNT, CODEDAP, VERSION_DATE, "
                 + "VERSION_NUMBER, PAYMENT_DATE, VERSION_AMOUNT, INVOICE_ID) "
-                + "VALUES (INVOICE_VERSION_SEQ.NEXTVAL, ?, NULL, ?, ?, ?, ?, ?)";
+                + "VALUES (INVOICE_VERSION_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
 
         try (final Statement selectInvStatement = targetCon.createStatement();
                 final ResultSet selectInvResultSet = selectInvStatement.executeQuery(selectInvQuery);
@@ -297,27 +297,34 @@ public class InvoiceMigrator {
                     invInsertStatement.setString(5, invNb);
                     invInsertStatement.setString(8, codeBenef);
                     ivtCode = getSubInvoiceTypeCode(parentIvtCode, codeBenef);
-                    invInsertStatement.setString(12, ivtCode);
+                    invInsertStatement.setString(11, ivtCode);
                 }
-                System.out.println(ivtCode);
                 invInsertStatement.setBigDecimal(6, selectInvResultSet.getBigDecimal("PAID_AMOUNT"));
                 invInsertStatement.setString(7, selectInvResultSet.getString("STATUS"));
                 invInsertStatement.setBigDecimal(9, selectInvResultSet.getBigDecimal("OWNER"));
                 invInsertStatement.setBigDecimal(10, parentId);
-                invInsertStatement.setInt(11, selectInvResultSet.getInt("SUB_TYPE"));
 
-                invInsertStatement.executeUpdate();
-
+                try {
+                    invInsertStatement.executeUpdate();
+                } catch (SQLException ex) {
+                    if (ex.getMessage().contains("ORA-00001")) {
+                        LOGGER.log(Level.INFO, null, ex);
+                        continue;
+                    } else {
+                        throw ex;
+                    }
+                }
                 // on va recupérer toutes les version du parent pour affecter au fils
                 selectInvVersStatement.setBigDecimal(1, parentId);
                 try (final ResultSet selectInvVersResultSet = selectInvVersStatement.executeQuery()) {
                     while (selectInvVersResultSet.next()) {
                         invVersInsertStatement.setBigDecimal(1, selectInvVersResultSet.getBigDecimal("BALANCE_AMOUNT"));
-                        invVersInsertStatement.setDate(2, selectInvVersResultSet.getDate("VERSION_DATE"));
-                        invVersInsertStatement.setInt(3, selectInvVersResultSet.getInt("VERSION_NUMBER"));
-                        invVersInsertStatement.setDate(4, selectInvVersResultSet.getDate("PAYMENT_DATE"));
-                        invVersInsertStatement.setBigDecimal(5, selectInvVersResultSet.getBigDecimal("VERSION_AMOUNT"));
-                        invVersInsertStatement.setBigDecimal(6, invoiceId);
+                        invVersInsertStatement.setLong(2, selectInvVersResultSet.getLong("CODEDAP"));
+                        invVersInsertStatement.setDate(3, selectInvVersResultSet.getDate("VERSION_DATE"));
+                        invVersInsertStatement.setInt(4, selectInvVersResultSet.getInt("VERSION_NUMBER"));
+                        invVersInsertStatement.setDate(5, selectInvVersResultSet.getDate("PAYMENT_DATE"));
+                        invVersInsertStatement.setBigDecimal(6, selectInvVersResultSet.getBigDecimal("VERSION_AMOUNT"));
+                        invVersInsertStatement.setBigDecimal(7, invoiceId);
                         //
                         invVersInsertStatement.executeUpdate();
                     }

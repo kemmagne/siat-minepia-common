@@ -103,10 +103,11 @@ public class Application {
 //            PartnerMigrator.migrate("DONNEUR_ORDRE");
 //            UserMigrator.migrate();
 //            AccountMigrator.migrate();
-            InvoiceMigrator.init();
+//
+//            InvoiceMigrator.init();
 //            InvoiceMigrator.migrate();
 //            InvoiceMigrator.createInvoiceLines();
-
+//
 //            TOMigrator.migrate();
             //
             closeConnections();
