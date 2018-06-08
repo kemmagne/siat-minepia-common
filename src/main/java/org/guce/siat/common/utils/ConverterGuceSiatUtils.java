@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.model.Attachment;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
+import org.guce.siat.common.model.FileType;
+import org.guce.siat.common.model.FileTypeFlow;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.model.Step;
@@ -275,8 +277,15 @@ public final class ConverterGuceSiatUtils {
         final DECISIONORGANISME decisionorganisme = new DECISIONORGANISME();
 
         decisionorganisme.setCODE(flowToExecute.getCode());
-        decisionorganisme.setLIBELLE(flowToExecute.getLabelEn());
+        decisionorganisme.setLIBELLE(flowToExecute.getLabelFr());
         if (itemFlowDataToInsert != null) {
+            final FileType fileType = itemFlowDataToInsert.getItemFlow().getFileItem().getFile().getFileType();
+            final List<FileTypeFlow> fileTypeFlows = fileType.getFileTypeFlowList();
+            for (final FileTypeFlow fileTypeFlow : fileTypeFlows) {
+                if (flowToExecute.getCode().equals(fileTypeFlow.getPk().getFlow().getCode())) {
+                    decisionorganisme.setLIBELLE(fileTypeFlow.getLabelFr());
+                }
+            }
             decisionorganisme.setOBSERVATION(itemFlowDataToInsert.getValue());
         }
 
