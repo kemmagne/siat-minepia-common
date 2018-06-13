@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.guce.epayment.core.dao.CoreDao;
 import org.guce.epayment.core.dao.PaymentDao;
 import org.guce.epayment.core.entities.Invoice;
@@ -18,6 +19,7 @@ import org.guce.epayment.core.entities.Step;
 import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.repositories.InvoiceRepository;
 import org.guce.epayment.core.repositories.InvoiceVersionRepository;
+import org.guce.epayment.core.repositories.PaymentInvoiceVersionRepository;
 import org.guce.epayment.core.repositories.PaymentModeRepository;
 import org.guce.epayment.core.repositories.PaymentRepository;
 import org.guce.epayment.core.utils.InvoiceConstants;
@@ -38,6 +40,8 @@ public class PaymentServiceImpl implements PaymentService {
     private InvoiceVersionRepository invoiceVersionRepository;
     @Autowired
     private PaymentModeRepository paymentModeRepository;
+    @Autowired
+    private PaymentInvoiceVersionRepository pivRepository;
 
     @Autowired
     private CoreDao coreDao;
@@ -150,7 +154,7 @@ public class PaymentServiceImpl implements PaymentService {
     public void setDecision(Payment payment, String status) {
 
         payment.setStatus(status);
-        payment.setDecisionDate(LocalDateTime.now());
+        payment.setValidationDate(LocalDateTime.now());
     }
 
     @Override
@@ -188,6 +192,18 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<PaymentMode> findPaymentModesByDirect(final boolean direct) {
         return paymentModeRepository.findByDirect(direct);
+    }
+
+    @Override
+    public Optional<Payment> findPaymentForInvoiceVersion(InvoiceVersion invoiceVersion) {
+
+        final Optional<PaymentInvoiceVersion> pivOp = pivRepository.findByInvoiceVersiion(invoiceVersion);
+
+        if (pivOp.isPresent()) {
+            return Optional.of(pivOp.get().getPayment());
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

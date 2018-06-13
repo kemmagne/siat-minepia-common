@@ -200,7 +200,7 @@ public class ExportController {
             //
             cell = row.createCell(colNum++);
             cell.setCellStyle(bodyCellStyle);
-            cell.setCellValue(transferOrder.getDecisionDate().format(DateTimeFormatter.ofPattern(resourceBundle.getString("date.time.format"))));
+            cell.setCellValue(transferOrder.getValidationDate().format(DateTimeFormatter.ofPattern(resourceBundle.getString("date.time.format"))));
             //
             cell = row.createCell(colNum++);
             cell.setCellStyle(bodyCellStyle);

@@ -1,9 +1,12 @@
 package org.guce.epayment.core.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.guce.epayment.core.entities.Invoice;
+import org.guce.epayment.core.entities.InvoiceVersion;
 import org.guce.epayment.core.repositories.InvoiceRepository;
+import org.guce.epayment.core.repositories.InvoiceVersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +17,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+    @Autowired
+    private InvoiceVersionRepository invoiceVersionRepository;
 
     @Override
     public List<Invoice> findByNumber(String number) {
@@ -23,6 +28,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Optional<Invoice> findByNumberAndType(String number, Integer invoiceTypeId) {
         return invoiceRepository.findByNumberAndType(number, invoiceTypeId);
+    }
+
+    @Override
+    public Optional<Invoice> findByNumberAndType(String number, String invoiceTypeCode) {
+        return invoiceRepository.findByNumberAndType(number, invoiceTypeCode);
+    }
+
+    @Override
+    public Optional<InvoiceVersion> findByInvoiceAndNumber(BigDecimal invoiceId, int number) {
+        return invoiceVersionRepository.findByInvoiceAndNumber(invoiceId, number);
     }
 
 }

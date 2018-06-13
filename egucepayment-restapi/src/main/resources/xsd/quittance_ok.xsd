@@ -1,0 +1,52 @@
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿Type ur fucking name ! (Type ur Company -.-) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="ENREGISTREMENT_PAIEMENT">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="KEY_CUO">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:length value="5"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DATE_LIQUIDATION" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Format : yyyyMMdd</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="SERIE_LIQUIDATION" type="xs:string"/>
+				<xs:element name="NUMERO_LIQUIDATION" type="xs:string"/>
+				<xs:element name="VERSION_LIQUIDATION">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MONTANT_LIQUIDATION" type="xs:decimal"/>
+				<xs:element name="ANNEE_QUITTANCE">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:length value="4"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BUREAU_QUITTANCE">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:length value="5"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SERIE_QUITTANCE" type="xs:string"/>
+				<xs:element name="NUMERO_QUITTANCE" type="xs:string"/>
+				<xs:element name="DATE_QUITTANCE" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Format : yyyyMMdd</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

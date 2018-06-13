@@ -128,4 +128,10 @@ public class UtilsTest {
         System.out.println(DateUtils.getSittingDate(minTime, maxTime));
     }
 
+    @Ignore
+    @Test
+    public void testCiphering() throws Exception {
+        String message = "Hello world";
+    }
+
 }

@@ -12,7 +12,6 @@ import org.guce.epayment.core.entities.Partner;
 import org.guce.epayment.core.entities.Role;
 import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.services.CoreService;
-import org.guce.epayment.core.services.EmailService;
 import org.guce.epayment.core.services.UserService;
 import org.guce.epayment.core.utils.Constants;
 import org.guce.epayment.core.utils.MailConstants;
@@ -37,6 +36,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.guce.epayment.core.services.MessageService;
 
 /**
  *
@@ -56,7 +56,7 @@ public class UserController {
     @Autowired
     private AuthenticationService authenticationService;
     @Autowired
-    private EmailService emailService;
+    private MessageService emailService;
 
     @ResponseBody
     @RequestMapping(path = "admin/users/all", method = RequestMethod.GET)
@@ -188,7 +188,7 @@ public class UserController {
             props.put(TemplateConstants.USER_FIRST_NAME, user.getFirstName());
             props.put(TemplateConstants.PASSWORD, password);
 
-            emailService.send(props);
+            emailService.sendMail(props);
 
             return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
         } catch (final MessagingException ex) {

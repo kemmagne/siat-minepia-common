@@ -3,7 +3,7 @@ package org.guce.epayment.rest.controllers.jwt;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.guce.epayment.core.entities.RepReceipt;
+import org.guce.epayment.core.entities.Receipt;
 import org.guce.epayment.core.services.CoreService;
 import org.guce.epayment.core.utils.DateUtils;
 import org.guce.epayment.rest.controllers.utils.RestUtils;
@@ -31,7 +31,7 @@ public class ReceiptController {
     @RequestMapping(path = "receipts/by-invoice-type/{invoiceTypeCode}", method = RequestMethod.GET)
     public ResponseEntity<List<ReceiptDto>> findReceiptByInvoiceType(@PathVariable String invoiceTypeCode) throws Exception {
 
-        final List<RepReceipt> receiptsByInvoiceType = coreService.findReceiptsByInvoiceType(invoiceTypeCode);
+        final List<Receipt> receiptsByInvoiceType = coreService.findReceiptsByInvoiceType(invoiceTypeCode);
 
         return ResponseEntity.ok(receiptsByInvoiceType.stream().map(
                 receipt -> {
@@ -39,7 +39,7 @@ public class ReceiptController {
                     final ReceiptDto receiptDto = new ReceiptDto();
 
                     receiptDto.setDate(receipt.getReceiptDate().format(DateTimeFormatter.ofPattern(DateUtils.DATE_TIME_PATTERN_FR)));
-                    receiptDto.setInvoice(RestUtils.getInvoiceDto(receipt.getInvoice()));
+                    receiptDto.setInvoice(RestUtils.getInvoiceDto(receipt.getInvoiceVersion().getInvoice()));
 
                     return receiptDto;
                 }

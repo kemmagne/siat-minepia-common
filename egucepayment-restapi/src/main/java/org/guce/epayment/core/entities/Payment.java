@@ -38,6 +38,7 @@ public class Payment implements Serializable {
 
     public static final String PAYMENT_PENDING = "PENDING";
     public static final String PAYMENT_VALIDATED = "VALIDATED";
+    public static final String PAYMENT_CONFIRMED = "CONFIRMED";
     public static final String PAYMENT_ACKNOWLED = "ACKNOWLED";
     public static final String PAYMENT_CANCELED = "CANCELED";
     public static final String PAYMENT_REJECTED = "REJECTED";
@@ -72,8 +73,10 @@ public class Payment implements Serializable {
     private Partner bankGateway;
     @Column(name = "STARTED_DATE", nullable = false)
     private LocalDateTime startedDate;
-    @Column(name = "DECISION_DATE")
-    private LocalDateTime decisionDate;
+    @Column(name = "VALIDATION_DATE")
+    private LocalDateTime validationDate;
+//    @Column(name = "CONFIRMATION_DATE")
+//    private LocalDateTime confirmationDate;
 
     @PrePersist
     private void prePersist() {

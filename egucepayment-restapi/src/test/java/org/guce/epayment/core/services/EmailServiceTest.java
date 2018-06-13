@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class EmailServiceTest {
 
     @Autowired
-    private EmailService emailService;
+    private MessageService emailService;
 
     @Ignore
     @Test
@@ -39,7 +39,7 @@ public class EmailServiceTest {
         props.put("firstName", "Hyacinthe");
         props.put("password", "p@55w0rd");
 
-        emailService.send(props);
+        emailService.sendMail(props);
     }
 
 }

@@ -3,7 +3,7 @@ package org.guce.epayment.core.services;
 import java.util.List;
 import java.util.Optional;
 import org.guce.epayment.core.entities.RepPartnerGroup;
-import org.guce.epayment.core.entities.RepReceipt;
+import org.guce.epayment.core.entities.Receipt;
 
 /**
  *
@@ -51,6 +51,6 @@ public interface CoreService {
 
     List<RepPartnerGroup> findAllPartnerGroups();
 
-    List<RepReceipt> findReceiptsByInvoiceType(String invoiceTypeCode);
+    List<Receipt> findReceiptsByInvoiceType(String invoiceTypeCode);
 
 }

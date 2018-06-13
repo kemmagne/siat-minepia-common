@@ -46,6 +46,12 @@ public class InvoiceVersion implements Serializable {
     private BigDecimal balanceAmount;
     @Column(name = "PAYMENT_DATE")
     private LocalDateTime paymentDate;
+    @Column(name = "CONFIRMATION_DATE")
+    private LocalDateTime confirmationDate;
+    @Column(name = "ACKNOWLEDGMENT_DATE")
+    private LocalDateTime acknowledgmentDate;
+    @Column(name = "GUCE_REFERENCE", length = 50)
+    private String guceReference;
 
     @Column(name = "CODEDAP", length = 20)
     private Long codedap;

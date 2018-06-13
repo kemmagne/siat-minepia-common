@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Optional;
 import org.guce.epayment.core.dao.CoreDao;
 import org.guce.epayment.core.entities.RepPartnerGroup;
-import org.guce.epayment.core.entities.RepReceipt;
+import org.guce.epayment.core.entities.Receipt;
 import org.guce.epayment.core.repositories.RepPartnerGroupRepository;
-import org.guce.epayment.core.repositories.RepReceiptRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.guce.epayment.core.repositories.ReceiptRepository;
 
 @Transactional
 @Service
@@ -29,7 +29,7 @@ public class CoreServiceImpl implements CoreService {
     @Autowired
     private RepPartnerGroupRepository partnerGroupRepository;
     @Autowired
-    private RepReceiptRepository receiptRepository;
+    private ReceiptRepository receiptRepository;
 
     @Override
     public <T> Optional<T> findByUniqueKey(final String uniqueKey, final String uniqueValue, final Class<T> clazz) {
@@ -101,7 +101,7 @@ public class CoreServiceImpl implements CoreService {
     }
 
     @Override
-    public List<RepReceipt> findReceiptsByInvoiceType(final String invoiceTypeCode) {
+    public List<Receipt> findReceiptsByInvoiceType(final String invoiceTypeCode) {
         return receiptRepository.findByInvoiceType(invoiceTypeCode);
     }
 

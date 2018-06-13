@@ -9,12 +9,15 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
 @IdClass(PaymentInvoiceVersion.PaymentInvoiceVersionID.class)
-@Table(name = "PAYMENT_INVOICE_VERSION")
+@Table(name = "PAYMENT_INVOICE_VERSION", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"INVOICE_VERSION_ID"})
+})
 @Data
 @EqualsAndHashCode(of = {"payment", "invoiceVersion"})
 public class PaymentInvoiceVersion implements Serializable {
@@ -33,8 +36,6 @@ public class PaymentInvoiceVersion implements Serializable {
     private BigDecimal amountForInvoice;
     @Column(name = "RATE_USED_FOR_INVOICE", nullable = false)
     private Integer rateUsedForInvoice;
-    @Column(name = "ACKNOWLED")
-    private boolean acknowled;
 
     public PaymentInvoiceVersion() {
     }

@@ -26,6 +26,8 @@ public class InvoiceType implements Serializable {
 
     private static final long serialVersionUID = 5778626176562521049L;
 
+    public static final String INVOICE_TYPE_CUSDEC = "CUSDEC";
+
     @Id
     @SequenceGenerator(name = "INVOICE_TYPE_SEQ", sequenceName = "INVOICE_TYPE_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INVOICE_TYPE_SEQ")

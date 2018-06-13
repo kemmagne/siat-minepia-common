@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.utils.Constants;
 import org.guce.epayment.core.utils.DateUtils;
 import org.guce.epayment.rest.dto.BankAccountDto;
+import org.guce.epayment.rest.dto.IncomingMessageDto;
 import org.guce.epayment.rest.dto.InvoiceDto;
 import org.guce.epayment.rest.dto.InvoiceTypeDto;
 import org.guce.epayment.rest.dto.PartnerDto;
@@ -32,12 +34,19 @@ import org.guce.epayment.rest.dto.RoleDto;
 import org.guce.epayment.rest.dto.TransferOrderDto;
 import org.guce.epayment.rest.dto.UserDto;
 import org.guce.epayment.transfer.entities.TransferOrder;
+import org.guce.util.CipherUtils;
+import org.guce.util.FileUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  *
  * @author tadzotsa
  */
 public interface RestUtils {
+
+    static final Logger LOGGER = LoggerFactory.getLogger(RestUtils.class);
 
     static PartnerDto getPartnerDto(Partner partner, boolean list) {
 
@@ -212,7 +221,7 @@ public interface RestUtils {
         transferOrderDto.setCommiter(getPartnerDto(transferOrder.getCommiter(), false));
         //
         transferOrderDto.setStartedDate(transferOrder.getStartedDate().format(DateTimeFormatter.ofPattern(DateUtils.DATE_TIME_PATTERN_FR)));
-        transferOrderDto.setDecisionDate(transferOrder.getDecisionDate() != null ? transferOrder.getDecisionDate().format(DateTimeFormatter.ofPattern(DateUtils.DATE_TIME_PATTERN_FR)) : null);
+        transferOrderDto.setDecisionDate(transferOrder.getValidationDate() != null ? transferOrder.getValidationDate().format(DateTimeFormatter.ofPattern(DateUtils.DATE_TIME_PATTERN_FR)) : null);
         transferOrderDto.setSittingDate(transferOrder.getSittingDate() != null ? transferOrder.getSittingDate().format(DateTimeFormatter.ofPattern(DateUtils.DATE_TIME_PATTERN_FR)) : null);
         //
         transferOrderDto.setTaxPayer(getPartnerDto(transferOrder.getTaxPayer(), false));
@@ -259,6 +268,33 @@ public interface RestUtils {
         final String BUNDLE_PATH = "locale/locale";
 
         return ResourceBundle.getBundle(BUNDLE_PATH, new Locale(locale.toUpperCase()));
+    }
+
+    static byte[] getOriginalMessage(IncomingMessageDto messageDto, String senderPrefix) {
+
+        try {
+
+            final Properties props = new Properties();
+
+            props.load(new ClassPathResource("global-config.properties").getInputStream());
+
+            final String privateKey = FileUtil
+                    .getFileContent(new ClassPathResource(props.getProperty("private.key.file")).getFile());
+            final String secretKey = CipherUtils.rsaDecrypt(privateKey, messageDto.getCipheredSecretKey());
+            final byte[] bytes = CipherUtils.aesDecrypt(messageDto.getCipheredOriginMessage(), secretKey);
+            final String originalSignature = messageDto.getSignature();
+            final String epaymentPublicKey = FileUtil
+                    .getFileContent(new ClassPathResource(props.getProperty(senderPrefix + ".public.key.file"))
+                            .getFile());
+            if (CipherUtils.verify(bytes, originalSignature, epaymentPublicKey)) {
+                return bytes;
+            } else {
+                return new byte[0];
+            }
+        } catch (Exception ex) {
+            LOGGER.error(null, ex);
+            return null;
+        }
     }
 
 }

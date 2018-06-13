@@ -2,6 +2,8 @@ package org.guce.epayment.core.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import org.guce.epayment.core.entities.InvoiceVersion;
 import org.guce.epayment.core.entities.Partner;
 import org.guce.epayment.core.entities.Payment;
 import org.guce.epayment.core.entities.PaymentInvoiceVersion;
@@ -36,5 +38,7 @@ public interface PaymentService {
     List<PaymentInvoiceVersion> findPivsByDecisionMaker(String decisionMakerLogin, String pms, int max);
 
     List<PaymentMode> findPaymentModesByDirect(boolean direct);
+
+    Optional<Payment> findPaymentForInvoiceVersion(InvoiceVersion invoiceVersion);
 
 }

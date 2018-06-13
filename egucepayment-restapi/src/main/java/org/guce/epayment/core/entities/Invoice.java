@@ -87,7 +87,7 @@ public class Invoice implements Serializable {
         paidAmount = BigDecimal.ZERO;
         status = INVOICE_UNPAID;
         lastVersionDate = LocalDateTime.now();
-        lastVersionNumber = 1;
+        lastVersionNumber = 0;
 
         forSubInvoice();
     }

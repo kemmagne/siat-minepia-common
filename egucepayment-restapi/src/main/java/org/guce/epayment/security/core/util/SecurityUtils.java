@@ -1,38 +1,37 @@
 package org.guce.epayment.security.core.util;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ *
+ * @author tadzotsa
+ */
 public class SecurityUtils {
 
     private static final String ENC_TRANSFORMATION = "AES/CBC/NoPadding";
     private static final String ENC_ALGO = "AES";
 
     public static String symetricEncrypt(String input, String key, String iv) {
+
         try {
+
             Cipher cipher = Cipher.getInstance(ENC_TRANSFORMATION);
             IvParameterSpec ips = new IvParameterSpec(iv.getBytes());
             SecretKeySpec spec = new SecretKeySpec(key.getBytes(), ENC_ALGO);
             cipher.init(Cipher.ENCRYPT_MODE, spec, ips);
             String padString = padString(input);
+
             return getHexString(cipher.doFinal(padString.getBytes()));
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(SecurityUtils.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
         } catch (Exception ex) {
-            Logger.getLogger(SecurityUtils.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
+            Logger.getLogger(org.guce.util.CipherUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        return null;
     }
 
     public static String symetricDecrypt(String input, String key, String iv) {
@@ -42,8 +41,8 @@ public class SecurityUtils {
             SecretKeySpec spec = new SecretKeySpec(key.getBytes(), ENC_ALGO);
             cipher.init(Cipher.DECRYPT_MODE, spec, ips);
             return new String(cipher.doFinal(toByteArray(input)));
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(SecurityUtils.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(org.guce.util.CipherUtils.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }

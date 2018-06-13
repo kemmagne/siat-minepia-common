@@ -1,23 +1,44 @@
 package org.guce.epayment.rest.controllers.digest;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
+import javax.xml.bind.JAXBException;
+import org.guce.epayment.core.documents.DouaneAlerteDocument;
+import org.guce.epayment.core.documents.PAY601DOCUMENT;
+import org.guce.epayment.core.documents.QuittanceDouaneDocument;
 import org.guce.epayment.core.entities.Invoice;
 import org.guce.epayment.core.entities.InvoiceType;
 import org.guce.epayment.core.entities.InvoiceVersion;
 import org.guce.epayment.core.entities.Partner;
+import org.guce.epayment.core.entities.PartnerType;
+import org.guce.epayment.core.entities.Payment;
+import org.guce.epayment.core.entities.Receipt;
 import org.guce.epayment.core.services.CoreService;
 import org.guce.epayment.core.services.InvoiceService;
+import org.guce.epayment.core.services.MessageService;
+import org.guce.epayment.core.services.PaymentService;
 import org.guce.epayment.core.utils.Constants;
 import org.guce.epayment.core.utils.CoreUtils;
+import org.guce.epayment.core.utils.enums.AperakType;
 import org.guce.epayment.rest.controllers.utils.RestConstants;
+import org.guce.epayment.rest.controllers.utils.RestUtils;
+import org.guce.epayment.rest.dto.DefaultDto;
+import org.guce.epayment.rest.dto.IncomingMessageDto;
 import org.guce.epayment.rest.dto.InvoiceVersionDto;
+import org.guce.util.JAXBUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,21 +54,136 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("digest/integration")
 public class IntegrationController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(IntegrationController.class);
+
     @Autowired
     private CoreService coreService;
     @Autowired
     private InvoiceService invoiceService;
+    @Autowired
+    private PaymentService paymentService;
+    @Autowired
+    private MessageService messageService;
 
     @ResponseBody
-    @RequestMapping(path = "invoices/many", method = RequestMethod.POST)
-    public void integrateManyInvoices(@RequestBody List<InvoiceVersionDto> invVersDtos) {
-        invVersDtos.forEach(invVersDto -> integrateInvoice(invVersDto));
+    @RequestMapping(path = "invoices", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity integrateInvoice(@RequestBody IncomingMessageDto messageDto)
+            throws JAXBException {
+
+        System.out.println(messageDto);
+
+        final ResponseEntity response = getResponse(messageDto, "payment");
+        if (!HttpStatus.OK.equals(response.getStatusCode())) {
+            return response;
+        }
+
+        final byte[] original = (byte[]) response.getBody();
+        final PAY601DOCUMENT document = JAXBUtil.unmarshall(original, PAY601DOCUMENT.class);
+        final InvoiceVersionDto invoiceVersionDto = new InvoiceVersionDto();
+
+        invoiceVersionDto.setAmount(new BigDecimal(document.getCONTENT().getPAIEMENT().getFACTURE().getMONTANTTTC()));
+        invoiceVersionDto.setGuceReference(document.getREFERENCEDOSSIER().getREFERENCEGUCE());
+        invoiceVersionDto.setInvoiceNumber(document.getCONTENT().getPAIEMENT().getFACTURE().getREFERENCEFACTURE());
+        invoiceVersionDto.setInvoiceTypeCode(document.getCONTENT().getPAIEMENT().getFACTURE().getTYPEFACTURE());
+        invoiceVersionDto.setSubTypeCode(document.getCONTENT().getPAIEMENT().getFACTURE().getSOUSTYPEFACTURE());
+        invoiceVersionDto.setTaxPayerName(document.getCONTENT().getPAIEMENT().getCHARGEUR().getRAISONSOCIALE());
+        invoiceVersionDto.setTaxPayerNumber(document.getCONTENT().getPAIEMENT().getCHARGEUR().getNUMEROCONTRIBUABLE());
+        Integer version = document.getCONTENT().getPAIEMENT().getFACTURE().getVERSION();
+        if (version == null) {
+            version = 0;
+        }
+        invoiceVersionDto.setVersion(version);
+
+        final List<PAY601DOCUMENT.CONTENT.PAIEMENT.REPARTITIONS.REPARTITION> reparttions = document.getCONTENT()
+                .getPAIEMENT().getREPARTITIONS().getREPARTITION();
+        if (!CollectionUtils.isEmpty(reparttions)) {
+            invoiceVersionDto.setSubInvoices(reparttions.stream().map(
+                    repartition -> InvoiceVersionDto.of(repartition.getMONTANT(), repartition.getCODEBENIF(),
+                            repartition.getDOCUMENTORIGINE()))
+                    .collect(Collectors.toList()));
+        } else {
+            invoiceVersionDto.setSubInvoices(Collections
+                    .singletonList(InvoiceVersionDto.of(
+                            new BigDecimal(document.getCONTENT().getPAIEMENT().getFACTURE().getMONTANTTTC()),
+                            document.getCONTENT().getPAIEMENT().getBENEFICIAIRE().getCODE(), null)));
+        }
+
+        integrateInvoice(invoiceVersionDto);
+
+        messageService.sendAperak(AperakType.APERAK_K, invoiceVersionDto.getInvoiceNumber(),
+                invoiceVersionDto.getGuceReference(), Constants.GUCE_PAYMENT_SERVICE, null, null);
+
+        return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
     }
 
     @ResponseBody
-    @RequestMapping(path = "invoices/one", method = RequestMethod.POST)
-    public void integrateOneInvoice(@RequestBody InvoiceVersionDto invVersDto) {
-        integrateInvoice(invVersDto);
+    @RequestMapping(path = "customs/receipts", method = RequestMethod.POST)
+    public ResponseEntity integrateCustomsReceipt(@RequestBody IncomingMessageDto messageDto) throws JAXBException {
+
+        System.out.println(messageDto);
+
+        final ResponseEntity response = getResponse(messageDto, "cusdec");
+        if (!HttpStatus.OK.equals(response.getStatusCode())) {
+            return response;
+        }
+
+        final byte[] original = (byte[]) response.getBody();
+        final QuittanceDouaneDocument document = JAXBUtil.unmarshall(original, QuittanceDouaneDocument.class);
+        final String bureau = document.getKEYCUO();
+        final String invoiceNumber = document.getNUMEROLIQUIDATION() + bureau + document.getDATELIQUIDATION();
+        final Receipt receipt = new Receipt();
+
+        receipt.setNumber(document.getNUMEROQUITTANCE());
+        receipt.setReceiptDate(LocalDate.parse(document.getDATEQUITTANCE(), DateTimeFormatter.ofPattern("yyyyMMdd")));
+        receipt.setBeneficiary(coreService.findByUniqueKey(Constants.UK_CODE, bureau, Partner.class).get());
+
+        // le numéro dossier parent correspond au numéro dossier partenaire
+        // le beneficiaire est le bureau de douane
+        final Optional<Invoice> invoiceParentOp = invoiceService
+                .findByNumberAndType(invoiceNumber, InvoiceType.INVOICE_TYPE_CUSDEC);
+        if (!invoiceParentOp.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .body(DefaultDto.of("There is not a paid invoice for this receipt"));
+        }
+        final Invoice invoiceParent = invoiceParentOp.get();
+        final Invoice subInvoice = invoiceParent.getSubInvoices()
+                .stream().filter(subInv -> bureau.equals(subInv.getBeneficiary().getCode())).findFirst().get();
+        final InvoiceVersion invoiceVersion = invoiceService
+                .findByInvoiceAndNumber(subInvoice.getId(),
+                        Integer.parseInt(document.getVERSIONLIQUIDATION())).get();
+
+        receipt.setInvoiceVersion(invoiceVersion);
+
+        Optional<Payment> paymentOp = paymentService.findPaymentForInvoiceVersion(invoiceVersion);
+        if (!paymentOp.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .body(DefaultDto.of("There is not a payment for this receipt"));
+        }
+        receipt.setPayment(paymentOp.get());
+
+        coreService.save(receipt, Receipt.class);
+
+        messageService.sendAperak(AperakType.APERAK_K, invoiceNumber, invoiceVersion.getGuceReference(),
+                Constants.GUCE_CUSDEC_SERVICE, null, null);
+
+        return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
+    }
+
+    @ResponseBody
+    @RequestMapping(path = "customs/alerts", method = RequestMethod.POST)
+    public ResponseEntity integrateCustomsAlert(@RequestBody IncomingMessageDto messageDto) throws JAXBException {
+
+        System.out.println(messageDto);
+
+        final ResponseEntity response = getResponse(messageDto, "cusdec");
+        if (!HttpStatus.OK.equals(response.getStatusCode())) {
+            return response;
+        }
+
+        final byte[] original = (byte[]) response.getBody();
+        final DouaneAlerteDocument document = JAXBUtil.unmarshall(original, DouaneAlerteDocument.class);
+
+        return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
     }
 
     private void integrateInvoice(InvoiceVersionDto invVersDto) {
@@ -61,37 +197,45 @@ public class IntegrationController {
         final BigDecimal versionAmount = invVersDto.getAmount();
         final InvoiceVersion invoiceVersion = new InvoiceVersion();
         invoiceVersion.setVersionAmount(versionAmount);
+        invoiceVersion.setGuceReference(invVersDto.getGuceReference());
+        invoiceVersion.setNumber(invVersDto.getVersion());
 
         if (principalInvoice.getId() == null) {
+
+            // save tax payer if doesn't exist in bd
+            final Partner taxPayer = coreService.findByUniqueKey(Constants.UK_TAX_PAYER_NUMBER,
+                    invVersDto.getTaxPayerNumber(), Partner.class).orElse(new Partner());
+
+            if (taxPayer.getId() == null) {
+
+                taxPayer.setCode(invVersDto.getTaxPayerNumber());
+                taxPayer.setTaxPayerNumber(invVersDto.getTaxPayerNumber());
+                taxPayer.setName(invVersDto.getTaxPayerName());
+                taxPayer.setTypes(Collections.singletonList(coreService.findByUniqueKey(Constants.UK_CODE,
+                        PartnerType.PARTNER_TYPE_PRINCIPAL, PartnerType.class).get()));
+
+                coreService.save(taxPayer, Partner.class);
+            }
 
             principalInvoice.setAmount(versionAmount);
             principalInvoice.setNumber(invoiceNumber);
             principalInvoice.setType(invoiceType);
-            principalInvoice
-                    .setOwner(coreService.findByUniqueKey(Constants.UK_TAX_PAYER_NUMBER,
-                            invVersDto.getTaxPayerNumber(), Partner.class).get());
-            principalInvoice
-                    .setSubType(coreService.findByUniqueKey(Constants.UK_CODE,
-                            invVersDto.getSubTypeCode(), InvoiceType.class).get());
+            principalInvoice.setOwner(taxPayer);
+            principalInvoice.setSubType(coreService.findByUniqueKey(Constants.UK_CODE,
+                    invVersDto.getSubTypeCode(), InvoiceType.class).get());
 
             invoiceVersion.setInvoice(principalInvoice);
-            invoiceVersion.setNumber(1);
             invoiceVersion.setBalanceAmount(versionAmount);
 
             // sub invoices ???
-            principalInvoice.setSubInvoices(CollectionUtils.isEmpty(invVersDto.getSubInvoices())
-                    ? Arrays.asList(getSubInvoice(invVersDto, null, true, 1))
-                    : invVersDto.getSubInvoices().stream()
-                            .map(subInvDto -> getSubInvoice(invVersDto, subInvDto, true, 1))
-                            .collect(Collectors.toList())
+            principalInvoice.setSubInvoices(invVersDto.getSubInvoices().stream()
+                    .map(subInvDto -> getSubInvoice(invVersDto, subInvDto, true, 0))
+                    .collect(Collectors.toList())
             );
 
-            principalInvoice.setInvoiceVersions(Arrays.asList(invoiceVersion));
+            principalInvoice.setInvoiceVersions(Collections.singletonList(invoiceVersion));
         } else {
 
-            final int nextVersion = principalInvoice.getInvoiceVersions().size() + 1;
-
-            invoiceVersion.setNumber(nextVersion);
             invoiceVersion.setInvoice(principalInvoice);
 
             final Properties ivtProps = CoreUtils.getParams(Optional.ofNullable(invoiceType.getParameters()));
@@ -111,25 +255,20 @@ public class IntegrationController {
 
             principalInvoice.setStatus(Invoice.INVOICE_UNPAID);
             principalInvoice.setLastVersionDate(LocalDateTime.now());
-            principalInvoice.setLastVersionNumber(nextVersion);
+            principalInvoice.setLastVersionNumber(invoiceVersion.getNumber());
 
             // sub invoices
-            if (CollectionUtils.isEmpty(invVersDto.getSubInvoices())) {
-                principalInvoice.setSubInvoices(Arrays.asList(getSubInvoice(invVersDto, null, balance, nextVersion)));
-            } else {
+            invVersDto.getSubInvoices().forEach(subInvDto -> {
 
-                invVersDto.getSubInvoices().forEach(subInvDto -> {
+                final Invoice subInvoice = getSubInvoice(invVersDto, subInvDto, balance, invoiceVersion.getNumber());
+                final int index = principalInvoice.getSubInvoices().indexOf(subInvoice);
 
-                    final Invoice subInvoice = getSubInvoice(invVersDto, subInvDto, balance, nextVersion);
-                    final int index = principalInvoice.getSubInvoices().indexOf(subInvoice);
-
-                    if (index > -1) {
-                        principalInvoice.getSubInvoices().set(index, subInvoice);
-                    } else {
-                        principalInvoice.getSubInvoices().add(subInvoice);
-                    }
-                });
-            }
+                if (index > -1) {
+                    principalInvoice.getSubInvoices().set(index, subInvoice);
+                } else {
+                    principalInvoice.getSubInvoices().add(subInvoice);
+                }
+            });
 
             coreService.save(invoiceVersion, InvoiceVersion.class);
         }
@@ -184,7 +323,7 @@ public class IntegrationController {
             subInvVersion.setNumber(1);
             subInvVersion.setInvoice(subInvoice);
             //
-            subInvoice.setInvoiceVersions(Arrays.asList(subInvVersion));
+            subInvoice.setInvoiceVersions(Collections.singletonList(subInvVersion));
         } else {
 
             subInvVersion.setInvoice(subInvoice);
@@ -236,6 +375,25 @@ public class IntegrationController {
             String subInvoiceBenefCode) {
         return String.format(RestConstants.SUB_INVOICE_NUMBER_FORMAT,
                 parentInvoiceNumber, parentInvoiceTypeCode, subInvoiceBenefCode);
+    }
+
+    private ResponseEntity getResponse(final IncomingMessageDto messageDto, final String senderPrefix) {
+
+        final byte[] bytes = RestUtils.getOriginalMessage(messageDto, senderPrefix);
+
+        if (bytes == null) {
+            // exception
+            System.out.println("exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("The was an exception during message parsing");
+        }
+
+        if (bytes.length == 0) {
+            // authenticité non confirmée
+            System.out.println("authentication failed");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sender authentication failed");
+        }
+
+        return ResponseEntity.ok(bytes);
     }
 
 }
