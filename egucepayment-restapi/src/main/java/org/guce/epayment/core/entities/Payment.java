@@ -75,8 +75,6 @@ public class Payment implements Serializable {
     private LocalDateTime startedDate;
     @Column(name = "VALIDATION_DATE")
     private LocalDateTime validationDate;
-//    @Column(name = "CONFIRMATION_DATE")
-//    private LocalDateTime confirmationDate;
 
     @PrePersist
     private void prePersist() {

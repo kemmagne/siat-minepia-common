@@ -270,7 +270,7 @@ public interface RestUtils {
         return ResourceBundle.getBundle(BUNDLE_PATH, new Locale(locale.toUpperCase()));
     }
 
-    static byte[] getOriginalMessage(IncomingMessageDto messageDto, String senderPrefix) {
+    static byte[] getOriginalMessage(final IncomingMessageDto messageDto, final String senderPrefix) {
 
         try {
 
@@ -283,10 +283,10 @@ public interface RestUtils {
             final String secretKey = CipherUtils.rsaDecrypt(privateKey, messageDto.getCipheredSecretKey());
             final byte[] bytes = CipherUtils.aesDecrypt(messageDto.getCipheredOriginMessage(), secretKey);
             final String originalSignature = messageDto.getSignature();
-            final String epaymentPublicKey = FileUtil
+            final String senderPublicKey = FileUtil
                     .getFileContent(new ClassPathResource(props.getProperty(senderPrefix + ".public.key.file"))
                             .getFile());
-            if (CipherUtils.verify(bytes, originalSignature, epaymentPublicKey)) {
+            if (CipherUtils.verify(bytes, originalSignature, senderPublicKey)) {
                 return bytes;
             } else {
                 return new byte[0];

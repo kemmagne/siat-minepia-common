@@ -2,6 +2,7 @@ package org.guce.epayment.core.services;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.guce.epayment.core.dao.CoreDao;
 import org.guce.epayment.core.entities.RepPartnerGroup;
@@ -138,6 +139,11 @@ public class CoreServiceImpl implements CoreService {
     @Override
     public <T> List<T> findRange(Class<T> entityClass, int start, int end) {
         return coreDao.findRange(entityClass, start, end);
+    }
+
+    @Override
+    public <E> void updateEntity(Class<E> entityClass, Map<String, ? extends Object> ids, Map<String, ? extends Object> map) {
+        coreDao.updateEntity(entityClass, ids, map);
     }
 
 }

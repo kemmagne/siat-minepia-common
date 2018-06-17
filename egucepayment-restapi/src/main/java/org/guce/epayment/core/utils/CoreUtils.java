@@ -1,6 +1,8 @@
 package org.guce.epayment.core.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
@@ -9,8 +11,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
+import org.guce.util.CipherUtils;
+import org.guce.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  *
@@ -93,6 +98,55 @@ public interface CoreUtils {
 
     static ObjectMapper getObjectMapper() {
         return new ObjectMapper();
+    }
+
+    static String getToSendMessage(final byte[] message, final String receiverPrefix) {
+
+        try {
+            final Properties properties = new Properties();
+
+            properties.load(new ClassPathResource("global-config.properties").getInputStream());
+
+            final String secretKey = properties.getProperty("secret.key");
+            final String cipheredMessage = CipherUtils.aesEncrypt(message, secretKey);
+            final String privateKey = FileUtil
+                    .getFileContent(new ClassPathResource(properties.getProperty("private.key.file"))
+                            .getFile());
+            final String signature = CipherUtils.sign(message, privateKey);
+            final String receiverPublicKey = FileUtil
+                    .getFileContent(new ClassPathResource(properties.getProperty(receiverPrefix + ".public.key.file"))
+                            .getFile());
+            final String cipheredSecretKey = CipherUtils.rsaEncrypt(receiverPublicKey, secretKey);
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode rootNode = mapper.createObjectNode();
+
+            ((ObjectNode) rootNode).put("CLE_SECRETE_CHIFFREE", cipheredSecretKey);
+            ((ObjectNode) rootNode).put("MESSAGE_ORIGINE_CHIFFRE", cipheredMessage);
+            ((ObjectNode) rootNode).put("SIGNATURE", signature);
+
+            return mapper.writeValueAsString(rootNode);
+        } catch (IOException ex) {
+            LOGGER.error(null, ex);
+            return null;
+        } catch (Exception ex) {
+            LOGGER.error(null, ex);
+            return null;
+        }
+
+    }
+
+    static String getProperty(String key) {
+
+        final Properties properties = new Properties();
+
+        try {
+            properties.load(new ClassPathResource("global-config.properties").getInputStream());
+
+            return properties.getProperty(key);
+        } catch (IOException ex) {
+            LOGGER.error(null, ex);
+            return null;
+        }
     }
 
 }

@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -26,7 +28,6 @@ import org.guce.epayment.core.services.MessageService;
 import org.guce.epayment.core.services.PaymentService;
 import org.guce.epayment.core.utils.Constants;
 import org.guce.epayment.core.utils.CoreUtils;
-import org.guce.epayment.core.utils.enums.AperakType;
 import org.guce.epayment.rest.controllers.utils.RestConstants;
 import org.guce.epayment.rest.controllers.utils.RestUtils;
 import org.guce.epayment.rest.dto.DefaultDto;
@@ -110,9 +111,8 @@ public class IntegrationController {
 
         integrateInvoice(invoiceVersionDto);
 
-        messageService.sendAperak(AperakType.APERAK_K, invoiceVersionDto.getInvoiceNumber(),
-                invoiceVersionDto.getGuceReference(), Constants.GUCE_PAYMENT_SERVICE, null, null);
-
+//        messageService.sendAperak(AperakType.APERAK_K, invoiceVersionDto.getInvoiceNumber(),
+//                invoiceVersionDto.getGuceReference(), Constants.GUCE_PAYMENT_SERVICE, null, null);
         return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
     }
 
@@ -161,11 +161,31 @@ public class IntegrationController {
         }
         receipt.setPayment(paymentOp.get());
 
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append(String.format("%s=%s\n", "dateliquidation", document.getDATELIQUIDATION()))
+                .append(String.format("%s=%s\n", "serieliquidation", document.getSERIELIQUIDATION()))
+                .append(String.format("%s=%s\n", "numeroliquidation", document.getNUMEROLIQUIDATION()))
+                .append(String.format("%s=%s\n", "versionliquidation", document.getVERSIONLIQUIDATION()))
+                .append(String.format("%s=%s\n", "montantliquidation", document.getMONTANTLIQUIDATION()))
+                .append(String.format("%s=%s\n", "keycuo", document.getKEYCUO()))
+                .append(String.format("%s=%s\n", "bureauquittance", document.getBUREAUQUITTANCE()))
+                .append(String.format("%s=%s", "seriequittance", document.getSERIEQUITTANCE()));
+
+        receipt.setMetadata(builder.toString());
+
         coreService.save(receipt, Receipt.class);
 
-        messageService.sendAperak(AperakType.APERAK_K, invoiceNumber, invoiceVersion.getGuceReference(),
-                Constants.GUCE_CUSDEC_SERVICE, null, null);
+        final Map<String, BigDecimal> ids = new HashMap<>();
+        final Map<String, LocalDateTime> map = new HashMap<>();
 
+        ids.put("ID", invoiceVersion.getId());
+        map.put("ACKNOWLEDGMENT_DATE", LocalDateTime.now());
+
+        coreService.updateEntity(InvoiceVersion.class, ids, map);
+
+//        messageService.sendAperak(AperakType.APERAK_K, invoiceNumber, invoiceVersion.getGuceReference(),
+//                Constants.GUCE_CUSDEC_SERVICE, null, null);
         return ResponseEntity.ok(RestConstants.DEFAULT_RESPONSE_BODY);
     }
 
@@ -196,8 +216,9 @@ public class IntegrationController {
                 .orElse(new Invoice());
         final BigDecimal versionAmount = invVersDto.getAmount();
         final InvoiceVersion invoiceVersion = new InvoiceVersion();
+
         invoiceVersion.setVersionAmount(versionAmount);
-        invoiceVersion.setGuceReference(invVersDto.getGuceReference());
+        invoiceVersion.setEGuceReference(invVersDto.getGuceReference());
         invoiceVersion.setNumber(invVersDto.getVersion());
 
         if (principalInvoice.getId() == null) {

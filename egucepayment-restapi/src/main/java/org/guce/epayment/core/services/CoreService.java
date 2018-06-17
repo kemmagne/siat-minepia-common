@@ -1,6 +1,7 @@
 package org.guce.epayment.core.services;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.guce.epayment.core.entities.RepPartnerGroup;
 import org.guce.epayment.core.entities.Receipt;
@@ -52,5 +53,14 @@ public interface CoreService {
     List<RepPartnerGroup> findAllPartnerGroups();
 
     List<Receipt> findReceiptsByInvoiceType(String invoiceTypeCode);
+
+    /**
+     *
+     * @param <E>
+     * @param entityClass
+     * @param ids
+     * @param map
+     */
+    <E> void updateEntity(Class<E> entityClass, Map<String, ? extends Object> ids, Map<String, ? extends Object> map);
 
 }

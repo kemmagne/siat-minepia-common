@@ -3,19 +3,29 @@ package org.guce.epayment.core.services;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import generated.AperakDocument;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.xml.bind.JAXBException;
 import org.apache.commons.lang3.StringUtils;
+import org.guce.epayment.core.dao.CoreDao;
 import org.guce.epayment.core.documents.PAY602DOCUMENT;
+import org.guce.epayment.core.entities.Invoice;
+import org.guce.epayment.core.entities.InvoiceVersion;
 import org.guce.epayment.core.entities.PaymentInvoiceVersion;
+import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.utils.Constants;
+import org.guce.epayment.core.utils.CoreUtils;
 import org.guce.epayment.core.utils.DateUtils;
 import org.guce.epayment.core.utils.MailConstants;
 import org.guce.epayment.core.utils.MessageUtils;
 import org.guce.epayment.core.utils.enums.AperakType;
+import org.guce.util.JAXBUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +38,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.client.RestTemplate;
 
 @Transactional
 @Service
@@ -49,6 +60,8 @@ public class MessageServiceImpl implements MessageService {
     private Configuration freeMakerConfig;
     @Autowired
     private ApplicationService appService;
+    @Autowired
+    private CoreDao coreDao;
 
     @Override
     public void sendMail(final Map<String, Object> props) throws MessagingException {
@@ -87,17 +100,90 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void confirmPayment(PaymentInvoiceVersion paymentInvoiceVersion) {
+    public void confirmPayment(PaymentInvoiceVersion piv) {
 
+        final String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+        final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern(dateFormat);
+        final String now = LocalDateTime.now().format(dtFormatter);
         final PAY602DOCUMENT document = new PAY602DOCUMENT();
+        final User signator = piv.getPayment().getSignatures().get(0).getUser();
 
+        document.setTYPEDOCUMENT(Constants.GUCE_PAYMENT_RESPONSE_DOC_TYPE);
+
+        document.setROUTAGE(new PAY602DOCUMENT.ROUTAGE());
+        document.getROUTAGE().setEMETTEUR(Constants.E_GUCE_PARTNER_CODE);
+        document.getROUTAGE().setDESTINATAIRE(Constants.E_GUCE_GUCE_PARTNER_CODE);
+
+        document.setREFERENCEDOSSIER(new PAY602DOCUMENT.REFERENCEDOSSIER());
+        document.getREFERENCEDOSSIER().setDATECREATION(now);
+        document.getREFERENCEDOSSIER().setREFERENCEGUCE(piv.getInvoiceVersion().getEGuceReference());
+        document.getREFERENCEDOSSIER().setSERVICE(Constants.GUCE_PAYMENT_SERVICE);
+
+        document.setCONTENT(new PAY602DOCUMENT.CONTENT());
+        document.getCONTENT().setPAIEMENT(new PAY602DOCUMENT.CONTENT.PAIEMENT());
+        document.getCONTENT().getPAIEMENT().setENCAISSEMENT(new PAY602DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT());
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setMONTANT(piv.getAmountForInvoice().toString());
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setCANALENCAISSEMENT(Constants.E_GUCE_PARTNER_CODE);
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setDATEENCAISSEMENT(piv.getInvoiceVersion().getPaymentDate().format(dtFormatter));
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setFORMATDATEENCAISSEMENT(dateFormat);
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setNATURE(piv.getPayment().getMode().getLabel());
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setNUMERORECU(piv.getPayment().getReference());
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setBANQUE(new PAY602DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT.BANQUE());
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().getBANQUE().setCODE(piv.getPayment().getBankGateway().getCode());
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().getBANQUE().setLIBELLE(piv.getPayment().getBankGateway().getName());
+
+        document.getCONTENT().getPAIEMENT().setSIGNATAIRE(new PAY602DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE());
+        document.getCONTENT().getPAIEMENT().getSIGNATAIRE().setDATE(piv.getPayment().getSignatures().get(0).getCreationDate().format(dtFormatter));
+        document.getCONTENT().getPAIEMENT().getSIGNATAIRE().setCODE(signator.getLogin());
+        document.getCONTENT().getPAIEMENT().getSIGNATAIRE().setNOM(signator.getLastName()
+                + (signator.getFirstName() != null ? " " + signator.getFirstName() : ""));
+        document.getCONTENT().getPAIEMENT().getSIGNATAIRE().setSOCIETE(piv.getPayment().getBankGateway().getName());
+
+        final List<Invoice> subInvoices = piv.getInvoiceVersion().getInvoice().getSubInvoices();
+
+        document.getCONTENT().getPAIEMENT().setREPARTITION(new PAY602DOCUMENT.CONTENT.PAIEMENT.REPARTITION());
+
+        subInvoices.stream().map((subInv) -> {
+
+            final PAY602DOCUMENT.CONTENT.PAIEMENT.REPARTITION.BENEFICIAIRE beneficiaire = new PAY602DOCUMENT.CONTENT.PAIEMENT.REPARTITION.BENEFICIAIRE();
+
+            beneficiaire.setCODE(subInv.getBeneficiary().getCode());
+            beneficiaire.setLIBELLE(subInv.getBeneficiary().getName());
+            beneficiaire.setMONTANT(subInv.getInvoiceVersions()
+                    .stream().filter(invVers -> subInv.getLastVersionNumber() == invVers.getNumber()).findFirst().get()
+                    .getBalanceAmount());
+
+            return beneficiaire;
+        }).forEachOrdered((beneficiaire) -> {
+            document.getCONTENT().getPAIEMENT().getREPARTITION().getBENEFICIAIRE().add(beneficiaire);
+        });
+
+        try {
+
+            final String body = CoreUtils.getToSendMessage(JAXBUtil.marshall(document, true), "payment");
+            final RestTemplate restTemplate = new RestTemplate();
+            final String url = CoreUtils.getProperty("payment.rest.api.url");
+
+            restTemplate.postForEntity(url, body, String.class);
+
+            final Map<String, BigDecimal> ids = new HashMap<>();
+            final Map<String, LocalDateTime> map = new HashMap<>();
+
+            ids.put("ID", piv.getInvoiceVersion().getId());
+            map.put("CONFIRMATION_DATE", LocalDateTime.now());
+
+            coreDao.updateEntity(InvoiceVersion.class, ids, map);
+        } catch (JAXBException ex) {
+            LOGGER.error(null, ex);
+        }
     }
 
     @Override
     public void sendAperak(AperakType aperakType, String fileNumber, String guceReference, String service, String errorCode, String aperakErreur) {
 
         final AperakDocument aperakDocument = new AperakDocument();
-        final String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss-SSS"));
+        final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        final String now = LocalDateTime.now().format(dtFormatter);
 
         aperakDocument.setTYPEDOCUMENT(aperakType.name());
 
@@ -114,14 +200,23 @@ public class MessageServiceImpl implements MessageService {
         aperakDocument.getREFERENCEDOSSIER().setSERVICE(service);
 
         aperakDocument.setROUTAGE(new AperakDocument.ROUTAGE());
-        aperakDocument.getROUTAGE().setEMETTEUR(Constants.PARTNER_CODE);
-        aperakDocument.getROUTAGE().setDESTINATAIRE(Constants.GUCE_PARTNER_CODE);
+        aperakDocument.getROUTAGE().setEMETTEUR(Constants.E_GUCE_PARTNER_CODE);
+        aperakDocument.getROUTAGE().setDESTINATAIRE(Constants.E_GUCE_GUCE_PARTNER_CODE);
 
         if (AperakType.APERAK_C.equals(aperakType)) {
             aperakDocument.setERREURS(new AperakDocument.ERREURS());
             aperakDocument.getERREURS().setERREUR(new AperakDocument.ERREURS.ERREUR());
             aperakDocument.getERREURS().getERREUR().setCODEERREUR(errorCode);
             aperakDocument.getERREURS().getERREUR().setCODEERREUR(aperakErreur);
+        }
+
+        try {
+            final String body = CoreUtils.getToSendMessage(JAXBUtil.marshall(aperakDocument, true), service);
+            final RestTemplate restTemplate = new RestTemplate();
+            final String url = CoreUtils.getProperty(service + ".rest.api.url");
+            restTemplate.postForEntity(url, body, String.class);
+        } catch (JAXBException ex) {
+            LOGGER.error(null, ex);
         }
     }
 

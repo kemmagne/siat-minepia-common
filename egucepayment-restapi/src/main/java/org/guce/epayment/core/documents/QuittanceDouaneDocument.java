@@ -77,11 +77,11 @@ import javax.xml.bind.annotation.XmlType;
     "numeroliquidation",
     "versionliquidation",
     "montantliquidation",
-    "anneequittance",
+    "anneequittance",//
     "bureauquittance",
     "seriequittance",
-    "numeroquittance",
-    "datequittance"
+    "numeroquittance",//
+    "datequittance"//
 })
 @XmlRootElement(name = "ENREGISTREMENT_PAIEMENT")
 public class QuittanceDouaneDocument {

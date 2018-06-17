@@ -2,10 +2,11 @@
 // Ce fichier a �t� g�n�r� par l'impl�mentation de r�f�rence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a>
 // Toute modification apport�e � ce fichier sera perdue lors de la recompilation du sch�ma source.
-// G�n�r� le : 2018.06.12 � 08:30:04 AM WAT
+// G�n�r� le : 2018.06.14 � 05:16:34 AM WAT
 //
 package org.guce.epayment.core.documents;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -487,6 +488,13 @@ import javax.xml.bind.annotation.XmlType;
  *                                           &lt;/complexContent>
  *                                         &lt;/complexType>
  *                                       &lt;/element>
+ *                                       &lt;element name="FORMAT_DATE_ENCAISSEMENT" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="20"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
  *                                     &lt;/sequence>
  *                                   &lt;/restriction>
  *                                 &lt;/complexContent>
@@ -929,6 +937,7 @@ import javax.xml.bind.annotation.XmlType;
  *                                                     &lt;/restriction>
  *                                                   &lt;/simpleType>
  *                                                 &lt;/element>
+ *                                                 &lt;element name="MONTANT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
  *                                               &lt;/sequence>
  *                                             &lt;/restriction>
  *                                           &lt;/complexContent>
@@ -1387,6 +1396,13 @@ public class PAY602DOCUMENT {
      *                                 &lt;/complexContent>
      *                               &lt;/complexType>
      *                             &lt;/element>
+     *                             &lt;element name="FORMAT_DATE_ENCAISSEMENT" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="20"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
      *                           &lt;/sequence>
      *                         &lt;/restriction>
      *                       &lt;/complexContent>
@@ -1829,6 +1845,7 @@ public class PAY602DOCUMENT {
      *                                           &lt;/restriction>
      *                                         &lt;/simpleType>
      *                                       &lt;/element>
+     *                                       &lt;element name="MONTANT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
      *                                     &lt;/sequence>
      *                                   &lt;/restriction>
      *                                 &lt;/complexContent>
@@ -2160,6 +2177,13 @@ public class PAY602DOCUMENT {
          *                         &lt;/restriction>
          *                       &lt;/complexContent>
          *                     &lt;/complexType>
+         *                   &lt;/element>
+         *                   &lt;element name="FORMAT_DATE_ENCAISSEMENT" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="20"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
          *                   &lt;/element>
          *                 &lt;/sequence>
          *               &lt;/restriction>
@@ -2603,6 +2627,7 @@ public class PAY602DOCUMENT {
          *                                 &lt;/restriction>
          *                               &lt;/simpleType>
          *                             &lt;/element>
+         *                             &lt;element name="MONTANT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
          *                           &lt;/sequence>
          *                         &lt;/restriction>
          *                       &lt;/complexContent>
@@ -3970,6 +3995,13 @@ public class PAY602DOCUMENT {
              *             &lt;/complexContent>
              *           &lt;/complexType>
              *         &lt;/element>
+             *         &lt;element name="FORMAT_DATE_ENCAISSEMENT" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="20"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
              *       &lt;/sequence>
              *     &lt;/restriction>
              *   &lt;/complexContent>
@@ -3986,7 +4018,8 @@ public class PAY602DOCUMENT {
                 "montant",
                 "observations",
                 "canalencaissement",
-                "banque"
+                "banque",
+                "formatdateencaissement"
             })
             public static class ENCAISSEMENT {
 
@@ -4004,6 +4037,8 @@ public class PAY602DOCUMENT {
                 protected String canalencaissement;
                 @XmlElement(name = "BANQUE")
                 protected PAY602DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT.BANQUE banque;
+                @XmlElement(name = "FORMAT_DATE_ENCAISSEMENT")
+                protected String formatdateencaissement;
 
                 /**
                  * Obtient la valeur de la propri�t� numerorecu.
@@ -4145,6 +4180,26 @@ public class PAY602DOCUMENT {
                  */
                 public void setBANQUE(PAY602DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT.BANQUE value) {
                     this.banque = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� formatdateencaissement.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getFORMATDATEENCAISSEMENT() {
+                    return formatdateencaissement;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� formatdateencaissement.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setFORMATDATEENCAISSEMENT(String value) {
+                    this.formatdateencaissement = value;
                 }
 
                 /**
@@ -6186,6 +6241,7 @@ public class PAY602DOCUMENT {
              *                       &lt;/restriction>
              *                     &lt;/simpleType>
              *                   &lt;/element>
+             *                   &lt;element name="MONTANT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
              *                 &lt;/sequence>
              *               &lt;/restriction>
              *             &lt;/complexContent>
@@ -6265,6 +6321,7 @@ public class PAY602DOCUMENT {
                  *             &lt;/restriction>
                  *           &lt;/simpleType>
                  *         &lt;/element>
+                 *         &lt;element name="MONTANT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
                  *       &lt;/sequence>
                  *     &lt;/restriction>
                  *   &lt;/complexContent>
@@ -6276,7 +6333,8 @@ public class PAY602DOCUMENT {
                 @XmlAccessorType(XmlAccessType.FIELD)
                 @XmlType(name = "", propOrder = {
                     "code",
-                    "libelle"
+                    "libelle",
+                    "montant"
                 })
                 public static class BENEFICIAIRE {
 
@@ -6284,6 +6342,8 @@ public class PAY602DOCUMENT {
                     protected String code;
                     @XmlElement(name = "LIBELLE")
                     protected String libelle;
+                    @XmlElement(name = "MONTANT")
+                    protected BigDecimal montant;
 
                     /**
                      * Obtient la valeur de la propri�t� code.
@@ -6323,6 +6383,26 @@ public class PAY602DOCUMENT {
                      */
                     public void setLIBELLE(String value) {
                         this.libelle = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� montant.
+                     *
+                     * @return possible object is {@link BigDecimal }
+                     *
+                     */
+                    public BigDecimal getMONTANT() {
+                        return montant;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� montant.
+                     *
+                     * @param value allowed object is {@link BigDecimal }
+                     *
+                     */
+                    public void setMONTANT(BigDecimal value) {
+                        this.montant = value;
                     }
 
                 }

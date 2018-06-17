@@ -44,12 +44,14 @@ public interface Constants {
 
     static final String LOCALE_EN = "en".intern();
 
-    static final String GUCE_PARTNER_CODE = "GUCE".intern();
+    static final String E_GUCE_GUCE_PARTNER_CODE = "GUCE".intern();
 
-    static final String PARTNER_CODE = "E_GUCE_PAYMENT".intern();
+    static final String E_GUCE_PARTNER_CODE = "E_GUCE_PAYMENT".intern();
 
     static final String GUCE_PAYMENT_SERVICE = "payment".intern();
 
     static final String GUCE_CUSDEC_SERVICE = "cusdec".intern();
+
+    static final String GUCE_PAYMENT_RESPONSE_DOC_TYPE = "PAY602";
 
 }

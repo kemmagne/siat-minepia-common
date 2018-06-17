@@ -2,10 +2,13 @@ package org.guce.epayment.core.dao;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.Table;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import org.apache.commons.lang3.StringUtils;
@@ -74,8 +77,37 @@ public class CoreDaoImpl implements CoreDao {
 
             return ((Number) q.getSingleResult()).longValue();
         } catch (Exception e) {
+            LOGGER.error(null, e);
             return 0;
         }
+    }
+
+    @Override
+    public <E> void updateEntity(final Class<E> entityClass, final Map<String, ? extends Object> ids,
+            final Map<String, ? extends Object> map) {
+
+        final Table table = entityClass.getAnnotation(Table.class);
+        final StringBuilder builder = new StringBuilder("UPDATE ");
+        final List<String> update = map.keySet().stream().map(key -> String.format("%s = :%s", key, key))
+                .collect(Collectors.toList());
+        final List<String> where = ids.keySet().stream().map(key -> String.format("%s = :%s", key, key))
+                .collect(Collectors.toList());
+
+        builder.append(table.name()).append(" SET ")
+                .append(org.springframework.util.StringUtils.collectionToDelimitedString(update, " AND "))
+                .append(" WHERE ")
+                .append(org.springframework.util.StringUtils.collectionToDelimitedString(where, " AND "));
+
+        final Query query = em.createNativeQuery(builder.toString());
+
+        map.forEach((key, value) -> {
+            query.setParameter(key, value);
+        });
+        ids.forEach((key, value) -> {
+            query.setParameter(key, value);
+        });
+
+        query.executeUpdate();
     }
 
 }

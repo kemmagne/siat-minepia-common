@@ -1,6 +1,7 @@
 package org.guce.epayment.core.dao;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -14,5 +15,14 @@ public interface CoreDao {
     <T> Optional<T> findById(Object id, Class<T> clazz);
 
     String generateUniqueValue(String table, String prefix);
+
+    /**
+     *
+     * @param <E>
+     * @param entityClass
+     * @param ids
+     * @param map
+     */
+    <E> void updateEntity(Class<E> entityClass, Map<String, ? extends Object> ids, Map<String, ? extends Object> map);
 
 }

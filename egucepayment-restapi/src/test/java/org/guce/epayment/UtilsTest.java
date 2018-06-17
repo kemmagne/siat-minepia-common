@@ -8,8 +8,11 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javax.persistence.Table;
 import org.apache.commons.lang3.StringUtils;
 import org.guce.epayment.core.entities.InvoiceType;
+import org.guce.epayment.core.entities.InvoiceVersion;
 import org.guce.epayment.core.utils.Constants;
 import org.guce.epayment.core.utils.CoreUtils;
 import static org.guce.epayment.core.utils.CoreUtils.findNext;
@@ -130,8 +133,31 @@ public class UtilsTest {
 
     @Ignore
     @Test
-    public void testCiphering() throws Exception {
-        String message = "Hello world";
+    public void testUpdate() throws Exception {
+
+        final Map<String, Object> ids = new HashMap<>();
+        ids.put("ID", "");
+
+        final Map<String, Object> map = new HashMap<>();
+        map.put("VERSION_NUMBER", "");
+        map.put("VERSION_DATE", "");
+        map.put("VERSION_AMOUNT", "");
+        map.put("BALANCE_AMOUNT", "");
+        map.put("PAYMENT_DATE", "");
+
+        final Table table = InvoiceVersion.class.getAnnotation(Table.class);
+        final StringBuilder builder = new StringBuilder("UPDATE ");
+        final List<String> update = map.keySet().stream().map(key -> String.format("%s = :%s", key, key))
+                .collect(Collectors.toList());
+        final List<String> where = ids.keySet().stream().map(key -> String.format("%s = :%s", key, key))
+                .collect(Collectors.toList());
+
+        builder.append(table.name()).append(" SET ")
+                .append(org.springframework.util.StringUtils.collectionToDelimitedString(update, " AND "))
+                .append(" WHERE ")
+                .append(org.springframework.util.StringUtils.collectionToDelimitedString(where, " AND "));
+
+        System.out.println(builder);
     }
 
 }
