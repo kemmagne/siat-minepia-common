@@ -42,55 +42,66 @@ public class Application {
     static final String SUB_INVOICE_NUMBER_FORMAT = "%s_%s_%s";
 
     public static void main(String[] args) throws Exception {
+
         run(args);
     }
 
-    public static void run(String... args) throws Exception {
+    private static void init() {
 
         try {
 
-            try {
+            final Properties properties = new Properties();
 
-                final Properties properties = new Properties();
+            properties.load(new ClassPathResource("db.properties").getInputStream());
 
-                properties.load(new ClassPathResource("db.properties").getInputStream());
+            ORACLE_JDBC_DRIVER = properties.getProperty("driver-class-name");
 
-                ORACLE_JDBC_DRIVER = properties.getProperty("driver-class-name");
+            DB_SOURCE_URL = properties.getProperty("source.db.url");
+            DB_SOURCE_USER = properties.getProperty("source.db.username");
+            DB_SOURCE_PASSWORD = properties.getProperty("source.db.password");
 
-                DB_SOURCE_URL = properties.getProperty("source.db.url");
-                DB_SOURCE_USER = properties.getProperty("source.db.username");
-                DB_SOURCE_PASSWORD = properties.getProperty("source.db.password");
+            DB_TARGET_URL = properties.getProperty("target.db.url");
+            DB_TARGET_USER = properties.getProperty("target.db.username");
+            DB_TARGET_PASSWORD = properties.getProperty("target.db.password");
 
-                DB_TARGET_URL = properties.getProperty("target.db.url");
-                DB_TARGET_USER = properties.getProperty("target.db.username");
-                DB_TARGET_PASSWORD = properties.getProperty("target.db.password");
-            } catch (IOException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
-            }
+        } catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
 
-            System.out.println("-------- Oracle JDBC Connection Testing ------");
-            try {
-                Class.forName(ORACLE_JDBC_DRIVER);
-            } catch (ClassNotFoundException ex) {
-                LOGGER.log(Level.SEVERE, "Unable to find Oracle JDBC Driver...", ex);
-                return;
-            }
-            System.out.println("Oracle JDBC Driver Registered!");
+        System.out.println("-------- Oracle JDBC Connection Testing ------");
+        try {
+            Class.forName(ORACLE_JDBC_DRIVER);
+        } catch (ClassNotFoundException ex) {
+            LOGGER.log(Level.SEVERE, "Unable to find Oracle JDBC Driver...", ex);
+            return;
+        }
+        System.out.println("Oracle JDBC Driver Registered!");
 
-            try {
-                TimeZone timeZone = TimeZone.getTimeZone("GMT+1");
-                TimeZone.setDefault(timeZone);
-                sourceCon = DriverManager.getConnection(DB_SOURCE_URL, DB_SOURCE_USER, DB_SOURCE_PASSWORD);
-                targetCon = DriverManager.getConnection(DB_TARGET_URL, DB_TARGET_USER, DB_TARGET_PASSWORD);
-                targetCon.setAutoCommit(false);
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Connection(s) Failed! Check output console...", ex);
-                return;
-            }
-            System.out.println("Connections have been estabilished...");
-            validateConnections();
+        try {
 
-//            resetBD();
+            final TimeZone timeZone = TimeZone.getTimeZone("GMT+1");
+
+            TimeZone.setDefault(timeZone);
+
+            sourceCon = DriverManager.getConnection(DB_SOURCE_URL, DB_SOURCE_USER, DB_SOURCE_PASSWORD);
+            targetCon = DriverManager.getConnection(DB_TARGET_URL, DB_TARGET_USER, DB_TARGET_PASSWORD);
+
+            targetCon.setAutoCommit(false);
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "Connection(s) Failed! Check output console...", ex);
+            return;
+        }
+        System.out.println("Connections have been estabilished...");
+        validateConnections();
+    }
+
+    private static void run(String... args) throws Exception {
+
+        init();
+
+        try {
+
+            resetBD();
 //            initBD();
 //            StepCreator.create();
 //            PaymentModeCreator.create();

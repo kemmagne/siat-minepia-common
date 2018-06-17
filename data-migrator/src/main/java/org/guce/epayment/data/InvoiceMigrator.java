@@ -1,7 +1,6 @@
 package org.guce.epayment.data;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,9 +31,12 @@ public class InvoiceMigrator {
                         .executeQuery("SELECT CODEDAP FROM INVOICE_VERSION ORDER BY CODEDAP DESC")) {
 
             final Long lastCodedap = codedapResultSet.next() ? codedapResultSet.getLong(1) : null;
-            String selectQuery = "SELECT CODEDAP, NUMERODOSSIERPARTENAIRE, VERSION, CODEDO, DOSSIER_PARENT, "
-                    + "MONTANTAPAYER, ETATDOSSIER, CODEBENIF, TYPEDAP, NUMEROVIREMENT, MENTIONS_SPECIALES "
-                    + "FROM DOSSIERAPAYER";
+            String selectQuery = "SELECT CODEDAP, DAP.NUMERODOSSIERPARTENAIRE NUMERODOSSIERPARTENAIRE, VERSION, CODEDO, "
+                    + "DOSSIER_PARENT, MONTANTAPAYER, ETATDOSSIER, CODEBENIF, TYPEDAP, MENTIONS_SPECIALES, "
+                    + "NUMERODOSSIERGUCE, DATEETATPARTENAIRE, DATECREATIONORDRE DATE_PAIEMENT, DATEQUITTANCE "
+                    + "FROM DOSSIERAPAYER DAP "
+                    + "LEFT JOIN ORDREVIREMENTDO O ON O.NUMEROVIREMENT = DAP.NUMEROVIREMENT "
+                    + "LEFT JOIN QUITTANCE Q ON Q.NUMERODOSSIERPARTENAIRE = DAP.NUMERODOSSIERPARTENAIRE";
             if (lastCodedap != null) {
                 selectQuery += " WHERE CODEDAP > " + lastCodedap;
             }
@@ -50,8 +52,9 @@ public class InvoiceMigrator {
             final String invUpdateQuery = "UPDATE INVOICE SET AMOUNT = ?, LAST_VERSION_DATE = sysdate, "
                     + "LAST_VERSION_NUMBER = ?, PAID_AMOUNT = ?, STATUS = ? WHERE ID = ?";
             final String invVersInsertQuery = "INSERT INTO INVOICE_VERSION (ID, BALANCE_AMOUNT, CODEDAP, VERSION_DATE, "
-                    + "VERSION_NUMBER, PAYMENT_DATE, VERSION_AMOUNT, INVOICE_ID) "
-                    + "VALUES (INVOICE_VERSION_SEQ.NEXTVAL, ?, ?, sysdate, ?, ?, ?, ?)";
+                    + "VERSION_NUMBER, PAYMENT_DATE, VERSION_AMOUNT, INVOICE_ID, PAY_CONFIRM_DATE, "
+                    + "PAY_ACK_DATE, E_GUCE_REFERENCE) "
+                    + "VALUES (INVOICE_VERSION_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             final String invTypeParamsQuery = "SELECT PARAMS FROM INVOICE_TYPE WHERE CODE = ?";
             final String selectInvQuery = "SELECT ID, LAST_VERSION_NUMBER, AMOUNT, PAID_AMOUNT "
                     + "FROM INVOICE WHERE INVOICE_NUMBER = ? AND TYPE_ID = (SELECT ID FROM INVOICE_TYPE WHERE CODE = ?)";
@@ -141,7 +144,7 @@ public class InvoiceMigrator {
                             invoiceId = (BigDecimal) Utils.getNextId("INVOICE_SEQ");
                             versionAmount = montantAPayer;
                             balanceAmount = montantAPayer;
-                            versionNumber = 1;
+                            versionNumber = 0;
                             insert = true;
                         } else {
                             invoiceId = resultSet.getBigDecimal("ID");
@@ -231,10 +234,14 @@ public class InvoiceMigrator {
                     // version
                     invVersInsertStatement.setBigDecimal(1, balanceAmount);
                     invVersInsertStatement.setLong(2, codedap);
-                    invVersInsertStatement.setInt(3, versionNumber);
-                    invVersInsertStatement.setDate(4, "PAID".equals(status) ? new Date(System.currentTimeMillis()) : null);
-                    invVersInsertStatement.setBigDecimal(5, versionAmount);
-                    invVersInsertStatement.setBigDecimal(6, invoiceId);
+                    invVersInsertStatement.setDate(3, selectDapResultSet.getDate("DATEETATPARTENAIRE"));
+                    invVersInsertStatement.setInt(4, versionNumber);
+                    invVersInsertStatement.setDate(5, selectDapResultSet.getDate("DATE_PAIEMENT"));
+                    invVersInsertStatement.setBigDecimal(6, versionAmount);
+                    invVersInsertStatement.setBigDecimal(7, invoiceId);
+                    invVersInsertStatement.setDate(8, selectDapResultSet.getDate("DATE_PAIEMENT"));
+                    invVersInsertStatement.setDate(9, selectDapResultSet.getDate("DATEQUITTANCE"));
+                    invVersInsertStatement.setString(10, selectDapResultSet.getString("NUMERODOSSIERGUCE"));
                     // execute
                     invVersInsertStatement.executeUpdate();
 
