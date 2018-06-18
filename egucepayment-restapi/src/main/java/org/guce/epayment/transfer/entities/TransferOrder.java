@@ -25,35 +25,32 @@ public class TransferOrder extends Payment {
 
     private static final long serialVersionUID = -1493948559807779437L;
 
-    @JoinColumn(name = "DEBIT_ACCOUNT", nullable = false)
+    @JoinColumn(name = "DEBIT_ACCOUNT_ID", nullable = false)
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private BankAccount debitAccount;
-    @JoinColumn(name = "RECEPTIVE_AGENCY")
+    @JoinColumn(name = "RECEPTIVE_AGENCY_ID")
     @ManyToOne
     private Partner receptiveAgency;
-    @JoinColumn(name = "INVOICE_TYPE", nullable = false)
+    @JoinColumn(name = "INVOICE_TYPE_ID", nullable = false)
     @OneToOne
     private InvoiceType invoiceType;
-    @JoinColumn(name = "CREDIT_ACCOUNT")
+    @JoinColumn(name = "CREDIT_ACCOUNT_ID")
     @OneToOne
     private BankAccount creditAccount;
-    @JoinColumn(name = "BENEFICIARY_AGENCY")
+    @JoinColumn(name = "BENEFICIARY_AGENCY_ID")
     @ManyToOne
     private Partner beneficiaryAgency;
-    @JoinColumn(name = "BENEFICIARY_BANK")
+    @JoinColumn(name = "BENEFICIARY_BANK_ID")
     @ManyToOne
     private Partner beneficiaryBank;
-    @Column(name = "FLOW_IN_USE", nullable = false)
-    private String flowInUse;
-    @Column(name = "OLD_TRANSFER_NUMBER", length = 40)
-    private String oldTransferNumber;
-    @Column(name = "SITTING_DATE")
-    private LocalDateTime sittingDate;
-    @JoinColumn(name = "TAX_PAYER", nullable = false)
+    @JoinColumn(name = "TAX_PAYER_ID", nullable = false)
     @ManyToOne
     private Partner taxPayer;
-    @JoinColumn(name = "BENEFICIARY")
-    @ManyToOne
-    private Partner beneficiary;
+    @Column(name = "FLOW_IN_USE", nullable = false)
+    private String flowInUse;
+    @Column(name = "SITTING_DATE")
+    private LocalDateTime sittingDate;
+    @Column(name = "OLD_TO_NUMBER", length = 40)
+    private String oldToNumber;
 
 }

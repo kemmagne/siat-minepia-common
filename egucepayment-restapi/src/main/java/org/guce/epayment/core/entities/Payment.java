@@ -44,8 +44,8 @@ public class Payment implements Serializable {
     public static final String PAYMENT_REJECTED = "REJECTED";
 
     @Id
-    @SequenceGenerator(name = "PAYMENT_SEQ_GEN", sequenceName = "PAYMENT_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENT_SEQ_GEN")
+    @SequenceGenerator(name = "PAYMENT_SEQ", sequenceName = "PAYMENT_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENT_SEQ")
     @Column(name = "ID", precision = 38)
     private BigDecimal id;
 

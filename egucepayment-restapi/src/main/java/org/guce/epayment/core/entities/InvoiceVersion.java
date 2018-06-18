@@ -54,6 +54,8 @@ public class InvoiceVersion implements Serializable {
     private String eGuceReference;
     @Column(name = "CODEDAP", length = 20)
     private Long codedap;
+    @Column(name = "OLD_TO_NUMBER", length = 40)
+    private String oldToNumber;
 
     @PrePersist
     private void prePersist() {

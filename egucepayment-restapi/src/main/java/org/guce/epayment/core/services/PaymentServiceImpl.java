@@ -197,7 +197,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Optional<Payment> findPaymentForInvoiceVersion(InvoiceVersion invoiceVersion) {
 
-        final Optional<PaymentInvoiceVersion> pivOp = pivRepository.findByInvoiceVersiion(invoiceVersion);
+        final Optional<PaymentInvoiceVersion> pivOp = pivRepository.findByInvoiceVersion(invoiceVersion);
 
         if (pivOp.isPresent()) {
             return Optional.of(pivOp.get().getPayment());

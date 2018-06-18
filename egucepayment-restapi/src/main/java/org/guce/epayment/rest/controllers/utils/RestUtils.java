@@ -225,8 +225,6 @@ public interface RestUtils {
         transferOrderDto.setSittingDate(transferOrder.getSittingDate() != null ? transferOrder.getSittingDate().format(DateTimeFormatter.ofPattern(DateUtils.DATE_TIME_PATTERN_FR)) : null);
         //
         transferOrderDto.setTaxPayer(getPartnerDto(transferOrder.getTaxPayer(), false));
-        //
-        transferOrderDto.setBeneficiary(getPartnerDto(transferOrder.getBeneficiary(), false));
         transferOrderDto.setInvoices(transferOrder.getInvoicesVersions().stream().map(piv -> getInvoiceDto(piv.getInvoiceVersion().getInvoice())).collect(Collectors.toList()));
         transferOrderDto.setInvoiceType(Optional.of(transferOrder.getInvoiceType()).map(ivt -> getInvoiceTypeDto(ivt, false)).get());
 

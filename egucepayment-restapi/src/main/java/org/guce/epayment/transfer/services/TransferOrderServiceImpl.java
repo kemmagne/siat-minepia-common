@@ -96,7 +96,6 @@ public class TransferOrderServiceImpl implements TransferOrderService {
         final Partner receptiveAgency = debitAccount.getAgency();
         transferOrder.setReceptiveAgency(receptiveAgency);
         // compte bancaire à créditer
-        transferOrder.setBeneficiary(beneficiary);
         BankAccount creditAccount = null;
         if (null != beneficiary) {
             creditAccount = ivtbRepository.findBankAccount(invoiceType.getCode(), beneficiary.getCode()).orElse(null);

@@ -14,9 +14,9 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface PaymentInvoiceVersionRepository extends JpaRepository<PaymentInvoiceVersion, PaymentInvoiceVersionID> {
 
-    Optional<PaymentInvoiceVersion> findByInvoiceVersiion(InvoiceVersion invoiceVersion);
+    Optional<PaymentInvoiceVersion> findByInvoiceVersion(InvoiceVersion invoiceVersion);
 
     @Query("SELECT piv FROM PaymentInvoiceVersion piv WHERE piv.invoiceVersion.id = ?1")
-    Optional<PaymentInvoiceVersion> findByInvoiceVersiion(BigDecimal invoiceVersionId);
+    Optional<PaymentInvoiceVersion> findByInvoiceVersion(BigDecimal invoiceVersionId);
 
 }

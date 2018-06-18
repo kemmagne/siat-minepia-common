@@ -25,6 +25,7 @@ public class PaymentMode implements Serializable {
     public static final String PM_ASSET = "ASSET";
     public static final String PM_CAMPOST_WALLET = "CAMPOST_WALLET";
     public static final String PM_E_TRANSFER = "E_TRANSFER";
+    public static final String PM_BANK_TRANSFER = "BANK_TRANSFER";
     public static final String PM_COUNTER_TRANSFER = "COUNTER_TRANSFER";
     public static final String PM_CASH = "CASH";
     public static final String PM_CHECK = "CHECK";
