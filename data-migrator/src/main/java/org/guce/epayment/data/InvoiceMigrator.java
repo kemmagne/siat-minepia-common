@@ -9,11 +9,11 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static org.guce.epayment.data.Application.POOL;
-import static org.guce.epayment.data.Application.SUB_INVOICE_NUMBER_FORMAT;
-import static org.guce.epayment.data.Application.SUB_INVOICE_TYPE_CODE_FORMAT;
-import static org.guce.epayment.data.Application.sourceCon;
-import static org.guce.epayment.data.Application.targetCon;
+import static org.guce.epayment.Application.POOL;
+import static org.guce.epayment.Application.SUB_INVOICE_NUMBER_FORMAT;
+import static org.guce.epayment.Application.SUB_INVOICE_TYPE_CODE_FORMAT;
+import static org.guce.epayment.Application.sourceCon;
+import static org.guce.epayment.Application.targetCon;
 import org.guce.epayment.data.util.Utils;
 
 /**
@@ -33,10 +33,9 @@ public class InvoiceMigrator {
             final Long lastCodedap = codedapResultSet.next() ? codedapResultSet.getLong(1) : null;
             String selectQuery = "SELECT CODEDAP, DAP.NUMERODOSSIERPARTENAIRE NUMERODOSSIERPARTENAIRE, VERSION, CODEDO, "
                     + "DOSSIER_PARENT, MONTANTAPAYER, ETATDOSSIER, CODEBENIF, TYPEDAP, MENTIONS_SPECIALES, "
-                    + "NUMERODOSSIERGUCE, DATEETATPARTENAIRE, DATECREATIONORDRE DATE_PAIEMENT, DATEQUITTANCE "
+                    + "NUMERODOSSIERGUCE, DATEETATPARTENAIRE, DATECREATIONORDRE DATE_PAIEMENT, NUMEROVIREMENT "
                     + "FROM DOSSIERAPAYER DAP "
-                    + "LEFT JOIN ORDREVIREMENTDO O ON O.NUMEROVIREMENT = DAP.NUMEROVIREMENT "
-                    + "LEFT JOIN QUITTANCE Q ON Q.NUMERODOSSIERPARTENAIRE = DAP.NUMERODOSSIERPARTENAIRE";
+                    + "LEFT JOIN ORDREVIREMENTDO O ON O.NUMEROVIREMENT = DAP.NUMEROVIREMENT";
             if (lastCodedap != null) {
                 selectQuery += " WHERE CODEDAP > " + lastCodedap;
             }
@@ -45,7 +44,7 @@ public class InvoiceMigrator {
             final String invInsertQuery = "INSERT INTO INVOICE (ID, AMOUNT, BENEF_REFERENCE, LAST_VERSION_DATE, "
                     + "LAST_VERSION_NUMBER, INVOICE_NUMBER, PAID_AMOUNT, STATUS, BENEFICIARY_ID, OWNER_ID, PARENT_ID, "
                     + "SUB_TYPE_ID, TYPE_ID, OLD_NUMBER) "
-                    + "VALUES (?, ?, NULL, sysdate, 1, ?, ?, ?, (SELECT ID FROM PARTNER WHERE CODE = ?), "
+                    + "VALUES (?, ?, NULL, sysdate, 0, ?, ?, ?, (SELECT ID FROM PARTNER WHERE CODE = ?), "
                     + "(SELECT ID FROM PARTNER WHERE CODE = ?), "
                     + "(SELECT INVOICE_ID FROM INVOICE_VERSION WHERE CODEDAP = ?), "
                     + "(SELECT ID FROM INVOICE_TYPE WHERE CODE = ?), (SELECT ID FROM INVOICE_TYPE WHERE CODE = ?), ?)";
@@ -53,8 +52,8 @@ public class InvoiceMigrator {
                     + "LAST_VERSION_NUMBER = ?, PAID_AMOUNT = ?, STATUS = ? WHERE ID = ?";
             final String invVersInsertQuery = "INSERT INTO INVOICE_VERSION (ID, BALANCE_AMOUNT, CODEDAP, VERSION_DATE, "
                     + "VERSION_NUMBER, PAYMENT_DATE, VERSION_AMOUNT, INVOICE_ID, PAY_CONFIRM_DATE, "
-                    + "PAY_ACK_DATE, E_GUCE_REFERENCE) "
-                    + "VALUES (INVOICE_VERSION_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + "PAY_ACK_DATE, E_GUCE_REFERENCE, OLD_TO_NUMBER) "
+                    + "VALUES (INVOICE_VERSION_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             final String invTypeParamsQuery = "SELECT PARAMS FROM INVOICE_TYPE WHERE CODE = ?";
             final String selectInvQuery = "SELECT ID, LAST_VERSION_NUMBER, AMOUNT, PAID_AMOUNT "
                     + "FROM INVOICE WHERE INVOICE_NUMBER = ? AND TYPE_ID = (SELECT ID FROM INVOICE_TYPE WHERE CODE = ?)";
@@ -240,13 +239,14 @@ public class InvoiceMigrator {
                     invVersInsertStatement.setBigDecimal(6, versionAmount);
                     invVersInsertStatement.setBigDecimal(7, invoiceId);
                     invVersInsertStatement.setDate(8, selectDapResultSet.getDate("DATE_PAIEMENT"));
-                    invVersInsertStatement.setDate(9, selectDapResultSet.getDate("DATEQUITTANCE"));
-                    invVersInsertStatement.setString(10, selectDapResultSet.getString("NUMERODOSSIERGUCE"));
+                    invVersInsertStatement.setDate(9, selectDapResultSet.getDate("DATE_PAIEMENT"));
+                    invVersInsertStatement.setString(10,
+                            parent == 0 ? selectDapResultSet.getString("NUMERODOSSIERGUCE") : null);
+                    invVersInsertStatement.setString(11, selectDapResultSet.getString("NUMEROVIREMENT"));
                     // execute
                     invVersInsertStatement.executeUpdate();
 
-                    count++;
-                    if (count == POOL) {
+                    if (count++ == POOL) {
                         targetCon.commit();
                         count = 0;
                     }

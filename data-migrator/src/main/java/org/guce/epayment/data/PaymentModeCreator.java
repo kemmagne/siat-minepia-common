@@ -2,7 +2,7 @@ package org.guce.epayment.data;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import static org.guce.epayment.data.Application.targetCon;
+import static org.guce.epayment.Application.targetCon;
 
 /**
  *
@@ -30,6 +30,12 @@ public interface PaymentModeCreator {
             statement.setString(1, "E_TRANSFER");
             statement.setString(2, "Paiement par ordre de virement électronique");
             statement.setString(3, "T11,T21,T31");
+            statement.setBoolean(4, false);
+            statement.executeUpdate();
+            //
+            statement.setString(1, "BANK_TRANSFER");
+            statement.setString(2, "Payment par virement bancaire");
+            statement.setString(3, "T21,T31");
             statement.setBoolean(4, false);
             statement.executeUpdate();
             //

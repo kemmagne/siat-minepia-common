@@ -2,7 +2,7 @@ package org.guce.epayment.data;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import static org.guce.epayment.data.Application.targetCon;
+import static org.guce.epayment.Application.targetCon;
 
 /**
  *

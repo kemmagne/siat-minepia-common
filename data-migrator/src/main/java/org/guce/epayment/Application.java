@@ -1,4 +1,4 @@
-package org.guce.epayment.data;
+package org.guce.epayment;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -13,6 +13,16 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
+import org.guce.epayment.data.AccountMigrator;
+import org.guce.epayment.data.InvoiceMigrator;
+import org.guce.epayment.data.InvoiceTypeCreator;
+import org.guce.epayment.data.PartnerMigrator;
+import org.guce.epayment.data.PartnerTypeCreator;
+import org.guce.epayment.data.PaymentModeCreator;
+import org.guce.epayment.data.RoleCreator;
+import org.guce.epayment.data.StepCreator;
+import org.guce.epayment.data.ToMigrator;
+import org.guce.epayment.data.UserMigrator;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.Assert;
 
@@ -37,9 +47,9 @@ public class Application {
 
     public static final int POOL = 100;
 
-    static final String SUB_INVOICE_TYPE_CODE_FORMAT = "FACTURE_%s_%s";
+    public static final String SUB_INVOICE_TYPE_CODE_FORMAT = "FACTURE_%s_%s";
 
-    static final String SUB_INVOICE_NUMBER_FORMAT = "%s_%s_%s";
+    public static final String SUB_INVOICE_NUMBER_FORMAT = "%s_%s_%s";
 
     public static void main(String[] args) throws Exception {
 
@@ -101,26 +111,27 @@ public class Application {
 
         try {
 
-            resetBD();
-//            initBD();
-//            StepCreator.create();
-//            PaymentModeCreator.create();
-//            RoleCreator.create();
-//            PartnerTypeCreator.create();
-//            InvoiceTypeCreator.create();
-//            PartnerMigrator.migrate("BENEFICIAIRE");
-//            PartnerMigrator.migrate("BANQUE");
-//            PartnerMigrator.migrateBankAgencies();
-//            PartnerMigrator.migrate("DONNEUR_ORDRE");
-//            UserMigrator.migrate();
-//            AccountMigrator.migrate();
+//            resetBD();
 //
-//            InvoiceMigrator.init();
-//            InvoiceMigrator.migrate();
-//            InvoiceMigrator.createInvoiceLines();
+            initBD();
+            StepCreator.create();
+            PaymentModeCreator.create();
+            RoleCreator.create();
+            PartnerTypeCreator.create();
+            InvoiceTypeCreator.create();
+            PartnerMigrator.migrate("BENEFICIAIRE");
+            PartnerMigrator.migrate("BANQUE");
+            PartnerMigrator.migrateBankAgencies();
+            PartnerMigrator.migrate("DONNEUR_ORDRE");
+            UserMigrator.migrate();
+            AccountMigrator.migrate();
 //
-//            TOMigrator.migrate();
-            //
+            InvoiceMigrator.init();
+            InvoiceMigrator.migrate();
+            InvoiceMigrator.createInvoiceLines();
+//
+//            ToMigrator.migrate();
+//
             closeConnections();
         } catch (SQLException ex) {
             targetCon.rollback();

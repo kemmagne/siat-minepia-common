@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
-import org.guce.epayment.data.Application;
+import org.guce.epayment.Application;
 
 /**
  *

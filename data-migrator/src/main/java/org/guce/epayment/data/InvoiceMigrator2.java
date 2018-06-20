@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 import java.util.Properties;
-import static org.guce.epayment.data.Application.POOL;
-import static org.guce.epayment.data.Application.SUB_INVOICE_NUMBER_FORMAT;
-import static org.guce.epayment.data.Application.SUB_INVOICE_TYPE_CODE_FORMAT;
-import static org.guce.epayment.data.Application.sourceCon;
-import static org.guce.epayment.data.Application.targetCon;
+import static org.guce.epayment.Application.POOL;
+import static org.guce.epayment.Application.SUB_INVOICE_NUMBER_FORMAT;
+import static org.guce.epayment.Application.SUB_INVOICE_TYPE_CODE_FORMAT;
+import static org.guce.epayment.Application.sourceCon;
+import static org.guce.epayment.Application.targetCon;
 import org.guce.epayment.data.util.Utils;
 
 /**

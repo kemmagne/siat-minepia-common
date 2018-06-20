@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import static org.guce.epayment.data.Application.POOL;
-import static org.guce.epayment.data.Application.SEPARATOR;
-import static org.guce.epayment.data.Application.sourceCon;
-import static org.guce.epayment.data.Application.targetCon;
+import static org.guce.epayment.Application.POOL;
+import static org.guce.epayment.Application.SEPARATOR;
+import static org.guce.epayment.Application.sourceCon;
+import static org.guce.epayment.Application.targetCon;
 import org.guce.epayment.data.util.Utils;
 import org.springframework.util.StringUtils;
 

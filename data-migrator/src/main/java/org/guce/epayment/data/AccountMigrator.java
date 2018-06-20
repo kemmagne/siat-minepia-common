@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static org.guce.epayment.data.Application.SEPARATOR;
-import static org.guce.epayment.data.Application.sourceCon;
-import static org.guce.epayment.data.Application.targetCon;
+import static org.guce.epayment.Application.SEPARATOR;
+import static org.guce.epayment.Application.sourceCon;
+import static org.guce.epayment.Application.targetCon;
 
 /**
  *
