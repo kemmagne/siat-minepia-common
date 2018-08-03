@@ -14,6 +14,7 @@ import org.guce.siat.common.dao.FileTypeDao;
 import org.guce.siat.common.dao.exception.DAOException;
 import org.guce.siat.common.model.Authority;
 import org.guce.siat.common.model.FileType;
+import org.guce.siat.common.model.FileTypeService;
 import org.guce.siat.common.model.FileTypeStep;
 import org.guce.siat.common.model.Ministry;
 import org.guce.siat.common.utils.enums.FileTypeCode;
@@ -151,6 +152,44 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 			LOG.info(e.getMessage(), e);
 			throw new DAOException(e);
 		}
+	}
 
+	@Override
+	public void update(FileType selected, List<FileTypeStep> targetFileTypeStep, List<FileTypeService> targetFileTypeServices) {
+		try {
+			entityManager.merge(selected);
+			for (final FileTypeStep fileTypeStep : selected.getFileTypeStepList()) {
+				entityManager.remove(entityManager.merge(fileTypeStep));
+			}
+			for (final FileTypeStep fileTypeStep : targetFileTypeStep) {
+				fileTypeStep.setIsApDecision(false);
+				entityManager.persist(fileTypeStep);
+				entityManager.flush();
+			}
+			List<FileTypeService> fileTypeServiceList = selected.getFileTypeServiceList();
+			for (final FileTypeService fileTypeService : fileTypeServiceList) {
+				entityManager.remove(entityManager.merge(fileTypeService));
+			}
+			for (final FileTypeService fileTypeService : targetFileTypeServices) {
+				entityManager.persist(fileTypeService);
+				entityManager.flush();
+			}
+		} catch (final Exception e) {
+			LOG.info(e.getMessage(), e);
+			throw new DAOException(e);
+		}
+	}
+
+	@Override
+	public List<FileTypeService> findFileTypeServiceByFileType(FileType fileType) {
+		final StringBuilder hqlQuery = new StringBuilder();
+		try {
+			hqlQuery.append("SELECT ft FROM FileTypeService ft WHERE ft.fileType = :fileType");
+			TypedQuery<FileTypeService> query = entityManager.createQuery(hqlQuery.toString(), FileTypeService.class);
+			return query.getResultList();
+		} catch (final NoResultException | NonUniqueResultException e) {
+			LOG.info(Objects.toString(e));
+			return null;
+		}
 	}
 }
