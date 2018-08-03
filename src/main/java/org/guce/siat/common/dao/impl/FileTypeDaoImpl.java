@@ -158,21 +158,25 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	public void update(FileType selected, List<FileTypeStep> targetFileTypeStep, List<FileTypeService> targetFileTypeServices) {
 		try {
 			entityManager.merge(selected);
-			for (final FileTypeStep fileTypeStep : selected.getFileTypeStepList()) {
-				entityManager.remove(entityManager.merge(fileTypeStep));
+			if (targetFileTypeStep != null) {
+				for (final FileTypeStep fileTypeStep : selected.getFileTypeStepList()) {
+					entityManager.remove(entityManager.merge(fileTypeStep));
+				}
+				for (final FileTypeStep fileTypeStep : targetFileTypeStep) {
+					fileTypeStep.setIsApDecision(false);
+					entityManager.persist(fileTypeStep);
+					entityManager.flush();
+				}
 			}
-			for (final FileTypeStep fileTypeStep : targetFileTypeStep) {
-				fileTypeStep.setIsApDecision(false);
-				entityManager.persist(fileTypeStep);
-				entityManager.flush();
-			}
-			List<FileTypeService> fileTypeServiceList = selected.getFileTypeServiceList();
-			for (final FileTypeService fileTypeService : fileTypeServiceList) {
-				entityManager.remove(entityManager.merge(fileTypeService));
-			}
-			for (final FileTypeService fileTypeService : targetFileTypeServices) {
-				entityManager.persist(fileTypeService);
-				entityManager.flush();
+			if (targetFileTypeServices != null) {
+				List<FileTypeService> fileTypeServiceList = selected.getFileTypeServiceList();
+				for (final FileTypeService fileTypeService : fileTypeServiceList) {
+					entityManager.remove(entityManager.merge(fileTypeService));
+				}
+				for (final FileTypeService fileTypeService : targetFileTypeServices) {
+					entityManager.persist(fileTypeService);
+					entityManager.flush();
+				}
 			}
 		} catch (final Exception e) {
 			LOG.info(e.getMessage(), e);
