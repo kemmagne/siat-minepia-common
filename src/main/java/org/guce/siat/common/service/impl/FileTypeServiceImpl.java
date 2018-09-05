@@ -19,29 +19,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class FileTypeServiceImpl.
  */
 @Service("fileTypeService")
 @Transactional(readOnly = true)
-public class FileTypeServiceImpl extends AbstractServiceImpl<FileType> implements FileTypeService
-{
+public class FileTypeServiceImpl extends AbstractServiceImpl<FileType> implements FileTypeService {
 
-
-	/** The file type dao. */
+	/**
+	 * The file type dao.
+	 */
 	@Autowired
 	private FileTypeDao fileTypeDao;
 
-	/** The user authority file type dao. */
+	/**
+	 * The user authority file type dao.
+	 */
 	@Autowired
 	private UserAuthorityFileTypeDao userAuthorityFileTypeDao;
 
 	/**
 	 * Instantiates a new file type service impl.
 	 */
-	public FileTypeServiceImpl()
-	{
+	public FileTypeServiceImpl() {
 		super();
 	}
 
@@ -51,8 +51,7 @@ public class FileTypeServiceImpl extends AbstractServiceImpl<FileType> implement
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#getJpaDao()
 	 */
 	@Override
-	public AbstractJpaDao<FileType> getJpaDao()
-	{
+	public AbstractJpaDao<FileType> getJpaDao() {
 		return fileTypeDao;
 	}
 
@@ -62,8 +61,7 @@ public class FileTypeServiceImpl extends AbstractServiceImpl<FileType> implement
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#setJpaDao(org.guce.siat.common.dao.AbstractJpaDao)
 	 */
 	@Override
-	public void setJpaDao(final AbstractJpaDao<FileType> jpaDao)
-	{
+	public void setJpaDao(final AbstractJpaDao<FileType> jpaDao) {
 		this.fileTypeDao = (FileTypeDao) jpaDao;
 	}
 
@@ -73,14 +71,10 @@ public class FileTypeServiceImpl extends AbstractServiceImpl<FileType> implement
 	 * @see org.guce.siat.core.ct.service.FileTypeService#findFileTypeByMinistry(org.guce.siat.common.model.Ministry)
 	 */
 	@Override
-	public List<FileType> findFileTypeByMinistry(final Ministry ministry)
-	{
-		try
-		{
+	public List<FileType> findFileTypeByMinistry(final Ministry ministry) {
+		try {
 			return fileTypeDao.findFileTypeByMinistry(ministry);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			throw new BusinessException(e, BusinessExceptionSeverity.SEVERITY_ERROR);
 		}
 	}
@@ -91,8 +85,7 @@ public class FileTypeServiceImpl extends AbstractServiceImpl<FileType> implement
 	 * @see org.guce.siat.core.ct.service.FileTypeService#findDistinctFileTypesByUser(org.guce.siat.common.model.User)
 	 */
 	@Override
-	public List<FileType> findDistinctFileTypesByUser(final User user)
-	{
+	public List<FileType> findDistinctFileTypesByUser(final User user) {
 		return userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(user);
 	}
 
@@ -102,31 +95,32 @@ public class FileTypeServiceImpl extends AbstractServiceImpl<FileType> implement
 	 * @see org.guce.siat.core.ct.service.FileTypeService#findAuthoritiesByFileType(org.guce.siat.common.model.FileType)
 	 */
 	@Override
-	public List<Authority> findAuthoritiesByFileType(final FileType filetype)
-	{
-		try
-		{
+	public List<Authority> findAuthoritiesByFileType(final FileType filetype) {
+		try {
 			return fileTypeDao.findAuthoritiesByFileType(filetype);
-		}
-		catch (final DAOException e)
-		{
+		} catch (final DAOException e) {
 			throw new BusinessException(e, BusinessExceptionSeverity.SEVERITY_ERROR);
 		}
-	} 
+	}
 
 	@Override
-	public List<FileType> findFileTypesByCodes(final FileTypeCode... fileTypeCodes)
-	{
+	public List<FileType> findFileTypesByCodes(final FileTypeCode... fileTypeCodes) {
 		return fileTypeDao.findFileTypesByCodes(fileTypeCodes);
 	}
 
 	@Override
-	public void update(FileType selected, List<FileTypeStep> targetFileTypeStep)
-	{
-		 fileTypeDao.update(selected, targetFileTypeStep);	
-		
-	} 
+	public void update(FileType selected, List<FileTypeStep> targetFileTypeStep) {
+		fileTypeDao.update(selected, targetFileTypeStep);
+	}
 
-	 
+	@Override
+	public void update(FileType selected, List<FileTypeStep> targetFileTypeStep, List<org.guce.siat.common.model.FileTypeService> targetFileTypeServices) {
+		fileTypeDao.update(selected, targetFileTypeStep, targetFileTypeServices);
+	}
+
+	@Override
+	public List<org.guce.siat.common.model.FileTypeService> findFileTypeServiceByFileType(FileType fileType) {
+		return fileTypeDao.findFileTypeServiceByFileType(fileType);
+	}
 
 }

@@ -19,12 +19,12 @@
         <repository>
             <id>guce-repository</id>
             <name>Depot Maven du GUCE</name>
-            <url>https://srvdev.guce.local/nexus/content/repositories/releases</url>
+            <url>https://repo.guce.local/maven/repository/releases</url>
         </repository>
         <snapshotRepository>
             <id>guce-repository</id>
             <name>Depot Maven du GUCE</name>
-            <url>https://srvdev.guce.local/nexus/content/repositories/snapshots</url>
+            <url>https://repo.guce.local/maven/repository/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
