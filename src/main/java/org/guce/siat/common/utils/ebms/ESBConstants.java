@@ -70,8 +70,10 @@ public interface ESBConstants {
      */
     static final String PDF_FILE_EXTENSION = ".pdf".intern();
 
-    static final String E_GUCE_FILE_NUMBER = "e_guce_file_number".intern();
+    static final String FILE = "file".intern();
 
-    static final String SIAT_FILE_NUMBER = "siat_file_number".intern();
+    static final String CURRENT_FLOW = "current_flow".intern();
+
+    static final String ITEM_FLOW_IDS = "item_flow_ids".intern();
 }
 

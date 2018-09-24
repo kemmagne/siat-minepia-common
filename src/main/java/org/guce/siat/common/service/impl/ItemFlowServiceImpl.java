@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
  * The Class ItemFlowServiceImpl.
  */
 @Service("itemFlowService")
-@Transactional(readOnly = true)
+@Transactional//(readOnly = true)
 public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implements ItemFlowService {
 
     /**
@@ -163,7 +163,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#takeDecision(java.util.List, java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
+    //@Transactional(readOnly = false)
     public void takeDecision(final List<ItemFlow> itemFlowList, final List<ItemFlowData> flowDatas) {
         final List<FileItem> fileItemList = new ArrayList<>();
 
@@ -194,7 +194,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#rollBackDecisionForDispatchFile(java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
+    //@Transactional(readOnly = false)
     public void rollBackDecisionForDispatchFile(final List<Long> fileItems) {
         final List<ItemFlow> itemFlows = itemFlowDao.findItemFlowsByFileItemList(fileItems);
 
@@ -219,7 +219,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#sendDecisions(org.guce.siat.core.ct.model.File, java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
+    //@Transactional(readOnly = false)
     public Map<FileItem, Flow> sendDecisions(final File file, final List<FileItem> fileItems) {
         final Map<FileItem, Flow> returnedMap = new HashMap<FileItem, Flow>();
         final List<FileItem> items = new ArrayList<FileItem>();
@@ -320,7 +320,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#sendDecisionsToDispatchFile(org.guce.siat.core.ct.model.File)
      */
     @Override
-    @Transactional(readOnly = false)
+    //@Transactional(readOnly = false)
     public void sendDecisionsToDispatchFile(final File file) {
         final List<ItemFlow> draftItemFlows = new ArrayList<ItemFlow>();
         final List<FileItem> fileItems = new ArrayList<FileItem>();
@@ -345,7 +345,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
+    //@Transactional(readOnly = false)
     public void sendDecisionsToDispatchCctFile(final File file, final List<FileItem> fileItems) {
         final List<ItemFlow> draftItemFlows = new ArrayList<ItemFlow>();
         final List<FileItem> items = new ArrayList<FileItem>();
@@ -587,3 +587,4 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
     }
 
 }
+
