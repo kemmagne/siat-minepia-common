@@ -33,24 +33,27 @@ import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.enums.PositionType;
 import org.guce.siat.common.utils.enums.Theme;
 
-
 /**
  * The Class User.
  */
 @javax.persistence.Entity
-@Table(name = "USERS", uniqueConstraints =
-{ @UniqueConstraint(columnNames =
-{ "LOGIN", "ENABLED", "DELETED" }) /*
+@Table(name = "USERS", uniqueConstraints
+		= {
+			@UniqueConstraint(columnNames
+					= {"LOGIN", "ENABLED", "DELETED"}) /*
 											   * , @UniqueConstraint(columnNames = { "EMAIL", "ENABLED", "DELETED" })
-											   */})
+		 */})
 @XmlRootElement
-public class User extends AbstractModel implements Serializable
-{
+public class User extends AbstractModel implements Serializable {
 
-	/** The Constant serialVersionUID. */
+	/**
+	 * The Constant serialVersionUID.
+	 */
 	private static final long serialVersionUID = 1L;
 
-	/** The id. */
+	/**
+	 * The id.
+	 */
 	@Id
 	@Basic(optional = false)
 	@Column(name = "ID")
@@ -58,128 +61,190 @@ public class User extends AbstractModel implements Serializable
 	@SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
 	private Long id;
 
-	/** The login. */
+	/**
+	 * The login.
+	 */
 	@Column(name = "LOGIN")
 	private String login;
 
-	/** The first name. */
+	/**
+	 * The first name.
+	 */
 	@Column(name = "FIRST_NAME")
 	private String firstName;
 
-	/** The last name. */
+	/**
+	 * The last name.
+	 */
 	@Column(name = "LAST_NAME")
 	private String lastName;
 
-	/** The password. */
+	/**
+	 * The password.
+	 */
 	@Column(name = "PASSWORD")
 	private String password;
 
-	/** The telephone. */
+	/**
+	 * The telephone.
+	 */
 	@Column(name = "TELEPHONE")
 	private String telephone;
 
-	/** The email. */
+	/**
+	 * The email.
+	 */
 	@Column(name = "EMAIL")
 	private String email;
 
-	/** The prefered language. */
+	/**
+	 * The prefered language.
+	 */
 	@Column(name = "PREFERED_LANGUAGE")
 	private String preferedLanguage;
 
-	/** The enabled. */
+	/**
+	 * The enabled.
+	 */
 	@Column(name = "ENABLED")
 	private Boolean enabled;
 
-	/** The first login. */
+	/**
+	 * The first login.
+	 */
 	@Column(name = "FIRST_LOGIN")
 	private Boolean firstLogin;
 
-	/** The deleted. */
+	/**
+	 * The deleted.
+	 */
 	@Column(name = "DELETED")
 	private Boolean deleted;
 
-	/** The account non expired. */
+	/**
+	 * The account non expired.
+	 */
 	@Column(name = "ACCOUNT_NON_EXPIRED")
 	private Boolean accountNonExpired;
 
-	/** The account non locked. */
+	/**
+	 * The account non locked.
+	 */
 	@Column(name = "ACCOUNT_NON_LOCKED")
 	private Boolean accountNonLocked;
 
-	/** The credentials non expired. */
+	/**
+	 * The credentials non expired.
+	 */
 	@Column(name = "CREDENTIALS_NON_EXPIRED")
 	private Boolean credentialsNonExpired;
 
-	/** The attempts. */
+	/**
+	 * The attempts.
+	 */
 	@Column(name = "ATTEMPTS")
 	private Integer attempts;
 
-	/** The last attempts time. */
+	/**
+	 * The last attempts time.
+	 */
 	@Column(name = "LAST_ATTEMPTS_TIME")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastAttemptsTime;
 
-	/** The position. */
+	/**
+	 * The position.
+	 */
 	@Enumerated(EnumType.STRING)
 	@Column(name = "POSITION")
 	private PositionType position;
 
-	/** The theme. */
+	/**
+	 * The theme.
+	 */
 	@Enumerated(EnumType.STRING)
 	@Column(name = "THEME")
 	private Theme theme;
 
-	/** The administration. */
+	/**
+	 * The administration.
+	 */
 	@ManyToOne
 	@JoinColumn(name = "ADMINISTRATION_ID", referencedColumnName = "id")
 	private Administration administration;
 
-	/** The user authority list. */
+	/**
+	 * The administration.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "ADMINISTRATION_EXTEND_ROLES", referencedColumnName = "id")
+	private Administration administrationExtendRoles;
+
+	/**
+	 * The user authority list.
+	 */
 	@OneToMany(mappedBy = "user")
 	private List<UserAuthority> userAuthorityList;
 
-	/** The authorities string. */
+	/**
+	 * The authorities string.
+	 */
 	@Transient
 	private String authoritiesString;
 
-	/** The authorities. */
+	/**
+	 * The authorities.
+	 */
 	@Transient
 	private Collection<Authority> authorities;
 
-	/** The authorities list. */
+	/**
+	 * The authorities list.
+	 */
 	@Transient
 	private List<String> authoritiesList;
 
-	/** The delegated authority list. */
+	/**
+	 * The delegated authority list.
+	 */
 	@Transient
 	private List<Authority> delegatedAuthorityList;
 
-	/** The combined authorities : user authorities with their delegated authorities. */
+	/**
+	 * The combined authorities : user authorities with their delegated
+	 * authorities.
+	 */
 	@Transient
 	private List<Authority> mergedAuthoritiesList;
 
-	/** The delegator list. */
+	/**
+	 * The delegator list.
+	 */
 	@Transient
 	private List<User> delegatorList;
 
-	/** The merged delegator list. */
+	/**
+	 * The merged delegator list.
+	 */
 	@Transient
 	private List<User> mergedDelegatorList;
 
-	/** The delegated user authority list. */
+	/**
+	 * The delegated user authority list.
+	 */
 	@Transient
 	private List<UserAuthority> delegatedUserAuthorityList;
 
-	/** The merged user authority list. */
+	/**
+	 * The merged user authority list.
+	 */
 	@Transient
 	private List<UserAuthority> mergedUserAuthorityList;
-
 
 	/**
 	 * Instantiates a new user.
 	 */
-	public User()
-	{
+	public User() {
 	}
 
 	/*
@@ -188,8 +253,7 @@ public class User extends AbstractModel implements Serializable
 	 * @see org.guce.siat.common.model.AbstractModel#getId()
 	 */
 	@Override
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
@@ -199,8 +263,7 @@ public class User extends AbstractModel implements Serializable
 	 * @see org.guce.siat.common.model.AbstractModel#setId(java.lang.Long)
 	 */
 	@Override
-	public void setId(final Long id)
-	{
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -209,19 +272,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the login
 	 */
-	public String getLogin()
-	{
+	public String getLogin() {
 		return login;
 	}
 
 	/**
 	 * Sets the login.
 	 *
-	 * @param login
-	 *           the new login
+	 * @param login the new login
 	 */
-	public void setLogin(final String login)
-	{
+	public void setLogin(final String login) {
 		this.login = login;
 	}
 
@@ -230,19 +290,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the first name
 	 */
-	public String getFirstName()
-	{
+	public String getFirstName() {
 		return firstName;
 	}
 
 	/**
 	 * Sets the first name.
 	 *
-	 * @param firstName
-	 *           the new first name
+	 * @param firstName the new first name
 	 */
-	public void setFirstName(final String firstName)
-	{
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -251,19 +308,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the last name
 	 */
-	public String getLastName()
-	{
+	public String getLastName() {
 		return lastName;
 	}
 
 	/**
 	 * Sets the last name.
 	 *
-	 * @param lastName
-	 *           the new last name
+	 * @param lastName the new last name
 	 */
-	public void setLastName(final String lastName)
-	{
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -272,19 +326,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the password
 	 */
-	public String getPassword()
-	{
+	public String getPassword() {
 		return password;
 	}
 
 	/**
 	 * Sets the password.
 	 *
-	 * @param password
-	 *           the new password
+	 * @param password the new password
 	 */
-	public void setPassword(final String password)
-	{
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
@@ -293,19 +344,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the telephone
 	 */
-	public String getTelephone()
-	{
+	public String getTelephone() {
 		return telephone;
 	}
 
 	/**
 	 * Sets the telephone.
 	 *
-	 * @param telephone
-	 *           the new telephone
+	 * @param telephone the new telephone
 	 */
-	public void setTelephone(final String telephone)
-	{
+	public void setTelephone(final String telephone) {
 		this.telephone = telephone;
 	}
 
@@ -314,19 +362,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the email
 	 */
-	public String getEmail()
-	{
+	public String getEmail() {
 		return email;
 	}
 
 	/**
 	 * Sets the email.
 	 *
-	 * @param email
-	 *           the new email
+	 * @param email the new email
 	 */
-	public void setEmail(final String email)
-	{
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
@@ -335,19 +380,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the prefered language
 	 */
-	public String getPreferedLanguage()
-	{
+	public String getPreferedLanguage() {
 		return preferedLanguage;
 	}
 
 	/**
 	 * Sets the prefered language.
 	 *
-	 * @param preferedLanguage
-	 *           the new prefered language
+	 * @param preferedLanguage the new prefered language
 	 */
-	public void setPreferedLanguage(final String preferedLanguage)
-	{
+	public void setPreferedLanguage(final String preferedLanguage) {
 		this.preferedLanguage = preferedLanguage;
 	}
 
@@ -356,19 +398,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the enabled
 	 */
-	public Boolean getEnabled()
-	{
+	public Boolean getEnabled() {
 		return enabled;
 	}
 
 	/**
 	 * Sets the enabled.
 	 *
-	 * @param enabled
-	 *           the new enabled
+	 * @param enabled the new enabled
 	 */
-	public void setEnabled(final Boolean enabled)
-	{
+	public void setEnabled(final Boolean enabled) {
 		this.enabled = enabled;
 	}
 
@@ -377,19 +416,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the first login
 	 */
-	public Boolean getFirstLogin()
-	{
+	public Boolean getFirstLogin() {
 		return firstLogin;
 	}
 
 	/**
 	 * Sets the first login.
 	 *
-	 * @param firstLogin
-	 *           the new first login
+	 * @param firstLogin the new first login
 	 */
-	public void setFirstLogin(final Boolean firstLogin)
-	{
+	public void setFirstLogin(final Boolean firstLogin) {
 		this.firstLogin = firstLogin;
 	}
 
@@ -398,19 +434,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the deleted
 	 */
-	public Boolean getDeleted()
-	{
+	public Boolean getDeleted() {
 		return deleted;
 	}
 
 	/**
 	 * Sets the deleted.
 	 *
-	 * @param deleted
-	 *           the new deleted
+	 * @param deleted the new deleted
 	 */
-	public void setDeleted(final Boolean deleted)
-	{
+	public void setDeleted(final Boolean deleted) {
 		this.deleted = deleted;
 	}
 
@@ -419,19 +452,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the accountNonExpired
 	 */
-	public Boolean getAccountNonExpired()
-	{
+	public Boolean getAccountNonExpired() {
 		return accountNonExpired;
 	}
 
 	/**
 	 * Sets the account non expired.
 	 *
-	 * @param accountNonExpired
-	 *           the accountNonExpired to set
+	 * @param accountNonExpired the accountNonExpired to set
 	 */
-	public void setAccountNonExpired(final Boolean accountNonExpired)
-	{
+	public void setAccountNonExpired(final Boolean accountNonExpired) {
 		this.accountNonExpired = accountNonExpired;
 	}
 
@@ -440,19 +470,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the accountNonLocked
 	 */
-	public Boolean getAccountNonLocked()
-	{
+	public Boolean getAccountNonLocked() {
 		return accountNonLocked;
 	}
 
 	/**
 	 * Sets the account non locked.
 	 *
-	 * @param accountNonLocked
-	 *           the accountNonLocked to set
+	 * @param accountNonLocked the accountNonLocked to set
 	 */
-	public void setAccountNonLocked(final Boolean accountNonLocked)
-	{
+	public void setAccountNonLocked(final Boolean accountNonLocked) {
 		this.accountNonLocked = accountNonLocked;
 	}
 
@@ -461,19 +488,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the credentialsNonExpired
 	 */
-	public Boolean getCredentialsNonExpired()
-	{
+	public Boolean getCredentialsNonExpired() {
 		return credentialsNonExpired;
 	}
 
 	/**
 	 * Sets the credentials non expired.
 	 *
-	 * @param credentialsNonExpired
-	 *           the credentialsNonExpired to set
+	 * @param credentialsNonExpired the credentialsNonExpired to set
 	 */
-	public void setCredentialsNonExpired(final Boolean credentialsNonExpired)
-	{
+	public void setCredentialsNonExpired(final Boolean credentialsNonExpired) {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
@@ -482,19 +506,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the attempts
 	 */
-	public Integer getAttempts()
-	{
+	public Integer getAttempts() {
 		return attempts;
 	}
 
 	/**
 	 * Sets the attempts.
 	 *
-	 * @param attempts
-	 *           the new attempts
+	 * @param attempts the new attempts
 	 */
-	public void setAttempts(final Integer attempts)
-	{
+	public void setAttempts(final Integer attempts) {
 		this.attempts = attempts;
 	}
 
@@ -503,19 +524,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the last attempts time
 	 */
-	public Date getLastAttemptsTime()
-	{
+	public Date getLastAttemptsTime() {
 		return lastAttemptsTime;
 	}
 
 	/**
 	 * Sets the last attempts time.
 	 *
-	 * @param lastAttemptsTime
-	 *           the new last attempts time
+	 * @param lastAttemptsTime the new last attempts time
 	 */
-	public void setLastAttemptsTime(final Date lastAttemptsTime)
-	{
+	public void setLastAttemptsTime(final Date lastAttemptsTime) {
 		this.lastAttemptsTime = lastAttemptsTime;
 	}
 
@@ -524,19 +542,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the administration
 	 */
-	public Administration getAdministration()
-	{
+	public Administration getAdministration() {
 		return administration;
 	}
 
 	/**
 	 * Sets the administration.
 	 *
-	 * @param administration
-	 *           the new administration
+	 * @param administration the new administration
 	 */
-	public void setAdministration(final Administration administration)
-	{
+	public void setAdministration(final Administration administration) {
 		this.administration = administration;
 	}
 
@@ -545,19 +560,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the position
 	 */
-	public PositionType getPosition()
-	{
+	public PositionType getPosition() {
 		return position;
 	}
 
 	/**
 	 * Sets the position.
 	 *
-	 * @param position
-	 *           the new position
+	 * @param position the new position
 	 */
-	public void setPosition(final PositionType position)
-	{
+	public void setPosition(final PositionType position) {
 		this.position = position;
 	}
 
@@ -566,19 +578,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the theme
 	 */
-	public Theme getTheme()
-	{
+	public Theme getTheme() {
 		return theme;
 	}
 
 	/**
 	 * Sets the theme.
 	 *
-	 * @param theme
-	 *           the theme to set
+	 * @param theme the theme to set
 	 */
-	public void setTheme(final Theme theme)
-	{
+	public void setTheme(final Theme theme) {
 		this.theme = theme;
 	}
 
@@ -587,19 +596,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the user authority list
 	 */
-	public List<UserAuthority> getUserAuthorityList()
-	{
+	public List<UserAuthority> getUserAuthorityList() {
 		return userAuthorityList;
 	}
 
 	/**
 	 * Sets the user authority list.
 	 *
-	 * @param userAuthorityList
-	 *           the new user authority list
+	 * @param userAuthorityList the new user authority list
 	 */
-	public void setUserAuthorityList(final List<UserAuthority> userAuthorityList)
-	{
+	public void setUserAuthorityList(final List<UserAuthority> userAuthorityList) {
 		this.userAuthorityList = userAuthorityList;
 	}
 
@@ -608,16 +614,12 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the authoritiesString
 	 */
-	public String getAuthoritiesString()
-	{
-		if (StringUtils.isEmpty(authoritiesString))
-		{
+	public String getAuthoritiesString() {
+		if (StringUtils.isEmpty(authoritiesString)) {
 			authoritiesString = Constants.EMPTY_STRING;
 
-			if (userAuthorityList != null)
-			{
-				for (final UserAuthority userAuthority : userAuthorityList)
-				{
+			if (userAuthorityList != null) {
+				for (final UserAuthority userAuthority : userAuthorityList) {
 					authoritiesString += userAuthority.getAuthority() + ", ";
 				}
 			}
@@ -629,11 +631,9 @@ public class User extends AbstractModel implements Serializable
 	/**
 	 * Sets the authorities string.
 	 *
-	 * @param authoritiesString
-	 *           the authoritiesString to set
+	 * @param authoritiesString the authoritiesString to set
 	 */
-	public void setAuthoritiesString(final String authoritiesString)
-	{
+	public void setAuthoritiesString(final String authoritiesString) {
 		this.authoritiesString = authoritiesString;
 	}
 
@@ -642,14 +642,11 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the authorities
 	 */
-	public Collection<Authority> getAuthorities()
-	{
+	public Collection<Authority> getAuthorities() {
 		authorities = new HashSet<Authority>();
 
-		if (CollectionUtils.isNotEmpty(userAuthorityList))
-		{
-			for (final UserAuthority userAuthority : userAuthorityList)
-			{
+		if (CollectionUtils.isNotEmpty(userAuthorityList)) {
+			for (final UserAuthority userAuthority : userAuthorityList) {
 				authorities.add(userAuthority.getAuthorityGranted());
 			}
 		}
@@ -659,11 +656,9 @@ public class User extends AbstractModel implements Serializable
 	/**
 	 * Sets the authorities.
 	 *
-	 * @param authorities
-	 *           the authorities to set
+	 * @param authorities the authorities to set
 	 */
-	public void setAuthorities(final Collection<Authority> authorities)
-	{
+	public void setAuthorities(final Collection<Authority> authorities) {
 		this.authorities = authorities;
 	}
 
@@ -673,15 +668,11 @@ public class User extends AbstractModel implements Serializable
 	 * @return the authoritiesList
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getAuthoritiesList()
-	{
-		if (CollectionUtils.isEmpty(authoritiesList))
-		{
-			authoritiesList = (List<String>) CollectionUtils.collect(userAuthorityList, new Transformer()
-			{
+	public List<String> getAuthoritiesList() {
+		if (CollectionUtils.isEmpty(authoritiesList)) {
+			authoritiesList = (List<String>) CollectionUtils.collect(userAuthorityList, new Transformer() {
 				@Override
-				public Object transform(final Object userAuthoriy)
-				{
+				public Object transform(final Object userAuthoriy) {
 					return ((UserAuthority) userAuthoriy).getAuthorityGranted().getRole();
 				}
 			});
@@ -693,11 +684,9 @@ public class User extends AbstractModel implements Serializable
 	/**
 	 * Sets the authorities list.
 	 *
-	 * @param authoritiesList
-	 *           the authoritiesList to set
+	 * @param authoritiesList the authoritiesList to set
 	 */
-	public void setAuthoritiesList(final List<String> authoritiesList)
-	{
+	public void setAuthoritiesList(final List<String> authoritiesList) {
 		this.authoritiesList = authoritiesList;
 	}
 
@@ -706,19 +695,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the delegatedAuthorityList
 	 */
-	public List<Authority> getDelegatedAuthorityList()
-	{
+	public List<Authority> getDelegatedAuthorityList() {
 		return delegatedAuthorityList;
 	}
 
 	/**
 	 * Sets the delegated authority list.
 	 *
-	 * @param delegatedAuthorityList
-	 *           the delegatedAuthorityList to set
+	 * @param delegatedAuthorityList the delegatedAuthorityList to set
 	 */
-	public void setDelegatedAuthorityList(final List<Authority> delegatedAuthorityList)
-	{
+	public void setDelegatedAuthorityList(final List<Authority> delegatedAuthorityList) {
 		this.delegatedAuthorityList = delegatedAuthorityList;
 	}
 
@@ -727,16 +713,13 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the mergedAuthoritiesList
 	 */
-	public List<Authority> getMergedAuthoritiesList()
-	{
-		if (CollectionUtils.isEmpty(mergedAuthoritiesList))
-		{
+	public List<Authority> getMergedAuthoritiesList() {
+		if (CollectionUtils.isEmpty(mergedAuthoritiesList)) {
 			final Set<Authority> authoritiesSet = new HashSet<Authority>();
 
 			authoritiesSet.addAll(this.getAuthorities());
 
-			if (this.getDelegatedAuthorityList() != null)
-			{
+			if (this.getDelegatedAuthorityList() != null) {
 				authoritiesSet.addAll(this.getDelegatedAuthorityList());
 			}
 
@@ -749,11 +732,9 @@ public class User extends AbstractModel implements Serializable
 	/**
 	 * Sets the merged authorities list.
 	 *
-	 * @param mergedAuthoritiesList
-	 *           the mergedAuthoritiesList to set
+	 * @param mergedAuthoritiesList the mergedAuthoritiesList to set
 	 */
-	public void setMergedAuthoritiesList(final List<Authority> mergedAuthoritiesList)
-	{
+	public void setMergedAuthoritiesList(final List<Authority> mergedAuthoritiesList) {
 		this.mergedAuthoritiesList = mergedAuthoritiesList;
 	}
 
@@ -762,19 +743,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the delegatorList
 	 */
-	public List<User> getDelegatorList()
-	{
+	public List<User> getDelegatorList() {
 		return delegatorList;
 	}
 
 	/**
 	 * Sets the delegator list.
 	 *
-	 * @param delegatorList
-	 *           the delegatorList to set
+	 * @param delegatorList the delegatorList to set
 	 */
-	public void setDelegatorList(final List<User> delegatorList)
-	{
+	public void setDelegatorList(final List<User> delegatorList) {
 		this.delegatorList = delegatorList;
 	}
 
@@ -783,16 +761,13 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the mergedDelegatorList
 	 */
-	public List<User> getMergedDelegatorList()
-	{
-		if (CollectionUtils.isEmpty(mergedDelegatorList))
-		{
+	public List<User> getMergedDelegatorList() {
+		if (CollectionUtils.isEmpty(mergedDelegatorList)) {
 			mergedDelegatorList = new ArrayList<User>();
 
 			mergedDelegatorList.add(this);
 
-			if (this.getDelegatorList() != null)
-			{
+			if (this.getDelegatorList() != null) {
 				mergedDelegatorList.addAll(this.getDelegatorList());
 			}
 		}
@@ -803,12 +778,18 @@ public class User extends AbstractModel implements Serializable
 	/**
 	 * Sets the merged delegator list.
 	 *
-	 * @param mergedDelegatorList
-	 *           the mergedDelegatorList to set
+	 * @param mergedDelegatorList the mergedDelegatorList to set
 	 */
-	public void setMergedDelegatorList(final List<User> mergedDelegatorList)
-	{
+	public void setMergedDelegatorList(final List<User> mergedDelegatorList) {
 		this.mergedDelegatorList = mergedDelegatorList;
+	}
+
+	public Administration getAdministrationExtendRoles() {
+		return administrationExtendRoles;
+	}
+
+	public void setAdministrationExtendRoles(Administration administrationExtendRoles) {
+		this.administrationExtendRoles = administrationExtendRoles;
 	}
 
 	/**
@@ -816,19 +797,16 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the delegatedUserAuthorityList
 	 */
-	public List<UserAuthority> getDelegatedUserAuthorityList()
-	{
+	public List<UserAuthority> getDelegatedUserAuthorityList() {
 		return delegatedUserAuthorityList;
 	}
 
 	/**
 	 * Sets the delegated user authority list.
 	 *
-	 * @param delegatedUserAuthorityList
-	 *           the delegatedUserAuthorityList to set
+	 * @param delegatedUserAuthorityList the delegatedUserAuthorityList to set
 	 */
-	public void setDelegatedUserAuthorityList(final List<UserAuthority> delegatedUserAuthorityList)
-	{
+	public void setDelegatedUserAuthorityList(final List<UserAuthority> delegatedUserAuthorityList) {
 		this.delegatedUserAuthorityList = delegatedUserAuthorityList;
 	}
 
@@ -837,16 +815,13 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the mergedUserAuthorityList
 	 */
-	public List<UserAuthority> getMergedUserAuthorityList()
-	{
-		if (CollectionUtils.isEmpty(mergedUserAuthorityList))
-		{
+	public List<UserAuthority> getMergedUserAuthorityList() {
+		if (CollectionUtils.isEmpty(mergedUserAuthorityList)) {
 			mergedUserAuthorityList = new ArrayList<UserAuthority>();
 
 			mergedUserAuthorityList.addAll(this.userAuthorityList);
 
-			if (this.getDelegatedUserAuthorityList() != null)
-			{
+			if (this.getDelegatedUserAuthorityList() != null) {
 				mergedUserAuthorityList.addAll(this.getDelegatedUserAuthorityList());
 			}
 		}
@@ -857,11 +832,9 @@ public class User extends AbstractModel implements Serializable
 	/**
 	 * Sets the merged user authority list.
 	 *
-	 * @param mergedUserAuthorityList
-	 *           the mergedUserAuthorityList to set
+	 * @param mergedUserAuthorityList the mergedUserAuthorityList to set
 	 */
-	public void setMergedUserAuthorityList(final List<UserAuthority> mergedUserAuthorityList)
-	{
+	public void setMergedUserAuthorityList(final List<UserAuthority> mergedUserAuthorityList) {
 		this.mergedUserAuthorityList = mergedUserAuthorityList;
 	}
 
@@ -870,8 +843,7 @@ public class User extends AbstractModel implements Serializable
 	 *
 	 * @return the audit bad credentials string
 	 */
-	public String getAuditBadCredentialsString()
-	{
+	public String getAuditBadCredentialsString() {
 		final StringBuilder builder = new StringBuilder();
 
 		builder.append("User [login = ");
@@ -893,8 +865,7 @@ public class User extends AbstractModel implements Serializable
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		int hash = 0;
 		hash += (id != null ? id.hashCode() : 0);
 		return hash;
@@ -906,15 +877,12 @@ public class User extends AbstractModel implements Serializable
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(final Object object)
-	{
-		if (!(object instanceof User))
-		{
+	public boolean equals(final Object object) {
+		if (!(object instanceof User)) {
 			return false;
 		}
 		final User other = (User) object;
-		if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())))
-		{
+		if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
 			return false;
 		}
 		return true;
@@ -926,8 +894,7 @@ public class User extends AbstractModel implements Serializable
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("User [id=");
 		builder.append(id);

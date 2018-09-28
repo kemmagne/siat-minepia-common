@@ -1,6 +1,7 @@
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -12,8 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * The Class Attachment.
@@ -21,13 +23,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "ATTACHMENT")
 @XmlRootElement
-public class Attachment extends AbstractModel implements Serializable
-{
+public class Attachment extends AbstractModel implements Serializable {
 
-	/** The Constant serialVersionUID. */
+	/**
+	 * The Constant serialVersionUID.
+	 */
 	private static final long serialVersionUID = 1L;
 
-	/** The id. */
+	/**
+	 * The id.
+	 */
 	@Id
 	@Basic(optional = false)
 	@Column(name = "ID")
@@ -35,37 +40,51 @@ public class Attachment extends AbstractModel implements Serializable
 	@SequenceGenerator(name = "ATTACHMENT_SEQ", sequenceName = "ATTACHMENT_SEQ", allocationSize = 1)
 	private Long id;
 
-
-	/** The document number. */
+	/**
+	 * The document number.
+	 */
 	@Column(name = "DOCUMENT_NUMBER")
 	private Short documentNumber;
 
-	/** The document name. */
+	/**
+	 * The document name.
+	 */
 	@Column(name = "DOCUMENT_NAME")
 	private String documentName;
 
-	/** The alfresco path. */
+	/**
+	 * The alfresco path.
+	 */
 	@Column(unique = false, name = "DOCUMENT_PATH")
 	private String path;
 
-	/** The alfresco id. */
+	/**
+	 * The alfresco id.
+	 */
 	@Column(unique = true, name = "ALFRESCO_ID")
 	private String alfrescoId;
 
-	/** The file. */
+	/**
+	 * The file.
+	 */
 	@JoinColumn(name = "FILE_ID", referencedColumnName = "ID")
 	@ManyToOne
 	private File file;
 
-	/** The attachment type. */
+	/**
+	 * The attachment type.
+	 */
 	@Column(name = "ATTACHMENT_TYPE")
+	@XmlTransient
 	private String attachmentType;
+
+	@Transient
+	private java.io.File attachmentFile;
 
 	/**
 	 * Instantiates a new attachment.
 	 */
-	public Attachment()
-	{
+	public Attachment() {
 	}
 
 	/**
@@ -74,20 +93,17 @@ public class Attachment extends AbstractModel implements Serializable
 	 * @return the id
 	 */
 	@Override
-	public Long getId()
-	{
+	public Long getId() {
 		return id;
 	}
 
 	/**
 	 * Sets the id.
 	 *
-	 * @param id
-	 *           the id to set
+	 * @param id the id to set
 	 */
 	@Override
-	public void setId(final Long id)
-	{
+	public void setId(final Long id) {
 		this.id = id;
 	}
 
@@ -96,19 +112,16 @@ public class Attachment extends AbstractModel implements Serializable
 	 *
 	 * @return the documentNumber
 	 */
-	public Short getDocumentNumber()
-	{
+	public Short getDocumentNumber() {
 		return documentNumber;
 	}
 
 	/**
 	 * Sets the document number.
 	 *
-	 * @param documentNumber
-	 *           the documentNumber to set
+	 * @param documentNumber the documentNumber to set
 	 */
-	public void setDocumentNumber(final Short documentNumber)
-	{
+	public void setDocumentNumber(final Short documentNumber) {
 		this.documentNumber = documentNumber;
 	}
 
@@ -117,19 +130,16 @@ public class Attachment extends AbstractModel implements Serializable
 	 *
 	 * @return the documentName
 	 */
-	public String getDocumentName()
-	{
+	public String getDocumentName() {
 		return documentName;
 	}
 
 	/**
 	 * Sets the document name.
 	 *
-	 * @param documentName
-	 *           the documentName to set
+	 * @param documentName the documentName to set
 	 */
-	public void setDocumentName(final String documentName)
-	{
+	public void setDocumentName(final String documentName) {
 		this.documentName = documentName;
 	}
 
@@ -138,19 +148,16 @@ public class Attachment extends AbstractModel implements Serializable
 	 *
 	 * @return the file
 	 */
-	public File getFile()
-	{
+	public File getFile() {
 		return file;
 	}
 
 	/**
 	 * Sets the file.
 	 *
-	 * @param file
-	 *           the file to set
+	 * @param file the file to set
 	 */
-	public void setFile(final File file)
-	{
+	public void setFile(final File file) {
 		this.file = file;
 	}
 
@@ -159,19 +166,16 @@ public class Attachment extends AbstractModel implements Serializable
 	 *
 	 * @return the attachmentType
 	 */
-	public String getAttachmentType()
-	{
+	public String getAttachmentType() {
 		return attachmentType;
 	}
 
 	/**
 	 * Sets the attachment type.
 	 *
-	 * @param attachmentType
-	 *           the attachmentType to set
+	 * @param attachmentType the attachmentType to set
 	 */
-	public void setAttachmentType(final String attachmentType)
-	{
+	public void setAttachmentType(final String attachmentType) {
 		this.attachmentType = attachmentType;
 	}
 
@@ -180,19 +184,16 @@ public class Attachment extends AbstractModel implements Serializable
 	 *
 	 * @return the alfrescoId
 	 */
-	public String getAlfrescoId()
-	{
+	public String getAlfrescoId() {
 		return alfrescoId;
 	}
 
 	/**
 	 * Sets the alfresco id.
 	 *
-	 * @param alfrescoId
-	 *           the alfrescoId to set
+	 * @param alfrescoId the alfrescoId to set
 	 */
-	public void setAlfrescoId(final String alfrescoId)
-	{
+	public void setAlfrescoId(final String alfrescoId) {
 		this.alfrescoId = alfrescoId;
 	}
 
@@ -201,20 +202,27 @@ public class Attachment extends AbstractModel implements Serializable
 	 *
 	 * @return the path
 	 */
-	public String getPath()
-	{
+	public String getPath() {
 		return path;
 	}
 
 	/**
 	 * Sets the path.
 	 *
-	 * @param path
-	 *           the new path
+	 * @param path the new path
 	 */
-	public void setPath(final String path)
-	{
+	public void setPath(final String path) {
 		this.path = path;
+	}
+
+	@XmlTransient
+	@Transient
+	public java.io.File getAttachmentFile() {
+		return attachmentFile;
+	}
+
+	public void setAttachmentFile(java.io.File attachmentFile) {
+		this.attachmentFile = attachmentFile;
 	}
 
 	/*
@@ -223,10 +231,12 @@ public class Attachment extends AbstractModel implements Serializable
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public int hashCode()
-	{
-		int hash = 0;
-		hash += (id != null ? id.hashCode() : 0);
+	public int hashCode() {
+		int hash = 7;
+		hash = 41 * hash + Objects.hashCode(this.id);
+		hash = 41 * hash + Objects.hashCode(this.documentName);
+		hash = 41 * hash + Objects.hashCode(this.path);
+		hash = 41 * hash + Objects.hashCode(this.file);
 		return hash;
 	}
 
@@ -237,15 +247,27 @@ public class Attachment extends AbstractModel implements Serializable
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(final Object object)
-	{
-		if (!(object instanceof Attachment))
-		{
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
 			return false;
 		}
-		final Attachment other = (Attachment) object;
-		if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())))
-		{
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Attachment other = (Attachment) obj;
+		if (!Objects.equals(this.documentName, other.documentName)) {
+			return false;
+		}
+		if (!Objects.equals(this.path, other.path)) {
+			return false;
+		}
+		if (!Objects.equals(this.id, other.id)) {
+			return false;
+		}
+		if (!Objects.equals(this.file, other.file)) {
 			return false;
 		}
 		return true;
@@ -257,8 +279,7 @@ public class Attachment extends AbstractModel implements Serializable
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Attachment [id=");
 		builder.append(id);
