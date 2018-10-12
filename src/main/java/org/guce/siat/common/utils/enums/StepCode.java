@@ -184,7 +184,8 @@ public enum StepCode {
     ST_CT_46("Recevabilité - Demande de Traitement"),
     ST_CT_47("Cotation"),
     ST_CT_48("Confirmation RDV pour traitement"),
-    ST_CT_49("Signature Confirmation RDV pour traitement"),
+    //
+    ST_CT_49("Confirmation RDV pour inspection"),
     //
 
     // AP Step Code

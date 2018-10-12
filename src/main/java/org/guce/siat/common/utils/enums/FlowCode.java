@@ -369,7 +369,7 @@ public enum FlowCode {
     FL_CT_102("Rejet - Demande de supervision"),
     FL_CT_103("Cotation"),
     FL_CT_104("Confirmation RDV pour traitement"),
-    FL_CT_105("Signature Confirmation RDV pour traitement"),
+    FL_CT_105("Confirmation RDV pour inspection"),
     //
 
     /**
@@ -2032,3 +2032,4 @@ public enum FlowCode {
     }
 
 }
+
