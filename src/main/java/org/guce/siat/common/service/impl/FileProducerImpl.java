@@ -64,11 +64,11 @@ public class FileProducerImpl implements FileProducer {
 
             try {
                 createMessageBackup(data, false);
+                LOG.info("######## End creation of backup");
             } catch (Exception ex) {
+                reset(data);
                 LOG.error("Cannot not create backup", ex);
             }
-
-            LOG.info("######## End creation of backup");
         }
 
         LOG.info("######## Start sending Message");
@@ -90,7 +90,12 @@ public class FileProducerImpl implements FileProducer {
 
     @Override
     public void createAperakBackup(final Map<String, Object> data) throws Exception {
-        createMessageBackup(data, true);
+        try {
+            createMessageBackup(data, true);
+        } catch (Exception ex) {
+            reset(data);
+            LOG.error("Cannot not create backup", ex);
+        }
     }
 
     private void resendFile(final ItemFlow itemFlow, final boolean aperak) throws Exception {
