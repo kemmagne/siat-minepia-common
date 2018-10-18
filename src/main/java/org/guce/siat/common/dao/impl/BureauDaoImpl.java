@@ -26,59 +26,78 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class BureauDaoImpl extends AbstractJpaDaoImpl<Bureau> implements BureauDao {
 
-	/**
-	 * The Constant LOG.
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(BureauDaoImpl.class);
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(BureauDaoImpl.class);
 
-	/**
-	 * Instantiates a new bureau dao impl.
-	 */
-	public BureauDaoImpl() {
-		super();
-		setClasse(Bureau.class);
-	}
+    /**
+     * Instantiates a new bureau dao impl.
+     */
+    public BureauDaoImpl() {
+        super();
+        setClasse(Bureau.class);
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.dao.BureauDao#findBureauByTypeAndOrganism(org.guce.siat.common.utils.enums.BureauType,
 	 * org.guce.siat.common.model.Organism)
-	 */
-	@Override
-	public List<Bureau> findBureauByTypeAndOrganism(final BureauType bureauType, final Organism organism) {
-		if (organism != null) {
-			final StringBuilder hqlQuery = new StringBuilder();
-			hqlQuery.append("FROM Bureau b WHERE b.deleted = false AND b.service.subDepartment.organism.id = :organismId ");
-			if (bureauType != null) {
-				hqlQuery.append("AND b.bureauType = :bureauType");
-			}
-			final TypedQuery<Bureau> query = super.entityManager.createQuery(hqlQuery.toString(), Bureau.class);
-			query.setParameter("organismId", organism.getId());
-			if (bureauType != null) {
-				query.setParameter("bureauType", bureauType);
-			}
-			return query.getResultList();
-		}
-		return Collections.emptyList();
-	}
+     */
+    @Override
+    public List<Bureau> findBureauByTypeAndOrganism(final BureauType bureauType, final Organism organism) {
+        if (organism != null) {
+            final StringBuilder hqlQuery = new StringBuilder();
+            hqlQuery.append("FROM Bureau b WHERE b.deleted = false AND b.service.subDepartment.organism.id = :organismId ");
+            if (bureauType != null) {
+                hqlQuery.append("AND b.bureauType = :bureauType");
+            }
+            final TypedQuery<Bureau> query = super.entityManager.createQuery(hqlQuery.toString(), Bureau.class);
+            query.setParameter("organismId", organism.getId());
+            if (bureauType != null) {
+                query.setParameter("bureauType", bureauType);
+            }
+            return query.getResultList();
+        }
+        return Collections.emptyList();
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.dao.BureauDao#findByServiceAndCode(org.guce.siat.common.model.Service, java.lang.String)
-	 */
-	@Override
-	public Bureau findByServiceAndCode(final Service service, final String codeBureau) {
-		final TypedQuery<Bureau> query = entityManager.createQuery(
-				"SELECT b FROM Bureau b WHERE b.service= :service AND b.code= :codeBureau", Bureau.class);
-		query.setParameter("service", service);
-		query.setParameter("codeBureau", codeBureau);
-		try {
-			return query.getSingleResult();
-		} catch (NoResultException | NonUniqueResultException e) {
-			LOG.error(Objects.toString(e));
-			return null;
-		}
-	}
+     */
+    @Override
+    public Bureau findByServiceAndCode(final Service service, final String codeBureau) {
+        final TypedQuery<Bureau> query = entityManager.createQuery(
+                "SELECT b FROM Bureau b WHERE b.service= :service AND b.code= :codeBureau", Bureau.class);
+        query.setParameter("service", service);
+        query.setParameter("codeBureau", codeBureau);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e) {
+            LOG.error(Objects.toString(e));
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param bureauCode
+     * @return
+     */
+    @Override
+    public Bureau findByCode(final String bureauCode) {
+        final TypedQuery<Bureau> query = entityManager.createQuery("SELECT b FROM Bureau b WHERE b.code = :bureauCode",
+                Bureau.class);
+        query.setParameter("bureauCode", bureauCode);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e) {
+            LOG.error(Objects.toString(e));
+            return null;
+        }
+    }
 }
+
