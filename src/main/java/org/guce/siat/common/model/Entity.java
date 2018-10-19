@@ -191,10 +191,7 @@ public class Entity extends Administration {
             return false;
         }
         final Entity other = (Entity) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())));
     }
 
     /*
@@ -222,3 +219,4 @@ public class Entity extends Administration {
     }
 
 }
+

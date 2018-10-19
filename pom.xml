@@ -9,8 +9,9 @@
     </parent>
     <groupId>org.guce.siat.common</groupId>
     <artifactId>siat-common</artifactId>
-    <version>1.3.6</version>
+    <version>1.3.7</version>
     <name>siat-common</name>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <resource.dir>src/main/resources</resource.dir>
