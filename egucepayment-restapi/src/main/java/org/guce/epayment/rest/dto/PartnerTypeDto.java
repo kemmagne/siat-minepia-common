@@ -1,31 +1,22 @@
 package org.guce.epayment.rest.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
+import org.guce.epayment.core.entities.Partner;
+import org.guce.epayment.core.entities.PartnerType;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(exclude = {"label"})
-public class PartnerTypeDto {
+public class PartnerTypeDto extends PartnerType {
 
-    private Integer id;
-    private String code;
-    private String label;
+    private static final long serialVersionUID = 5399176189055456616L;
 
-    public PartnerTypeDto() {
-    }
-
-    private PartnerTypeDto(Integer id, String code, String label) {
-        this.id = id;
-        this.code = code;
-        this.label = label;
-    }
-
-    public static PartnerTypeDto of(Integer id, String code, String label) {
-        return new PartnerTypeDto(id, code, label);
+    @JsonIgnore
+    @Override
+    public List<Partner> getPartners() {
+        return super.getPartners();
     }
 
 }

@@ -1,11 +1,7 @@
 package org.guce.epayment.core.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 import org.guce.epayment.core.entities.BankAccount;
 import org.guce.epayment.core.entities.InvoiceType;
 import org.guce.epayment.core.entities.InvoiceTypeBeneficiary;
@@ -15,6 +11,7 @@ import org.guce.epayment.core.repositories.PaymentModeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Transactional
 @Service
@@ -32,15 +29,7 @@ public class InvoiceTypeServiceImpl implements InvoiceTypeService {
 
     @Override
     public List<InvoiceType> findByPaymentModes(final String pms) {
-
-        final List<InvoiceType> invoiceTypes = new ArrayList<>();
-
-        Arrays.asList(StringUtils.split(pms, appService.getColSep())).forEach(pm -> {
-
-            invoiceTypes.addAll(paymentModeRepository.findByCode(pm).get().getInvoiceTypes());
-        });
-
-        return invoiceTypes.stream().distinct().collect(Collectors.toList());
+        return invoiceTypeRepository.findByPaymentModes(StringUtils.commaDelimitedListToSet(pms));
     }
 
     @Override

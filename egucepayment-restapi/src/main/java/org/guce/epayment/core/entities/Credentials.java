@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -24,8 +25,8 @@ import lombok.ToString;
 @Entity
 @Table(name = "CREDENTIALS")
 @Data
-@EqualsAndHashCode(of = {"id", "owner", "password", "salt"})
-@ToString(exclude = {"owner"/*, "creationDate"*/})
+@EqualsAndHashCode(exclude = {"owner", "creationDate"})
+@ToString(exclude = {"owner"})
 public class Credentials implements Serializable {
 
     private static final long serialVersionUID = -5614930456101679007L;
@@ -39,14 +40,17 @@ public class Credentials implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CREDENTIALS_SEQ")
     private BigDecimal id;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "OWNER_ID", referencedColumnName = "ID", nullable = false)
+    @JoinColumn(name = "OWNER_ID")
     private User owner;
-    @Column(name = "PASSWORD", nullable = false)
+    @NotNull
+    @Column(name = "PASSWORD")
     private String password;
     @Column(name = "SALT")
     private String salt;
-    @Column(name = "CREATION_DATE", nullable = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
     private LocalDateTime creationDate;
 
     @PrePersist
@@ -55,3 +59,4 @@ public class Credentials implements Serializable {
     }
 
 }
+

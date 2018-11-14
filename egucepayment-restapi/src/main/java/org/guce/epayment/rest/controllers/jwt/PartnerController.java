@@ -2,12 +2,12 @@ package org.guce.epayment.rest.controllers.jwt;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.guce.epayment.core.entities.Partner;
 import org.guce.epayment.core.entities.PartnerType;
 import org.guce.epayment.core.entities.RepPartnerGroup;
 import org.guce.epayment.core.entities.User;
+import org.guce.epayment.core.entities.enums.PartnerTypeCode;
 import org.guce.epayment.core.services.ApplicationService;
 import org.guce.epayment.core.services.CoreService;
 import org.guce.epayment.core.services.PartnerService;
@@ -52,11 +52,12 @@ public class PartnerController {
     public ResponseEntity<List<PartnerDto>> findAllPartners(@PathVariable("start") int start,
             @PathVariable("end") int end) {
 
-        final List<Partner> partners = coreService.findRange(Partner.class, start, end);
-
-        return ResponseEntity.ok(partners.stream().map(
-                partner -> RestUtils.getPartnerDto(partner, true)
-        ).collect(Collectors.toList()));
+//        final List<Partner> partners = coreService.findRange(Partner.class, start, end);
+//
+//        return ResponseEntity.ok(partners.stream().map(
+//                partner -> RestUtils.getPartnerDto(partner, true)
+//        ).collect(Collectors.toList()));
+        return null;
     }
 
     @ResponseBody
@@ -65,9 +66,10 @@ public class PartnerController {
 
         final Partner parent = coreService.findByUniqueKey(Constants.UK_CODE, parentCode, Partner.class).get();
 
-        return ResponseEntity.ok(parent.getChildren().stream().map(
-                partner -> RestUtils.getPartnerDto(partner, true)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(parent.getChildren().stream().map(child -> {
+            final PartnerDto childDto = RestUtils.downCast(Partner.class, PartnerDto.class, child);
+            return childDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -76,9 +78,10 @@ public class PartnerController {
 
         final List<PartnerType> allPartnerTypes = coreService.findAll(PartnerType.class);
 
-        return ResponseEntity.ok(allPartnerTypes.stream().map(
-                partnerType -> PartnerTypeDto.of(partnerType.getId(), partnerType.getCode(), partnerType.getLabel())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(allPartnerTypes.stream().map(pt -> {
+            final PartnerTypeDto ptDto = RestUtils.downCast(PartnerType.class, PartnerTypeDto.class, pt);
+            return ptDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -87,9 +90,10 @@ public class PartnerController {
 
         final List<RepPartnerGroup> allPartnerGroups = coreService.findAll(RepPartnerGroup.class);
 
-        return ResponseEntity.ok(allPartnerGroups.stream().map(
-                partnerGroup -> PartnerGroupDto.of(partnerGroup.getCode(), partnerGroup.getName())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(allPartnerGroups.stream().map(pg -> {
+            final PartnerGroupDto pgDto = RestUtils.downCast(RepPartnerGroup.class, PartnerGroupDto.class, pg);
+            return pgDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -97,11 +101,12 @@ public class PartnerController {
     public ResponseEntity<List<PartnerDto>> findPartnersByTypes(@PathVariable("partnerTypes") String partnerTypes,
             @PathVariable("start") int start, @PathVariable("end") int end) {
 
-        final List<Partner> partnersByTypes = partnerService.findByTypes(partnerTypes, start, end);
+        final List<Partner> partnersByTypes = partnerService.findByTypes(partnerTypes, start, end, true);
 
-        return ResponseEntity.ok(partnersByTypes.stream().map(
-                partner -> RestUtils.getPartnerDto(partner, true)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(partnersByTypes.stream().map(partner -> {
+            final PartnerDto partnerDto = RestUtils.downCast(Partner.class, PartnerDto.class, partner);
+            return partnerDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -117,32 +122,32 @@ public class PartnerController {
 
         final List<Partner> partnersByGroups = partnerService.findByGroups(partnerGroups);
 
-        return ResponseEntity.ok(partnersByGroups.stream().map(
-                partner -> RestUtils.getPartnerDto(partner, false)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(partnersByGroups.stream().map(partner -> {
+            final PartnerDto partnerDto = RestUtils.downCast(Partner.class, PartnerDto.class, partner);
+            return partnerDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
-    @RequestMapping(path = "public/partners/by-code/{partnerCode}/{taxPayerNumber}", method = RequestMethod.GET)
-    public ResponseEntity<List<PartnerDto>> findByCode(@PathVariable("partnerCode") String partnerCode,
-            @PathVariable("taxPayerNumber") String taxPayerNumber) {
+    @RequestMapping(path = "public/partners/by-code/{partnerCode}", method = RequestMethod.GET)
+    public ResponseEntity<PartnerDto> findByCode(@PathVariable("partnerCode") String partnerCode) {
 
-        final List<Partner> partnersByGroups = partnerService.findByCodeOrTaxPayerNumber(partnerCode, taxPayerNumber);
+        final Partner partner = coreService.findByUniqueKey(Constants.UK_CODE, partnerCode, Partner.class).orElse(null);
+        final PartnerDto partnerDto = RestUtils.downCast(Partner.class, PartnerDto.class, partner);
 
-        return ResponseEntity.ok(partnersByGroups.stream().map(
-                partner -> RestUtils.getPartnerDto(partner, false)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(partnerDto);
     }
 
     @ResponseBody
     @RequestMapping(path = "partners/beneficiaries/{invoiceTypeCode}", method = RequestMethod.GET)
     public ResponseEntity<List<PartnerDto>> findBeneficiaries(@PathVariable String invoiceTypeCode) {
 
-        final List<Partner> partnersByGroups = partnerService.findBeneficiaries(invoiceTypeCode);
+        final List<Partner> beneficiaries = partnerService.findByTypes(PartnerTypeCode.BENEFICIARY.name(), -1, 0, true);
 
-        return ResponseEntity.ok(partnersByGroups.stream().map(
-                partner -> RestUtils.getPartnerDto(partner, false)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(beneficiaries.stream().map(partner -> {
+            final PartnerDto partnerDto = RestUtils.downCast(Partner.class, PartnerDto.class, partner);
+            return partnerDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -150,17 +155,18 @@ public class PartnerController {
     public ResponseEntity<List<PartnerDto>> findPrincipals(@PathVariable("start") int start,
             @PathVariable("end") int end) {
 
-        final List<Partner> principals = partnerService.findPrincipals(start, end);
+        final List<Partner> principals = partnerService.findByTypes(PartnerTypeCode.PRINCIPAL.name(), start, end, true);
 
-        return ResponseEntity.ok(principals.stream().map(
-                partner -> RestUtils.getPartnerDto(partner, false)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(principals.stream().map(partner -> {
+            final PartnerDto partnerDto = RestUtils.downCast(Partner.class, PartnerDto.class, partner);
+            return partnerDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
     @RequestMapping(path = "public/partners/principals/count", method = RequestMethod.GET)
     public ResponseEntity<DefaultDto> countPrincipals() {
-        return ResponseEntity.ok(DefaultDto.of(partnerService.countPrincipals() + ""));
+        return ResponseEntity.ok(DefaultDto.of(partnerService.countByTypes(PartnerTypeCode.PRINCIPAL.name(), true) + ""));
     }
 
     @ResponseBody
@@ -170,9 +176,10 @@ public class PartnerController {
         final Partner partner = coreService.findById(partnerId, Partner.class).get();
         final List<User> partnerUsers = partner.getUsers();
 
-        return ResponseEntity.ok(partnerUsers.stream().map(
-                user -> RestUtils.getUserDto(user, Optional.empty())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(partnerUsers.stream().map(user -> {
+            final UserDto userDto = RestUtils.downCast(User.class, UserDto.class, user);
+            return userDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -190,9 +197,9 @@ public class PartnerController {
 
         final BigDecimal partnerId = partnerDto.getId();
 
-        final String taxPayerNumber = partnerDto.getTaxPayerNumber();
+        final String taxPayerNumber = partnerDto.getCode();
         if (null == partnerId && null != taxPayerNumber
-                && coreService.findByUniqueKey(Constants.UK_TAX_PAYER_NUMBER, taxPayerNumber, Partner.class).isPresent()) {
+                && coreService.findByUniqueKey(Constants.UK_CODE, taxPayerNumber, Partner.class).isPresent()) {
             return ResponseEntity.ok(DefaultDto.of("0"));
         }
 
@@ -208,27 +215,27 @@ public class PartnerController {
 
         final Partner partner = new Partner();
 
-        partner.setId(partnerId);
-        partner.setCode(partnerCode);
-        partner.setTaxPayerNumber(taxPayerNumber);
-        partner.setName(partnerDto.getName());
-        if (null != parentDto) {
-            partner.setParent(coreService.findById(parentDto.getId(), Partner.class).get());
-        }
-
-        partner.setTypes(partnerDto.getTypes().stream().map(
-                pt -> coreService.findByUniqueKey(Constants.UK_CODE, pt.getCode(), PartnerType.class).get()
-        ).collect(Collectors.toList()));
-
-        partner.setGroups(partnerDto.getGroups().stream().map(
-                pg -> coreService.findByUniqueKey(Constants.UK_CODE, pg.getCode(), RepPartnerGroup.class).get()
-        ).collect(Collectors.toList()));
-
-        coreService.save(partner, Partner.class);
-
-        partnerDto.setId(partner.getId());
-
+//        partner.setId(partnerId);
+//        partner.setCode(partnerCode);
+//        partner.setTaxPayerNumber(taxPayerNumber);
+//        partner.setName(partnerDto.getName());
+//        if (null != parentDto) {
+//            partner.setParent(coreService.findById(parentDto.getId(), Partner.class).get());
+//        }
+//
+//        partner.setTypes(partnerDto.getTypes().stream().map(
+//                pt -> coreService.findByUniqueKey(Constants.UK_CODE, pt.getCode(), PartnerType.class).get()
+//        ).collect(Collectors.toList()));
+//
+//        partner.setGroups(partnerDto.getGroups().stream().map(
+//                pg -> coreService.findByUniqueKey(Constants.UK_CODE, pg.getCode(), RepPartnerGroup.class).get()
+//        ).collect(Collectors.toList()));
+//
+//        coreService.save(partner, Partner.class);
+//
+//        partnerDto.setId(partner.getId());
         return ResponseEntity.ok(partnerDto);
     }
 
 }
+

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -21,9 +22,11 @@ public class RepPartnerGroup implements Serializable {
     @Id
     @Column(name = "CODE", length = 20)
     private String code;
-    @Column(name = "NAME", nullable = false)
+    @NotNull
+    @Column(name = "NAME")
     private String name;
     @ManyToMany(mappedBy = "groups")
     private List<Partner> partners;
 
 }
+

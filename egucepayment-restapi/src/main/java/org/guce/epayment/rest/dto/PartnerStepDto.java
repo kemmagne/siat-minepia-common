@@ -1,37 +1,32 @@
 package org.guce.epayment.rest.dto;
 
-import java.math.BigDecimal;
-import lombok.Data;
+import org.guce.epayment.core.entities.Partner;
+import org.guce.epayment.core.entities.PartnerStep;
+import org.guce.epayment.core.entities.PaymentMode;
+import org.guce.epayment.core.entities.Step;
+import org.guce.epayment.rest.controllers.utils.RestUtils;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-public class PartnerStepDto {
+public class PartnerStepDto extends PartnerStep {
 
-    private BigDecimal id;
-    private UserDto user;
-    private StepDto step;
-    private InvoiceTypeDto invoiceType;
-    private PaymentModeDto paymentMode;
-    private int highLevel;
+    private static final long serialVersionUID = 3837726726562541542L;
 
-    public PartnerStepDto() {
+    @Override
+    public PartnerDto getPartner() {
+        return RestUtils.downCast(Partner.class, PartnerDto.class, super.getPartner());
     }
 
-    private PartnerStepDto(BigDecimal id, UserDto user, StepDto step, InvoiceTypeDto invoiceType, PaymentModeDto paymentMode, int highLevel) {
-        this.id = id;
-        this.user = user;
-        this.step = step;
-        this.invoiceType = invoiceType;
-        this.paymentMode = paymentMode;
-        this.highLevel = highLevel;
+    @Override
+    public PaymentModeDto getPaymentMode() {
+        return RestUtils.downCast(PaymentMode.class, PaymentModeDto.class, super.getPaymentMode());
     }
 
-    public static PartnerStepDto of(BigDecimal id, UserDto user, StepDto step, InvoiceTypeDto invoiceType, PaymentModeDto paymentMode, int highLevel) {
-
-        return new PartnerStepDto(id, user, step, invoiceType, paymentMode, highLevel);
+    @Override
+    public StepDto getStep() {
+        return RestUtils.downCast(Step.class, StepDto.class, super.getStep());
     }
 
 }

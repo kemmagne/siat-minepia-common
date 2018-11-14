@@ -1,14 +1,14 @@
 <div class="exception-body {{topClass}}-page">
-      <div class="exception-type">
-          <img src="assets/layout/images/{{errorCode}}.svg">
-      </div>
-      
-      <div class="card exception-panel">
-          <i class="material-icons">&#xe001;</i>
-          <h1>{{errorTitle | translate}}</h1>
-          <div class="exception-detail">{{errorMsg | translate}}</div>
-          <a (click)="goToHome()" class="ui-button secondary">
-              <span class="ui-button-text">{{'home.page' | translate}}</span>
-          </a>
-      </div>
+  <div class="exception-type">
+      <img src="assets/layout/images/{{errorCode}}.svg">
+  </div>
+  
+  <div class="card exception-panel">
+      <i class="material-icons">&#xe001;</i>
+      <h1>{{errorTitle | translate}}</h1>
+      <div class="exception-detail">{{errorMsg | translate}}</div>
+      <a (click)="goToHome()" class="ui-button secondary">
+          <span class="ui-button-text">{{'home.page' | translate}}</span>
+      </a>
+  </div>
 </div>

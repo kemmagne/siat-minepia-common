@@ -336,5 +336,15 @@
     "campost.accounts": "Campost Accounts",
     "card.number.part": "Card Number (4 last digits)",
     "payment.confirmation": "Payment confirmation",
-    "dont.have.partner": "You must belong to a registered partner"
+    "dont.have.partner": "You must belong to a registered partner",
+    "ergo.params": "Ergonomics parameters",
+    "menu.orientation": "Menu orientation",
+    "menu.shine": "Shine of menu",
+    "static.menu": "Static",
+    "overlay.menu": "Overlay",
+    "slim.menu": "Slim",
+    "horizontal.menu": "Horizontal",
+    "light.menu": "Light",
+    "dark.menu": "Dark",
+    "january": "Janvier"
 }

@@ -15,9 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
-import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,9 +27,11 @@ import lombok.EqualsAndHashCode;
  * @author tadzotsa
  */
 @Entity
-@Table(name = "PARTNER")
+@Table(name = "PARTNER", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"CODE", "DELETED"})
+})
 @Data
-@EqualsAndHashCode(of = {"id", "code"})
+@EqualsAndHashCode(of = {"code", "deleted"})
 public class Partner implements Serializable {
 
     private static final long serialVersionUID = 1501487064137944532L;
@@ -42,27 +45,19 @@ public class Partner implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PARTNER_SEQ")
     private BigDecimal id;
 
-    @Column(name = "CODE", nullable = false, unique = true, length = 50)
+    @NotNull
+    @Column(name = "CODE", length = 50)
     private String code;
-    @Column(name = "NAME", nullable = false)
+    @NotNull
+    @Column(name = "NAME")
     private String name;
-    @Column(name = "FAX", length = 20)
-    private String fax;
-    @Column(name = "PHONE", length = 20)
-    private String phone;
-    @Column(name = "EMAIL", length = 50)
-    private String email;
-    @Column(name = "CITY", length = 100)
-    private String city;
-    @Column(name = "PO_BOX", length = 20)
-    private String poBox;
-    @Column(name = "ADDRESS")
-    private String address;
-    @Column(name = "TAX_PAYER_NUMBER", nullable = false, unique = true, length = 20)
-    private String taxPayerNumber;
     @JoinColumn(name = "PARENT_ID")
     @ManyToOne
     private Partner parent;
+    @Column(name = "ACTIVE")
+    private boolean active;
+    @Column(name = "DELETED")
+    private boolean deleted;
     @JoinColumn(name = "MAIN_BANK_ACCOUNT_ID")
     @OneToOne
     private BankAccount principalBankAccount;
@@ -95,15 +90,5 @@ public class Partner implements Serializable {
     @OneToMany(mappedBy = "owner")
     private List<BankAccount> bankAccounts;
 
-    @PrePersist
-    private void prePersist() {
-
-        if (taxPayerNumber == null) {
-            taxPayerNumber = code;
-        }
-
-        if (code == null) {
-            code = taxPayerNumber;
-        }
-    }
 }
+

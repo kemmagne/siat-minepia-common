@@ -1,6 +1,6 @@
 import * as CryptoJS from 'crypto-js';
 
-import { saveAs } from 'file-saver/FileSaver';
+import { saveAs } from 'file-saver/dist/FileSaver';
 
 import {Config} from './config';
 

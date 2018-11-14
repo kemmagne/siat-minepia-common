@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,15 +29,17 @@ public class BankAccount implements Serializable {
     @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
-    @Column(name = "ACCOUNT_KEY", length = 10)
+    @Column(name = "ACCOUNT_KEY", length = 2)
     private String key;
-    @JoinColumn(name = "AGENCY_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "AGENCY_ID")
     @ManyToOne
     private Partner agency;
-    @JoinColumn(name = "BANK_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "BANK_ID")
     @ManyToOne
     private Partner bank;
-    @Column(name = "ACCOUNT_NUMBER", length = 20)
+    @Column(name = "ACCOUNT_NUMBER", length = 11)
     private String number;
     @Column(name = "LABEL")
     private String label;
@@ -48,7 +51,6 @@ public class BankAccount implements Serializable {
     @JoinColumn(name = "OWNER_ID")
     @ManyToOne
     private Partner owner;
-    @Column(name = "OLD_ID", precision = 32)
-    private BigDecimal oldId;
 
 }
+

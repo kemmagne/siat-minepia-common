@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -21,6 +22,7 @@ public class Params implements Serializable {
     @Id
     @Column(name = "PARAM_NAME")
     private String name;
+    @NotNull
     @Column(name = "PARAM_VALUE")
     private String value;
 
@@ -33,3 +35,4 @@ public class Params implements Serializable {
     }
 
 }
+

@@ -1,39 +1,59 @@
 package org.guce.epayment.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.util.stream.Collectors;
+import org.guce.epayment.core.entities.InvoiceType;
+import org.guce.epayment.core.entities.InvoiceTypeBeneficiary;
+import org.guce.epayment.core.entities.Partner;
+import org.guce.epayment.core.entities.PaymentMode;
+import org.guce.epayment.core.entities.User;
+import org.guce.epayment.rest.controllers.utils.RestUtils;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(of = {"id", "code"})
-public class InvoiceTypeDto {
+public class InvoiceTypeDto extends InvoiceType {
 
-    private Integer id;
-    private String code;
-    private String label;
-    private String params;
-    private boolean standalone;
-    private List<PaymentModeDto> paymentModes;
-    private List<PartnerDto> beneficiaries;
-    private List<PartnerDto> banks;
-    private List<UserDto> decisionMakers;
+    private static final long serialVersionUID = 2284266659611587809L;
 
-    public InvoiceTypeDto() {
+    @JsonIgnore
+    @Override
+    public List<InvoiceTypeBeneficiary> getBeneficiaries() {
+        return super.getBeneficiaries();
     }
 
-    private InvoiceTypeDto(Integer id, String code, String label) {
-        this.id = id;
-        this.code = code;
-        this.label = label;
+    @Override
+    public List<User> getDecisionMakers() {
+        return super.getDecisionMakers().stream().map(dm -> {
+            final UserDto dmDto = RestUtils.downCast(User.class, UserDto.class, dm);
+            return dmDto;
+        }).collect(Collectors.toList());
     }
 
-    public static InvoiceTypeDto of(Integer id, String code, String label) {
+    @Override
+    public List<PaymentMode> getPaymentModes() {
+        return super.getPaymentModes().stream().map(pm -> {
+            final PaymentModeDto pmDto = RestUtils.downCast(PaymentMode.class, PaymentModeDto.class, pm);
+            return pmDto;
+        }).collect(Collectors.toList());
+    }
 
-        return new InvoiceTypeDto(id, code, label);
+    @Override
+    public List<Partner> getUnauthorizedBanks() {
+        return super.getUnauthorizedBanks().stream().map(bank -> {
+            final PartnerDto bankDto = RestUtils.downCast(Partner.class, PartnerDto.class, bank);
+            return bankDto;
+        }).collect(Collectors.toList());
+    }
+
+    public List<PartnerDto> getBenefs() {
+        List<InvoiceTypeBeneficiary> beneficiaries = getBeneficiaries();
+        return beneficiaries.stream().map(ivtb -> {
+            final PartnerDto benefDto = RestUtils.downCast(Partner.class, PartnerDto.class, ivtb.getBeneficiary());
+            return benefDto;
+        }).collect(Collectors.toList());
     }
 
 }

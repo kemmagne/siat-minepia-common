@@ -12,7 +12,8 @@
     </properties>
 
     <modules>
-        <module>data-migrator</module>
+        <!--<module>data-migrator</module>-->
         <module>egucepayment-restapi</module>
+        <module>epayment-data-migrator</module>
     </modules>
 </project>

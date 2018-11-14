@@ -1,30 +1,22 @@
 package org.guce.epayment.rest.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
+import org.guce.epayment.core.entities.Role;
+import org.guce.epayment.core.entities.User;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(of = "name")
-public class RoleDto {
+public class RoleDto extends Role {
 
-    private String name;
-    private String description;
+    private static final long serialVersionUID = -39609454138762285L;
 
-    public RoleDto() {
-    }
-
-    private RoleDto(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public static RoleDto of(String name, String description) {
-
-        return new RoleDto(name, description);
+    @JsonIgnore
+    @Override
+    public List<User> getUsers() {
+        return super.getUsers();
     }
 
 }

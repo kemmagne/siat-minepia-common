@@ -11,7 +11,7 @@
 
     <groupId>org.guce.epayment</groupId>
     <artifactId>egucepayment-restapi</artifactId>
-    <version>1.0.0a</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
 
     <name>egucepayment-restapi</name>
@@ -25,8 +25,7 @@
         <jackson.version>2.9.4</jackson.version>
         <lombok.version>1.16.20</lombok.version>
         <hibernate.version>5.2.17.Final</hibernate.version>
-        <oracle.version>11.2.0.4.0</oracle.version>
-        <arquillian.version>11.2.0.4.0</arquillian.version>
+        <oracle.version>10.2.0.5.0</oracle.version>
         <apache.poi.version>3.15</apache.poi.version>
         <resource.dir>src/main/resources</resource.dir>
         <application.version>${project.version}</application.version>
@@ -359,8 +358,13 @@
             <version>${hibernate.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.4.2.Final</version>
+        </dependency>
+        <dependency>
             <groupId>com.oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
+            <artifactId>ojdbc14</artifactId>
             <version>${oracle.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -503,6 +507,11 @@
             <groupId>org.guce</groupId>
             <artifactId>guce-utils</artifactId>
             <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.guce.util</groupId>
+            <artifactId>guce-utils-exporter</artifactId>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>

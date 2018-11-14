@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { LoaderService, LoaderState } from './loader.service';
 
@@ -9,21 +9,17 @@ import { LoaderService, LoaderState } from './loader.service';
             <div>
                 <div>
                     <p-dialog [closable]="false" [closeOnEscape]="false" [showHeader]="false" [draggable]="false" [resizable]="false" [modal]="true" [(visible)]="showPost">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
-                        </div>
+                        <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
                     </p-dialog>
                     <p-dialog [closable]="false" [closeOnEscape]="false" [showHeader]="false" [draggable]="false" [resizable]="false" [modal]="true" [(visible)]="showGet">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%"></div>
-                        </div>
+                        <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
                     </p-dialog>
                 </div>
             </div>
             <div [class.loader-hidden]="!showGet">
                 <div class="loader-overlay">
                     <div>
-                        <span class="fa fa-refresh fa-spin" *ngIf="showGet"></span>
+                        <p-progressSpinner *ngIf="showGet" [style]="{width: '50px', height: '50px'}" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
                     </div>
                 </div>
             </div>

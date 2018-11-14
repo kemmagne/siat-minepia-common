@@ -11,11 +11,11 @@ import org.guce.epayment.campost.entities.CampostAccount;
 import org.guce.epayment.campost.entities.CampostPayment;
 import org.guce.epayment.campost.exceptions.NoCampostAccountException;
 import org.guce.epayment.campost.repositories.CampostAccountRepository;
-import org.guce.epayment.core.entities.Invoice;
 import org.guce.epayment.core.entities.Params;
 import org.guce.epayment.core.entities.Partner;
-import org.guce.epayment.core.entities.Payment;
 import org.guce.epayment.core.entities.PaymentMode;
+import org.guce.epayment.core.entities.enums.InvoiceStatus;
+import org.guce.epayment.core.entities.enums.PaymentStatus;
 import org.guce.epayment.core.repositories.ParamsRepository;
 import org.guce.epayment.core.repositories.PartnerRepository;
 import org.guce.epayment.core.repositories.PaymentModeRepository;
@@ -104,8 +104,8 @@ public abstract class AbstractCampostService implements CampostService {
             payment.setPartnerReference(sessionId);
         } else {
 
-            paymentService.updateInvoices(payment, Invoice.INVOICE_PAYMENT_REJECTED);
-            paymentService.setDecision(payment, Payment.PAYMENT_REJECTED);
+            paymentService.updateInvoices(payment, InvoiceStatus.PAYMENT_REJECTED);
+            paymentService.setDecision(payment, PaymentStatus.REJECTED);
 
             result.put("code", "0");
         }
@@ -121,8 +121,8 @@ public abstract class AbstractCampostService implements CampostService {
         final Map<String, String> mapResult = new HashMap();
         final CampostPayment payment = (CampostPayment) paymentRepository.findByReference(paymentReference).get();
         if (cancel) {
-            this.paymentService.updateInvoices(payment, Invoice.INVOICE_PAYMENT_CANCELED);
-            paymentService.setDecision(payment, Payment.PAYMENT_CANCELED);
+            this.paymentService.updateInvoices(payment, InvoiceStatus.PAYMENT_CANCELED);
+            paymentService.setDecision(payment, PaymentStatus.CANCELED);
             this.paymentService.update(payment);
             mapResult.put("code", "2");
             return mapResult;
@@ -141,14 +141,14 @@ public abstract class AbstractCampostService implements CampostService {
 
         if (null != responsereason.getSUCCESS()) {
 
-            paymentService.setDecision(payment, Payment.PAYMENT_VALIDATED);
-            paymentService.updateInvoices(payment, Invoice.INVOICE_PAID);
+            paymentService.setDecision(payment, PaymentStatus.VALIDATED);
+            paymentService.updateInvoices(payment, InvoiceStatus.PAID);
 
             mapResult.put("code", "1");
         } else {
 
-            paymentService.updateInvoices(payment, Invoice.INVOICE_PAYMENT_REJECTED);
-            paymentService.setDecision(payment, Payment.PAYMENT_REJECTED);
+            paymentService.updateInvoices(payment, InvoiceStatus.PAYMENT_REJECTED);
+            paymentService.setDecision(payment, PaymentStatus.REJECTED);
 
             mapResult.put("code", "0");
         }

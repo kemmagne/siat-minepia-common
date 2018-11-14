@@ -12,7 +12,8 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface ReceiptRepository extends JpaRepository<Receipt, BigDecimal> {
 
-    @Query("SELECT r FROM Receipt r WHERE r.invoiceVersion.invoice.type.code = ?1")
+    @Query("SELECT r FROM Receipt r WHERE r.invoiceLine.invoiceVersion.invoice.type.code = ?1")
     List<Receipt> findByInvoiceType(String invoiceTypeCode);
 
 }
+

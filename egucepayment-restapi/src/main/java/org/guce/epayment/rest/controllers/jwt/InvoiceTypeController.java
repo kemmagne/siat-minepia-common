@@ -6,7 +6,6 @@ import org.guce.epayment.core.entities.BankAccount;
 import org.guce.epayment.core.entities.InvoiceType;
 import org.guce.epayment.core.entities.InvoiceTypeBeneficiary;
 import org.guce.epayment.core.entities.Partner;
-import org.guce.epayment.core.entities.PaymentMode;
 import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.services.CoreService;
 import org.guce.epayment.core.services.InvoiceTypeService;
@@ -48,9 +47,10 @@ public class InvoiceTypeController {
 
         final List<InvoiceType> allInvoiceTypes = coreService.findAll(InvoiceType.class);
 
-        return ResponseEntity.ok(allInvoiceTypes.stream().map(
-                invoiceType -> RestUtils.getInvoiceTypeDto(invoiceType, true)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(allInvoiceTypes.stream().map(ivt -> {
+            final InvoiceTypeDto ivtDto = RestUtils.downCast(InvoiceType.class, InvoiceTypeDto.class, ivt);
+            return ivtDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -60,9 +60,10 @@ public class InvoiceTypeController {
 
         final List<InvoiceType> invoiceTypes = invoiceTypeService.findByStandaloneAndSubType(standalone, subType);
 
-        return ResponseEntity.ok(invoiceTypes.stream().map(
-                invoiceType -> RestUtils.getInvoiceTypeDto(invoiceType, true)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(invoiceTypes.stream().map(ivt -> {
+            final InvoiceTypeDto ivtDto = RestUtils.downCast(InvoiceType.class, InvoiceTypeDto.class, ivt);
+            return ivtDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -71,9 +72,10 @@ public class InvoiceTypeController {
 
         final List<InvoiceType> invoiceTypes = invoiceTypeService.findByPaymentModes(pms);
 
-        return ResponseEntity.ok(invoiceTypes.stream().map(
-                invoiceType -> RestUtils.getInvoiceTypeDto(invoiceType, true)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(invoiceTypes.stream().map(ivt -> {
+            final InvoiceTypeDto ivtDto = RestUtils.downCast(InvoiceType.class, InvoiceTypeDto.class, ivt);
+            return ivtDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -95,19 +97,17 @@ public class InvoiceTypeController {
         invoiceType.setCode(invoiceTypeDto.getCode());
         invoiceType.setLabel(invoiceTypeDto.getLabel());
         invoiceType.setStandalone(invoiceTypeDto.isStandalone());
-        invoiceType.setParameters(invoiceTypeDto.getParams());
+        invoiceType.setParameters(invoiceTypeDto.getParameters());
 
         // benef
-        invoiceType.setBeneficiaries(invoiceTypeDto.getBeneficiaries().stream().map(
-                benef -> new InvoiceTypeBeneficiary(invoiceType,
-                        coreService.findByUniqueKey(Constants.UK_CODE, benef.getCode(), Partner.class).get())
-        ).collect(Collectors.toList()));
-
+//        invoiceType.setBeneficiaries(invoiceTypeDto.getBeneficiaries().stream().map(
+//                benef -> new InvoiceTypeBeneficiary(invoiceType,
+//                        coreService.findByUniqueKey(Constants.UK_CODE, benef.getCode(), Partner.class).get())
+//        ).collect(Collectors.toList()));
         // payment modes
-        invoiceType.setPaymentModes(invoiceTypeDto.getPaymentModes().stream().map(
-                pmDto -> coreService.findByUniqueKey(Constants.UK_CODE, pmDto.getCode(), PaymentMode.class).get()
-        ).collect(Collectors.toList()));
-
+//        invoiceType.setPaymentModes(invoiceTypeDto.getPaymentModes().stream().map(
+//                pmDto -> coreService.findByUniqueKey(Constants.UK_CODE, pmDto.getCode(), PaymentMode.class).get()
+//        ).collect(Collectors.toList()));
         // save
         coreService.save(invoiceType, InvoiceType.class);
 
@@ -173,8 +173,10 @@ public class InvoiceTypeController {
             @PathVariable("beneficiaryCode") String beneficiaryCode) {
 
         final BankAccount debitAccount = invoiceTypeService.findBankAccount(invoiceTypeCode, beneficiaryCode).orElse(null);
+        final BankAccountDto debitAccountDto = RestUtils.downCast(BankAccount.class, BankAccountDto.class, debitAccount);
 
-        return ResponseEntity.ok(RestUtils.getBankAccountDto(debitAccount));
+        return ResponseEntity.ok(debitAccountDto);
     }
 
 }
+

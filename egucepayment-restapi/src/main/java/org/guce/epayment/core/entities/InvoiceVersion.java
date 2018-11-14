@@ -3,6 +3,8 @@ package org.guce.epayment.core.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,10 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,7 +26,7 @@ import lombok.EqualsAndHashCode;
     @UniqueConstraint(columnNames = {"INVOICE_ID", "VERSION_NUMBER"})
 })
 @Data
-@EqualsAndHashCode(of = {"id", "invoice", "number"})
+@EqualsAndHashCode(of = {"invoice", "number"})
 public class InvoiceVersion implements Serializable {
 
     private static final long serialVersionUID = 7717412749558533531L;
@@ -33,32 +37,35 @@ public class InvoiceVersion implements Serializable {
     @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
-    @JoinColumn(name = "INVOICE_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "INVOICE_ID")
     @ManyToOne
     private Invoice invoice;
-    @Column(name = "VERSION_NUMBER", nullable = false)
+    @NotNull
+    @Column(name = "VERSION_NUMBER")
     private int number;
-    @Column(name = "VERSION_DATE", nullable = false)
+    @NotNull
+    @Column(name = "VERSION_DATE")
     private LocalDateTime date;
-    @Column(name = "VERSION_AMOUNT", nullable = false, precision = 38, scale = 4)
+    @NotNull
+    @Column(name = "VERSION_AMOUNT", precision = 38, scale = 4)
     private BigDecimal versionAmount;
-    @Column(name = "BALANCE_AMOUNT", nullable = false, precision = 38, scale = 4)
+    @NotNull
+    @Column(name = "BALANCE_AMOUNT", precision = 38, scale = 4)
     private BigDecimal balanceAmount;
     @Column(name = "PAYMENT_DATE")
     private LocalDateTime paymentDate;
-    @Column(name = "PAY_CONFIRM_DATE")
-    private LocalDateTime confirmationDate;
-    @Column(name = "PAY_ACK_DATE")
-    private LocalDateTime acknowledgmentDate;
+    @NotNull
     @Column(name = "E_GUCE_REFERENCE", length = 50)
     private String eGuceReference;
-    @Column(name = "CODEDAP", length = 20)
-    private Long codedap;
-    @Column(name = "OLD_TO_NUMBER", length = 40)
-    private String oldToNumber;
+    @Column(name = "PAY_CONFIRM_DATE")
+    private LocalDateTime confirmationDate;
+    @OneToMany(mappedBy = "invoiceVersion", cascade = CascadeType.PERSIST)
+    private List<InvoiceLine> invoiceLines;
 
     @PrePersist
     private void prePersist() {
         date = LocalDateTime.now();
     }
 }
+

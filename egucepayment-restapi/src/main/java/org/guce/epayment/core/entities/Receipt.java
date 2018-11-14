@@ -9,11 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -34,21 +34,23 @@ public class Receipt implements Serializable {
     @SequenceGenerator(name = "RECEIPT_SEQ", sequenceName = "RECEIPT_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RECEIPT_SEQ")
     private BigDecimal id;
-    @Column(name = "RECEIPT_NUMBER", nullable = false)
+
+    @NotNull
+    @Column(name = "RECEIPT_NUMBER")
     private String number;
-    @Column(name = "RECEIPT_DATE", nullable = false)
+    @NotNull
+    @Column(name = "RECEIPT_DATE")
     private LocalDate receiptDate;
-    @JoinColumn(name = "BENEFICIARY", nullable = false)
+    @NotNull
+    @JoinColumn(name = "INVOICE_LINE_ID")
     @ManyToOne
-    private Partner beneficiary;
-    @JoinColumn(name = "INVOICE_VERSION_ID", nullable = false)
-    @ManyToOne
-    private InvoiceVersion invoiceVersion;
-    @JoinColumn(name = "PAYMENT_ID", nullable = false)
+    private InvoiceLine invoiceLine;
+    @NotNull
+    @JoinColumn(name = "PAYMENT_ID")
     @OneToOne
     private Payment payment;
-    @Lob
-    @Column(name = "METADATA")
+    @Column(name = "METADATA", length = 500)
     private String metadata;
 
 }
+

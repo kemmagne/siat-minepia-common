@@ -1,5 +1,6 @@
 package org.guce.epayment.rest.dto;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -7,7 +8,9 @@ import lombok.Data;
  * @author tadzotsa
  */
 @Data
-public class FilterInvoiceDto {
+public class FilterInvoiceDto implements Serializable {
+
+    private static final long serialVersionUID = -2573476671700604770L;
 
     private String invoiceNumber;
     private String taxPayerNumber;
@@ -25,3 +28,4 @@ public class FilterInvoiceDto {
     private boolean groups;
 
 }
+

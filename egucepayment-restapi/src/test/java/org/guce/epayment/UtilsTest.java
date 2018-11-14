@@ -128,7 +128,7 @@ public class UtilsTest {
         final LocalTime minTime = LocalTime.of(7, 30);
         final LocalTime maxTime = LocalTime.of(17, 0);
 
-        System.out.println(DateUtils.getSittingDate(minTime, maxTime));
+        System.out.println(DateUtils.getTransferOrderReceiptDate(minTime, maxTime));
     }
 
     @Ignore

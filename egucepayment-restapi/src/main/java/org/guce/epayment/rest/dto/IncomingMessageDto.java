@@ -1,6 +1,7 @@
 package org.guce.epayment.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -8,7 +9,9 @@ import lombok.Data;
  * @author tadzotsa
  */
 @Data
-public class IncomingMessageDto {
+public class IncomingMessageDto implements Serializable {
+
+    private static final long serialVersionUID = 9061630717928558145L;
 
     /**
      * clé secrète chiffré avec ma clé publique
@@ -28,3 +31,4 @@ public class IncomingMessageDto {
     @JsonProperty("SIGNATURE")
     private String signature;
 }
+

@@ -3,13 +3,13 @@ package org.guce.epayment.rest.controllers.jwt;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import org.guce.epayment.core.entities.PartnerType;
 import org.guce.epayment.core.entities.PaymentMode;
 import org.guce.epayment.core.entities.Step;
 import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.entities.UserStep;
+import org.guce.epayment.core.entities.enums.PartnerTypeCode;
+import org.guce.epayment.core.entities.enums.StepCode;
 import org.guce.epayment.core.services.CoreService;
 import org.guce.epayment.core.services.UserStepService;
 import org.guce.epayment.core.utils.Constants;
@@ -18,6 +18,7 @@ import org.guce.epayment.rest.controllers.utils.RestUtils;
 import org.guce.epayment.rest.dto.DefaultDto;
 import org.guce.epayment.rest.dto.PaymentModeDto;
 import org.guce.epayment.rest.dto.StepDto;
+import org.guce.epayment.rest.dto.UserDto;
 import org.guce.epayment.rest.dto.UserStepDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,10 +56,10 @@ public class MultipleValidationController {
 
             userStepDto.setId(userStep.getId());
             userStepDto.setLevel(userStep.getLevel());
-            userStepDto.setUser(RestUtils.getUserDto(userStep.getUser(), Optional.empty()));
-            userStepDto.setStep(StepDto.of(userStep.getStep().getCode(), userStep.getStep().getLabel()));
-            userStepDto.setPaymentMode(userStep.getPaymentMode() == null ? null
-                    : PaymentModeDto.of(userStep.getPaymentMode().getCode(), userStep.getPaymentMode().getLabel()));
+            userStepDto.setUser(RestUtils.downCast(User.class, UserDto.class, userStep.getUser()));
+            userStepDto.setStep(RestUtils.downCast(Step.class, StepDto.class, userStep.getStep()));
+            userStepDto.setPaymentMode(RestUtils.downCast(PaymentMode.class, PaymentModeDto.class,
+                    userStep.getPaymentMode()));
 
             return userStepDto;
         }).collect(Collectors.toList()));
@@ -87,36 +88,37 @@ public class MultipleValidationController {
         PaymentMode paymentMode = null;
 
         if (userStepDto.getPaymentMode() != null) {
-            paymentMode = coreService.findByUniqueKey(Constants.UK_CODE, userStepDto.getPaymentMode().getCode(), PaymentMode.class).get();
+            paymentMode = coreService.findByUniqueKey(Constants.UK_CODE, userStepDto.getPaymentMode().getCode().name(), PaymentMode.class).get();
         }
 
         final User user = coreService.findByUniqueKey(Constants.UK_USER_LOGIN, userStepDto.getUser().getLogin(), User.class).get();
         final int level = userStepDto.getLevel();
 
-        switch (partnerType) {
+        final PartnerTypeCode partnerTypeCode = PartnerTypeCode.valueOf(partnerType);
+        switch (partnerTypeCode) {
 
-            case PartnerType.PARTNER_TYPE_PRINCIPAL: {
+            case PRINCIPAL: {
                 userSteps.add(getUserStep(user,
-                        coreService.findByUniqueKey(Constants.UK_CODE, Step.STEP_TO_PRINCIPAL, Step.class).get(),
+                        coreService.findByUniqueKey(Constants.UK_CODE, StepCode.T11.name(), Step.class).get(),
                         paymentMode, level));
             }
             break;
 
-            case PartnerType.PARTNER_TYPE_BANK:
-            case PartnerType.PARTNER_TYPE_BANK_AGENCY: {
+            case BANK:
+            case BANK_AGENCY: {
 
                 userSteps.add(getUserStep(user,
-                        coreService.findByUniqueKey(Constants.UK_CODE, Step.STEP_TO_PRINCIPAL_BANK, Step.class).get(),
+                        coreService.findByUniqueKey(Constants.UK_CODE, StepCode.T21.name(), Step.class).get(),
                         paymentMode, level));
                 userSteps.add(getUserStep(user,
-                        coreService.findByUniqueKey(Constants.UK_CODE, Step.STEP_TO_BENEFICIARY_BANK, Step.class).get(),
+                        coreService.findByUniqueKey(Constants.UK_CODE, StepCode.T31.name(), Step.class).get(),
                         paymentMode, level));
             }
             break;
 
-            case PartnerType.PARTNER_TYPE_BENEFICIARY: {
+            case BENEFICIARY: {
                 userSteps.add(getUserStep(user,
-                        coreService.findByUniqueKey(Constants.UK_CODE, Step.STEP_TO_BENEFICIARY, Step.class).get(),
+                        coreService.findByUniqueKey(Constants.UK_CODE, StepCode.T41.name(), Step.class).get(),
                         paymentMode, level));
             }
         }
@@ -137,3 +139,4 @@ public class MultipleValidationController {
     }
 
 }
+

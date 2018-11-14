@@ -3,12 +3,13 @@ import {Component} from '@angular/core';
 @Component({
     selector: 'app-footer',
     template: `
-        <div *ngIf="false" class="footer">
-            <div class="card">
-                <div class="card-block">
-                    <span class="">Copyright &copy; GUCE-GIE Octobre 2017</span>
-                    <span class="pull-right"><span class="ui-icon ui-icon-copyright"></span>  <span>{{'copyright' | translate}}</span></span>
-                </div>
+        <div class="footer">
+            <div class="card clearfix">
+                <span class="footer-text-left">e-GUCE Payment Version 1.0</span>
+                <span class="footer-text-right">
+                    <span class="material-icons ui-icon-copyright"></span>
+                    <span>GUCE-GIE - {{'january' | translate}} 2019 - {{'copyright' | translate}}</span>
+                </span>
             </div>
         </div>
     `

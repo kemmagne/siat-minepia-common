@@ -1,6 +1,7 @@
 package org.guce.epayment.core.services;
 
 import org.guce.epayment.core.entities.Role;
+import org.guce.epayment.core.entities.enums.RoleName;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -27,7 +28,7 @@ public class CoreServiceTest {
 
     @Before
     public void init() throws Exception {
-        role = new Role("ADMIN", "Administrateur");
+        role = new Role(RoleName.ADMIN, "Administrateur");
         coreService.save(role, Role.class);
         roleId = role.getId();
     }
@@ -53,3 +54,4 @@ public class CoreServiceTest {
     }
 
 }
+

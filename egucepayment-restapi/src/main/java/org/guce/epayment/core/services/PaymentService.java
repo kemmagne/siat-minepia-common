@@ -11,6 +11,8 @@ import org.guce.epayment.core.entities.PaymentMode;
 import org.guce.epayment.core.entities.Signature;
 import org.guce.epayment.core.entities.Step;
 import org.guce.epayment.core.entities.User;
+import org.guce.epayment.core.entities.enums.InvoiceStatus;
+import org.guce.epayment.core.entities.enums.PaymentStatus;
 
 /**
  *
@@ -18,7 +20,7 @@ import org.guce.epayment.core.entities.User;
  */
 public interface PaymentService {
 
-    void updateInvoices(Payment payment, String status);
+    void updateInvoices(Payment payment, InvoiceStatus status);
 
     Payment init(List<Map<String, Object>> invoices, PaymentMode paymentMode, Partner commiter,
             String partnerReference, Partner bankGateway, int rate, boolean rateOnInvoiceAmount);
@@ -27,7 +29,7 @@ public interface PaymentService {
 
     void update(Payment payment);
 
-    void setDecision(Payment payment, String status);
+    void setDecision(Payment payment, PaymentStatus status);
 
     Signature buildUserSignature(String originMessage, String signature, int level, User user, Step step, Payment payment);
 
@@ -42,3 +44,4 @@ public interface PaymentService {
     Optional<Payment> findPaymentForInvoiceVersion(InvoiceVersion invoiceVersion);
 
 }
+

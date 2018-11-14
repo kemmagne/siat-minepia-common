@@ -1,22 +1,18 @@
-import { Component, AfterViewInit, ElementRef, Renderer, ViewChild, OnDestroy, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef, NgZone, Renderer2 } from '@angular/core';
+import { ScrollPanel, Message } from 'primeng/primeng';
+import { TranslateService } from '@ngx-translate/core';
+import { Config } from '../config';
+import { UserService } from '../services';
 import { LoginService } from "../login/login.service";
-import { Subscription } from "rxjs/Subscription";
-import { Config } from "../config";
-import { DOCUMENT } from "@angular/common";
-import { Router, NavigationEnd } from "@angular/router";
-import { Observable } from "rxjs/Observable";
-import { UserService } from "../services";
-import { Message } from "primeng/primeng";
-import { TranslateService } from "ng2-translate";
+import { Subscription, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
-enum MenuOrientation {
+export enum MenuOrientation {
     STATIC,
     OVERLAY,
     SLIM,
     HORIZONTAL
 }
-
-declare var jQuery: any;
 
 @Component({
     selector: 'app-layout',
@@ -24,7 +20,7 @@ declare var jQuery: any;
     styleUrls: ['./layout.component.css'],
     providers: [LoginService]
 })
-export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
+export class LayoutComponent implements AfterViewInit, OnDestroy, OnInit {
 
     msgs: Message[];
 
@@ -37,7 +33,7 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
     darkMenu = false;
 
-    profileMode = 'inline';
+    profileMode = 'top';
 
     rotateMenuButton: boolean;
 
@@ -67,6 +63,14 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
     menuHoverActive: boolean;
 
+    @ViewChild('layoutContainer') layourContainerViewChild: ElementRef;
+
+    @ViewChild('scrollPanel') layoutMenuScrollerViewChild: ScrollPanel;
+
+    rippleInitListener: any;
+
+    rippleMouseDownListener: any;
+
     userLogin: string;
     password: string;
     lockScreen: boolean;
@@ -76,33 +80,127 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private getMessageSumSub: Subscription;
     private getMessageDetSub: Subscription;
 
-    @ViewChild('layoutContainer') layourContainerViewChild: ElementRef;
-
-    @ViewChild('layoutMenuScroller') layoutMenuScrollerViewChild: ElementRef;
-
-    constructor(private router: Router, public renderer: Renderer, private loginService: LoginService, @Inject(DOCUMENT) private document,
-    private userService: UserService, private translateService: TranslateService) {}
+    constructor(public renderer2: Renderer2, public zone: NgZone, private translate: TranslateService,
+      private userService: UserService, private loginService: LoginService, private router: Router) {}
 
     ngOnInit() {
-        // Scroll to top on route change
-        this.router.events.subscribe((evt) => {
-            if (!(evt instanceof NavigationEnd)) {
-              return;
-            }
-            document.body.scrollTop = 0;
-        });
+        this.zone.runOutsideAngular(() => {this.bindRipple();});
 
         // set session expiration
         this.initializeSessionExpiredSettings();
     }
 
+    bindRipple() {
+        this.rippleInitListener = this.init.bind(this);
+        document.addEventListener('DOMContentLoaded', this.rippleInitListener);
+    }
+
+    init() {
+        this.rippleMouseDownListener = this.rippleMouseDown.bind(this);
+        document.addEventListener('mousedown', this.rippleMouseDownListener, false);
+    }
+
+    rippleMouseDown(e) {
+        for (let target = e.target; target && target !== this; target = target['parentNode']) {
+            if (!this.isVisible(target)) {
+              continue;
+            }
+
+            // Element.matches() -> https://developer.mozilla.org/en-US/docs/Web/API/Element/matches
+            if (this.selectorMatches(target, '.ripplelink, .ui-button')) {
+                const element = target;
+                this.rippleEffect(element, e);
+                break;
+            }
+        }
+    }
+
+    selectorMatches(el, selector) {
+        const p = Element.prototype;
+        const f = p['matches'] || p['webkitMatchesSelector'] || p['mozMatchesSelector'] || p['msMatchesSelector'] || function (s) {
+            return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
+        };
+        return f.call(el, selector);
+    }
+
+    isVisible(el) {
+        return !!(el.offsetWidth || el.offsetHeight);
+    }
+
+    rippleEffect(element, e) {
+        if (element.querySelector('.ink') === null) {
+            const inkEl = document.createElement('span');
+            this.addClass(inkEl, 'ink');
+
+            if (this.hasClass(element, 'ripplelink') && element.querySelector('span')) {
+                element.querySelector('span').insertAdjacentHTML('afterend', '<span class=\'ink\'></span>');
+            } else {
+                element.appendChild(inkEl);
+            }
+        }
+
+        const ink = element.querySelector('.ink');
+        this.removeClass(ink, 'ripple-animate');
+
+        if (!ink.offsetHeight && !ink.offsetWidth) {
+            const d = Math.max(element.offsetWidth, element.offsetHeight);
+            ink.style.height = d + 'px';
+            ink.style.width = d + 'px';
+        }
+
+        const x = e.pageX - this.getOffset(element).left - (ink.offsetWidth / 2);
+        const y = e.pageY - this.getOffset(element).top - (ink.offsetHeight / 2);
+
+        ink.style.top = y + 'px';
+        ink.style.left = x + 'px';
+        ink.style.pointerEvents = 'none';
+        this.addClass(ink, 'ripple-animate');
+    }
+    hasClass(element, className) {
+        if (element.classList) {
+            return element.classList.contains(className);
+        } else {
+            return new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className);
+        }
+    }
+
+    addClass(element, className) {
+        if (element.classList) {
+            element.classList.add(className);
+        } else {
+            element.className += ' ' + className;
+        }
+    }
+
+    removeClass(element, className) {
+        if (element.classList) {
+            element.classList.remove(className);
+        } else {
+            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
+    }
+
+    getOffset(el) {
+        const rect = el.getBoundingClientRect();
+
+        return {
+          top: rect.top + (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0),
+          left: rect.left + (window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0),
+        };
+    }
+
+    unbindRipple() {
+        if (this.rippleInitListener) {
+            document.removeEventListener('DOMContentLoaded', this.rippleInitListener);
+        }
+        if (this.rippleMouseDownListener) {
+            document.removeEventListener('mousedown', this.rippleMouseDownListener);
+        }
+    }
+
     ngAfterViewInit() {
         this.layoutContainer = <HTMLDivElement> this.layourContainerViewChild.nativeElement;
-        this.layoutMenuScroller = <HTMLDivElement> this.layoutMenuScrollerViewChild.nativeElement;
-
-        setTimeout(() => {
-            jQuery(this.layoutMenuScroller).nanoScroller({flash: true});
-        }, 10);
+        setTimeout(() => {this.layoutMenuScrollerViewChild.moveBar(); }, 100);
     }
 
     onLayoutClick() {
@@ -151,12 +249,6 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     onMenuClick($event) {
         this.menuClick = true;
         this.resetMenu = false;
-
-        if (!this.isHorizontal()) {
-            setTimeout(() => {
-                jQuery(this.layoutMenuScroller).nanoScroller();
-            }, 500);
-        }
     }
 
     onTopbarMenuButtonClick(event) {
@@ -175,6 +267,10 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
             this.activeTopbarItem = null; } else {
             this.activeTopbarItem = item; }
 
+        event.preventDefault();
+    }
+
+    onTopbarSubItemClick(event) {
         event.preventDefault();
     }
 
@@ -236,7 +332,8 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        jQuery(this.layoutMenuScroller).nanoScroller({flash: true});
+        this.unbindRipple();
+        //
         this.timerSub.unsubscribe();
         if(this.loginSub) {
             this.loginSub.unsubscribe();
@@ -247,40 +344,6 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         if(this.getMessageSumSub) {
             this.getMessageSumSub.unsubscribe();
         }
-    }
-
-    login() {
-        this.loginSub = this.loginService.login(localStorage.getItem(Config.USER_LOGIN_KEY), this.password).subscribe(
-            res => {
-                let response = res;
-                if(response.data) {
-                    if(0 === +response.data) {
-                        this.alertMessage = {severity: 'warning', summary: 'warning', detail: 'account.no.yet.activated'};
-                        return;
-                    }
-                    if(1 === +response.data) {
-                        this.alertMessage = {severity: 'warning', summary: 'warning', detail: 'account.locked'};
-                        return;
-                    }
-                    return;
-                } else {
-                    //this.userLogin = null;
-                    this.password = null;
-                    this.userService.writeUserInfos(response);
-                    this.lockScreen = false;
-                }
-            },
-            error => {
-                this.errorMessage = error;
-                console.error(this.errorMessage);
-                let statusCode = this.errorMessage.status;
-                if(statusCode === Config.NOT_ACCEPTABLE_STATUS_CODE) {
-                    this.alertMessage = {severity: 'danger', summary: 'error', detail: 'login.password.incorrect'};
-                } else {
-                    //this.loginMessage = {severity: 'danger', summary: 'error', detail: 'any.error.msg'};
-                }
-            }
-        );
     }
 
     private initializeSessionExpiredSettings() {
@@ -319,13 +382,13 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         }
     }
 
-    diplayGrowlMessage(severity: string, summaryKey: string, detailKey: string) {
+    public diplayGrowlMessage(severity: string, summaryKey: string, detailKey: string) {
         let growlMessage: Message = {};
         growlMessage.severity = severity;
-        this.getMessageSumSub = this.translateService.get(summaryKey).subscribe(
+        this.getMessageSumSub = this.translate.get(summaryKey).subscribe(
             summary => {
                 growlMessage.summary = summary;
-                this.getMessageDetSub = this.translateService.get(detailKey).subscribe(
+                this.getMessageDetSub = this.translate.get(detailKey).subscribe(
                     detail => {
                         growlMessage.detail = detail;
                         this.msgs = [growlMessage];
@@ -333,6 +396,56 @@ export class LayoutComponent implements AfterViewInit, OnInit, OnDestroy {
                 );
             }
         );
+    }
+
+    public login() {
+        this.loginSub = this.loginService.login(localStorage.getItem(Config.USER_LOGIN_KEY), this.password).subscribe(
+            res => {
+                let response = res;
+                if(response.data) {
+                    if(0 === +response.data) {
+                        this.alertMessage = {severity: 'warning', summary: 'warning', detail: 'account.no.yet.activated'};
+                        return;
+                    }
+                    if(1 === +response.data) {
+                        this.alertMessage = {severity: 'warning', summary: 'warning', detail: 'account.locked'};
+                        return;
+                    }
+                    return;
+                } else {
+                    //this.userLogin = null;
+                    this.password = null;
+                    this.userService.writeUserInfos(response);
+                    this.lockScreen = false;
+                }
+            },
+            error => {
+                this.errorMessage = error;
+                console.error(this.errorMessage);
+                let statusCode = this.errorMessage.status;
+                if(statusCode === Config.NOT_ACCEPTABLE_STATUS_CODE) {
+                    this.alertMessage = {severity: 'danger', summary: 'error', detail: 'login.password.incorrect'};
+                } else {
+                    //this.loginMessage = {severity: 'danger', summary: 'error', detail: 'any.error.msg'};
+                }
+            }
+        );
+    }
+
+    public changeLanguage(language: string) {
+        this.translate.use(language);
+    }
+
+    public logout() {
+        this.userService.logout(this.router);
+    }
+
+    public goToUserProfile() {
+        this.router.navigate(['/app/user-profile']);
+    }
+
+    public isLoggedIn() {
+        return this.userService.isLoggedIn();
     }
 
 }

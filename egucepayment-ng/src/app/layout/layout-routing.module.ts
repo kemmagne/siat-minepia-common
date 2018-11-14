@@ -2,7 +2,7 @@ import { RouterModule, Routes, ActivatedRouteSnapshot, RouterStateSnapshot } fro
 import { LayoutComponent } from "./layout.component";
 import { AuthenticatedGuard, AdminGuard, DonneurOrdreGuard, DecideurGuard, BeneficiaireGuard, AuditeurBanqueGuard, ControleurBanqueGuard,
   CaissierGuard, AuditeurDonneurOrdreGuard, ControleurDonneurOrdreGuard, ControleurAgenceGuard, NotAuthenticatedGuard } from "../guards";
-import { HomeComponent } from "../home/home.component";
+/*import { HomeComponent } from "../home/home.component";
 import { PrincipalTransferComponent } from "../invoice-payment/principal-transfer/principal-transfer.component";
 import { CashierTransferComponent } from "../invoice-payment/cashier-transfer/cashier-transfer.component";
 import { AssetClearanceComponent } from "../invoice-payment/asset-clearance/asset-clearance.component";
@@ -25,7 +25,11 @@ import { PrincipalsComponent } from "../partners/principals/principals.component
 import { BeneficiariesComponent } from "../partners/beneficiaries/beneficiaries.component";
 import { BanksComponent } from "../partners/banks/banks.component";
 import { AgenciesComponent } from "../partners/agencies/agencies.component";
-import { CampostAccountsManagComponent } from "../campost-accounts-manag/campost-accounts-manag.component";
+import { CampostAccountsManagComponent } from "../campost-accounts-manag/campost-accounts-manag.component";*/
+
+import { UserService } from '../services';
+import { Config } from '../config';
+import { HomeComponent } from '../home/home.component';
 
 const routes: Routes = [
     {
@@ -36,38 +40,38 @@ const routes: Routes = [
             // home route
             {path: 'home', component: HomeComponent, canActivate: [AuthenticatedGuard]},
             // user profile 
-            {path: 'user-profile', component: UserProfileComponent, canActivate: [AuthenticatedGuard]},
+            //{path: 'user-profile', component: UserProfileComponent, canActivate: [AuthenticatedGuard]},
             // paympent routes
-            {path: 'principal-transfer', component: PrincipalTransferComponent, canActivate: [DonneurOrdreGuard]},
-            {path: 'cashier-transfer', component: CashierTransferComponent, canActivate: [CaissierGuard]},
-            {path: 'asset-clearance', component: AssetClearanceComponent, canActivate: [DonneurOrdreGuard]},
-            {path: 'direct-payment', component: DirectPaymentComponent, canActivate: ['directPaymentGuard']},
+            //{path: 'principal-transfer', component: PrincipalTransferComponent, canActivate: [DonneurOrdreGuard]},
+            //{path: 'cashier-transfer', component: CashierTransferComponent, canActivate: [CaissierGuard]},
+            //{path: 'asset-clearance', component: AssetClearanceComponent, canActivate: [DonneurOrdreGuard]},
+            //{path: 'direct-payment', component: DirectPaymentComponent, canActivate: ['directPaymentGuard']},
             // invoices-state
-            {path: 'invoices-state', component: InvoiceStateComponent, canActivate: [AuthenticatedGuard]},
+            //{path: 'invoices-state', component: InvoiceStateComponent, canActivate: [AuthenticatedGuard]},
             // invoices types
-            {path: 'invoices-types-management', component: InvoicesTypesComponent, canActivate: [AdminGuard]},
+            //{path: 'invoices-types-management', component: InvoicesTypesComponent, canActivate: [AdminGuard]},
             // users-management
-            {path: 'users-management', component: UsersManagementComponent, canActivate: [AdminGuard]},
+            //{path: 'users-management', component: UsersManagementComponent, canActivate: [AdminGuard]},
             // users-management
-            {path: 'users-management/:activation', component: UsersManagementComponent, canActivate: [AdminGuard]},
+            //{path: 'users-management/:activation', component: UsersManagementComponent, canActivate: [AdminGuard]},
             // configs-management
-            {path: 'configs-management', component: ConfigsManagementComponent, canActivate: [AdminGuard]},
+            //{path: 'configs-management', component: ConfigsManagementComponent, canActivate: [AdminGuard]},
             // sitting-date-management
-            {path: 'sitting-date-management', component: SittingDateManagementComponent, canActivate: [AdminGuard]},
+            //{path: 'sitting-date-management', component: SittingDateManagementComponent, canActivate: [AdminGuard]},
             // campost-accounts-management
-            {path: 'campost-accounts-management', component: CampostAccountsManagComponent, canActivate: [AdminGuard]},
+            //{path: 'campost-accounts-management', component: CampostAccountsManagComponent, canActivate: [AdminGuard]},
             // partners-management
-            {path: 'partners-management/principals', component: PrincipalsComponent, canActivate: [AdminGuard]},
-            {path: 'partners-management/beneficiaries', component: BeneficiariesComponent, canActivate: [AdminGuard]},
-            {path: 'partners-management/banks', component: BanksComponent, canActivate: [AdminGuard]},
-            {path: 'partners-management/agencies', component: AgenciesComponent, canActivate: [AdminGuard]},
+            //{path: 'partners-management/principals', component: PrincipalsComponent, canActivate: [AdminGuard]},
+            //{path: 'partners-management/beneficiaries', component: BeneficiariesComponent, canActivate: [AdminGuard]},
+            //{path: 'partners-management/banks', component: BanksComponent, canActivate: [AdminGuard]},
+            //{path: 'partners-management/agencies', component: AgenciesComponent, canActivate: [AdminGuard]},
             // partners-management
-            {path: 'receipts-monitoring', component: ReceiptsMonitoringComponent, canActivate: [AdminGuard]},
+            //{path: 'receipts-monitoring', component: ReceiptsMonitoringComponent, canActivate: [AdminGuard]},
             // transfer orders
-            {path: 'transfer-orders-validation', component: ToValidationComponent, canActivate: ['toValidationGuard']},
-            {path: 'transfer-orders-follow-up', component: ToFollowUpComponent, canActivate: ['toFollowUpGuard']},
-            {path: 'transfer-orders-history', component: ToHistoryComponent, canActivate: ['toHistoryGuard']},
-            {path: 'transfer-orders-acknowled', component: ToAcknowledComponent, canActivate: [BeneficiaireGuard]}
+            //{path: 'transfer-orders-validation', component: ToValidationComponent, canActivate: ['toValidationGuard']},
+            //{path: 'transfer-orders-follow-up', component: ToFollowUpComponent, canActivate: ['toFollowUpGuard']},
+            //{path: 'transfer-orders-history', component: ToHistoryComponent, canActivate: ['toHistoryGuard']},
+            //{path: 'transfer-orders-acknowled', component: ToAcknowledComponent, canActivate: [BeneficiaireGuard]}
         ]
     }
 ];

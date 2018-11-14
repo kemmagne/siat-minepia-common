@@ -75,7 +75,7 @@ public class CoreServiceImpl implements CoreService {
     }
 
     @Override
-    public <T> T save(final Object entity, final Class<T> clazz) {
+    public <T> T save(final T entity, final Class<T> clazz) {
 
         try {
 

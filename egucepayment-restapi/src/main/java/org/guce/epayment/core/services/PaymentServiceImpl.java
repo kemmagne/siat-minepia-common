@@ -17,6 +17,8 @@ import org.guce.epayment.core.entities.PaymentMode;
 import org.guce.epayment.core.entities.Signature;
 import org.guce.epayment.core.entities.Step;
 import org.guce.epayment.core.entities.User;
+import org.guce.epayment.core.entities.enums.InvoiceStatus;
+import org.guce.epayment.core.entities.enums.PaymentStatus;
 import org.guce.epayment.core.repositories.InvoiceRepository;
 import org.guce.epayment.core.repositories.InvoiceVersionRepository;
 import org.guce.epayment.core.repositories.PaymentInvoiceVersionRepository;
@@ -49,7 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentDao paymentDao;
 
     @Override
-    public void updateInvoices(final Payment payment, final String status) {
+    public void updateInvoices(final Payment payment, final InvoiceStatus status) {
 
         final List<PaymentInvoiceVersion> pivs = payment.getInvoicesVersions();
 
@@ -58,11 +60,11 @@ public class PaymentServiceImpl implements PaymentService {
             final InvoiceVersion invoiceVersion = piv.getInvoiceVersion();
             final Invoice invoice = invoiceVersion.getInvoice();
 
-            if (Invoice.INVOICE_PAID.equals(status)) {
+            if (InvoiceStatus.PAID.equals(status)) {
 
                 BigDecimal paidAmount = invoice.getPaidAmount();
 
-                paidAmount = paidAmount.add(piv.getAmountForInvoice());
+                paidAmount = paidAmount.add(piv.getAmount());
                 invoice.setPaidAmount(paidAmount);
                 invoiceVersion.setPaymentDate(LocalDateTime.now());
             }
@@ -90,24 +92,24 @@ public class PaymentServiceImpl implements PaymentService {
             final Invoice invoice = invoiceRepository.findById(invoiceId).get();
             final InvoiceVersion invoiceVersion = invoiceVersionRepository.findByInvoiceAndNumber(invoiceId, invoiceVersionNumber).get();
 
-            if (!Invoice.INVOICE_PAYMENT_STARTED.equals(invoice.getStatus())) {
+            if (!InvoiceStatus.PAYMENT_IN_PROCESS.equals(invoice.getStatus())) {
 
                 registerInvoiceToPayment(payment, invoice, invoiceVersion, rate, rateOnInvoiceAmount);
                 BigDecimal amountToPay = (BigDecimal) invoiceInfos.get(InvoiceConstants.INVOICE_AMOUNT_TO_PAY);
                 payment.setAmount(payment.getAmount().add(amountToPay));
 
-                invoice.getSubInvoices().stream().forEach(subInvoice -> {
-
-                    final InvoiceVersion subInvoiceVersion = invoiceVersionRepository.findByInvoiceAndNumber(subInvoice.getId(), invoiceVersionNumber).get();
-                    registerInvoiceToPayment(payment, subInvoice, subInvoiceVersion, rate, rateOnInvoiceAmount);
-                });
+//                invoice.getSubInvoices().stream().forEach(subInvoice -> {
+//
+//                    final InvoiceVersion subInvoiceVersion = invoiceVersionRepository.findByInvoiceAndNumber(subInvoice.getId(), invoiceVersionNumber).get();
+//                    registerInvoiceToPayment(payment, subInvoice, subInvoiceVersion, rate, rateOnInvoiceAmount);
+//                });
             }
         });
 
         payment.setMode(paymentMode);
         payment.setCommiter(commiter);
         payment.setPartnerReference(partnerReference);
-        payment.setStatus(Payment.PAYMENT_PENDING);
+        payment.setStatus(PaymentStatus.PENDING);
         payment.setBankGateway(bankGateway);
 
         return payment;
@@ -128,7 +130,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         payment.getInvoicesVersions().add(new PaymentInvoiceVersion(payment, invoiceVersion, amountToPay, rate));
 
-        invoice.setStatus(Invoice.INVOICE_PAYMENT_STARTED);
+        invoice.setStatus(InvoiceStatus.PAYMENT_IN_PROCESS);
         invoiceRepository.save(invoice);
 
         return amountToPay;
@@ -151,7 +153,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void setDecision(Payment payment, String status) {
+    public void setDecision(Payment payment, PaymentStatus status) {
 
         payment.setStatus(status);
         payment.setValidationDate(LocalDateTime.now());

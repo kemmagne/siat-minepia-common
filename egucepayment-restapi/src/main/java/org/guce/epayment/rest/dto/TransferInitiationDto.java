@@ -1,5 +1,6 @@
 package org.guce.epayment.rest.dto;
 
+import java.io.Serializable;
 import java.util.List;
 import lombok.Data;
 
@@ -8,7 +9,9 @@ import lombok.Data;
  * @author tadzotsa
  */
 @Data
-public class TransferInitiationDto {
+public class TransferInitiationDto implements Serializable {
+
+    private static final long serialVersionUID = 3277590058994117049L;
 
     private List<InvoiceDto> invoices;
     private BankAccountDto debitAccout;
@@ -18,3 +21,4 @@ public class TransferInitiationDto {
     private String privateKey;
 
 }
+

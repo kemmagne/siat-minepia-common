@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface UserStepRepository extends JpaRepository<UserStep, BigDecimal> {
 
-    @Query("SELECT us FROM UserStep us WHERE us.step.code <> '" + Step.STEP_TO_BENEFICIARY_BANK + "' AND us.user.partner.id = ?1 ORDER BY us.level")
+    @Query("SELECT us FROM UserStep us WHERE us.step.code <> 'T31' AND us.user.partner.id = ?1 ORDER BY us.level")
     List<UserStep> findByPartner(BigDecimal partnerId);
 
     @Query("SELECT us FROM UserStep us WHERE us.user = ?1 AND us.step = ?2 AND us.paymentMode = ?3 AND us.level = ?4 ORDER BY us.level")
@@ -29,3 +29,4 @@ public interface UserStepRepository extends JpaRepository<UserStep, BigDecimal> 
     Optional<UserStep> find(User user, Step step, int level);
 
 }
+

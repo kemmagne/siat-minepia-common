@@ -1,14 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services';
+import { LoginService } from './login.service';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-
-import {LoginService} from './login.service';
-
+import { TranslateService } from '@ngx-translate/core';
 import { Config } from '../config';
-import { Utils } from '../utils';
-import { Subscription } from "rxjs/Subscription";
-import { TranslateService } from "ng2-translate";
-import { UserService } from "../services";
-import { PersistenceService, StorageType } from "angular-persistence";
+import { SelectItem } from 'primeng/primeng';
 
 @Component({
     selector: 'app-login',
@@ -16,7 +13,10 @@ import { PersistenceService, StorageType } from "angular-persistence";
     styleUrls: ['./login.component.css'],
     providers: [LoginService, UserService]
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
+
+    languages: SelectItem[];
+    selectedLanguage: string;
 
     alertMessage: {
         severity: string;
@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     public userLogin: string;
     public password: string;
+    
     private token: string;
     private userRoles: string
 
@@ -43,11 +44,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     lang: string;
 
-    constructor(private loginService: LoginService, private router: Router, private translateService: TranslateService,
-    private userService: UserService, private persistenceService: PersistenceService) {}
+    constructor(private loginService: LoginService, private router: Router,
+    private translate: TranslateService, private userService: UserService) {}
 
     ngOnInit() {
-        this.lang = this.translateService.currentLang;
+        this.lang = this.translate.currentLang;
+        this.languages = [
+            {value: null, label: 'language'},
+            {value: 'fr', label: 'fr'},
+            {value: 'en', label: 'en'}
+        ];
+        this.selectedLanguage = this.translate.currentLang;
     }
 
     ngOnDestroy() {
@@ -60,7 +67,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     login() {
-        this.persistenceService.set('test', 'test', {type: StorageType.MEMORY});
         this.loginSub = this.loginService.login(this.userLogin, this.password).subscribe(
             res => {
                 console.info(res);
@@ -137,7 +143,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     changeLanguage(lang: string) {
-        this.translateService.use(lang);
+        this.translate.use(lang);
+    }
+
+    languageChange() {
+        if(!this.selectedLanguage) {
+            this.changeLanguage('fr');
+        } else {
+            this.changeLanguage(this.selectedLanguage);
+        }
     }
 
 }

@@ -37,9 +37,10 @@ public class InvoiceController {
 
         final List<Invoice> invoicesFound = invoiceService.findByNumber(invoiceNumber);
 
-        return ResponseEntity.ok(invoicesFound.stream().map(
-                invoice -> RestUtils.getInvoiceDto(invoice)
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(invoicesFound.stream().map(invoice -> {
+            final InvoiceDto invoiceDto = RestUtils.downCast(Invoice.class, InvoiceDto.class, invoice);
+            return invoiceDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -50,12 +51,14 @@ public class InvoiceController {
 
             final List<Invoice> invoicesFound = (List<Invoice>) searchService.searchInvoices(filter);
 
-            return ResponseEntity.ok(invoicesFound.stream().map(
-                    invoice -> RestUtils.getInvoiceDto(invoice)
-            ).collect(Collectors.toList()));
+            return ResponseEntity.ok(invoicesFound.stream().map(invoice -> {
+                final InvoiceDto invoiceDto = RestUtils.downCast(Invoice.class, InvoiceDto.class, invoice);
+                return invoiceDto;
+            }).collect(Collectors.toList()));
         } else {
             return ResponseEntity.ok(DefaultDto.of(searchService.searchInvoices(filter).toString()));
         }
     }
 
 }
+

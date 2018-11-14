@@ -64,9 +64,10 @@ public class UserController {
 
         final List<User> allUsers = coreService.findAll(User.class);
 
-        return ResponseEntity.ok(allUsers.stream().map(
-                user -> RestUtils.getUserDto(user, Optional.empty())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(allUsers.stream().map(user -> {
+            final UserDto userDto = RestUtils.downCast(User.class, UserDto.class, user);
+            return userDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -113,9 +114,7 @@ public class UserController {
         user.setEmail(userDto.getEmail());
         user.setResetPassword(admin);
         user.setPartner(coreService.findById(userDto.getPartner().getId(), Partner.class).get());
-        user.setRoles(userDto.getRoles().stream().map(
-                roleName -> coreService.findByUniqueKey(Constants.UK_ROLE_NAME, roleName, Role.class).get()
-        ).collect(Collectors.toList()));
+        user.setRoles(userDto.getRoles());
 
         String password = null;
 
@@ -203,9 +202,10 @@ public class UserController {
 
         final List<Role> allRoles = coreService.findAll(Role.class);
 
-        return ResponseEntity.ok(allRoles.stream().map(
-                role -> RoleDto.of(role.getName(), role.getDescription())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(allRoles.stream().map(role -> {
+            final RoleDto roleDto = RestUtils.downCast(Role.class, RoleDto.class, role);
+            return roleDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -214,9 +214,10 @@ public class UserController {
 
         final List<User> usersByRoles = userService.findByRoles(roles);
 
-        return ResponseEntity.ok(usersByRoles.stream().map(
-                user -> RestUtils.getUserDto(user, Optional.empty())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(usersByRoles.stream().map(user -> {
+            final UserDto userDto = RestUtils.downCast(User.class, UserDto.class, user);
+            return userDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -225,9 +226,10 @@ public class UserController {
 
         final List<User> desactivatedUsers = userService.findDesactivedUsers();
 
-        return ResponseEntity.ok(desactivatedUsers.stream().map(
-                user -> RestUtils.getUserDto(user, Optional.empty())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(desactivatedUsers.stream().map(user -> {
+            final UserDto userDto = RestUtils.downCast(User.class, UserDto.class, user);
+            return userDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -236,9 +238,10 @@ public class UserController {
 
         final List<User> lockedUsers = userService.findLockedUsers();
 
-        return ResponseEntity.ok(lockedUsers.stream().map(
-                user -> RestUtils.getUserDto(user, Optional.empty())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(lockedUsers.stream().map(user -> {
+            final UserDto userDto = RestUtils.downCast(User.class, UserDto.class, user);
+            return userDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -267,7 +270,9 @@ public class UserController {
             return ResponseEntity.ok(DefaultDto.of("NULL"));
         }
 
-        return ResponseEntity.ok(RestUtils.getUserDto(userOp.get(), Optional.empty()));
+        final UserDto userDto = RestUtils.downCast(User.class, UserDto.class, userOp.get());
+
+        return ResponseEntity.ok(userDto);
     }
 
     @ResponseBody
@@ -277,9 +282,11 @@ public class UserController {
 
         final List<User> usersByPartnerAndRoles = userService.findByPartnerAndRoles(partnerId, roles);
 
-        return ResponseEntity.ok(usersByPartnerAndRoles.stream().map(
-                user -> RestUtils.getUserDto(user, Optional.empty())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(usersByPartnerAndRoles.stream().map(user -> {
+            final UserDto userDto = RestUtils.downCast(User.class, UserDto.class, user);
+            return userDto;
+        }).collect(Collectors.toList()));
     }
 
 }
+

@@ -15,7 +15,7 @@ import javax.xml.bind.JAXBException;
 import org.apache.commons.lang3.StringUtils;
 import org.guce.epayment.core.dao.CoreDao;
 import org.guce.epayment.core.documents.PAY602DOCUMENT;
-import org.guce.epayment.core.entities.Invoice;
+import org.guce.epayment.core.entities.InvoiceLine;
 import org.guce.epayment.core.entities.InvoiceVersion;
 import org.guce.epayment.core.entities.PaymentInvoiceVersion;
 import org.guce.epayment.core.entities.User;
@@ -122,7 +122,7 @@ public class MessageServiceImpl implements MessageService {
         document.setCONTENT(new PAY602DOCUMENT.CONTENT());
         document.getCONTENT().setPAIEMENT(new PAY602DOCUMENT.CONTENT.PAIEMENT());
         document.getCONTENT().getPAIEMENT().setENCAISSEMENT(new PAY602DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT());
-        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setMONTANT(piv.getAmountForInvoice().toString());
+        document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setMONTANT(piv.getAmount().toString());
         document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setCANALENCAISSEMENT(Constants.E_GUCE_PARTNER_CODE);
         document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setDATEENCAISSEMENT(piv.getInvoiceVersion().getPaymentDate().format(dtFormatter));
         document.getCONTENT().getPAIEMENT().getENCAISSEMENT().setFORMATDATEENCAISSEMENT(dateFormat);
@@ -139,19 +139,17 @@ public class MessageServiceImpl implements MessageService {
                 + (signator.getFirstName() != null ? " " + signator.getFirstName() : ""));
         document.getCONTENT().getPAIEMENT().getSIGNATAIRE().setSOCIETE(piv.getPayment().getBankGateway().getName());
 
-        final List<Invoice> subInvoices = piv.getInvoiceVersion().getInvoice().getSubInvoices();
+        final List<InvoiceLine> invoicesLines = piv.getInvoiceVersion().getInvoiceLines();
 
         document.getCONTENT().getPAIEMENT().setREPARTITION(new PAY602DOCUMENT.CONTENT.PAIEMENT.REPARTITION());
 
-        subInvoices.stream().map((subInv) -> {
+        invoicesLines.stream().map((invoiceLine) -> {
 
             final PAY602DOCUMENT.CONTENT.PAIEMENT.REPARTITION.BENEFICIAIRE beneficiaire = new PAY602DOCUMENT.CONTENT.PAIEMENT.REPARTITION.BENEFICIAIRE();
 
-            beneficiaire.setCODE(subInv.getBeneficiary().getCode());
-            beneficiaire.setLIBELLE(subInv.getBeneficiary().getName());
-            beneficiaire.setMONTANT(subInv.getInvoiceVersions()
-                    .stream().filter(invVers -> subInv.getLastVersionNumber() == invVers.getNumber()).findFirst().get()
-                    .getBalanceAmount());
+            beneficiaire.setCODE(invoiceLine.getBeneficiary().getCode());
+            beneficiaire.setLIBELLE(invoiceLine.getBeneficiary().getName());
+            beneficiaire.setMONTANT(invoiceLine.getAmountToPay());
 
             return beneficiaire;
         }).forEachOrdered((beneficiaire) -> {
@@ -170,7 +168,7 @@ public class MessageServiceImpl implements MessageService {
             final Map<String, LocalDateTime> map = new HashMap<>();
 
             ids.put("ID", piv.getInvoiceVersion().getId());
-            map.put("CONFIRMATION_DATE", LocalDateTime.now());
+            map.put("PAY_CONFIRM_DATE", LocalDateTime.now());
 
             coreDao.updateEntity(InvoiceVersion.class, ids, map);
         } catch (JAXBException ex) {

@@ -1,15 +1,15 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { TranslateService } from "ng2-translate";
-import { BlockableUI } from "primeng/primeng";
-import { PersistenceService, StorageType } from "angular-persistence";
+import {Component, OnInit} from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
 
-    constructor(private translate: TranslateService) {}
+    constructor(private translate: TranslateService) {
+    }
 
     ngOnInit() {
         this.initialiazeLanguageSettings();
@@ -36,6 +36,10 @@ export class AppComponent implements OnInit {
         let browserLang = this.translate.getBrowserLang();
         lang = browserLang.match(/en|fr/) ? browserLang : lang;
         this.translate.use(lang);
+    }
+
+    public changeLanguage(language: string) {
+        this.translate.use(language);
     }
 
 }

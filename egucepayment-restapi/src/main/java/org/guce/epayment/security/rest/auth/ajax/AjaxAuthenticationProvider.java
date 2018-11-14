@@ -47,7 +47,7 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
                 .orElseThrow(() -> new BadCredentialsException("Authentication Failed. Login or Password not valid."));
 
         List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
         final Map<String, Object> infos = new HashMap<>();
@@ -65,3 +65,4 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
     }
 
 }
+

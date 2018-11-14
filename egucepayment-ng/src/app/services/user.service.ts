@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Config } from '../config';
-import { PersistenceService } from "angular-persistence";
 
 @Injectable()
 export class UserService {
@@ -10,8 +9,8 @@ export class UserService {
     constructor() {}
 
     isLoggedIn(): boolean {
-        return !!localStorage.getItem(Config.JWT_TOKEN_KEY) && !!localStorage.getItem(Config.USER_LOGIN_KEY)
-        && !!localStorage.getItem(Config.USER_ROLES_KEY);
+        return /*true || */(!!localStorage.getItem(Config.JWT_TOKEN_KEY) && !!localStorage.getItem(Config.USER_LOGIN_KEY)
+        && !!localStorage.getItem(Config.USER_ROLES_KEY));
     }
 
     logout(router: Router) {

@@ -1,5 +1,6 @@
 package org.guce.epayment.rest.dto;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -7,7 +8,9 @@ import lombok.Data;
  * @author tadzotsa
  */
 @Data
-public class FilterTransferOrderDto {
+public class FilterTransferOrderDto implements Serializable {
+
+    private static final long serialVersionUID = 5531347083515182720L;
 
     private String toReference;
     private String taxPayerNumber;
@@ -21,3 +24,4 @@ public class FilterTransferOrderDto {
     private String bank;
 
 }
+

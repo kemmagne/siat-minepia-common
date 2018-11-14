@@ -4,15 +4,19 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.guce.epayment.core.entities.enums.RoleName;
 
 /**
  *
@@ -27,29 +31,21 @@ public class Role implements Serializable {
 
     private static final long serialVersionUID = 5678981891772549444L;
 
-    public static final String ROLE_ADMIN = "ADMIN".intern();
-    public static final String ROLE_DONNEUR_ORDRE = "DONNEUR_ORDRE".intern();
-    public static final String ROLE_CONTROLEUR_DONNEUR_ORDRE = "CONTROLEUR_DONNEUR_ORDRE".intern();
-    public static final String ROLE_AUDITEUR_DONNEUR_ORDRE = "AUDITEUR_DONNEUR_ORDRE".intern();
-    public static final String ROLE_CAISSIER = "CAISSIER".intern();
-    public static final String ROLE_CONTROLEUR_AGENCE = "CONTROLEUR_AGENCE".intern();
-    public static final String ROLE_CONTROLEUR_BANQUE = "CONTROLEUR_BANQUE".intern();
-    public static final String ROLE_AUDITEUR_BANQUE = "AUDITEUR_BANQUE".intern();
-    public static final String ROLE_BENEFICIAIRE = "BENEFICIAIRE".intern();
-    public static final String ROLE_DECIDEUR = "DECIDEUR".intern();
-
     /**
      * The id.
      */
     @Id
     @Column(name = "ID")
-    @SequenceGenerator(name = "ROLE_SEQ", sequenceName = "ROLE_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_SEQ")
-    private Integer id;
+    @SequenceGenerator(name = "ROLE_SEQ_GEN", sequenceName = "ROLE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_SEQ_GEN")
+    private int id;
 
-    @Column(name = "NAME", unique = true, nullable = false)
-    private String name;
-    @Column(name = "DESCRIPTION", nullable = false)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "NAME", unique = true)
+    private RoleName name;
+    @NotNull
+    @Column(name = "DESCRIPTION")
     private String description;
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
@@ -57,9 +53,10 @@ public class Role implements Serializable {
     public Role() {
     }
 
-    public Role(String name, String description) {
+    public Role(RoleName name, String description) {
         this.name = name;
         this.description = description;
     }
 
 }
+

@@ -28,7 +28,7 @@ public interface CoreService {
      * @param entityClass the entity class
      * @return the saved entity
      */
-    <T> T save(Object entity, Class<T> entityClass);
+    <T> T save(T entity, Class<T> entityClass);
 
     /**
      * delete entity in DB
@@ -64,3 +64,4 @@ public interface CoreService {
     <E> void updateEntity(Class<E> entityClass, Map<String, ? extends Object> ids, Map<String, ? extends Object> map);
 
 }
+

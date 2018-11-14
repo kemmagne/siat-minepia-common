@@ -1,30 +1,13 @@
 package org.guce.epayment.rest.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.guce.epayment.core.entities.Step;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(of = {"code"})
-public class StepDto {
+public class StepDto extends Step {
 
-    private String code;
-    private String label;
-
-    public StepDto() {
-    }
-
-    private StepDto(String code, String label) {
-        this.code = code;
-        this.label = label;
-    }
-
-    public static StepDto of(String code, String label) {
-
-        return new StepDto(code, label);
-    }
+    private static final long serialVersionUID = -8778023712788995519L;
 
 }

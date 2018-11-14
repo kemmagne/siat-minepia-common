@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -33,24 +34,29 @@ public class Asset implements Serializable {
     @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
-    @Column(name = "REFERENCE", nullable = false, length = 50)
+    @NotNull
+    @Column(name = "REFERENCE", length = 50)
     private String reference;
-    @Column(name = "ASSET_DATE", nullable = false)
+    @NotNull
+    @Column(name = "ASSET_DATE")
     private LocalDate assetDate;
-    @Column(name = "AMOUNT", nullable = false, precision = 38, scale = 4)
+    @NotNull
+    @Column(name = "AMOUNT", precision = 38, scale = 4)
     private BigDecimal amount;
-    @JoinColumn(name = "DECLARER_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "DECLARER_ID")
     @ManyToOne
     private Partner declarer;
-    @JoinColumn(name = "OWNER_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "OWNER_ID")
     @ManyToOne
     private Partner owner;
-    @JoinColumn(name = "CURRENT_USER_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "CURRENT_USER_ID")
     @ManyToOne
     private Partner currentUser;
-//    @OneToMany(mappedBy = "assetUsed")
-//    private List<CoreAssetClearance> assetUtilizations;
-    @JoinColumn(name = "TYPE_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "TYPE_ID")
     @ManyToOne
     private AssetType type;
     @OneToMany(mappedBy = "asset", cascade = CascadeType.PERSIST, orphanRemoval = true)
@@ -64,3 +70,4 @@ public class Asset implements Serializable {
     }
 
 }
+

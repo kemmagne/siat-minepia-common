@@ -337,5 +337,15 @@
     "card.number.part": "N° De Carte (4 derniers chiffres)",
     "no.invoice.provided": "Aucune facture n'a été sélectionnée pour le paiement",
     "payment.confirmation": "Confirmation du paiement",
-    "dont.have.partner": "Vous devez appartenir à un partenaire enregistré"
+    "dont.have.partner": "Vous devez appartenir à un partenaire enregistré",
+    "ergo.params": "Paramètres d'ergonomie",
+    "menu.orientation": "Orientation du menu",
+    "menu.shine": "Brillance du menu",
+    "static.menu": "Static",
+    "overlay.menu": "Overlay",
+    "slim.menu": "Slim",
+    "horizontal.menu": "Horizontal",
+    "light.menu": "Clair",
+    "dark.menu": "Sombre",
+    "january": "Janvier"
 }

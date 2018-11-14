@@ -38,8 +38,6 @@ public interface Constants {
 
     static final String UK_CODE = "code".intern();
 
-    static final String UK_TAX_PAYER_NUMBER = "taxPayerNumber".intern();
-
     static final String LOCALE_FR = "fr".intern();
 
     static final String LOCALE_EN = "en".intern();
@@ -55,3 +53,4 @@ public interface Constants {
     static final String GUCE_PAYMENT_RESPONSE_DOC_TYPE = "PAY602";
 
 }
+

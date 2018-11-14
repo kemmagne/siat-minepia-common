@@ -5,7 +5,6 @@ import org.guce.epayment.security.rest.auth.models.JwtToken;
 import org.guce.epayment.security.rest.auth.jwt.JwtTokenFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.repositories.UserRepository;
 import org.guce.epayment.rest.controllers.utils.RestUtils;
+import org.guce.epayment.rest.dto.UserDto;
 import org.guce.epayment.security.services.EncryptorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,10 +60,12 @@ public class AjaxAwareAuthenticationSuccessHandler implements AuthenticationSucc
 //
         final User user = userRepository.findByLogin(userContext.getLogin()).get();
         final String token = jwtTokenEncryption ? encryptorService.encrypt(accessToken.getToken()) : accessToken.getToken();
+        final UserDto userDto = RestUtils.downCast(User.class, UserDto.class, user);
+        userDto.setToken(token);
 
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        mapper.writeValue(response.getWriter(), RestUtils.getUserDto(user, Optional.of(token)));
+        mapper.writeValue(response.getWriter(), userDto);
 
         clearAuthenticationAttributes(request);
     }
@@ -80,3 +82,4 @@ public class AjaxAwareAuthenticationSuccessHandler implements AuthenticationSucc
     }
 
 }
+

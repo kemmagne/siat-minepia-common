@@ -3,7 +3,7 @@ package org.guce.epayment.security.rest.config;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
-import static org.guce.epayment.core.entities.Role.*;
+import org.guce.epayment.core.entities.enums.RoleName;
 import org.guce.epayment.security.rest.auth.ajax.AjaxAuthenticationProvider;
 import org.guce.epayment.security.rest.auth.ajax.AjaxLoginProcessingFilter;
 import org.guce.epayment.security.rest.auth.CustomCorsFilter;
@@ -124,41 +124,46 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(FORM_BASED_LOGIN_ENTRY_POINT, PUBLIC_URL_PATTERN).permitAll()
-                .antMatchers("/restapi/jwt/admin/**").hasAuthority(ROLE_ADMIN)
-                .antMatchers("/restapi/jwt/cashier/**").hasAuthority(ROLE_CAISSIER)
+                .antMatchers("/restapi/jwt/admin/**").hasAuthority(RoleName.ADMIN.name())
+                .antMatchers("/restapi/jwt/cashier/**").hasAuthority(RoleName.CASHIER.name())
                 //
                 .antMatchers("/restapi/jwt/banks/accounts/*", "/restapi/banks/accounts/by-owner/*")
-                .hasAnyAuthority(ROLE_ADMIN, ROLE_DONNEUR_ORDRE)
+                .hasAnyAuthority(RoleName.ADMIN.name(), RoleName.PRINCIPAL.name())
                 //
                 .antMatchers("/restapi/jwt/statistics/transfer/orders/by-bank/last/*")
-                .hasAnyAuthority(ROLE_CAISSIER, ROLE_CONTROLEUR_AGENCE, ROLE_CONTROLEUR_BANQUE,
-                        ROLE_AUDITEUR_BANQUE)
+                .hasAnyAuthority(RoleName.CASHIER.name(), RoleName.AGENCY_CONTROLLER.name(),
+                        RoleName.BANK_CONTROLLER.name(), RoleName.BANK_AUDITOR.name())
                 //
                 .antMatchers("/restapi/jwt/report/transfer/orders/pdf/**", "/restapi/jwt/report/transfer/orders/excel/**",
                         "/restapi/jwt/transfers/orders/filter")
-                .hasAnyAuthority(ROLE_CAISSIER, ROLE_CONTROLEUR_AGENCE, ROLE_CONTROLEUR_BANQUE,
-                        ROLE_AUDITEUR_BANQUE, ROLE_BENEFICIAIRE, ROLE_DECIDEUR)
+                .hasAnyAuthority(RoleName.CASHIER.name(), RoleName.AGENCY_CONTROLLER.name(),
+                        RoleName.BANK_CONTROLLER.name(), RoleName.BANK_AUDITOR.name(),
+                        RoleName.BENEFICIARY.name(), RoleName.DECISION_MAKER.name())
                 //
                 .antMatchers("/restapi/jwt/transfers/orders/initiation/*")
-                .hasAnyAuthority(ROLE_CAISSIER, ROLE_DONNEUR_ORDRE)
+                .hasAnyAuthority(RoleName.CASHIER.name(), RoleName.PRINCIPAL.name())
                 //
                 .antMatchers("/restapi/jwt/transfers/orders/validations")
-                .hasAnyAuthority(ROLE_CONTROLEUR_DONNEUR_ORDRE, ROLE_CONTROLEUR_AGENCE, ROLE_CONTROLEUR_BANQUE)
+                .hasAnyAuthority(RoleName.PRINCIPAL_CONTROLLER.name(),
+                        RoleName.AGENCY_CONTROLLER.name(), RoleName.BANK_CONTROLLER.name())
                 //
                 .antMatchers("/restapi/jwt/transfers/orders/**")
-                .hasAnyAuthority(ROLE_DONNEUR_ORDRE, ROLE_CONTROLEUR_DONNEUR_ORDRE, ROLE_AUDITEUR_DONNEUR_ORDRE,
-                        ROLE_CAISSIER, ROLE_CONTROLEUR_AGENCE, ROLE_CONTROLEUR_BANQUE, ROLE_AUDITEUR_BANQUE)
+                .hasAnyAuthority(RoleName.PRINCIPAL.name(), RoleName.PRINCIPAL_CONTROLLER.name(),
+                        RoleName.PRINCIPAL_AUDITOR.name(), RoleName.CASHIER.name(),
+                        RoleName.AGENCY_CONTROLLER.name(), RoleName.BANK_CONTROLLER.name(),
+                        RoleName.BANK_AUDITOR.name())
                 //
                 .antMatchers("/restapi/jwt/transfers/orders/by-validator/**")
-                .hasAnyAuthority(ROLE_DONNEUR_ORDRE, ROLE_CONTROLEUR_DONNEUR_ORDRE,
-                        ROLE_CAISSIER, ROLE_CONTROLEUR_AGENCE, ROLE_CONTROLEUR_BANQUE)
+                .hasAnyAuthority(RoleName.PRINCIPAL.name(), RoleName.PRINCIPAL_CONTROLLER.name(),
+                        RoleName.CASHIER.name(), RoleName.AGENCY_CONTROLLER.name(),
+                        RoleName.BANK_CONTROLLER.name())
                 //
                 .antMatchers("/restapi/jwt/statistics/transfer/orders/by-beneficiary/last/*",
                         "/restapi/jwt/transfers/orders/acknowled/**", "/restapi/jwt/transfers/orders/stats")
-                .hasAuthority(ROLE_BENEFICIAIRE)
+                .hasAuthority(RoleName.BENEFICIARY.name())
                 //
                 .antMatchers("/restapi/jwt/statistics/transfer/orders/by-decision-maker/last/*")
-                .hasAuthority(ROLE_DECIDEUR)
+                .hasAuthority(RoleName.DECISION_MAKER.name())
                 .and()
                 .authorizeRequests()
                 .antMatchers(TOKEN_BASED_AUTH_ENTRY_POINT, DIGEST_URL_PATTERN).authenticated()
@@ -180,3 +185,4 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
+

@@ -1,0 +1,90 @@
+.selectWrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+    background:#FFFFFF url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%3E%3Cpath%20d%3D%22M4.33%208.5L0%201L8.66%201z%22%20fill%3D%22%2300AEA9%22%2F%3E%3C%2Fsvg%3E') right 13px center no-repeat;
+}
+
+.selectWrapper select {
+        padding: 12px 40px 12px 20px;
+        font-size: 18px;
+        line-height: 18px;
+        width: 100%;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        background-image: none;
+        -webkit-appearance: none;
+        outline: none;
+        cursor: pointer;
+        -moz-appearance: none;
+        text-indent: 0.01px;
+        text-overflow: ellipsis;
+}
+
+.guce-orange {
+	background: #ef7329;
+}
+
+.guce-blue {
+	background: rgb(0, 51, 102);
+}
+
+.red-row {
+    background: red;
+}
+
+.ui-datatable {
+    font-size: 0.9em;
+}
+
+.ui-fieldset-legend {
+    font-size: 0.9em;
+}
+
+.login-panel {
+    text-align: center;
+    width: 400px;
+    min-height: 440px;
+    padding: 5px 2px;
+    margin: 100px auto 0 auto;
+}
+
+.login-panel-sub {
+    text-align: center;
+    width: 600px;
+    padding: 5px 2px;
+    margin: 50px auto 0 auto;
+}
+
+.app-title {
+    font-family: 'Arial Narrow', Arial, sans-serif;
+	font-size: 25px;
+	line-height: 15px;
+	font-weight: 400;
+    font-weight: bolder;
+	color: rgb(0, 51, 102);
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    padding: 0px 0px 5px 0px;
+    text-align: center;
+}
+
+.login-panel .ui-g .ui-g-12 {
+    padding: 15px 40px;
+}
+
+.subscription-panel {
+    text-align: center;
+    width: 700px;
+    margin: 100px auto 0 auto;
+}
+
+@media (max-width: 640px) {
+  .subscription-panel {
+    text-align: center;
+    width: 500px;
+    margin: 75px auto 0 auto;
+  }
+}

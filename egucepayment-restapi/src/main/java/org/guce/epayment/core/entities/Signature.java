@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,28 +27,35 @@ public class Signature implements Serializable {
     private static final long serialVersionUID = 9142524288064471098L;
 
     @Id
-    @SequenceGenerator(name = "SIGNATURE_SEQ", sequenceName = "SIGNATURE_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SIGNATURE_SEQ")
+    @SequenceGenerator(name = "SIGNATURE_SEQ_GEN", sequenceName = "SIGNATURE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SIGNATURE_SEQ_GEN")
     @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
+    @NotNull
     @Lob
-    @Column(name = "ORIGIN_MESSAGE", nullable = false)
+    @Column(name = "ORIGIN_MESSAGE")
     private String originMessage;
+    @NotNull
     @Lob
-    @Column(name = "SIGNATURE", nullable = false)
+    @Column(name = "SIGNATURE")
     private String signature;
-    @Column(name = "CREATION_DATE", nullable = false)
+    @NotNull
+    @Column(name = "CREATION_DATE")
     private LocalDateTime creationDate;
-    @Column(name = "LEVEL_VALUE", nullable = false)
+    @NotNull
+    @Column(name = "LEVEL_VALUE")
     private int level;
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "USER_ID")
     @ManyToOne
     private User user;
-    @JoinColumn(name = "STEP_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "STEP_ID")
     @ManyToOne
     private Step step;
-    @JoinColumn(name = "PAYMENT_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "PAYMENT_ID")
     @ManyToOne
     private Payment payment;
     @Column(name = "CHILD")
@@ -56,7 +64,8 @@ public class Signature implements Serializable {
     @PrePersist
     private void prePersist() {
         creationDate = LocalDateTime.now();
-        child = null != user.getPartner().getParent();
+        child = user.getPartner().getParent() != null;
     }
 
 }
+

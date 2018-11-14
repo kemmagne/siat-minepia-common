@@ -1,39 +1,40 @@
 package org.guce.epayment.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.util.List;
-import lombok.Data;
+import java.util.stream.Collectors;
+import org.guce.epayment.core.entities.Invoice;
+import org.guce.epayment.core.entities.InvoiceLine;
+import org.guce.epayment.core.entities.InvoiceVersion;
+import org.guce.epayment.rest.controllers.utils.RestUtils;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-public class InvoiceVersionDto {
+public class InvoiceVersionDto extends InvoiceVersion {
 
-    private String invoiceNumber;
-    private BigDecimal amount;
-    private String invoiceTypeCode;
-    private String subTypeCode;
-    private String taxPayerNumber;
-    private String taxPayerName;
-    private String beneficiaryCode;
-    private String benefReference;
-    private int version;
-    private String guceReference;
-    private List<InvoiceVersionDto> subInvoices;
+    private static final long serialVersionUID = 4418134217879841365L;
 
-    public InvoiceVersionDto() {
+    @JsonIgnore
+    @Override
+    public Invoice getInvoice() {
+        return super.getInvoice();
     }
 
-    private InvoiceVersionDto(BigDecimal amount, String beneficiaryCode, String benefReference) {
-        this.amount = amount;
-        this.beneficiaryCode = beneficiaryCode;
-        this.benefReference = benefReference;
+    @JsonIgnore
+    @Override
+    public BigDecimal getVersionAmount() {
+        return super.getVersionAmount();
     }
 
-    public static InvoiceVersionDto of(BigDecimal amount, String beneficiaryCode, String benefReference) {
-        return new InvoiceVersionDto(amount, beneficiaryCode, benefReference);
+    @Override
+    public List<InvoiceLine> getInvoiceLines() {
+        return super.getInvoiceLines().stream().map(il -> {
+            final InvoiceLineDto ilDto = RestUtils.downCast(InvoiceLine.class, InvoiceLineDto.class, il);
+            return ilDto;
+        }).collect(Collectors.toList());
     }
 
 }

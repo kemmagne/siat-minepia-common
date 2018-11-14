@@ -3,8 +3,16 @@
 /egucepayment-restapi/target/
 
 /egucepayment-ng/.sass-cache/
+/egucepayment-ng/.idea/
 /egucepayment-ng/node_modules/
 /egucepayment-ng/egucepayment/
 
+/egucepayment-ng-old/.sass-cache/
+/egucepayment-ng-old/node_modules/
+
 /data-migrator/target/
 /data-migrator/nbactions.xml
+
+/data-migrator-old/target/
+/data-migrator-old/nbactions.xml
+/epayment-data-migrator/target/

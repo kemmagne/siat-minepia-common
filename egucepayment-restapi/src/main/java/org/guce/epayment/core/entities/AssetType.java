@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,11 +26,14 @@ public class AssetType implements Serializable {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "CODE", nullable = false, unique = true, length = 20)
+    @NotNull
+    @Column(name = "CODE", unique = true, length = 20)
     private String code;
-    @Column(name = "LABEL", nullable = false)
+    @NotNull
+    @Column(name = "LABEL")
     private String label;
     @Column(name = "PARAMS")
     private String params;
 
 }
+

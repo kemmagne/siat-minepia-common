@@ -16,12 +16,12 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.guce.epayment.core.entities.InvoiceType;
-import org.guce.epayment.core.entities.Payment;
 import org.guce.epayment.core.entities.PaymentMode;
 import org.guce.epayment.core.entities.Signature;
 import org.guce.epayment.core.entities.Step;
 import org.guce.epayment.core.entities.User;
 import org.guce.epayment.core.entities.UserStep;
+import org.guce.epayment.core.entities.enums.PaymentStatus;
 import org.guce.epayment.core.repositories.StepRepository;
 import org.guce.epayment.core.repositories.UserRepository;
 import org.guce.epayment.core.services.ApplicationService;
@@ -89,7 +89,7 @@ public class TransferOrderDaoImpl implements TransferOrderDao {
 
         for (final TransferOrder to : partnerTransferOrders) {
 
-            if (!Payment.PAYMENT_PENDING.equalsIgnoreCase(to.getStatus())) {
+            if (!PaymentStatus.PENDING.equals(to.getStatus())) {
                 continue;
             }
 
@@ -219,7 +219,7 @@ public class TransferOrderDaoImpl implements TransferOrderDao {
         final Query query = em.createQuery(queryBuilder.toString());
 
         if (Constants.TWO.equals(type)) {
-            query.setParameter("status", Payment.PAYMENT_VALIDATED);
+            query.setParameter("status", PaymentStatus.VALIDATED.name());
         }
 
         final List<InvoiceType> invoiceTypes = (List<InvoiceType>) result.get(INVOICE_TYPES);

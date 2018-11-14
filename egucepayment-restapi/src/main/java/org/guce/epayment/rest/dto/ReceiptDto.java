@@ -1,31 +1,28 @@
 package org.guce.epayment.rest.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.guce.epayment.core.entities.InvoiceLine;
+import org.guce.epayment.core.entities.Payment;
+import org.guce.epayment.core.entities.Receipt;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(of = {"number"})
-public class ReceiptDto {
+public class ReceiptDto extends Receipt {
 
-    private String number;
-    private InvoiceDto invoice;
-    private String date;
+    private static final long serialVersionUID = 6272926264879212354L;
 
-    public ReceiptDto() {
+    @JsonIgnore
+    @Override
+    public InvoiceLine getInvoiceLine() {
+        return super.getInvoiceLine();
     }
 
-    private ReceiptDto(String number, InvoiceDto invoice, String date) {
-        this.number = number;
-        this.invoice = invoice;
-        this.date = date;
-    }
-
-    public static ReceiptDto of(String number, InvoiceDto invoice, String date) {
-        return new ReceiptDto(number, invoice, date);
+    @JsonIgnore
+    @Override
+    public Payment getPayment() {
+        return super.getPayment();
     }
 
 }

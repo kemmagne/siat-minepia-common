@@ -1,71 +1,102 @@
 <div class="login-body">
-      <div class="card login-panel ui-fluid">
-          <div class="ui-g">
-              <div class="ui-g-12">
-                  <span class="float-right">
-                      <a style="color:#000000;text-decoration:none;" href="javascript:void(0)" (click)="changeLanguage('fr')">fr</a> | 
-                      <a style="color:#000000;text-decoration:none;" href="javascript:void(0)" (click)="changeLanguage('en')">en</a>
+    <script type="text/javascript">
+        $(function() {
+            $('input').on('blur', function(e) {
+                var el = $(this);
+                if(el.val() != '')
+                    el.addClass('ui-state-filled');
+                else
+                    el.removeClass('ui-state-filled');
+            });
+        });
+    </script>
+    <form #loginForm="ngForm" (submit)="login()" role="form" class="card login-panel ui-fluid">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p-dropdown id="language" [options]="languages" [style]="{'float':'left'}"
+                            [(ngModel)]="selectedLanguage" name="language"
+                            (ngModelChange)="languageChange()">
+                                <ng-template let-item pTemplate="selectedItem">
+                                    {{item.label | translate}}
+                                </ng-template>
+                                <ng-template let-lang pTemplate="item">
+                                    {{lang.label | translate}}
+                                </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="ui-g-12">
+                <img style="width: 99%;height: 99%;"
+                src="../../assets/layout/images/logo-e-payment.png">
+            </div>
+            <div class="ui-g-12" style="color: rgb(0, 51, 102);font-size: 20px">
+                <h1>{{'log.in' | translate}}</h1>
+            </div>
+            <div class="ui-g-12">
+                  <span class="md-inputfield">
+                      <input type="text" autocomplete="off"
+                      [required]="true" [(ngModel)]="userLogin" name="userLogin" pInputText>
+                      <label>{{'login' | translate}}</label>
                   </span>
-                  <img src="assets/layout/images/logo-guce.png">
-                  <h1 class="mt-4 app-title">e-GUCE PAYMENT SYSTEM</h1>
-                  <div class="card-header">
-                      <h2 class="mt-3 app-title">{{'log.in' | translate}}</h2>
-                  </div>
-              </div>
-              <form #loginForm="ngForm" (submit)="login()" role="form" class="form-validation">
-                    <div class="ui-g-12">
-                            <span class="md-inputfield">
-                                <input type="text" placeholder="{{'login' | translate}}" autocomplete="off" [required]="true" [(ngModel)]="userLogin" name="userLogin" class="ui-inputtext ui-corner-all ui-state-default ui-widget">
-                            </span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="md-inputfield">
-                            <input type="password" placeholder="{{'password' | translate}}" autocomplete="off" [required]="true" [(ngModel)]="password" name="password" class="ui-inputtext ui-corner-all ui-state-default ui-widget">
-                        </span>
-                    </div>
-                    <div class="ui-g-12">
-                        <button [disabled]="!loginForm.valid" type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
-                            <span class="ui-button-icon-left ui-c fa fa-fw ui-icon-person"></span>
-                            <span class="ui-button-text ui-c">{{'sign.in' | translate}}</span>
-                        </button>
-                    </div>
-              </form>
-              <div class="ui-g-12">
-                  <span class="float-left">
-                      <a style="color:rgb(0, 51, 102);text-decoration:none;" [routerLink]="['/app/direct-payment']" class="">{{'public.page' | translate}}</a>
-                  </span>
-                  <span class="float-right">
-                      <a style="color:rgb(0, 51, 102);text-decoration:none;" [routerLink]="['/users-subscription']" class="">{{'subscribe' | translate}}</a>
-                  </span>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div style="text-align: center" class="mt-3">Copyright © GUCE-GIE - {{'december' | translate}} 2017 - {{'copyright' | translate}} - e-GUCE PAYMENT Version 1.0</div>
-
-  <p-dialog [(visible)]="resetPassword" [modal]="true" width="500" [closable]="true" [responsive]="true">
-    <app-alert [(message)]="alertMessage"></app-alert>
-    <div class="card">
-        <div class="card-header h5">{{'password.update'}}</div>
-        <div class="card-block">
-            <form #setPasswordForm="ngForm" (submit)="setPassword()" role="form" class="form-validation">
-                <div class="row form-group">
-                    <label for="newPasswordFirst" class="col-md-4 control-label">{{'new.password.first' | translate}}</label>
-                    <div class="col-md-8">
-                        <input type="password" class="form-control" [required]="" id="newPasswordFirst" [required]="true" [(ngModel)]="newPasswordFirst" name="newPasswordFirst">
-                    </div>
+            </div>
+            <div class="ui-g-12">
+                <span class="md-inputfield">
+                    <input type="password" autocomplete="off" pInputText
+                    [required]="true" [(ngModel)]="password" name="password">
+                    <label>{{'password' | translate}}</label>
+                </span>
+            </div>
+            <div class="ui-g-12">
+                <button [disabled]="!loginForm.valid" type="submit"
+                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
+                    <span class="ui-button-icon-left ui-c fa fa-fw ui-icon-person"></span>
+                    <span class="ui-button-text ui-c">{{'sign.in' | translate}}</span>
+                </button>
+                <button *ngIf="false" type="button" class="secondary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
+                    <span class="ui-button-icon-left ui-c fa fa-fw ui-icon-help"></span>
+                    <span class="ui-button-text ui-c">Forgot Password</span>
+                </button>
+            </div>
+        </div>
+        <div *ngIf="false" class="ui-g-12" style="margin-top: -15px">
+            <span style="text-align: center;">
+                <span>
+                    <a style="color:rgb(0, 51, 102);text-decoration:none;font-size: 16px;" [routerLink]="['/app/direct-payment']">{{'public.page' | translate}}</a>
+                </span>
+                <span style="border-left: solid;border-left-width: 2px;margin-left: 5px;margin-right: 5px;border-color: rgb(0, 51, 102);"></span>
+                <span>
+                    <a style="color:rgb(0, 51, 102);text-decoration:none;font-size: 16px;" [routerLink]="['/users-subscription']">{{'subscribe' | translate}}</a>
+                </span>
+            </span>
+        </div>
+    </form>
+</div>
+<br/>
+<span>
+    <p style="text-align: center">e-GUCE Payment v1.0 - Copyright &copy; GUCE-GIE - {{'january' | translate}} 2019 - {{'copyright' | translate}}</p>
+</span>
+<p-dialog [(visible)]="resetPassword" [modal]="true" width="500" [closable]="true" appendTo="body"
+    [responsive]="true" [closeOnEscape]="false" [blockScroll]="true" [showHeader]="false">
+    <div class="card card-w-title">
+        <h1>{{'password.update' | translate}}</h1>
+            <form #setPasswordForm="ngForm" (submit)="setPassword()" role="form">
+                <div class="ui-g-12">
+                    <span class="md-inputfield">
+                        <input type="password" autocomplete="off" pPassword
+                        [required]="true" [(ngModel)]="newPasswordFirst" name="newPasswordFirst">
+                        <label>{{'new.password.first' | translate}}</label>
+                    </span>
                 </div>
-                <div class="row form-group">
-                    <label for="newPasswordSecond" class="col-md-4 control-label">{{'new.password.second' | translate}}</label>
-                    <div class="col-md-8">
-                        <input type="password" class="form-control" id="newPasswordSecond" [required]="true" [(ngModel)]="newPasswordSecond" name="newPasswordSecond">
-                    </div>
+                <div class="ui-g-12">
+                    <span class="md-inputfield">
+                        <input type="password" autocomplete="off" pInputText
+                        [required]="true" [(ngModel)]="newPasswordSecond" name="newPasswordSecond">
+                        <label>{{'new.password.second' | translate}}</label>
+                    </span>
                 </div>
-                <span class="pull-right">
+                <span style="float: right;">
                     <button class="ui-button-danger" pButton type="reset" label="{{'reset' | translate}}" icon="ui-icon-undo"></button>
                     <button [disabled]="!setPasswordForm.valid" pButton type="submit" label="{{'validate' | translate}}" icon="ui-icon-check"></button>
                 </span>
             </form>
-        </div>
     </div>
 </p-dialog>

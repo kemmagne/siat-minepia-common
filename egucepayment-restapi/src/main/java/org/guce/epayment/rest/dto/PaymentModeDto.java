@@ -1,42 +1,35 @@
 package org.guce.epayment.rest.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
+import org.guce.epayment.core.entities.InvoiceType;
+import org.guce.epayment.core.entities.Payment;
+import org.guce.epayment.core.entities.PaymentMode;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(of = {"id", "code"})
-public class PaymentModeDto {
+public class PaymentModeDto extends PaymentMode {
 
-    private Integer id;
-    private String code;
-    private String label;
-    private boolean direct;
+    private static final long serialVersionUID = 5657923715986584158L;
 
-    public PaymentModeDto() {
+    @JsonIgnore
+    @Override
+    public String getGlobalFlow() {
+        return super.getGlobalFlow();
     }
 
-    private PaymentModeDto(Integer id, String code, String label, boolean direct) {
-        this.id = id;
-        this.code = code;
-        this.label = label;
-        this.direct = direct;
+    @JsonIgnore
+    @Override
+    public List<InvoiceType> getInvoiceTypes() {
+        return super.getInvoiceTypes();
     }
 
-    private PaymentModeDto(String code, String label) {
-        this.code = code;
-        this.label = label;
-    }
-
-    public static PaymentModeDto of(Integer id, String code, String label, boolean direct) {
-        return new PaymentModeDto(id, code, label, direct);
-    }
-
-    public static PaymentModeDto of(String code, String label) {
-        return new PaymentModeDto(code, label);
+    @JsonIgnore
+    @Override
+    public List<Payment> getPayments() {
+        return super.getPayments();
     }
 
 }

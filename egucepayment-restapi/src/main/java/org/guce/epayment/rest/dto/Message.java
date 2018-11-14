@@ -1,5 +1,6 @@
 package org.guce.epayment.rest.dto;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -7,7 +8,9 @@ import lombok.Data;
  * @author tadzotsa
  */
 @Data
-public class Message {
+public class Message implements Serializable {
+
+    private static final long serialVersionUID = -2155991280651961364L;
 
     private String name;
     private String text;
@@ -26,3 +29,4 @@ public class Message {
     }
 
 }
+

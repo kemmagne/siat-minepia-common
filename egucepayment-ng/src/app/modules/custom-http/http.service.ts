@@ -1,26 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { catchError, tap, finalize } from 'rxjs/operators';
 import 'rxjs/Rx';
 import {
     Http,
     RequestOptions,
     RequestOptionsArgs,
     Response,
-    Request,
     Headers,
     XHRBackend,
     ResponseContentType
 } from '@angular/http';
-import { saveAs } from 'file-saver/FileSaver';
-
-import * as CryptoJS from 'crypto-js';
 
 import { Config } from '../../config';
 
 import { LoaderService } from './loader/loader.service';
 import { Utils } from "../../utils";
 import { Router } from "@angular/router";
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class HttpService extends Http {
@@ -35,57 +32,57 @@ export class HttpService extends Http {
     getData(url: string, secured?: boolean): Observable<any> {
         this.loaderService.showGet();
         return super.get(this.getFullUrl(url), this.requestOptions(secured))
-            .catch(this.onCatch)
-            .do((res: Response) => {
-                this.onSuccess(res);
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.loaderService.hideGet();
-            });
+        .pipe(catchError(this.onCatch),
+        tap((res: Response) => {
+            this.onSuccess(res);
+        }, (error: any) => {
+            this.onError(error);
+        }),
+        finalize(() => {
+            this.loaderService.hideGet();
+        }));
     }
 
     postData(url: string, body: any, unsecured?: boolean): Observable<any> {
         this.loaderService.showPost();
         return super.post(this.getFullUrl(url), body, this.requestOptions(!unsecured))
-            .catch(this.onCatch)
-            .do((res: Response) => {
-                this.onSuccess(res);
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.loaderService.hidePost();
-            });
+        .pipe(catchError(this.onCatch),
+        tap((res: Response) => {
+            this.onSuccess(res);
+        }, (error: any) => {
+            this.onError(error);
+        }),
+        finalize(() => {
+            this.loaderService.hidePost();
+        }));
     }
 
     delete(url: string): Observable<any> {
         this.loaderService.showPost();
         return super.delete(this.getFullUrl(url), this.requestOptions(true))
-            .catch(this.onCatch)
-            .do((res: Response) => {
-                this.onSuccess(res);
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.loaderService.hidePost();
-            });
+        .pipe(catchError(this.onCatch),
+        tap((res: Response) => {
+            this.onSuccess(res);
+        }, (error: any) => {
+            this.onError(error);
+        }),
+        finalize(() => {
+            this.loaderService.hidePost();
+        }));
     }
 
     download(url: string, secured?: boolean): Observable<any> {
         this.loaderService.showGet();
         return super.get(this.getFullUrl(url), this.requestOptions(secured, true))
-            .catch(this.onCatch)
-            .do((res: Response) => {
-                this.onSuccess(res);
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.loaderService.hideGet();
-            });
+        .pipe(catchError(this.onCatch),
+        tap((res: Response) => {
+            this.onSuccess(res);
+        }, (error: any) => {
+            this.onError(error);
+        }),
+        finalize(() => {
+            this.loaderService.hideGet();
+        }));
     }
 
     private requestOptions(authenticated: boolean, file?: boolean): RequestOptionsArgs {

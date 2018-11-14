@@ -1,36 +1,46 @@
 package org.guce.epayment.rest.dto;
 
-import java.math.BigDecimal;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.guce.epayment.core.entities.Payment;
+import org.guce.epayment.core.entities.Signature;
+import org.guce.epayment.core.entities.Step;
+import org.guce.epayment.core.entities.User;
+import org.guce.epayment.rest.controllers.utils.RestUtils;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(of = {"id"})
-public class SignatureDto {
+public class SignatureDto extends Signature {
 
-    private BigDecimal id;
-    private UserDto user;
-    private StepDto step;
-    private int level;
-    private String date;
+    private static final long serialVersionUID = 8820843427787729974L;
 
-    public SignatureDto() {
+    @Override
+    public StepDto getStep() {
+        return RestUtils.downCast(Step.class, StepDto.class, super.getStep());
     }
 
-    private SignatureDto(BigDecimal id, UserDto user, StepDto step, int level, String date) {
-        this.id = id;
-        this.user = user;
-        this.step = step;
-        this.level = level;
-        this.date = date;
+    @Override
+    public UserDto getUser() {
+        return RestUtils.downCast(User.class, UserDto.class, super.getUser());
     }
 
-    public static SignatureDto of(BigDecimal id, UserDto user, StepDto step, int level, String date) {
-        return new SignatureDto(id, user, step, level, date);
+    @JsonIgnore
+    @Override
+    public String getOriginMessage() {
+        return super.getOriginMessage();
+    }
+
+    @JsonIgnore
+    @Override
+    public String getSignature() {
+        return super.getSignature();
+    }
+
+    @JsonIgnore
+    @Override
+    public Payment getPayment() {
+        return super.getPayment();
     }
 
 }

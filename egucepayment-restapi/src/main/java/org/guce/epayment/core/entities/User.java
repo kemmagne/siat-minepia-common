@@ -19,6 +19,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.guce.epayment.core.utils.Constants;
@@ -28,9 +30,11 @@ import org.guce.epayment.core.utils.Constants;
  * @author tadzotsa
  */
 @Entity
-@Table(name = "USERS")
+@Table(name = "USERS", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"LOGIN", "DELETED"})
+})
 @Data
-@EqualsAndHashCode(of = {"id", "login"})
+@EqualsAndHashCode(of = {"login", "deleted"})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 6669430757032785372L;
@@ -40,21 +44,26 @@ public class User implements Serializable {
      */
     @Id
     @Column(name = "ID", precision = 38)
-    @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
+    @SequenceGenerator(name = "USER_SEQ_GEN", sequenceName = "USER_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GEN")
     private BigDecimal id;
 
-    @Column(name = "LOGIN", unique = true, nullable = false, length = 100)
+    @NotNull
+    @Column(name = "LOGIN", length = 100)
     private String login;
-    @Column(name = "TITLE", nullable = false, length = 5)
+    @NotNull
+    @Column(name = "TITLE", length = 5)
     private String title;
-    @Column(name = "LOCALE", nullable = false, length = 2)
+    @NotNull
+    @Column(name = "LOCALE", length = 2)
     private String locale;
     @Column(name = "FIRST_NAME", length = 100)
     private String firstName;
-    @Column(name = "LAST_NAME", nullable = false, length = 100)
+    @NotNull
+    @Column(name = "LAST_NAME", length = 100)
     private String lastName;
-    @Column(name = "EMAIL", nullable = false, length = 100)
+    @NotNull
+    @Column(name = "EMAIL", length = 100)
     private String email;
     @Column(name = "RESET_PASSWORD")
     private boolean resetPassword;
@@ -62,9 +71,13 @@ public class User implements Serializable {
     private boolean locked;
     @Column(name = "ACTIVE")
     private boolean active;
-    @Column(name = "CREATION_DATE", nullable = false)
+    @Column(name = "DELETED")
+    private boolean deleted;
+    @NotNull
+    @Column(name = "CREATION_DATE")
     private LocalDateTime creationDate;
-    @JoinColumn(name = "PARTNER_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "PARTNER_ID")
     @ManyToOne
     private Partner partner;
 
@@ -84,11 +97,6 @@ public class User implements Serializable {
     private List<UserStep> userSteps;
     @ManyToMany(mappedBy = "decisionMakers")
     private List<InvoiceType> invoiceTypes;
-//    @OneToMany(mappedBy = "connectedUser")
-//    private List<CoreConnection> connections;
-//    @OneToMany(mappedBy = "userOwner", cascade = CascadeType.PERSIST)
-//    @OrderBy("active DESC")
-//    private List<CoreUserCertificate> certificates;
 
     @PrePersist
     private void prePersist() {
@@ -100,3 +108,4 @@ public class User implements Serializable {
     }
 
 }
+

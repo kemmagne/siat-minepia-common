@@ -47,7 +47,7 @@ public interface DateUtils {
         return dateTime;
     }
 
-    static LocalDateTime getSittingDate(final LocalTime minTime, final LocalTime maxTime) {
+    static LocalDateTime getTransferOrderReceiptDate(final LocalTime minTime, final LocalTime maxTime) {
 
         final LocalDateTime now = LocalDateTime.now();
         LocalDateTime sittingDate = LocalDateTime.now();

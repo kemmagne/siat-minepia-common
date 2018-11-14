@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,16 +29,20 @@ public class PartnerStep implements Serializable {
     @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
-    @JoinColumn(name = "PARTNER_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "PARTNER_ID")
     @ManyToOne
     private Partner partner;
-    @JoinColumn(name = "STEP_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "STEP_ID")
     @ManyToOne
     private Step step;
     @JoinColumn(name = "PAYMENT_MODE_ID")
     @ManyToOne
     private PaymentMode paymentMode;
-    @Column(name = "HIGH_LEVEL", nullable = false)
+    @NotNull
+    @Column(name = "HIGH_LEVEL")
     private int highLevel;
 
 }
+

@@ -1,48 +1,35 @@
 package org.guce.epayment.rest.dto;
 
-import java.math.BigDecimal;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.guce.epayment.core.entities.BankAccount;
+import org.guce.epayment.core.entities.Partner;
+import org.guce.epayment.rest.controllers.utils.RestUtils;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(of = {"id"})
-public class BankAccountDto {
+public class BankAccountDto extends BankAccount {
 
-    private BigDecimal id;
+    private static final long serialVersionUID = -2086325639194449708L;
 
-    private String bankCode;
-    private String bankLabel;
-
-    private String agencyCode;
-    private String agencyLabel;
-
-    private String accountNumber;
-
-    private String accountKey;
-
-    private String accountLabel;
-
-    public BankAccountDto() {
+    @Override
+    public PartnerDto getAgency() {
+        return RestUtils.downCast(Partner.class, PartnerDto.class, super.getAgency());
     }
 
-    private BankAccountDto(BigDecimal id, String bankCode, String bankLabel, String agencyCode, String agencyLabel, String accountNumber, String accountKey, String accountLabel) {
-        this.id = id;
-        this.bankCode = bankCode;
-        this.bankLabel = bankLabel;
-        this.agencyCode = agencyCode;
-        this.agencyLabel = agencyLabel;
-        this.accountNumber = accountNumber;
-        this.accountKey = accountKey;
-        this.accountLabel = accountLabel;
+    @Override
+    public PartnerDto getBank() {
+        return RestUtils.downCast(Partner.class, PartnerDto.class, super.getBank());
     }
 
-    public static BankAccountDto of(BigDecimal id, String bankCode, String bankLabel, String agencyCode, String agencyLabel, String accountNumber, String accountKey, String accountLabel) {
+    @Override
+    public boolean isActive() {
+        return super.isActive();
+    }
 
-        return new BankAccountDto(id, bankCode, bankLabel, agencyCode, agencyLabel, accountNumber, accountKey, accountLabel);
+    @Override
+    public PartnerDto getOwner() {
+        return RestUtils.downCast(Partner.class, PartnerDto.class, super.getOwner());
     }
 
 }

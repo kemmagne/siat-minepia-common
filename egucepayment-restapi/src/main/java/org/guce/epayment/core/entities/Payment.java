@@ -10,6 +10,8 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,8 +24,10 @@ import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.guce.epayment.core.entities.enums.PaymentStatus;
 
 @Entity
 @Table(name = "PAYMENT")
@@ -36,31 +40,30 @@ public class Payment implements Serializable {
 
     private static final long serialVersionUID = -2802586394469456991L;
 
-    public static final String PAYMENT_PENDING = "PENDING";
-    public static final String PAYMENT_VALIDATED = "VALIDATED";
-    public static final String PAYMENT_CONFIRMED = "CONFIRMED";
-    public static final String PAYMENT_ACKNOWLED = "ACKNOWLED";
-    public static final String PAYMENT_CANCELED = "CANCELED";
-    public static final String PAYMENT_REJECTED = "REJECTED";
-
     @Id
     @SequenceGenerator(name = "PAYMENT_SEQ", sequenceName = "PAYMENT_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENT_SEQ")
     @Column(name = "ID", precision = 38)
     private BigDecimal id;
 
-    @Column(name = "P_REFERENCE", nullable = false, unique = true, length = 30)
+    @NotNull
+    @Column(name = "P_REFERENCE", unique = true, length = 30)
     private String reference;
     @Column(name = "PARTNER_REFERENCE", length = 30)
     private String partnerReference;
-    @Column(name = "AMOUNT", nullable = false, precision = 38, scale = 4)
+    @NotNull
+    @Column(name = "AMOUNT", precision = 38, scale = 4)
     private BigDecimal amount;
-    @Column(name = "STATUS", nullable = false, length = 15)
-    private String status;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS", length = 15)
+    private PaymentStatus status;
+    @NotNull
     @JoinColumn(name = "COMMITER_ID")
     @ManyToOne
     private Partner commiter;
-    @JoinColumn(name = "MODE_ID", nullable = false)
+    @NotNull
+    @JoinColumn(name = "MODE_ID")
     @ManyToOne
     private PaymentMode mode;
     @OneToMany(mappedBy = "payment", cascade = CascadeType.PERSIST)
@@ -68,10 +71,12 @@ public class Payment implements Serializable {
     @OneToMany(mappedBy = "payment", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("creationDate DESC")
     private List<Signature> signatures;
+    @NotNull
     @JoinColumn(name = "BANK_GATEWAY_ID")
     @ManyToOne
     private Partner bankGateway;
-    @Column(name = "STARTED_DATE", nullable = false)
+    @NotNull
+    @Column(name = "STARTED_DATE")
     private LocalDateTime startedDate;
     @Column(name = "VALIDATION_DATE")
     private LocalDateTime validationDate;
@@ -82,3 +87,4 @@ public class Payment implements Serializable {
     }
 
 }
+

@@ -10,18 +10,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "INVOICE_TYPE")
+@Table(name = "INVOICE_TYPE", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"CODE", "DELETED"})
+})
 @Data
-@EqualsAndHashCode(of = {"id", "code"})
+@EqualsAndHashCode(of = {"code", "deleted"})
 public class InvoiceType implements Serializable {
 
     private static final long serialVersionUID = 5778626176562521049L;
@@ -34,10 +37,16 @@ public class InvoiceType implements Serializable {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "CODE", nullable = false, unique = true, length = 30)
+    @NotNull
+    @Column(name = "CODE", length = 30)
     private String code;
-    @Column(name = "LABEL", nullable = false)
+    @NotNull
+    @Column(name = "LABEL")
     private String label;
+
+    @Column(name = "DELETED")
+    private boolean deleted;
+
     /**
      * dernière étape pour les factures de ce type : transfer.last.step
      *
@@ -53,8 +62,7 @@ public class InvoiceType implements Serializable {
      *
      * le séparateur est \n
      */
-    @Lob
-    @Column(name = "PARAMS")
+    @Column(name = "PARAMS", length = 500)
     private String parameters;
 
     @JoinTable(name = "INVOICE_TYPE_PAYMENT_MODE", joinColumns = {
@@ -84,3 +92,4 @@ public class InvoiceType implements Serializable {
     private boolean subType;
 
 }
+

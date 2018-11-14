@@ -8,7 +8,7 @@ import { UserService } from './services';
 })
 export class DefaultPathComponent implements OnInit {
 
-    constructor(private router: Router, public userService: UserService) {}
+    constructor(private router: Router, private userService: UserService) {}
 
     ngOnInit() {
         this.userService.goToHome(this.router);

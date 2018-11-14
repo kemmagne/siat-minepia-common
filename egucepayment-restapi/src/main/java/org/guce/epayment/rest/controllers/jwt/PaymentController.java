@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.guce.epayment.core.entities.PaymentMode;
 import org.guce.epayment.core.services.CoreService;
 import org.guce.epayment.core.services.PaymentService;
+import org.guce.epayment.rest.controllers.utils.RestUtils;
 import org.guce.epayment.rest.dto.PaymentModeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +34,10 @@ public class PaymentController {
 
         final List<PaymentMode> allPaymentModes = coreService.findAll(PaymentMode.class);
 
-        return ResponseEntity.ok(allPaymentModes.stream().map(
-                pm -> PaymentModeDto.of(pm.getCode(), pm.getLabel())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(allPaymentModes.stream().map(pm -> {
+            PaymentModeDto pmDto = RestUtils.downCast(PaymentMode.class, PaymentModeDto.class, pm);
+            return pmDto;
+        }).collect(Collectors.toList()));
     }
 
     @ResponseBody
@@ -44,9 +46,11 @@ public class PaymentController {
 
         final List<PaymentMode> paymentModesByDirect = paymentService.findPaymentModesByDirect(direct);
 
-        return ResponseEntity.ok(paymentModesByDirect.stream().map(
-                pm -> PaymentModeDto.of(pm.getCode(), pm.getLabel())
-        ).collect(Collectors.toList()));
+        return ResponseEntity.ok(paymentModesByDirect.stream().map(pm -> {
+            PaymentModeDto pmDto = RestUtils.downCast(PaymentMode.class, PaymentModeDto.class, pm);
+            return pmDto;
+        }).collect(Collectors.toList()));
     }
 
 }
+

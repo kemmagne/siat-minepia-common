@@ -1,5 +1,6 @@
 package org.guce.epayment.rest.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Data;
@@ -11,7 +12,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(of = {"reference"})
-public class StatisticBanqueDto {
+public class StatisticBanqueDto implements Serializable {
+
+    private static final long serialVersionUID = 6995972278409616397L;
 
     private String reference;
     private Date startedDate;
@@ -35,3 +38,4 @@ public class StatisticBanqueDto {
     }
 
 }
+

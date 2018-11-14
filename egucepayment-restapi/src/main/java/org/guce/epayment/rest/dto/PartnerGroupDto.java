@@ -1,30 +1,22 @@
 package org.guce.epayment.rest.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
+import org.guce.epayment.core.entities.Partner;
+import org.guce.epayment.core.entities.RepPartnerGroup;
 
 /**
  *
  * @author tadzotsa
  */
-@Data
-@EqualsAndHashCode(of = {"code"})
-public class PartnerGroupDto {
+public class PartnerGroupDto extends RepPartnerGroup {
 
-    private String code;
-    private String name;
+    private static final long serialVersionUID = 5177728856241995086L;
 
-    public PartnerGroupDto() {
-    }
-
-    private PartnerGroupDto(String code, String name) {
-        this.code = code;
-        this.name = name;
-    }
-
-    public static PartnerGroupDto of(String code, String name) {
-
-        return new PartnerGroupDto(code, name);
+    @JsonIgnore
+    @Override
+    public List<Partner> getPartners() {
+        return super.getPartners();
     }
 
 }
