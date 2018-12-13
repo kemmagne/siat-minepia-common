@@ -253,12 +253,12 @@ public class File extends AbstractModel implements Serializable {
     @ManyToOne
     @JoinColumn(name = "SIGNATORY_USER_ID")
     private User signatory;
-
     /**
-     * Instantiates a new file.
+     * The last decision date.
      */
-    public File() {
-    }
+    @Column(name = "LAST_DECISION_DATE", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastDecisionDate;
 
     /**
      * Gets the id.
@@ -868,6 +868,14 @@ public class File extends AbstractModel implements Serializable {
 
     public void setSignatory(User signatory) {
         this.signatory = signatory;
+    }
+
+    public Date getLastDecisionDate() {
+        return lastDecisionDate;
+    }
+
+    public void setLastDecisionDate(Date lastDecisionDate) {
+        this.lastDecisionDate = lastDecisionDate;
     }
 
     /*
