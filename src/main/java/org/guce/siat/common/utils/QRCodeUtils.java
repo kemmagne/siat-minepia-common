@@ -10,12 +10,15 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -64,6 +67,48 @@ public class QRCodeUtils {
         }
 
         ImageIO.write(image, fileType, qrFile);
+    }
+
+	
+	public static byte[] generateQR(String data, int size) {
+        try {
+            return createQRImage(data, size, QR_CODE_IMAGE_FILE_TYPE);
+        }
+        catch (Exception ex) {
+            Logger.getLogger(QRCodeUtils.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    public static byte[] createQRImage(String qrCodeText, int size, String fileType) throws WriterException, IOException {
+        // Create the ByteMatrix for the QR-Code that encodes the given String
+        HashMap hintMap = new HashMap();
+        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText,
+                BarcodeFormat.QR_CODE, size, size, hintMap);
+        // Make the BufferedImage that are to hold the QRCode
+        int matrixWidth = byteMatrix.getWidth();
+        BufferedImage image = new BufferedImage(matrixWidth, matrixWidth,
+                BufferedImage.TYPE_INT_RGB);
+        image.createGraphics();
+
+        Graphics graphics = (Graphics) image.getGraphics();
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0, 0, matrixWidth, matrixWidth);
+        // Paint and save the image using the ByteMatrix
+        graphics.setColor(Color.BLACK);
+
+        for (int i = 0; i < matrixWidth; i++) {
+            for (int j = 0; j < matrixWidth; j++) {
+                if (byteMatrix.get(i, j)) {
+                    graphics.fillRect(i, j, 1, 1);
+                }
+            }
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(image, fileType, out);
+        return out.toByteArray();
     }
 
 }
