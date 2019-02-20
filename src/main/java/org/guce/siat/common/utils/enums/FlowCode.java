@@ -729,6 +729,9 @@ public enum FlowCode {
     FL_AP_192("Réponse CI Suite Etude AP"),
     FL_AP_193("Facturation"),
     FL_AP_194("Facturation"),
+    FL_AP_200("Dépôt de dossier pour amendement AP"),
+    FL_AP_201("Rejet suite recevabilité amendement AP"),
+    FL_AP_202("Autorisation de l'amendement AP"),
     /**
      * The F l_ a p_85.
      */
