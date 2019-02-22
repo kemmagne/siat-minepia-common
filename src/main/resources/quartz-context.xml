@@ -1,47 +1,49 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-	<bean id="taskNotificationMail" class="org.guce.siat.common.job.TaskNotificationMail" />
+    <!--<bean id="taskNotificationMail" class="org.guce.siat.common.job.TaskNotificationMail" />-->
 
-	<!-- specifing class and method that is going to be called on a specified 
-		time basis -->
-	<bean id="jobNotificationMail"
-		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="taskNotificationMail" />
-		<property name="targetMethod" value="sendMailNotification" />
-	</bean>
+    <!-- specifing class and method that is going to be called on a specified
+    time basis -->
+    <!--    <bean id="jobNotificationMail"
+              class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskNotificationMail" />
+        <property name="targetMethod" value="sendMailNotification" />
+    </bean>-->
 
-	<!-- simple trigger specify repeat interval and delay time 
-	<bean id="simpleTrigger"
-		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
-		<property name="jobDetail" ref="myJob" />
-		<property name="repeatInterval" value="5000" />
-		<property name="startDelay" value="1000" />
-	</bean>-->
-	
-	<!-- Run the job every 5 seconds -->
-	<bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-	    <property name="jobDetail" ref="jobNotificationMail" />
-	    <!-- <property name="cronExpression" value="0 0/1 * ? * *" /> -->
-	    <property name="cronExpression" value="0 0 23 * * ?" />
-	</bean>
+    <!-- simple trigger specify repeat interval and delay time
+    <bean id="simpleTrigger"
+            class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+            <property name="jobDetail" ref="myJob" />
+            <property name="repeatInterval" value="5000" />
+            <property name="startDelay" value="1000" />
+    </bean>-->
 
-	<!-- scheduler factory bean to bind,the executing code and time intervals 
-		together -->
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="jobDetails">
-			<list>
-				<ref bean="jobNotificationMail" />
-			</list>
-		</property>
-		<property name="triggers">
-			<list>
-				<!-- <ref bean="simpleTrigger" /> -->
-				<ref bean="cronTrigger" />
-			</list>
-		</property>
-	</bean>
+    <!-- Run the job every 5 seconds -->
+    <!--    <bean id="cronTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobNotificationMail" />
+         <property name="cronExpression" value="0 0/1 * ? * *" />
+        <property name="cronExpression" value="0 0 23 * * ?" />
+    </bean>-->
+
+    <!-- scheduler factory bean to bind,the executing code and time intervals
+    together -->
+    <!--    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="jobNotificationMail" />
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                 <ref bean="simpleTrigger" />
+                <ref bean="cronTrigger" />
+            </list>
+        </property>
+    </bean>-->
 
 </beans>
+
+

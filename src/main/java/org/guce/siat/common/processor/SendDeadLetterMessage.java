@@ -27,74 +27,89 @@ import org.xml.sax.SAXException;
  */
 public class SendDeadLetterMessage implements Processor {
 
-	/**
-	 * The Constant LOG.
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(SendDeadLetterMessage.class);
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(SendDeadLetterMessage.class);
 
-	/**
-	 * The Constant EMAIL_BODY_PASSWORD.
-	 */
-	private static final String EMAIL_BODY_ADMINISTRATOR = "emailBodyAdministrator.vm";
+    /**
+     * The Constant EMAIL_BODY_PASSWORD.
+     */
+    private static final String EMAIL_BODY_ADMINISTRATOR = "emailBodyAdministrator.vm";
 
-	/**
-	 * The mail service.
-	 */
-	@Autowired
-	private MailService mailService;
+    /**
+     * The mail service.
+     */
+    @Autowired
+    private MailService mailService;
 
+//    @Override
+    public void process1(final Exchange exchange) throws Exception {
+        final Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+        final HashMap<String, Object> ebxml = (exchange.getIn().getBody() != null ? (HashMap<String, Object>) exchange.getIn()
+                .getBody() : null);
+        LOG.error("### is there an exception ? {}", (cause != null ? "true" : "false"));
+        LOG.error("###SendDeadLetterMessage Error message : ", cause);
 
-	/*
+        final String referenceSiat = retrieveReferenceSiat(ebxml);
+        final String display = StringUtils.isNotBlank(referenceSiat) ? "inline" : "none";
+        ebxml.put(ESBConstants.DEAD, "1");
+        exchange.getOut().setBody(ebxml);
+        LOG.error("### exchange Id : {}", exchange.getExchangeId());
+        final String templateFileName = EMAIL_BODY_ADMINISTRATOR;
+        final Map<String, String> map = new HashMap<>();
+        map.put(MailConstants.SUBJECT, "SIAT : Problème Technique");
+        map.put(MailConstants.FROM, mailService.getFromValue());
+        map.put(MailConstants.EMAIL, mailService.getReplyToValue());
+        map.put("exception", Objects.toString(cause));
+        map.put("message_id", exchange.getOut().getMessageId());
+        map.put("referenceSiat", referenceSiat);
+        map.put("display", display);
+        map.put(MailConstants.VMF, templateFileName);
+        mailService.sendMail(map);
+
+    }
+
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.apache.camel.Processor#process(org.apache.camel.Exchange)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void process(final Exchange exchange) throws Exception {
-		final Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
-		final HashMap<String, Object> ebxml = (exchange.getIn().getBody() != null ? (HashMap<String, Object>) exchange.getIn()
-				.getBody() : null);
-		LOG.error("### is there an exception ? {}", (cause != null ? "true" : "false"));
-		LOG.error("###SendDeadLetterMessage Error message : ", cause);
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public void process(Exchange exchange) throws Exception {
+        final Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+        final HashMap<String, Object> ebxml = (exchange.getIn().getBody() != null ? (HashMap<String, Object>) exchange.getIn()
+                .getBody() : null);
+        LOG.error("### is there an exception ? {}", (cause != null ? "true" : "false"));
+        LOG.error("###SendDeadLetterMessage Error message : ", cause);
 
-		final String referenceSiat = retrieveReferenceSiat(ebxml);
-		final String display = StringUtils.isNotBlank(referenceSiat) ? "inline" : "none";
-		ebxml.put(ESBConstants.DEAD, "1");
-		exchange.getOut().setBody(ebxml);
-		LOG.error("### exchange Id : {}", exchange.getExchangeId());
-		final String templateFileName = EMAIL_BODY_ADMINISTRATOR;
-		final Map<String, String> map = new HashMap<String, String>();
-		map.put(MailConstants.SUBJECT, "SIAT : Problème Technique");
-		map.put(MailConstants.FROM, mailService.getFromValue());
-		map.put(MailConstants.EMAIL, mailService.getReplyToValue());
-		map.put("exception", Objects.toString(cause));
-		map.put("message_id", exchange.getOut().getMessageId());
-		map.put("referenceSiat", referenceSiat);
-		map.put("display", display);
-		map.put(MailConstants.VMF, templateFileName);
-		mailService.sendMail(map);
+        final String referenceSiat = retrieveReferenceSiat(ebxml);
+        final String display = StringUtils.isNotBlank(referenceSiat) ? "inline" : "none";
+        ebxml.put(ESBConstants.DEAD, "1");
+        exchange.getOut().setBody(ebxml);
+        LOG.error("### exchange Id : {}", exchange.getExchangeId());
+    }
 
-	}
-
-	/**
-	 * Retrieve reference siat.
-	 *
-	 * @param exchange the exchange
-	 * @return the string
-	 * @throws SOAPException the SOAP exception
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws TransformerException the transformer exception
-	 * @throws SAXException the SAX exception
-	 * @throws ParserConfigurationException the parser configuration exception
-	 */
-	private String retrieveReferenceSiat(final HashMap<String, Object> ebxml) throws SOAPException, IOException,
-			TransformerException, SAXException, ParserConfigurationException {
-		final byte[] flow = (byte[]) ebxml.get(ESBConstants.FLOW);
-		final String xmlContent = new String(flow, "ISO-8859-1");
-		final Element rootElement = XmlXPathUtils.stringToXMLDOM(xmlContent).getDocumentElement();
-		final String referenceSiat = XmlXPathUtils.findSingleValue("/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_SIAT", rootElement);
-		return referenceSiat;
-	}
+    /**
+     * Retrieve reference siat.
+     *
+     * @param exchange the exchange
+     * @return the string
+     * @throws SOAPException the SOAP exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws TransformerException the transformer exception
+     * @throws SAXException the SAX exception
+     * @throws ParserConfigurationException the parser configuration exception
+     */
+    private String retrieveReferenceSiat(final HashMap<String, Object> ebxml) throws SOAPException, IOException,
+            TransformerException, SAXException, ParserConfigurationException {
+        final byte[] flow = (byte[]) ebxml.get(ESBConstants.FLOW);
+        final String xmlContent = new String(flow, "ISO-8859-1");
+        final Element rootElement = XmlXPathUtils.stringToXMLDOM(xmlContent).getDocumentElement();
+        final String referenceSiat = XmlXPathUtils.findSingleValue("/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_SIAT", rootElement);
+        return referenceSiat;
+    }
 
 }
+
