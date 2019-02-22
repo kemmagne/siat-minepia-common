@@ -67,7 +67,6 @@ public class SendDeadLetterMessage implements Processor {
         map.put("display", display);
         map.put(MailConstants.VMF, templateFileName);
         mailService.sendMail(map);
-
     }
 
     /*
@@ -84,8 +83,6 @@ public class SendDeadLetterMessage implements Processor {
         LOG.error("### is there an exception ? {}", (cause != null ? "true" : "false"));
         LOG.error("###SendDeadLetterMessage Error message : ", cause);
 
-        final String referenceSiat = retrieveReferenceSiat(ebxml);
-        final String display = StringUtils.isNotBlank(referenceSiat) ? "inline" : "none";
         ebxml.put(ESBConstants.DEAD, "1");
         exchange.getOut().setBody(ebxml);
         LOG.error("### exchange Id : {}", exchange.getExchangeId());
