@@ -5,22 +5,22 @@ import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
- * The Class JobMessageResend.
+ * The Class JobResendMessage.
  */
-public class JobMessageResend extends QuartzJobBean {
+public class JobResendMail extends QuartzJobBean {
 
     /**
      * The task message resend.
      */
-    private TaskMessageResend taskMessageResend;
+    private TaskResendMail taskResendMail;
 
     /**
      * Sets the my task.
      *
-     * @param taskMessageResend the new my task
+     * @param taskResendMail
      */
-    public void setMyTask(final TaskMessageResend taskMessageResend) {
-        this.taskMessageResend = taskMessageResend;
+    public void setMyTask(final TaskResendMail taskResendMail) {
+        this.taskResendMail = taskResendMail;
     }
 
     /*
@@ -30,7 +30,7 @@ public class JobMessageResend extends QuartzJobBean {
      */
     @Override
     protected void executeInternal(final JobExecutionContext arg0) throws JobExecutionException {
-        taskMessageResend.resendMessage();
+        taskResendMail.resendMail();
     }
 
 }

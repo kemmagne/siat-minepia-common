@@ -1,37 +1,53 @@
 package org.guce.siat.common.service.impl;
 
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import hk.hku.cecid.ebms.pkg.EbxmlMessage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.collections.MapUtils;
-import org.guce.siat.common.model.File;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.SOAPException;
+import javax.xml.transform.TransformerException;
+import org.guce.siat.common.dao.FileDao;
+import org.guce.siat.common.dao.FileItemDao;
+import org.guce.siat.common.dao.ItemFlowDao;
+import org.guce.siat.common.mail.MailConstants;
+import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
-import org.guce.siat.common.service.EbxmlPropertiesService;
 
 import org.guce.siat.common.service.FileProducer;
-import org.guce.siat.common.utils.SiatUtils;
+import org.guce.siat.common.service.MailService;
+import org.guce.siat.common.utils.EbxmlUtils;
+import org.guce.siat.common.utils.HttpUtils;
+import org.guce.siat.common.utils.XmlXPathUtils;
 import org.guce.siat.common.utils.ebms.ESBConstants;
-import org.guce.siat.common.utils.filter.ExtentionFileFilter;
+import org.guce.siat.common.utils.enums.AperakType;
+import org.guce.siat.common.utils.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  * The Class FileProducerImpl.
  *
  */
 @Service("fileProducer")
+@PropertySources({
+    @PropertySource("classpath:global-config.properties")})
 public class FileProducerImpl implements FileProducer {
 
     /**
@@ -39,8 +55,36 @@ public class FileProducerImpl implements FileProducer {
      */
     private static final Logger LOG = LoggerFactory.getLogger(FileProducerImpl.class);
 
-    private static final String ATTACHMENTS_FOLDER_NAME = "attachments";
-    private static final String DATE_PATTERN = "yyyy/MM/dd";
+    private static final String LOGIN = "@4wWYa3!9fhMS@dqMlKY";
+    private static final String PASSWORD = "ek5zD]hKv4@WuD$5";
+
+    /**
+     * The Constant NEGATIVE_APERAK_MAIL.
+     */
+    private static final String NEGATIVE_APERAK_MAIL = "negatifAperakReceived.vm";
+
+    /**
+     * The file dao.
+     */
+    @Autowired
+    private FileDao fileDao;
+
+    /**
+     * The item flow dao.
+     */
+    @Autowired
+    private ItemFlowDao itemFlowDao;
+    /**
+     * The file item.
+     */
+    @Autowired
+    private FileItemDao fileItemDao;
+
+    /**
+     * The mail service.
+     */
+    @Autowired
+    private MailService mailService;
 
     /**
      * The jms template.
@@ -48,8 +92,29 @@ public class FileProducerImpl implements FileProducer {
     @Autowired
     @Qualifier("jmsTemplate")
     private JmsTemplate jmsTemplate;
+
+    /**
+     * The rest template.
+     */
     @Autowired
-    private EbxmlPropertiesService ebxmlPropertiesService;
+    @Qualifier("restTemplate")
+    private RestTemplate restTemplate;
+
+    /**
+     * use jms ?
+     */
+    @Value("${use.jms}")
+    private boolean useJms;
+    /**
+     * the messages folder
+     */
+    @Value("${messages.folder}")
+    private String messagesFolder;
+    /**
+     * the messages folder
+     */
+    @Value("${webservice.url}")
+    private String webserviceUrl;
 
     /*
 	 * (non-Javadoc)
@@ -59,185 +124,113 @@ public class FileProducerImpl implements FileProducer {
     @Override
     public void sendFile(final Map<String, Object> data) {
 
-        if (data.get(ESBConstants.CURRENT_FLOW) != null) {
-            LOG.info("######## Start creation of backup");
-
-            try {
-                createMessageBackup(data, false);
-                LOG.info("######## End creation of backup");
-            } catch (Exception ex) {
-                reset(data);
-                LOG.error("Cannot not create backup", ex);
-            }
-        }
-
         LOG.info("######## Start sending Message");
-        if (jmsTemplate != null) {
+        if (!useJms) {
+            try {
+                final byte[] ebxml = EbxmlUtils.mapToEbxml(data);
+                sendViaRest(ebxml);
+            } catch (SOAPException | IOException | TransformerException ex) {
+                LOG.error(null, ex);
+            }
+        } else {
             jmsTemplate.convertAndSend(data);
-            LOG.info("######## Message Sent Successfully");
+        }
+        LOG.info("######## Message Sent Successfully");
+    }
+
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.service.FileProducer#sendViaRest(byte[])
+     */
+    @Override
+    public void sendViaRest(final byte[] ebxml) throws SOAPException, IOException, TransformerException {
+        final HttpEntity<byte[]> requestEntity = new HttpEntity<>(ebxml, HttpUtils.createHeaders(LOGIN, PASSWORD));
+        final ResponseEntity responseEntity = restTemplate.exchange(webserviceUrl, HttpMethod.POST, requestEntity, Object.class);
+        if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+            byte[] responseBytes = (byte[]) responseEntity.getBody();
+            Map<String, Object> responseMap = EbxmlUtils.ebxmlToMap(responseBytes);
+            final byte[] xmlBytes = (byte[]) responseMap.get(ESBConstants.FLOW);
+            final String xmlContent = new String(xmlBytes);
+            try {
+                final Element rootElement = XmlXPathUtils.stringToXMLDOM(xmlContent).getDocumentElement();
+                processReceivedAperak(rootElement);
+            } catch (SAXException | ParserConfigurationException ex) {
+                LOG.error(null, ex);
+            }
+            backupNotSentMsg(ebxml, Boolean.TRUE);
+        } else {
+            backupNotSentMsg(ebxml, Boolean.FALSE);
         }
     }
 
-    @Override
-    public void resendFile(final ItemFlow itemFlow) throws Exception {
-        resendFile(itemFlow, false);
-    }
-
-    @Override
-    public void resendAcknowledgment(final ItemFlow itemFlow) throws Exception {
-        resendFile(itemFlow, true);
-    }
-
-    @Override
-    public void createAperakBackup(final Map<String, Object> data) throws Exception {
-        try {
-            createMessageBackup(data, true);
-        } catch (Exception ex) {
-            reset(data);
-            LOG.error("Cannot not create backup", ex);
-        }
-    }
-
-    private void resendFile(final ItemFlow itemFlow, final boolean aperak) throws Exception {
-        // folder : rootFolder/fileType/dateCreationDossier/eguceNb/flow/ifIds
-        // att : folder/attachments
-        // xml : folder/service_eguceNb_typeDoc.xml
-
-        final Map<String, Object> data = new HashMap<>();
-
-        final String rootFolder = ebxmlPropertiesService.getEbxmlFolder();
-
-        final DateFormat df = new SimpleDateFormat(DATE_PATTERN);
-        final File file = itemFlow.getFileItem().getFile();
-        java.io.File folder = new java.io.File(String.format("%s/%s/%s/%s/%s",
-                rootFolder, file.getFileTypeGuce(), df.format(file.getCreatedDate()),
-                file.getNumeroDossier(), itemFlow.getFlow().getCode()));
-        if (!folder.exists()) {
-            throw new Exception(String.format("Cannot resent the file : folder %s doesn't exist",
-                    folder.getAbsolutePath()));
-        }
-
-        final String itemFlowId = itemFlow.getId().toString();
-        boolean ok = false;
-        for (final java.io.File f : folder.listFiles()) {
-            final String fName = f.getName();
-            if (fName.equals(itemFlowId) || fName.startsWith(itemFlowId.concat("_"))
-                    || fName.contains("_".concat(itemFlowId).concat("_"))
-                    || fName.endsWith("_".concat(itemFlowId))) {
-                folder = f;
-                ok = true;
-                break;
+    private void backupNotSentMsg(final byte[] ebxml, boolean sent) throws SOAPException, IOException {
+        final EbxmlMessage ebxmlMessage = new EbxmlMessage(new ByteArrayInputStream(ebxml));
+        final String messageID = ebxmlMessage.getMessageId();
+        final String backupFileName = String.format("%s.ebxml", messageID);
+        java.io.File backupFile = new java.io.File(messagesFolder, backupFileName);
+        backupFile.getParentFile().mkdirs();
+        if (!backupFile.exists()) {
+            IOUtils.writeBytesToFile(backupFile, ebxml);
+        } else {
+            if (sent) {
+                backupFile.delete();
             }
         }
-        if (!ok) {
-            throw new Exception(String.format("Cannot find folder by item flow id %s", itemFlowId));
-        }
+    }
 
-        final FilenameFilter filter = new ExtentionFileFilter(ESBConstants.XML_FILE_EXTENSION);
-        final java.io.File[] xmlFiles = folder.listFiles(filter);
-        if (xmlFiles.length == 0) {
-            throw new Exception("Cannot find xml file");
-        }
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.service.FileProducer#processReceivedAperak(org.w3c.dom.Element)
+     */
+    @Override
+    public boolean processReceivedAperak(Element rootElement) {
+        final String documentTypeExpression = "/DOCUMENT/TYPE_DOCUMENT";
 
-        final java.io.File xmlFile = xmlFiles[0];
-        Path path = Paths.get(xmlFile.getAbsolutePath());
-        final byte[] xmlBytes = Files.readAllBytes(path);
-        data.put(ESBConstants.FLOW, xmlBytes);
+        final String referenceSiatExpression = "/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_SIAT";
 
-        if (!aperak) {
-            folder = new java.io.File(String.format("%s/%s", folder.getAbsolutePath(), ATTACHMENTS_FOLDER_NAME));
-            if (folder.exists()) {
-                Map<String, byte[]> attachments = new HashMap<>();
-                for (final java.io.File attachment : folder.listFiles()) {
-                    final String attName = attachment.getName();
-                    path = Paths.get(attachment.getAbsolutePath());
-                    final byte[] attBytes = Files.readAllBytes(path);
-                    attachments.put(attName, attBytes);
+        final String documentType = XmlXPathUtils.findSingleValue(documentTypeExpression, rootElement);
+        final String referenceSiat = XmlXPathUtils.findSingleValue(referenceSiatExpression, rootElement);
+        if (org.apache.commons.lang.StringUtils.isNotBlank(documentType) && org.apache.commons.lang.StringUtils.isNotBlank(referenceSiat)) {
+            final org.guce.siat.common.model.File siatFile = fileDao.findByRefSiat(referenceSiat);
+            final List<FileItem> fileItems = siatFile.getFileItemsList();
+
+            if (AperakType.APERAK_C.name().equals(documentType) || AperakType.APERAK_J.name().equals(documentType)) {
+                //rollback the last decision
+                String senderMail = null;
+                for (final FileItem fileItem : fileItems) {
+                    final ItemFlow itemflow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItem);
+                    senderMail = itemflow.getSender().getEmail();
+                    itemflow.setReceived(AperakType.APERAK_C.getCharCode());
+                    itemflow.setSent(Boolean.FALSE);
+                    itemFlowDao.update(itemflow);
+
+                    fileItem.setDraft(Boolean.TRUE);
+                    fileItem.setStep(itemflow.getFlow().getFromStep());
+                    fileItemDao.update(fileItem);
                 }
-                data.put(ESBConstants.ATTACHMENT, attachments);
-            }
-        }
-
-        final String xmlFileName = xmlFile.getName().substring(0,
-                xmlFile.getName().lastIndexOf(ESBConstants.XML_FILE_EXTENSION));
-        final String[] parts = xmlFileName.split("_");
-        final String service = parts[0];
-        final String documentType = parts[2];
-        data.put(ESBConstants.SERVICE, service);
-        data.put(ESBConstants.TYPE_DOCUMENT, documentType);
-        data.put(ESBConstants.MESSAGE, null);
-        data.put(ESBConstants.EBXML_TYPE, !aperak ? "STANDARD" : ESBConstants.APERAK);
-        data.put(ESBConstants.TO_PARTY_ID, ebxmlPropertiesService.getToPartyId());
-        data.put(ESBConstants.DEAD, "0");
-
-        LOG.info("######## Start resending Message");
-        if (jmsTemplate != null) {
-            jmsTemplate.convertAndSend(data);
-            LOG.info("######## Message resent Successfully");
-        }
-    }
-
-    private void createMessageBackup(final Map<String, Object> data, final boolean aperak) throws Exception {
-        // folder : rootFolder/fileType/dateCreationDossier/eguceNb/flow/ifIds
-        // att : folder/attachments
-        // xml : folder/service_eguceNb_typeDoc.xml
-
-        // some informations could be empty or null
-        final byte[] xmlBytes = (byte[]) data.get(ESBConstants.FLOW);
-        final File file = (File) data.get(ESBConstants.FILE);
-
-        if (org.apache.commons.lang.StringUtils.isBlank((String) data.get(ESBConstants.SERVICE))) {
-            final String service = file.getFileTypeGuce();
-            data.put(ESBConstants.SERVICE, service);
-        }
-
-        if (org.apache.commons.lang.StringUtils.isBlank((String) data.get(ESBConstants.TYPE_DOCUMENT))) {
-            final String documentType = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/TYPE_DOCUMENT");
-            data.put(ESBConstants.TYPE_DOCUMENT, documentType);
-        }
-
-        final String rootFolder = ebxmlPropertiesService.getEbxmlFolder();
-        final DateFormat df = new SimpleDateFormat(DATE_PATTERN);
-        final String ifIds = StringUtils
-                .collectionToDelimitedString((List) data.get(ESBConstants.ITEM_FLOW_IDS), "_");
-        final java.io.File folder = new java.io.File(String.format("%s/%s/%s/%s/%s/%s",
-                rootFolder, file.getFileTypeGuce(), df.format(file.getCreatedDate()),
-                file.getNumeroDossier(), data.get(ESBConstants.CURRENT_FLOW), ifIds));
-        folder.mkdirs();
-
-        final String xmlFilePath = String.format("%s/%s_%s_%s%s",
-                folder.getAbsolutePath(), data.get(ESBConstants.SERVICE),
-                file.getNumeroDossier(), data.get(ESBConstants.TYPE_DOCUMENT),
-                ESBConstants.XML_FILE_EXTENSION);
-        try (final FileOutputStream os = new FileOutputStream(xmlFilePath)) {
-            os.write(xmlBytes);
-        }
-
-        if (!aperak) {
-            final Map<String, byte[]> attachments = (Map<String, byte[]>) data.get(ESBConstants.ATTACHMENT);
-            if (MapUtils.isNotEmpty(attachments)) {
-                final java.io.File attachmentsFolder = new java.io.File(String.format("%s/%s",
-                        folder.getAbsolutePath(), ATTACHMENTS_FOLDER_NAME));
-                attachmentsFolder.mkdirs();
-                for (Map.Entry<String, byte[]> att : attachments.entrySet()) {
-                    String attName = att.getKey();
-                    byte[] attBytes = att.getValue();
-                    try (final FileOutputStream os = new FileOutputStream(String.format("%s/%s",
-                            attachmentsFolder.getAbsolutePath(), attName))) {
-                        os.write(attBytes);
+                final String templateFileName = NEGATIVE_APERAK_MAIL;
+                final Map<String, String> map = new HashMap<>();
+                map.put(MailConstants.SUBJECT, "SIAT : Dossier non envoyé");
+                map.put(MailConstants.FROM, mailService.getFromValue());
+                map.put(MailConstants.EMAIL, senderMail);
+                map.put("refSiat", siatFile.getReferenceSiat());
+                map.put(MailConstants.VMF, templateFileName);
+                mailService.sendMail(map);
+                return true;
+            } else if (AperakType.APERAK_D.name().equals(documentType) || AperakType.APERAK_F.name().equals(documentType)) {
+                for (final FileItem fileItem : fileItems) {
+                    final ItemFlow itemFlow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItem);
+                    if (itemFlow != null) {
+                        itemFlow.setReceived(AperakType.APERAK_D.getCharCode());
+                        itemFlowDao.update(itemFlow);
                     }
                 }
+                return true;
             }
         }
-
-        //
-        reset(data);
-    }
-
-    private void reset(final Map<String, Object> data) {
-        data.remove(ESBConstants.FILE);
-        data.remove(ESBConstants.CURRENT_FLOW);
-        data.remove(ESBConstants.ITEM_FLOW_IDS);
+        return false;
     }
 
 }

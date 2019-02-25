@@ -1,0 +1,16 @@
+<html>
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	</head>
+ 
+<body>
+Bonjour,
+<br><br>
+L'envoi du dossier :<b>${refSiat}</b> est échoué.<br>
+Merci de le renvoyer depuis le dashboard  SIAT.<br/>
+
+<br>
+Cordialement,<br> 
+Equipe GUCE <br>
+</body>
+</html>

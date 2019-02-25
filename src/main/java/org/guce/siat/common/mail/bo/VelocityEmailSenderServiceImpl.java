@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.velocity.app.VelocityEngine;
+import org.guce.siat.common.mail.MailConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,104 +14,110 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-
 /**
  * The Class VelocityEmailSenderServiceImpl.
  */
-public class VelocityEmailSenderServiceImpl implements EmailSenderService
-{
+public class VelocityEmailSenderServiceImpl implements EmailSenderService {
 
-	/** The velocity engine. */
-	private final VelocityEngine velocityEngine;
+    /**
+     * The velocity engine.
+     */
+    private final VelocityEngine velocityEngine;
 
-	/** The mail sender. */
-	private final JavaMailSender mailSender;
+    /**
+     * The mail sender.
+     */
+    private final JavaMailSender mailSender;
 
-	/** The msg. */
-	private final SimpleMailMessage msg;
+    /**
+     * The msg.
+     */
+    private final SimpleMailMessage msg;
 
-	/**
-	 * Instantiates a new velocity email sender service impl.
-	 *
-	 * @param velocityEngine
-	 *           the velocity engine
-	 * @param mailSender
-	 *           the mail sender
-	 * @param msg
-	 *           the msg
-	 */
-	@Autowired
-	public VelocityEmailSenderServiceImpl(final VelocityEngine velocityEngine, final JavaMailSender mailSender,
-			final SimpleMailMessage msg)
-	{
-		super();
-		this.velocityEngine = velocityEngine;
-		this.mailSender = mailSender;
-		this.msg = msg;
+    /**
+     * Instantiates a new velocity email sender service impl.
+     *
+     * @param velocityEngine the velocity engine
+     * @param mailSender the mail sender
+     * @param msg the msg
+     */
+    @Autowired
+    public VelocityEmailSenderServiceImpl(final VelocityEngine velocityEngine, final JavaMailSender mailSender,
+            final SimpleMailMessage msg) {
+        super();
+        this.velocityEngine = velocityEngine;
+        this.mailSender = mailSender;
+        this.msg = msg;
 
-	}
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.mail.bo.EmailSenderService#send(java.lang.String, java.lang.String, java.lang.String,
 	 * java.util.Map, java.lang.String[], java.io.File[])
-	 */
-	public void send(final String subject, final String from, final String emailBodyPath,
-			final Map<String, Object> hTemplateVariables, final String[] mailReceiver, final File... files)
-	{
+     */
+    @Override
+    public void send(final String subject, final String from, final String emailBodyPath,
+            final Map<String, Object> hTemplateVariables, final String[] mailReceiver, final File... files) {
 
-		final MimeMessagePreparator preparator = new MimeMessagePreparator()
-		{
-			public void prepare(final MimeMessage mimeMessage) throws Exception
-			{
-				final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, files != null && files.length != 0);
-				message.setTo(mailReceiver);
-				message.setFrom(from);
-				message.setSubject(subject);
-				final String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, emailBodyPath, "UTF-8",
-						hTemplateVariables);
-				message.setText(body, true);
+        final MimeMessagePreparator preparator = new MimeMessagePreparator() {
+            @Override
+            public void prepare(final MimeMessage mimeMessage) throws Exception {
+                final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, files != null && files.length != 0);
+                message.setTo(mailReceiver);
+                message.setFrom(from);
+                message.setSubject(subject);
+                final String body = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, emailBodyPath, "UTF-8",
+                        hTemplateVariables);
+                message.setText(body, true);
 
-				for (int i = 0; i < files.length; i++)
-				{
-					message.addAttachment(files[i].getName(), files[i]);
-				}
-			}
-		};
+                for (File file : files) {
+                    message.addAttachment(file.getName(), file);
+                }
+            }
+        };
 
-		mailSender.send(preparator);
+        mailSender.send(preparator);
+    }
 
-	}
-
-	/**
-	 * Gets the velocity engine.
+    /*
+	 * (non-Javadoc)
 	 *
-	 * @return the velocity engine
-	 */
-	public VelocityEngine getVelocityEngine()
-	{
-		return velocityEngine;
-	}
+	 * @see org.guce.siat.common.mail.bo.EmailSenderService#send(java.lang.String, java.lang.String, java.lang.String,
+	 * java.util.Map, java.lang.String[], java.io.File[])
+     */
+    @Override
+    public void send(final Map<String, Object> params) {
+        send((String) params.get(MailConstants.SUBJECT), (String) params.get(MailConstants.FROM), (String) params.get(MailConstants.VMF), params, new String[]{(String) params.get(MailConstants.EMAIL)});
+    }
 
-	/**
-	 * Gets the mail sender.
-	 *
-	 * @return the mail sender
-	 */
-	public JavaMailSender getMailSender()
-	{
-		return mailSender;
-	}
+    /**
+     * Gets the velocity engine.
+     *
+     * @return the velocity engine
+     */
+    public VelocityEngine getVelocityEngine() {
+        return velocityEngine;
+    }
 
-	/**
-	 * Gets the msg.
-	 *
-	 * @return the msg
-	 */
-	public SimpleMailMessage getMsg()
-	{
-		return msg;
-	}
+    /**
+     * Gets the mail sender.
+     *
+     * @return the mail sender
+     */
+    public JavaMailSender getMailSender() {
+        return mailSender;
+    }
+
+    /**
+     * Gets the msg.
+     *
+     * @return the msg
+     */
+    public SimpleMailMessage getMsg() {
+        return msg;
+    }
 
 }
+

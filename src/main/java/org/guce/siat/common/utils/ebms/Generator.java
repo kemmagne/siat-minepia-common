@@ -12,7 +12,7 @@ public final class Generator {
 
     private static int messageIdCounter = 0;
 
-    private static Object messageIdCounterLock = new Object();
+    private static final Object MESSAGE_ID_COUNTER_LOCK = new Object();
 
     /**
      * Creates a new instance of Generator.
@@ -31,7 +31,7 @@ public final class Generator {
         final DataFormatter messageIdFormatter = DataFormatter.getInstance();
         final Date timestamp = new Date();
         int localCounter;
-        synchronized (messageIdCounterLock) {
+        synchronized (MESSAGE_ID_COUNTER_LOCK) {
             messageIdCounter %= 100;
             localCounter = messageIdCounter;
             messageIdCounter++;
@@ -81,3 +81,4 @@ public final class Generator {
         return s;
     }
 }
+
