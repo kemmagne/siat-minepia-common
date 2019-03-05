@@ -25,12 +25,10 @@
         <property name="targetObject" ref="taskResendMessage" />
         <property name="targetMethod" value="resendMessage" />
     </bean>
-
-    <!-- Run the job every 5 seconds -->
+    <!-- toutes les 30 secondes -->
     <bean id="cronTriggerResendMsgs" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="jobResendMessage" />
-        <property name="cronExpression" value="0 0/1 * ? * *" />
-        <property name="cronExpression" value="0 0 23 * * ?" />
+        <property name="cronExpression" value="1/5 0 0 ? * * *" />
     </bean>
 
     <!-- scheduler factory bean to bind,the executing code and time intervals together -->
@@ -47,6 +45,11 @@
         </property>
     </bean>
 </beans>
+
+
+
+
+
 
 
 

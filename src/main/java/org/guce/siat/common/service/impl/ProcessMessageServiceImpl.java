@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
-@Service("processMessageService")
 @Transactional
+@Service("processMessageService")
 public class ProcessMessageServiceImpl implements ProcessMessageService {
 
     /**
