@@ -59,18 +59,6 @@ public class FileProducerImpl implements FileProducer {
     @Override
     public void sendFile(final Map<String, Object> data) {
 
-        if (data.get(ESBConstants.CURRENT_FLOW) != null) {
-            LOG.info("######## Start creation of backup");
-
-            try {
-                createMessageBackup(data, false);
-                LOG.info("######## End creation of backup");
-            } catch (Exception ex) {
-                reset(data);
-                LOG.error("Cannot not create backup", ex);
-            }
-        }
-
         LOG.info("######## Start sending Message");
         if (jmsTemplate != null) {
             jmsTemplate.convertAndSend(data);
