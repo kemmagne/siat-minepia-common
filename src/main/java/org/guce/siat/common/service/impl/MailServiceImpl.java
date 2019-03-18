@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.guce.siat.common.mail.bo.EmailSenderService;
 
-import org.guce.siat.common.mail.jms.JmsMailMessageProducer;
 import org.guce.siat.common.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +32,8 @@ public class MailServiceImpl implements MailService {
      */
     private static final Logger LOG = LoggerFactory.getLogger(MailServiceImpl.class);
 
-    /**
-     * use jms ?
-     */
-    @Value("${use.jms}")
-    private boolean useJms;
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
+
     /**
      * the messages folder
      */
@@ -57,18 +53,6 @@ public class MailServiceImpl implements MailService {
     private String replyTo;
 
     /**
-     * The xml folder.
-     */
-    @Value("${xml.folder}")
-    private String xmlFolder;
-
-    /**
-     * The jms mail message producer.
-     */
-    @Autowired
-    private JmsMailMessageProducer jmsMailMessageProducer;
-
-    /**
      * The email sender service.
      */
     @Autowired
@@ -81,50 +65,27 @@ public class MailServiceImpl implements MailService {
      */
     @Override
     public void sendMail(final Map<String, String> map) {
-        if (!useJms) {
-            final Map<String, Object> params = new HashMap<>();
-            for (Map.Entry<String, String> entry : map.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                params.put(key, value);
-            }
-            try {
-                emailSenderService.send(params);
-            } catch (Exception ex) {
-                LOG.error(null, ex);
-                final DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-                final String backupEmailFileName = String.format("email_%s.json", df.format(Calendar.getInstance().getTime()));
-                final File backupEmailFile = new File(mailsFolder, backupEmailFileName);
-                backupEmailFile.getParentFile().mkdirs();
-                final ObjectMapper objectMapper = new ObjectMapper();
-                try {
-                    objectMapper.writeValue(backupEmailFile, map);
-                } catch (IOException ex1) {
-                    LOG.error(null, ex1);
-                }
-            }
-        } else {
-            jmsMailMessageProducer.sendMail(map);
+        final Map<String, Object> params = new HashMap<>();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            params.put(key, value);
         }
-
-    }
-
-    /**
-     * Gets the jms mail message producer.
-     *
-     * @return the jms mail message producer
-     */
-    public JmsMailMessageProducer getJmsMailMessageProducer() {
-        return jmsMailMessageProducer;
-    }
-
-    /**
-     * Sets the jms mail message producer.
-     *
-     * @param jmsMailMessageProducer the new jms mail message producer
-     */
-    public void setJmsMailMessageProducer(final JmsMailMessageProducer jmsMailMessageProducer) {
-        this.jmsMailMessageProducer = jmsMailMessageProducer;
+        try {
+            emailSenderService.send(params);
+        } catch (Exception ex) {
+            LOG.error(null, ex);
+            final String backupEmailFileName = String.format("email_%s.json",
+                    DATE_FORMAT.format(Calendar.getInstance().getTime()));
+            final File backupEmailFile = new File(mailsFolder, backupEmailFileName);
+            backupEmailFile.getParentFile().mkdirs();
+            final ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                objectMapper.writeValue(backupEmailFile, map);
+            } catch (IOException ex1) {
+                LOG.error(null, ex1);
+            }
+        }
     }
 
     /*
@@ -181,24 +142,6 @@ public class MailServiceImpl implements MailService {
      */
     public void setReplyTo(final String replyTo) {
         this.replyTo = replyTo;
-    }
-
-    /**
-     * Gets the xml folder.
-     *
-     * @return the xml folder
-     */
-    public String getXmlFolder() {
-        return xmlFolder;
-    }
-
-    /**
-     * Sets the xml folder.
-     *
-     * @param xmlFolder the new xml folder
-     */
-    public void setXmlFolder(final String xmlFolder) {
-        this.xmlFolder = xmlFolder;
     }
 }
 

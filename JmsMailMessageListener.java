@@ -1,6 +1,3 @@
-/** *
- *
- */
 package org.guce.siat.common.mail.jms;
 
 import java.util.Enumeration;

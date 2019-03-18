@@ -468,22 +468,6 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>hermes</groupId>
-            <artifactId>ebms-core</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>hermes</groupId>
-            <artifactId>ebms-pkg</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>hermes</groupId>
-            <artifactId>piazza-commons</artifactId>
-            <version>1.0</version>
-        </dependency>
-
         <!-- <dependency> <groupId>org.apache.chemistry.opencmis</groupId> <artifactId>chemistry-opencmis-client-impl</artifactId> <version>0.11.0</version>
         </dependency> -->
         <!-- LogBack dependencies -->
@@ -567,6 +551,27 @@
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
             <version>1.0.1.Final</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.guce.orchestra</groupId>
+            <artifactId>orchestra-module-ebxml</artifactId>
+            <version>1.1.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-io</artifactId>
+                    <groupId>commons-io</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>activation</artifactId>
+                    <groupId>javax.activation</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>mail</artifactId>
+                    <groupId>javax.mail</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

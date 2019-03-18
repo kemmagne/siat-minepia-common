@@ -75,5 +75,7 @@ public interface ESBConstants {
     static final String CURRENT_FLOW = "current_flow".intern();
 
     static final String ITEM_FLOW_IDS = "item_flow_ids".intern();
+
+    static final String ITEM_FLOWS = "item_flows".intern();
 }
 

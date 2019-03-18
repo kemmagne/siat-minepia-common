@@ -1,9 +1,7 @@
 package org.guce.siat.common.service;
 
-import java.io.IOException;
 import java.util.Map;
-import javax.xml.soap.SOAPException;
-import javax.xml.transform.TransformerException;
+import org.guce.siat.common.model.ItemFlow;
 import org.w3c.dom.Element;
 
 /**
@@ -19,14 +17,11 @@ public interface FileProducer {
     void sendFile(Map<String, Object> file);
 
     /**
-     * send message to rest api
+     * resend decision.
      *
-     * @param ebxml
-     * @throws SOAPException
-     * @throws IOException
-     * @throws TransformerException
+     * @param itemFlow
      */
-    void sendViaRest(byte[] ebxml) throws SOAPException, IOException, TransformerException;
+    boolean resendDecision(ItemFlow itemFlow);
 
     /**
      * Process received APERAK.

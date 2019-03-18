@@ -140,6 +140,16 @@ public class FileProducerImpl implements FileProducer {
             final HttpEntity<byte[]> requestEntity = new HttpEntity<>(ebxmlBytes, HttpUtils.createHeaders(LOGIN, PASSWORD));
             final ResponseEntity responseEntity = REST_TEMPLATE.exchange(webserviceUrl, HttpMethod.POST, requestEntity, Object.class);
             if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+                try {
+                    String response = (String) responseEntity.getBody();
+                    Map<String, Object> responseMap = EbxmlUtils.ebxmlToMap(response);
+                    final byte[] xmlBytes = (byte[]) responseMap.get(ESBConstants.FLOW);
+                    final String xmlContent = new String(xmlBytes);
+                    final Element rootElement = XmlXPathUtils.stringToXMLDOM(xmlContent).getDocumentElement();
+                    processReceivedAperak(rootElement);
+                } catch (Exception ex) {
+                    LOG.error(null, ex);
+                }
                 backupNotSentMsg(ebxml, Boolean.TRUE);
             } else {
                 backupNotSentMsg(ebxml, Boolean.FALSE);

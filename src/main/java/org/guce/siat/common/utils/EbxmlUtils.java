@@ -1,26 +1,25 @@
 package org.guce.siat.common.utils;
 
 import hk.hku.cecid.ebms.pkg.EbxmlMessage;
-import hk.hku.cecid.ebms.pkg.EbxmlMessageFactory;
-import hk.hku.cecid.ebms.pkg.MessageHeader;
-import hk.hku.cecid.piazza.commons.activation.ByteArrayDataSource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.activation.DataHandler;
+import javax.mail.util.ByteArrayDataSource;
 import javax.xml.soap.AttachmentPart;
 import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.TransformerException;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.IOUtils;
+import org.guce.orchestra.core.OrchestraEbxmlMessage;
+import org.guce.orchestra.dao.util.Generator;
+import org.guce.orchestra.util.CalendarUtility;
 import org.guce.siat.common.utils.ebms.ESBConstants;
-import org.guce.siat.common.utils.ebms.Generator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -68,69 +67,48 @@ public class EbxmlUtils {
         return map;
     }
 
-    public static byte[] mapToEbxml(Map<String, Object> map) throws SOAPException, IOException {
+    public static OrchestraEbxmlMessage mapToEbxml(Map<String, Object> map) throws SOAPException, IOException {
 
         final byte[] xmlBytes = (byte[]) map.get(ESBConstants.FLOW);
         final Map<String, byte[]> attachments = (Map<String, byte[]>) map.get(ESBConstants.ATTACHMENT);
         final String service = (String) map.get(ESBConstants.SERVICE);
         final byte[] refMsg = (byte[]) map.get(ESBConstants.MESSAGE);
-        final String ebxmlType = (String) map.get(ESBConstants.EBXML_TYPE);
 
         EbxmlMessage refEbxmlMsg = (refMsg == null) ? null : getEbxmlMessageFromBytes(refMsg);
 
-        final String messageID = Generator.generateMessageID();
+        final String action = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/TYPE_DOCUMENT");
+        final String conversationId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_GUCE");
+        final String fromPartyId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/ROUTAGE/EMETTEUR");
+        final String toPartyId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/ROUTAGE/DESTINATAIRE");
+        final String messageId = Generator.generateMessageID();
 
         try {
-            final SOAPMessage message = EbxmlMessageFactory.newInstance().createMessage();
-            AttachmentPart attachmentPart = message.createAttachmentPart();
-            ByteArrayDataSource ds = new ByteArrayDataSource(xmlBytes);
-            DataHandler dh = new DataHandler(ds);
-            attachmentPart.setDataHandler(dh);
-            attachmentPart.setContentType(MediaType.APPLICATION_XML_VALUE);
-            final String action = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/TYPE_DOCUMENT");
-            attachmentPart.addMimeHeader("Content-ID", action);
+            OrchestraEbxmlMessage ebxml = new OrchestraEbxmlMessage(fromPartyId, toPartyId, conversationId, service, action, messageId);
+            ebxml.getMessageHeader().setServiceType("OCS");
+            ebxml.addAckRequested(true);
+            if (refEbxmlMsg != null) {
+                final String refMessageId = refEbxmlMsg.getMessageId();
+                ebxml.getMessageHeader().setRefToMessageId(refMessageId);
+                EbxmlMessage ms = new EbxmlMessage();
+                ms.addMessageHeader();
+                ms.getMessageHeader().setMessageId(refMessageId);
+                ms.addAckRequested(true);
+                String time = CalendarUtility.date2UTC(Calendar.getInstance().getTime(), Calendar.getInstance().getTimeZone());
+                ebxml.addAcknowledgment(time, ms);
+            }
+            DataHandler dh = new DataHandler(new ByteArrayDataSource(xmlBytes, MediaType.APPLICATION_XML_VALUE));
+            ebxml.addPayloadContainer(dh, ebxml.getAction(), ebxml.getDescription());
 
-            for (Map.Entry<String, byte[]> attachment : attachments.entrySet()) {
-                String attachmentName = attachment.getKey();
-                byte[] attachmentBytes = attachment.getValue();
-                attachmentPart = message.createAttachmentPart();
-                ds = new ByteArrayDataSource(attachmentBytes);
-                dh = new DataHandler(ds);
-                attachmentPart.setDataHandler(dh);
-                attachmentPart.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-                attachmentPart.addMimeHeader("Content-ID", attachmentName);
-                message.addAttachmentPart(attachmentPart);
+            if (MapUtils.isNotEmpty(attachments)) {
+                for (Map.Entry<String, byte[]> attachment : attachments.entrySet()) {
+                    String attachmentName = attachment.getKey();
+                    byte[] attachmentBytes = attachment.getValue();
+                    dh = new DataHandler(new ByteArrayDataSource(attachmentBytes, MediaType.APPLICATION_OCTET_STREAM_VALUE));
+                    ebxml.addPayloadContainer(dh, attachmentName, attachmentName);
+                }
             }
 
-            message.saveChanges();
-            EbxmlMessage ebxmlMessage = new EbxmlMessage(message);
-
-            final String conversationID = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_GUCE");
-            final String fromPartyId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/ROUTAGE/EMETTEUR");
-            final String toPartyId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/ROUTAGE/DESTINATAIRE");
-
-            final MessageHeader msgHeader = ebxmlMessage.addMessageHeader();
-            msgHeader.addFromPartyId(fromPartyId);
-            msgHeader.addToPartyId(toPartyId);
-            ebxmlMessage.getMessageHeader().setMessageId(messageID);
-            ebxmlMessage.getMessageHeader().setAction(action);
-            ebxmlMessage.getMessageHeader().setConversationId(conversationID);
-            ebxmlMessage.getMessageHeader().setCpaId("http://www.guichetunique-cameroun.org/cpa/ebxmlv2");
-            ebxmlMessage.getMessageHeader().setService(service);
-            ebxmlMessage.getMessageHeader().setServiceType("serviceType");
-            ebxmlMessage.getMessageHeader().setRefToMessageId(refEbxmlMsg == null ? null : refEbxmlMsg.getMessageId());
-            ebxmlMessage.addAckRequested(true);
-
-            if (ESBConstants.APERAK.equals(ebxmlType)) {
-                ebxmlMessage.addAcknowledgment(refEbxmlMsg == null ? null : refEbxmlMsg.getTimestamp(), refEbxmlMsg);
-            }
-
-            final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-            msgHeader.setTimestamp(dateFormatter.format(new Date()));
-
-            setEbxmlMessageByteStream(ebxmlMessage);
-
-            return ebxmlMessage.getBytes();
+            return ebxml;
         } catch (Exception ex) {
             LOG.error(ex.getMessage(), ex);
         }

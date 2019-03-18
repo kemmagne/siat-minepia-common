@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
+import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.siat.common.service.DocumentReciever;
 import org.guce.siat.common.service.ProcessMessageService;
 import org.guce.siat.common.utils.EbxmlUtils;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
 @Transactional
-@Service("processMessageService")
+@Service
 public class ProcessMessageServiceImpl implements ProcessMessageService {
 
     /**
@@ -31,7 +32,7 @@ public class ProcessMessageServiceImpl implements ProcessMessageService {
     @Override
     public byte[] process(final byte[] message, final DocumentReciever documentReciever) {
 
-        byte[] response = null;
+        OrchestraEbxmlMessage response = null;
 
         Map<String, Object> messageMap = null;
         try {
@@ -45,14 +46,14 @@ public class ProcessMessageServiceImpl implements ProcessMessageService {
                 | PersistenceException | NullPointerException | IOException e) {
             LOG.error("####Process Recieved exception : " + e.getMessage(), e);
             try {
-                final Map<String, Object> exectionResult = documentReciever.generateAperakCFile(messageMap, e.getMessage());
-                response = EbxmlUtils.mapToEbxml(exectionResult);
+                final Map<String, Object> exceptionResult = documentReciever.generateAperakCFile(messageMap, e.getMessage());
+                response = EbxmlUtils.mapToEbxml(exceptionResult);
             } catch (Exception ex) {
                 LOG.error("####Process Recieved exception : " + ex.getMessage(), ex);
             }
         }
 
-        return response;
+        return response != null ? response.getData() : null;
     }
 
 }
