@@ -13,13 +13,15 @@ public interface FileProducer {
      * Send file.
      *
      * @param file the file
+     * @return
      */
-    void sendFile(Map<String, Object> file);
+    boolean sendFile(Map<String, Object> file);
 
     /**
      * resend decision.
      *
      * @param itemFlow
+     * @return
      */
     boolean resendDecision(ItemFlow itemFlow);
 

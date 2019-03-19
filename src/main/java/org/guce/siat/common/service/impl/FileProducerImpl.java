@@ -1,11 +1,16 @@
 package org.guce.siat.common.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.xml.soap.SOAPException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.orchestra.core.OrchestraEbxmlMessageFactory;
 import org.guce.siat.common.dao.FileDao;
@@ -18,22 +23,23 @@ import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.FileProducer;
 import org.guce.siat.common.service.MailService;
 import org.guce.siat.common.utils.EbxmlUtils;
-import org.guce.siat.common.utils.HttpUtils;
+import org.guce.siat.common.utils.SecurityUtils;
 import org.guce.siat.common.utils.XmlXPathUtils;
 import org.guce.siat.common.utils.ebms.ESBConstants;
 import org.guce.siat.common.utils.enums.AperakType;
-import org.guce.siat.common.utils.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpMessageConverterExtractor;
+import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Element;
 
@@ -50,8 +56,6 @@ public class FileProducerImpl implements FileProducer {
      * The Constant LOG.
      */
     private static final Logger LOG = LoggerFactory.getLogger(FileProducerImpl.class);
-
-    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     private static final String LOGIN = "@4wWYa3!9fhMS@dqMlKY";
     private static final String PASSWORD = "ek5zD]hKv4@WuD$5";
@@ -87,9 +91,7 @@ public class FileProducerImpl implements FileProducer {
     /**
      * The rest template.
      */
-//    @Autowired
-//    @Qualifier("restTemplate")
-//    private RestTemplate restTemplate;
+    private RestTemplate restTemplate;
     /**
      * the messages folder
      */
@@ -101,13 +103,21 @@ public class FileProducerImpl implements FileProducer {
     @Value("${webservice.url}")
     private String webserviceUrl;
 
+    @PostConstruct
+    public void init() {
+        restTemplate = new RestTemplate();
+        final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setBufferRequestBody(false);
+        restTemplate.setRequestFactory(requestFactory);
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.service.FileProducer#sendFile(java.util.Map)
      */
     @Override
-    public void sendFile(final Map<String, Object> data) {
+    public boolean sendFile(final Map<String, Object> data) {
 
         LOG.info("######## Start sending Message");
         try {
@@ -122,11 +132,13 @@ public class FileProducerImpl implements FileProducer {
                 itemFlowDao.saveOrUpdateList(itemFlows);
             }
             sendViaRest(ebxml);
+
+            LOG.info("######## Message Sent Successfully");
+            return Boolean.TRUE;
         } catch (Exception ex) {
             LOG.error("######## Couldn't send Message", ex);
+            return Boolean.FALSE;
         }
-
-        LOG.info("######## Message Sent Successfully");
     }
 
     /*
@@ -136,14 +148,21 @@ public class FileProducerImpl implements FileProducer {
      */
     public void sendViaRest(final OrchestraEbxmlMessage ebxml) throws Exception {
         try {
-            final byte[] ebxmlBytes = ebxml.getData();
-            final HttpEntity<byte[]> requestEntity = new HttpEntity<>(ebxmlBytes, HttpUtils.createHeaders(LOGIN, PASSWORD));
-            final ResponseEntity responseEntity = REST_TEMPLATE.exchange(webserviceUrl, HttpMethod.POST, requestEntity, Object.class);
-            if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-                backupNotSentMsg(ebxml, Boolean.TRUE);
-            } else {
-                backupNotSentMsg(ebxml, Boolean.FALSE);
-            }
+            final byte[] ebxmlData = ebxml.getData();
+            final InputStream in = new ByteArrayInputStream(ebxmlData);
+            final RequestCallback requestCallback = new RequestCallback() {
+                @Override
+                public void doWithRequest(ClientHttpRequest request) throws IOException {
+                    request.getHeaders().add("Content-type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
+                    request.getHeaders().add("Authorization", SecurityUtils.getBasicAuth(LOGIN, PASSWORD));
+                    IOUtils.copy(in, request.getBody());
+                }
+            };
+
+            final HttpMessageConverterExtractor<String> responseExtractor = new HttpMessageConverterExtractor<>(String.class, restTemplate.getMessageConverters());
+
+            restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
+            backupNotSentMsg(ebxml, Boolean.TRUE);
         } catch (Exception ex) {
             backupNotSentMsg(ebxml, Boolean.FALSE);
             throw ex;
@@ -156,7 +175,7 @@ public class FileProducerImpl implements FileProducer {
         java.io.File backupFile = new java.io.File(messagesFolder, backupFileName);
         backupFile.getParentFile().mkdirs();
         if (!backupFile.exists()) {
-            IOUtils.writeBytesToFile(backupFile, ebxml.getData());
+            IOUtils.write(ebxml.getData(), new FileOutputStream(backupFile));
         } else {
             if (sent) {
                 backupFile.delete();

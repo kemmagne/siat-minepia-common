@@ -2,7 +2,6 @@ package org.guce.siat.common.utils;
 
 import java.nio.charset.StandardCharsets;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.codec.Base64;
 
 /**
@@ -15,7 +14,6 @@ public class HttpUtils {
 
         final HttpHeaders headers = new HttpHeaders();
 
-        headers.setContentType(MediaType.APPLICATION_XML);
         String auth = username + ":" + password;
         byte[] encodedAuth = Base64.encode(auth.getBytes(StandardCharsets.US_ASCII));
         String authHeader = "Basic " + new String(encodedAuth);

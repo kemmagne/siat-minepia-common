@@ -1,24 +1,15 @@
 package org.guce.siat.common.service.impl;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Map;
-import javax.persistence.PersistenceException;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.SOAPException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
+import org.apache.commons.collections.MapUtils;
 import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.siat.common.service.DocumentReciever;
 import org.guce.siat.common.service.ProcessMessageService;
 import org.guce.siat.common.utils.EbxmlUtils;
-import org.guce.siat.common.utils.exception.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.xml.sax.SAXException;
 
 @Transactional
 @Service
@@ -38,12 +29,10 @@ public class ProcessMessageServiceImpl implements ProcessMessageService {
         try {
             messageMap = EbxmlUtils.ebxmlToMap(message);
             final Map<String, Object> result = documentReciever.uploadEbxmlFile(messageMap);
-            if (result != null) {
+            if (MapUtils.isNotEmpty(result)) {
                 response = EbxmlUtils.mapToEbxml(result);
             }
-        } catch (final ValidationException | ParseException | TransformerException | SOAPException | SAXException
-                | ParserConfigurationException | JAXBException | XPathExpressionException | IndexOutOfBoundsException
-                | PersistenceException | NullPointerException | IOException e) {
+        } catch (final Exception e) {
             LOG.error("####Process Recieved exception : " + e.getMessage(), e);
             try {
                 final Map<String, Object> exceptionResult = documentReciever.generateAperakCFile(messageMap, e.getMessage());
