@@ -59,6 +59,8 @@ public class FileProducerImpl implements FileProducer {
     @Override
     public void sendFile(final Map<String, Object> data) {
 
+        reset(data);
+
         LOG.info("######## Start sending Message");
         if (jmsTemplate != null) {
             jmsTemplate.convertAndSend(data);
@@ -78,12 +80,12 @@ public class FileProducerImpl implements FileProducer {
 
     @Override
     public void createAperakBackup(final Map<String, Object> data) throws Exception {
-        try {
-            createMessageBackup(data, true);
-        } catch (Exception ex) {
-            reset(data);
-            LOG.error("Cannot not create backup", ex);
-        }
+//        try {
+//            createMessageBackup(data, true);
+//        } catch (Exception ex) {
+//            reset(data);
+//            LOG.error("Cannot not create backup", ex);
+//        }
     }
 
     private void resendFile(final ItemFlow itemFlow, final boolean aperak) throws Exception {
