@@ -14,7 +14,6 @@ import org.guce.siat.common.dao.exception.DAOException;
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Authority;
 import org.guce.siat.common.model.Bureau;
-import org.guce.siat.common.model.Entity;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileAdministration;
 import org.guce.siat.common.model.FileType;
@@ -28,7 +27,6 @@ import org.guce.siat.common.model.UserAuthorityFileType;
 import org.guce.siat.common.service.UserAuthorityFileTypeService;
 import org.guce.siat.common.service.exception.BusinessException;
 import org.guce.siat.common.service.exception.BusinessExceptionSeverity;
-import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.enums.BureauType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -271,55 +269,55 @@ public class UserAuthorityFileTypeServiceImpl extends
 		}
 
 		for (final User user : userByFtStAut) {
-			if (user.getAdministration() instanceof Ministry) {
-				if (user.getAdministration()
-						.getId()
-						.equals(file.getBureau().getService()
-								.getSubDepartment().getOrganism().getMinistry()
-								.getId())) {
-					returnedList.add(user);
-				} else if (userInCandidateAdministration(user, file, loggedUser)) {
-					returnedList.add(user);
-				}
-			} else if (user.getAdministration() instanceof Organism) {
-				if (user.getAdministration()
-						.getId()
-						.equals(file.getBureau().getService()
-								.getSubDepartment().getOrganism().getId())) {
-					returnedList.add(user);
-				} else if (userInCandidateAdministration(user, file, loggedUser)) {
-					returnedList.add(user);
-				}
-			} else if (user.getAdministration() instanceof SubDepartment) {
-				if (user.getAdministration()
-						.getId()
-						.equals(file.getBureau().getService()
-								.getSubDepartment().getId())) {
-					returnedList.add(user);
-				} else if (userInCandidateAdministration(user, file, loggedUser)) {
-					returnedList.add(user);
-				}
-			} else if (user.getAdministration() instanceof org.guce.siat.common.model.Service) {
-				if (user.getAdministration().getId()
-						.equals(file.getBureau().getService().getId())) {
-					returnedList.add(user);
-				} else if (userInCandidateAdministration(user, file, loggedUser)) {
-					returnedList.add(user);
-				}
-			} else if (user.getAdministration() instanceof Bureau
-					&& (((Bureau) user.getAdministration()).getService()
-							.getId()
-							.equals(file.getBureau().getService().getId())
-					&& (((Bureau) user.getAdministration())
-							.getBureauType()
-							.equals(BureauType.BUREAU_CENTRAL)) || ((((Bureau) user
-					.getAdministration()).getId().equals(file
-							.getBureau().getId())))
-					&& ((Bureau) user.getAdministration())
-							.getBureauType().equals(
-									BureauType.BUREAU_REGIONAL))) {
-				returnedList.add(user);
-			}
+                        List<Administration> administrations = Arrays.asList(new Administration[]{user.getAdministration(), user.getAdministrationExtendRoles()});
+                        for (Administration adm : administrations) {
+                                if (adm instanceof Ministry) {
+                                        if (adm.getId()
+                                                .equals(file.getBureau().getService()
+                                                        .getSubDepartment().getOrganism().getMinistry()
+                                                        .getId())) {
+                                                returnedList.add(user);
+                                        } else if (userInCandidateAdministration(user, file, loggedUser)) {
+                                                returnedList.add(user);
+                                        }
+                                } else if (adm instanceof Organism) {
+                                        if (adm.getId()
+                                                .equals(file.getBureau().getService()
+                                                        .getSubDepartment().getOrganism().getId())) {
+                                                returnedList.add(user);
+                                        } else if (userInCandidateAdministration(user, file, loggedUser)) {
+                                                returnedList.add(user);
+                                        }
+                                } else if (adm instanceof SubDepartment) {
+                                        if (adm.getId()
+                                                .equals(file.getBureau().getService()
+                                                        .getSubDepartment().getId())) {
+                                                returnedList.add(user);
+                                        } else if (userInCandidateAdministration(user, file, loggedUser)) {
+                                                returnedList.add(user);
+                                        }
+                                } else if (adm instanceof org.guce.siat.common.model.Service) {
+                                        if (adm.getId()
+                                                .equals(file.getBureau().getService().getId())) {
+                                                returnedList.add(user);
+                                        } else if (userInCandidateAdministration(user, file, loggedUser)) {
+                                                returnedList.add(user);
+                                        }
+                                } else if (adm instanceof Bureau
+                                                && (((Bureau) adm).getService()
+                                                        .getId()
+                                                        .equals(file.getBureau().getService().getId())
+                                                && (((Bureau) adm)
+                                                        .getBureauType()
+                                                        .equals(BureauType.BUREAU_CENTRAL)) || ((((Bureau) user
+                                                .getAdministration()).getId().equals(file
+                                                        .getBureau().getId())))
+                                                && ((Bureau) adm)
+                                                        .getBureauType().equals(
+                                                                BureauType.BUREAU_REGIONAL))) {
+                                        returnedList.add(user);
+                                }
+                        }
 		}
 
 		return returnedList;

@@ -134,6 +134,9 @@ public final class ConverterGuceSiatUtils {
             case AS_MINFOF:
                 referencedossier.setSI(InformationSystemCode.CT.name());
                 break;
+            case BSBE_MINFOF:
+                referencedossier.setSI(InformationSystemCode.CT.name());
+                break;
             case CO_MINFOF_FORET:
                 referencedossier.setSI(InformationSystemCode.CT.name());
                 break;
