@@ -66,4 +66,12 @@ public class WSTests {
         restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
     }
 
+//    @Ignore
+    @Test
+    public void test1() {
+        String login = "LetRaBleMPbraPsYNeor";
+        String password = "rVckh5Td9SsB5G897U3y";
+        System.out.println(SecurityUtils.getBasicAuth(login, password));
+    }
+
 }

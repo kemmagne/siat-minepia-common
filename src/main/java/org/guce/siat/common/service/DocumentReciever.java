@@ -8,6 +8,7 @@ import javax.xml.soap.SOAPException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 import org.guce.siat.common.utils.exception.ValidationException;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -42,5 +43,12 @@ public interface DocumentReciever {
      * @throws Exception the exception
      */
     Map<String, Object> generateAperakCFile(final Map<String, Object> ebxmlBytes, final String errorMessage) throws Exception;
+
+    /**
+     *
+     * @param rootElement
+     * @return
+     */
+    boolean processReceivedAperak(Element rootElement);
 
 }
