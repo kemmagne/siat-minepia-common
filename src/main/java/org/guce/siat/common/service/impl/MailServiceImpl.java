@@ -32,7 +32,7 @@ public class MailServiceImpl implements MailService {
      */
     private static final Logger LOG = LoggerFactory.getLogger(MailServiceImpl.class);
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("_yyyyMMdd_HHmmss.SSS");
 
     /**
      * the messages folder
@@ -53,6 +53,12 @@ public class MailServiceImpl implements MailService {
     private String replyTo;
 
     /**
+     * The reply to.
+     */
+    @Value("${application.environment}")
+    private String applicationEnv;
+
+    /**
      * The email sender service.
      */
     @Autowired
@@ -71,20 +77,19 @@ public class MailServiceImpl implements MailService {
             String value = entry.getValue();
             params.put(key, value);
         }
+        backupEmail(map);
+    }
+
+    private void backupEmail(final Map<String, String> map) {
+        final String backupEmailFileName = String.format("email%s.json",
+                DATE_FORMAT.format(Calendar.getInstance().getTime()));
+        final File backupEmailFile = new File(mailsFolder, backupEmailFileName);
+        backupEmailFile.getParentFile().mkdirs();
+        final ObjectMapper objectMapper = new ObjectMapper();
         try {
-            emailSenderService.send(params);
-        } catch (Exception ex) {
-            LOG.error(null, ex);
-            final String backupEmailFileName = String.format("email_%s.json",
-                    DATE_FORMAT.format(Calendar.getInstance().getTime()));
-            final File backupEmailFile = new File(mailsFolder, backupEmailFileName);
-            backupEmailFile.getParentFile().mkdirs();
-            final ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                objectMapper.writeValue(backupEmailFile, map);
-            } catch (IOException ex1) {
-                LOG.error(null, ex1);
-            }
+            objectMapper.writeValue(backupEmailFile, map);
+        } catch (IOException ex1) {
+            LOG.error(null, ex1);
         }
     }
 
@@ -143,5 +148,6 @@ public class MailServiceImpl implements MailService {
     public void setReplyTo(final String replyTo) {
         this.replyTo = replyTo;
     }
+
 }
 

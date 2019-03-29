@@ -55,7 +55,7 @@ public class EbxmlUtils {
         while (iterator.hasNext()) {
             attachmentPart = (AttachmentPart) iterator.next();
             String attachmentName = attachmentPart.getContentId().trim();
-            attachmentName = attachmentName.replace("<|>", "");
+            attachmentName = attachmentName.replaceAll("<|>", "");
             is = attachmentPart.getDataHandler().getInputStream();
             final byte[] attachmentBytes = IOUtils.toByteArray(is);
             attachedByteFiles.put(attachmentName, attachmentBytes);

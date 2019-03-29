@@ -1,14 +1,8 @@
 package org.guce.siat.common.service;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.SOAPException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
 import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.dao.ItemFlowDao;
@@ -17,10 +11,8 @@ import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.utils.XmlXPathUtils;
 import org.guce.siat.common.utils.enums.AperakType;
-import org.guce.siat.common.utils.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 public abstract class AbstractDocumentReciever implements DocumentReciever {
 
@@ -51,12 +43,6 @@ public abstract class AbstractDocumentReciever implements DocumentReciever {
      */
     @Autowired
     private MailService mailService;
-
-    @Override
-    public abstract Map<String, Object> uploadEbxmlFile(Map<String, Object> ebxmlBytes) throws ValidationException, ParseException, TransformerException, SOAPException, SAXException, ParserConfigurationException, JAXBException, XPathExpressionException;
-
-    @Override
-    public abstract Map<String, Object> generateAperakCFile(Map<String, Object> ebxmlBytes, String errorMessage) throws Exception;
 
     @Override
     public boolean processReceivedAperak(Element rootElement) {

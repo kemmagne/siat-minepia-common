@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.commons.io.IOUtils;
 import org.guce.siat.common.utils.SecurityUtils;
 import org.junit.Before;
@@ -23,6 +26,8 @@ import org.springframework.web.client.RestTemplate;
  * @author tadzotsa
  */
 public class WSTests {
+
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("_yyyyMMdd_HHmmss.SSS");
 
     private static final String LOGIN = "@4wWYa3!9fhMS@dqMlKY";
     private static final String PASSWORD = "ek5zD]hKv4@WuD$5";
@@ -66,12 +71,28 @@ public class WSTests {
         restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
     }
 
-//    @Ignore
+    @Ignore
     @Test
     public void test1() {
         String login = "LetRaBleMPbraPsYNeor";
         String password = "rVckh5Td9SsB5G897U3y";
         System.out.println(SecurityUtils.getBasicAuth(login, password));
+    }
+
+    @Ignore
+    @Test
+    public void testFormat() {
+        System.out.println(DATE_FORMAT.format(new Date()));
+    }
+
+    @Ignore
+    @Test
+    public void testReplace() {
+        String old = "<<<<de005740.pdf>>>>";
+        String new1 = old.replaceAll("<|>", "");
+        System.out.println(new1);
+        String new2 = old.replace("<|>", "");
+        System.out.println(new2);
     }
 
 }

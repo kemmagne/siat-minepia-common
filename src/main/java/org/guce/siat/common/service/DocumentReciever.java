@@ -31,8 +31,7 @@ public interface DocumentReciever {
      * @throws JAXBException the JAXB exception
      * @throws XPathExpressionException the x path expression exception
      */
-    Map<String, Object> uploadEbxmlFile(final Map<String, Object> ebxmlBytes) throws ValidationException, ParseException,
-            TransformerException, SOAPException, SAXException, ParserConfigurationException, JAXBException, XPathExpressionException;
+    Map<String, Object> uploadEbxmlFile(final Map<String, Object> ebxmlBytes) throws Exception;
 
     /**
      * Generate aperak c file.

@@ -9,11 +9,17 @@ import org.apache.commons.io.FileUtils;
 import org.guce.siat.common.mail.bo.EmailSenderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author tadzotsa
  */
+@PropertySource("classpath:global-config.properties")
+@Component("taskMailSender")
 public class TaskResendMail {
 
     /**
@@ -21,8 +27,14 @@ public class TaskResendMail {
      */
     private static final Logger LOG = LoggerFactory.getLogger(TaskResendMail.class);
 
-    private EmailSenderService emailSenderService;
+    /**
+     * the messages folder
+     */
+    @Value("${mails.folder}")
     private String mailsFolder;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     public void resendMail() {
         File mailsFolderFile = new File(mailsFolder);
@@ -39,22 +51,6 @@ public class TaskResendMail {
                 }
             }
         }
-    }
-
-    public EmailSenderService getEmailSenderService() {
-        return emailSenderService;
-    }
-
-    public void setEmailSenderService(EmailSenderService emailSenderService) {
-        this.emailSenderService = emailSenderService;
-    }
-
-    public String getMailsFolder() {
-        return mailsFolder;
-    }
-
-    public void setMailsFolder(String mailsFolder) {
-        this.mailsFolder = mailsFolder;
     }
 
 }
