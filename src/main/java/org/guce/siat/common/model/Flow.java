@@ -104,6 +104,10 @@ public class Flow extends AbstractModel implements Serializable
 	public Flow()
 	{
 	}
+        
+        public Flow(String code) {
+            this.code = code;
+        }
 
 	/**
 	 * Instantiates a new flow.
