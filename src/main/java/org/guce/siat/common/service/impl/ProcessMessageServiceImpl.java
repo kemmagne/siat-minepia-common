@@ -1,6 +1,7 @@
 package org.guce.siat.common.service.impl;
 
 import java.util.Map;
+import javax.xml.soap.SOAPException;
 import org.apache.commons.collections.MapUtils;
 import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.siat.common.service.DocumentReciever;
@@ -42,7 +43,21 @@ public class ProcessMessageServiceImpl implements ProcessMessageService {
             }
         }
 
-        return response != null ? response.getData() : null;
+        if (response == null) {
+            try {
+                final Map<String, Object> exceptionResult = documentReciever.generateAperakCFile(messageMap, "The response is null");
+                response = EbxmlUtils.mapToEbxml(exceptionResult);
+            } catch (Exception ex) {
+                LOG.error(null, ex);
+                try {
+                    response = new OrchestraEbxmlMessage();
+                } catch (SOAPException ex1) {
+                    LOG.error(null, ex1);
+                }
+            }
+        }
+
+        return response.getData();
     }
 
 }
