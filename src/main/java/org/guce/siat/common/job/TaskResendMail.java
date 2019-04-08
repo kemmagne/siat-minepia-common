@@ -38,6 +38,7 @@ public class TaskResendMail {
 
     public void resendMail() {
         File mailsFolderFile = new File(mailsFolder);
+        mailsFolderFile.mkdirs();
         Collection<File> filesCollections = FileUtils.listFiles(mailsFolderFile, new String[]{"json"}, false);
         if (CollectionUtils.isNotEmpty(filesCollections)) {
             for (final File file : filesCollections) {
