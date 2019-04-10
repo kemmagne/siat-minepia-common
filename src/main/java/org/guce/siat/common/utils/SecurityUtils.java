@@ -1,13 +1,9 @@
 package org.guce.siat.common.utils;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,29 +57,29 @@ public final class SecurityUtils {
      * @return the current mac address
      */
     public static String getCurrentMacAddress() {
-        String macAdress = null;
-        try {
-            final Pattern p = Pattern.compile("([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}");
-
-            final Runtime runtime = Runtime.getRuntime();
-            final Process process = runtime.exec(getARPCommand());
-            try (final InputStream inputstream = process.getInputStream();
-                    final InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
-                    final BufferedReader bufferedreader = new BufferedReader(inputstreamreader);) {
-                String line;
-                readLine:
-                while ((line = bufferedreader.readLine()) != null) {
-                    final Matcher matcher = p.matcher(line);
-                    while (matcher.find()) {
-                        macAdress = matcher.group();
-                        break readLine;
-                    }
-                }
-            }
-
-        } catch (final Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
+        String macAdress = StringUtils.EMPTY;
+//        try {
+//            final Pattern p = Pattern.compile("([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}");
+//
+//            final Runtime runtime = Runtime.getRuntime();
+//            final Process process = runtime.exec(getARPCommand());
+//            try (final InputStream inputstream = process.getInputStream();
+//                    final InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
+//                    final BufferedReader bufferedreader = new BufferedReader(inputstreamreader);) {
+//                String line;
+//                readLine:
+//                while ((line = bufferedreader.readLine()) != null) {
+//                    final Matcher matcher = p.matcher(line);
+//                    while (matcher.find()) {
+//                        macAdress = matcher.group();
+//                        break readLine;
+//                    }
+//                }
+//            }
+//
+//        } catch (final Exception e) {
+//            LOG.error(e.getMessage(), e);
+//        }
         return macAdress;
     }
 
