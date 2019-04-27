@@ -1,15 +1,10 @@
-/**
- *
- */
 package org.guce.siat.common.dao.impl;
 
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.FileItem;
@@ -321,6 +316,18 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
             return query.getSingleResult();
         } catch (final NoResultException | NonUniqueResultException e) {
             LOG.info(Objects.toString(e));
+            return null;
+        }
+    }
+
+    @Override
+    public ItemFlow findByMessageId(final String messageId) {
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.messageId = :messageId", ItemFlow.class);
+        query.setParameter("messageId", messageId);
+        query.setMaxResults(1);
+        try {
+            return query.getSingleResult();
+        } catch (Exception ex) {
             return null;
         }
     }
