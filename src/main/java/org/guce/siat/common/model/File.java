@@ -3,9 +3,9 @@ package org.guce.siat.common.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,13 +17,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.utils.enums.FinalDecisionType;
 
@@ -928,5 +928,13 @@ public class File extends AbstractModel implements Serializable {
         builder.append("	]");
         return builder.toString();
     }
+
+    @PrePersist
+    private void prePersist() {
+        if (lastDecisionDate == null) {
+            lastDecisionDate = Calendar.getInstance().getTime();
+        }
+    }
+
 }
 
