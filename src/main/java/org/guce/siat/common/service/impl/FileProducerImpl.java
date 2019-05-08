@@ -17,7 +17,6 @@ import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.orchestra.core.OrchestraEbxmlMessageFactory;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.ItemFlow;
-
 import org.guce.siat.common.service.FileProducer;
 import org.guce.siat.common.utils.EbxmlUtils;
 import org.guce.siat.common.utils.SecurityUtils;
@@ -75,8 +74,6 @@ public class FileProducerImpl implements FileProducer {
     @Value("${webservice.url}")
     private String webserviceUrl;
 
-    private String backupFolder;
-
     @PostConstruct
     public void init() {
         restTemplate = new RestTemplate();
@@ -120,7 +117,8 @@ public class FileProducerImpl implements FileProducer {
 	 *
 	 * @see org.guce.siat.common.service.FileProducer#sendViaRest(byte[])
      */
-    private void sendViaRest(final OrchestraEbxmlMessage ebxml, final org.guce.siat.common.model.File file) throws Exception {
+    @Override
+    public void sendViaRest(final OrchestraEbxmlMessage ebxml, final org.guce.siat.common.model.File file) throws Exception {
         try {
             final byte[] ebxmlData = ebxml.getData();
             final InputStream in = new ByteArrayInputStream(ebxmlData);
@@ -143,8 +141,14 @@ public class FileProducerImpl implements FileProducer {
         }
     }
 
-    private void backupNotSentMsg(final OrchestraEbxmlMessage ebxml, boolean sent, org.guce.siat.common.model.File file) throws SOAPException, IOException {
+    private void backupNotSentMsg(final OrchestraEbxmlMessage ebxml, final boolean sent, org.guce.siat.common.model.File file) throws SOAPException, IOException {
         final String messageID = ebxml.getMessageId();
+        if (file == null) {
+            final ItemFlow itemFlow = itemFlowDao.findByMessageId(messageID);
+            if (itemFlow != null) {
+                file = itemFlow.getFileItem().getFile();
+            }
+        }
         final String fileName = String.format("%s.ebxml", messageID);
         java.io.File notSentFile = new java.io.File(messagesFolder, fileName);
         notSentFile.getParentFile().mkdirs();
@@ -153,17 +157,19 @@ public class FileProducerImpl implements FileProducer {
             IOUtils.write(ebxmlData, new FileOutputStream(notSentFile));
         } else {
             if (sent) {
-                StringBuilder builder = new StringBuilder(messagesFolder);
-                if (!messagesFolder.endsWith("/")) {
-                    builder.append("/");
+                if (file != null) {
+                    StringBuilder builder = new StringBuilder(messagesFolder);
+                    if (!messagesFolder.endsWith("/")) {
+                        builder.append("/");
+                    }
+                    builder.append("backups")
+                            .append(new SimpleDateFormat("/yyyy/MM/dd").format(Calendar.getInstance().getTime()));
+                    File backupFile = new File(builder.toString());
+                    backupFile.mkdirs();
+                    final String backupFileName = String.format("%s_%s_%s.ebxml", file.getNumeroDossier(), ebxml.getAction(), ebxml.getMessageId());
+                    backupFile = new File(backupFile, backupFileName);
+                    IOUtils.write(ebxmlData, new FileOutputStream(backupFile));
                 }
-                builder.append("backups")
-                        .append(new SimpleDateFormat("/yyyy/MM/dd").format(Calendar.getInstance().getTime()));
-                File backupFile = new File(builder.toString());
-                backupFile.mkdirs();
-                final String backupFileName = String.format("%s_%s_%s.ebxml", file.getNumeroDossier(), ebxml.getAction(), ebxml.getMessageId());
-                backupFile = new File(backupFile, backupFileName);
-                IOUtils.write(ebxmlData, new FileOutputStream(backupFile));
                 notSentFile.delete();
             }
         }

@@ -71,11 +71,11 @@ public class EbxmlUtils {
 
         final byte[] xmlBytes = (byte[]) map.get(ESBConstants.FLOW);
         final Map<String, byte[]> attachments = (Map<String, byte[]>) map.get(ESBConstants.ATTACHMENT);
-        final String service = (String) map.get(ESBConstants.SERVICE);
         final byte[] refMsg = (byte[]) map.get(ESBConstants.MESSAGE);
 
         EbxmlMessage refEbxmlMsg = (refMsg == null) ? null : getEbxmlMessageFromBytes(refMsg);
 
+        final String service = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/REFERENCE_DOSSIER/SERVICE");
         final String action = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/TYPE_DOCUMENT");
         final String conversationId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_GUCE");
         final String fromPartyId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/ROUTAGE/EMETTEUR");

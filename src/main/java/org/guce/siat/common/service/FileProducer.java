@@ -1,6 +1,7 @@
 package org.guce.siat.common.service;
 
 import java.util.Map;
+import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.siat.common.model.ItemFlow;
 
 /**
@@ -23,6 +24,8 @@ public interface FileProducer {
      * @return
      */
     boolean resendDecision(ItemFlow itemFlow);
+
+    void sendViaRest(final OrchestraEbxmlMessage ebxml, final org.guce.siat.common.model.File file) throws Exception;
 
 }
 

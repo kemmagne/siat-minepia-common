@@ -28,7 +28,7 @@ public class TaskResendMail {
     private static final Logger LOG = LoggerFactory.getLogger(TaskResendMail.class);
 
     /**
-     * the messages folder
+     * the mails folder
      */
     @Value("${mails.folder}")
     private String mailsFolder;
