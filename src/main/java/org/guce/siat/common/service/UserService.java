@@ -75,7 +75,17 @@ public interface UserService extends AbstractService<User> {
      * @return the list
      */
     List<User> findInspectorsByBureau(Bureau bureau);
-
+    
+    
+    /**
+     * Find cotation agent by minister.
+     *
+     * @param bureau the service
+     * @param role the role 
+     * @return the list
+     */
+    List<User> findCotationsAgentByBureauAndRole(Bureau bureau, String role);
+    
     /**
      * Update fail attempts.
      *

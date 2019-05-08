@@ -23,39 +23,56 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class DataTypeDaoImpl extends AbstractJpaDaoImpl<DataType> implements DataTypeDao {
 
-	/**
-	 * The Constant LOG.
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(UserDaoImpl.class);
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(UserDaoImpl.class);
 
-	/**
-	 * Instantiates a new flow dao impl.
-	 */
-	public DataTypeDaoImpl() {
-		super();
-		setClasse(DataType.class);
-	}
+    /**
+     * Instantiates a new flow dao impl.
+     */
+    public DataTypeDaoImpl() {
+        super();
+        setClasse(DataType.class);
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.dao.DataTypeDao#findDataTypeByNameAndFlowCode(org.guce.siat.common.model.Flow)
-	 */
-	@Override
-	public DataType findDataTypeByNameAndFlowCode(final Flow flow, final DataTypeNameEnnumeration dataTypeNameEnnumeration) {
+     */
+    @Override
+    public DataType findDataTypeByNameAndFlowCode(final Flow flow, final DataTypeNameEnnumeration dataTypeNameEnnumeration) {
 
-		if (flow != null) {
-			try {
-				final String hqlString = "SELECT d FROM DataType d WHERE d.flow.id = :flowId AND d.label = :dataTypeNameEnnumeration ";
-				final TypedQuery<DataType> query = super.entityManager.createQuery(hqlString, DataType.class);
-				query.setParameter("flowId", flow.getId());
-				query.setParameter("dataTypeNameEnnumeration", dataTypeNameEnnumeration.getCode());
+        if (flow != null) {
+            try {
+                final String hqlString = "SELECT d FROM DataType d WHERE d.flow.id = :flowId AND d.label = :dataTypeNameEnnumeration ";
+                final TypedQuery<DataType> query = super.entityManager.createQuery(hqlString, DataType.class);
+                query.setParameter("flowId", flow.getId());
+                query.setParameter("dataTypeNameEnnumeration", dataTypeNameEnnumeration.getCode());
 
-				return query.getSingleResult();
-			} catch (final NoResultException | NonUniqueResultException e) {
-				LOG.error(Objects.toString(e));
-			}
-		}
-		return null;
-	}
+                return query.getSingleResult();
+            } catch (final NoResultException | NonUniqueResultException e) {
+                LOG.error(Objects.toString(e));
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public DataType findDataTypeByCode(Flow flow, String code) {
+        if (flow != null && code != null && !code.isEmpty()) {
+            try {
+                final String hqlString = "SELECT d FROM DataType d WHERE d.flow.id = :flowId AND d.code = :code";
+                final TypedQuery<DataType> query = super.entityManager.createQuery(hqlString, DataType.class);
+                query.setParameter("flowId", flow.getId());
+                query.setParameter("code", code);
+                return query.getSingleResult();
+            } catch (final NoResultException | NonUniqueResultException e) {
+                LOG.error(Objects.toString(e));
+            }
+        }
+        return null;
+    }
+
 }
