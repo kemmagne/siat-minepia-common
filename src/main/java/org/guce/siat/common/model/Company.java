@@ -571,7 +571,7 @@ public class Company extends AbstractModel implements Serializable
 		}
 		if (country != null)
 		{
-			returnedString.append(country.getCountryName());
+			returnedString.append(' ' + country.getCountryName());
 		}
 		return returnedString.toString();
 	}

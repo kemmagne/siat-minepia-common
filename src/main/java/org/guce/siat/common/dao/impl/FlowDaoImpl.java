@@ -226,154 +226,161 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
      */
     @Override
     public Flow findCiResponseFlow(final String flowSiatCode) {
-        switch (flowSiatCode) {
-            case "FL_AP_86": {
+        FlowCode flowCode = FlowCode.valueOf(flowSiatCode);
+        switch (flowCode) {
+            case FL_AP_86: {
                 return findFlowByCode(FlowCode.FL_AP_154.name());
             }
-            case "FL_AP_113": {
+            case FL_AP_113: {
                 return findFlowByCode(FlowCode.FL_AP_141.name());
             }
-            case "FL_AP_114": {
+            case FL_AP_114: {
                 return findFlowByCode(FlowCode.FL_AP_142.name());
             }
-            case "FL_AP_115": {
+            case FL_AP_115: {
                 return findFlowByCode(FlowCode.FL_AP_143.name());
             }
-            case "FL_AP_116": {
+            case FL_AP_116: {
                 return findFlowByCode(FlowCode.FL_AP_144.name());
             }
-            case "FL_AP_117": {
+            case FL_AP_117: {
                 return findFlowByCode(FlowCode.FL_AP_145.name());
             }
-            case "FL_AP_118": {
+            case FL_AP_118: {
                 return findFlowByCode(FlowCode.FL_AP_146.name());
             }
-            case "FL_AP_176": {
+            case FL_AP_176: {
                 return findFlowByCode(FlowCode.FL_AP_187.name());
             }
-            case "FL_AP_178": {
+            case FL_AP_178: {
                 return findFlowByCode(FlowCode.FL_AP_188.name());
             }
-            case "FL_AP_180": {
+            case FL_AP_180: {
                 return findFlowByCode(FlowCode.FL_AP_189.name());
             }
-            case "FL_AP_182": {
+            case FL_AP_182: {
                 return findFlowByCode(FlowCode.FL_AP_190.name());
             }
-            case "FL_AP_184": {
+            case FL_AP_184: {
                 return findFlowByCode(FlowCode.FL_AP_191.name());
             }
-            case "FL_AP_186": {
+            case FL_AP_186: {
                 return findFlowByCode(FlowCode.FL_AP_192.name());
             }
 
             // CO
-            case "FL_CO_86": {
+            case FL_CO_86: {
                 return findFlowByCode(FlowCode.FL_CO_154.name());
             }
-            case "FL_CO_113": {
+            case FL_CO_113: {
                 return findFlowByCode(FlowCode.FL_CO_141.name());
 
             }
-            case "FL_CO_114": {
+            case FL_CO_114: {
                 return findFlowByCode(FlowCode.FL_CO_142.name());
 
             }
-            case "FL_CO_115": {
+            case FL_CO_115: {
                 return findFlowByCode(FlowCode.FL_CO_143.name());
 
             }
-            case "FL_CO_116": {
+            case FL_CO_116: {
                 return findFlowByCode(FlowCode.FL_CO_144.name());
 
             }
-            case "FL_CO_117": {
+            case FL_CO_117: {
                 return findFlowByCode(FlowCode.FL_CO_145.name());
 
             }
-            case "FL_CO_118": {
+            case FL_CO_118: {
                 return findFlowByCode(FlowCode.FL_CO_146.name());
             }
 
             // AM
-            case "FL_AM_86": {
+            case FL_AM_86: {
                 return findFlowByCode(FlowCode.FL_AM_154.name());
             }
-            case "FL_AM_113": {
+            case FL_AM_113: {
                 return findFlowByCode(FlowCode.FL_AM_141.name());
 
             }
-            case "FL_AM_114": {
+            case FL_AM_114: {
                 return findFlowByCode(FlowCode.FL_AM_142.name());
 
             }
-            case "FL_AM_115": {
+            case FL_AM_115: {
                 return findFlowByCode(FlowCode.FL_AM_143.name());
 
             }
-            case "FL_AM_116": {
+            case FL_AM_116: {
                 return findFlowByCode(FlowCode.FL_AM_144.name());
 
             }
-            case "FL_AM_117": {
+            case FL_AM_117: {
                 return findFlowByCode(FlowCode.FL_AM_145.name());
 
             }
-            case "FL_AM_118": {
+            case FL_AM_118: {
                 return findFlowByCode(FlowCode.FL_AM_146.name());
             }
             // CCT
-            case "FL_CT_02": {
+            case FL_CT_02: {
                 return findFlowByCode(FlowCode.FL_CT_03.name());
             }
-            case "FL_CT_22": {
+            case FL_CT_22: {
                 return findFlowByCode(FlowCode.FL_CT_38.name());
             }
-            case "FL_CT_24": {
+            case FL_CT_24: {
                 return findFlowByCode(FlowCode.FL_CT_68.name());
             }
-            case "FL_CT_25": {
+            case FL_CT_25: {
                 return findFlowByCode(FlowCode.FL_CT_69.name());
             }
-            case "FL_CT_30": {
+            case FL_CT_30: {
                 return findFlowByCode(FlowCode.FL_CT_70.name());
             }
-            case "FL_CT_37": {
+            case FL_CT_37: {
                 return findFlowByCode(FlowCode.FL_CT_39.name());
             }
-            case "FL_CT_46": {
+            case FL_CT_46: {
                 return findFlowByCode(FlowCode.FL_CT_47.name());
             }
-            case "FL_CT_50": {
+            case FL_CT_50: {
                 return findFlowByCode(FlowCode.FL_CT_51.name());
             }
-            case "FL_CT_55": {
+            case FL_CT_55: {
                 return findFlowByCode(FlowCode.FL_CT_56.name());
             }
-            case "FL_CT_58": {
+            case FL_CT_58: {
                 return findFlowByCode(FlowCode.FL_CT_71.name());
+            }
+            case FL_CT_96: {
+                return findFlowByCode(FlowCode.FL_CT_99.name());//...
+            }
+            case FL_CT_101: {
+                return findFlowByCode(FlowCode.FL_CT_99.name());//...
             }
 
             // FT
-            case "FL_FT_86": {
+            case FL_FT_86: {
                 return findFlowByCode(FlowCode.FL_FT_154.name());
             }
             // SF
 
-            case "FL_SF_86": {
+            case FL_SF_86: {
                 return findFlowByCode(FlowCode.FL_SF_154.name());
             }
-            case "FL_SF_113": {
+            case FL_SF_113: {
                 return findFlowByCode(FlowCode.FL_SF_141.name());
             }
             // CC
-            case "FL_CC_86": {
+            case FL_CC_86: {
                 return findFlowByCode(FlowCode.FL_CC_154.name());
             }
-            case "FL_CC_113": {
+            case FL_CC_113: {
                 return findFlowByCode(FlowCode.FL_CC_141.name());
             }
-            case "FL_CC_160": {
+            case FL_CC_160: {
                 return findFlowByCode(FlowCode.FL_CC_161.name());
             }
 
@@ -454,4 +461,3 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 
     }
 }
-
