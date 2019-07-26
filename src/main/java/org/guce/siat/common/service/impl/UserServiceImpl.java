@@ -259,6 +259,20 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
         return returnedUsers;
     }
 
+    @Override
+    public List<User> findCotationsAgentByBureauAndRole(Bureau bureau, String role) {
+        final List<User> users = userDao.findUsersByAuthorities(role);
+        final List<User> returnedUsers = new ArrayList<>();
+
+        for (final User user : users) {
+            if (Objects.equals(bureau, user.getAdministration())) {
+                returnedUsers.add(user);
+            }
+        }
+
+        return returnedUsers;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -405,4 +419,3 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     }
 
 }
-

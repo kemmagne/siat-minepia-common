@@ -732,8 +732,16 @@ public enum StepCode {
     /**
      * The S t_ c c_72.
      */
-    ST_CC_72("Acceptation suite analyse");
-
+    ST_CC_72("Acceptation suite analyse"),
+    /**
+     * The S t_ c c_cvs 01.
+     */
+    ST_CT_CVS_01("Vérification approfondie"),
+    /**
+     * The S t_ c c_cvs 02.
+     */
+    ST_CT_CVS_02("Vérification suite validation");
+    
     /**
      * The label.
      */

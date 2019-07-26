@@ -2009,7 +2009,36 @@ public enum FlowCode {
     /**
      * The F l_ c c_171.
      */
-    FL_CC_171("Rejet Definitif suite recevablité");
+    FL_CC_171("Rejet Definitif suite recevablité"),
+    /**
+     * The F l_ c cvs_01.
+     */
+    FL_CT_CVS_01("Vérification approfondie"),
+    /**
+     * The F l_ c cvs_02.
+     */
+    FL_CT_CVS_02("Rejet Suite vérification Approfondie"),
+    /**
+     * The F l_ c cvs_03.
+     */
+    FL_CT_CVS_03("Signature du CCT (CVS)"),
+    /**
+     * The F l_ c cvs_04.
+     */
+    FL_CT_CVS_04("CI requis à vérification Approfondie"),
+    /**
+     * The F l_ c cvs_05.
+     */
+    FL_CT_CVS_05("Validation après vérification approfondie CVS"),
+    /**
+     * The F l_ c cvs_06.
+     */
+    FL_CT_CVS_06("Renvoi pour etude approfondie"),
+    /**
+     * The F l_ c cvs_07.
+     */
+    FL_CT_CVS_07("Signature du CCT (CVS)");
+
 
     /**
      * The label.

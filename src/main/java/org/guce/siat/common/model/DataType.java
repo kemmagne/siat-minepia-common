@@ -80,6 +80,12 @@ public class DataType extends AbstractModel implements Serializable {
     private String props;
 
     /**
+     * unique code of data type.
+     */
+    @Column(name = "CODE", length = 100)
+    private String code;
+
+    /**
      * Instantiates a new data type.
      */
     public DataType() {
@@ -201,6 +207,24 @@ public class DataType extends AbstractModel implements Serializable {
 
     public void setProps(String props) {
         this.props = props;
+    }
+
+    /**
+     * Gets the code.
+     *
+     * @return the code
+     */
+    public String getCode() {
+        return code;
+    }
+
+    /**
+     * Sets the label en.
+     *
+     * @param code the unique reference to datatype
+     */
+    public void setCode(String code) {
+        this.code = code;
     }
 
     /*
