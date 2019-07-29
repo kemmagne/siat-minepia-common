@@ -11,18 +11,12 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author tadzotsa
  */
-@PropertySource("classpath:global-config.properties")
-@Service
 public class EmailSenderJob extends QuartzJobBean {
 
     /**
@@ -33,34 +27,48 @@ public class EmailSenderJob extends QuartzJobBean {
     /**
      * the mails folder
      */
-    @Value("${mails.folder}")
     private String mailsFolder;
 
-    @Autowired
     private EmailSenderService emailSenderService;
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
+        LOG.info("sending emails from {0}", mailsFolder);
+
         File mailsFolderFile = new File(mailsFolder);
         mailsFolderFile.mkdirs();
         Collection<File> filesCollections = FileUtils.listFiles(mailsFolderFile, new String[]{"json"}, false);
         if (CollectionUtils.isNotEmpty(filesCollections)) {
+            LOG.info("{0} emails to send for this execution", filesCollections.size());
+            int count = 0;
             for (final File file : filesCollections) {
-                try {
-                    synchronized (file) {
-                        final ObjectMapper objectMapper = new ObjectMapper();
-                        Map<String, Object> map = objectMapper.readValue(file, Map.class);
-                        emailSenderService.send(map);
-                        if (file.exists()) {
-                            file.delete();
+                if (file.exists()) {
+                    try {
+                        synchronized (file) {
+                            final ObjectMapper objectMapper = new ObjectMapper();
+                            Map<String, Object> map = objectMapper.readValue(file, Map.class);
+                            emailSenderService.send(map);
+                            count++;
+                            if (file.exists()) {
+                                file.delete();
+                            }
                         }
+                    } catch (Exception ex) {
+                        LOG.error(null, ex);
                     }
-                } catch (Exception ex) {
-                    LOG.error(null, ex);
                 }
             }
+            LOG.info("{0} emails sent for this execution", count);
         }
+    }
+
+    public void setMailsFolder(String mailsFolder) {
+        this.mailsFolder = mailsFolder;
+    }
+
+    public void setEmailSenderService(EmailSenderService emailSenderService) {
+        this.emailSenderService = emailSenderService;
     }
 
 }
