@@ -2,6 +2,7 @@ package org.guce.siat.common.job;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
@@ -34,13 +35,13 @@ public class EmailSenderJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
-        LOG.info("sending emails from {0}", mailsFolder);
+        LOG.info(MessageFormat.format("sending emails from {0}", mailsFolder));
 
         File mailsFolderFile = new File(mailsFolder);
         mailsFolderFile.mkdirs();
         Collection<File> filesCollections = FileUtils.listFiles(mailsFolderFile, new String[]{"json"}, false);
         if (CollectionUtils.isNotEmpty(filesCollections)) {
-            LOG.info("{0} emails to send for this execution", filesCollections.size());
+            LOG.info(MessageFormat.format("{0} emails to send for this execution", filesCollections.size()));
             int count = 0;
             for (final File file : filesCollections) {
                 if (file.exists()) {
@@ -59,7 +60,7 @@ public class EmailSenderJob extends QuartzJobBean {
                     }
                 }
             }
-            LOG.info("{0} emails sent for this execution", count);
+            LOG.info(MessageFormat.format("{0} emails sent for this execution", count));
         }
     }
 
