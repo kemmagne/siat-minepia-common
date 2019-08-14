@@ -12,7 +12,7 @@
 
     <groupId>org.guce.siat.common</groupId>
     <artifactId>siat-common</artifactId>
-    <version>2.0.5</version>
+    <version>2.0.6</version>
     <name>siat-common</name>
 
     <properties>
@@ -572,6 +572,11 @@
                     <groupId>javax.mail</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
         </dependency>
     </dependencies>
 
