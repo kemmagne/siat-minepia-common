@@ -740,6 +740,8 @@ public enum StepCode {
     /**
      * The S t_ c c_cvs 02.
      */
+    
+    ST_CT_50("Retour du dossier pour réorientation"),
     ST_CT_CVS_02("Vérification suite validation");
     
     /**
