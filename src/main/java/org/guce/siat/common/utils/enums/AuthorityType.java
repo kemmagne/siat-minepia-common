@@ -14,6 +14,8 @@ public enum AuthorityType
 
 	/** The administration. */
 	ADMINISTRATION("Administration"),
+        
+        STATISTIQUE("Statistique"),
 
 	/** The supervision. */
 	SUPERVISION("Supervision");

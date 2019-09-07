@@ -72,7 +72,9 @@ public enum AuthorityConstants
 
 	/** The douane. */
 	DOUANE("DOUANE", "Douane"),
-
+        
+        STATISTIQUE("STAT", "Statistiques"),
+        
 	/** The consignataire navire. */
 	CONSIGNATAIRE_NAVIRE("CONS_NAV", "Consignataire Navire");
 

@@ -32,6 +32,7 @@ public enum PositionType
 
 	/** The superviseur. */
 	SUPERVISEUR("SUPERVISEUR", "Superviseur", "Supervisor"),
+	STATISTIQUE("STATISTIQUE", "Statistique", "Statistic"),
 
 	/** The observateur. */
 	OBSERVATEUR("OBSERVATEUR", "Observateur", "Observer");
