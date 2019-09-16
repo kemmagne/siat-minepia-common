@@ -370,6 +370,17 @@ public enum FlowCode {
     FL_CT_103("Cotation"),
     FL_CT_104("Confirmation RDV pour traitement"),
     FL_CT_105("Confirmation RDV pour inspection"),
+    // Demande de modification
+    FL_CT_110("Demande de modification"),
+    FL_CT_111("Validation suite recevabilité - Demande de modification"),
+    FL_CT_108("Rejet suite recevabilité - Demande de modification"),
+    FL_CT_109("Cotation - Demande de modification"),
+    FL_CT_112("Validation pour signature demande de modification"),
+    FL_CT_113("Rejet suite Etude approfondie - Demande de modification"),
+    FL_CT_114("Signature demande de modification"),
+    FL_CT_115("Refus signature demande de modification"),
+    FL_CT_116("Rejet Suite Etape Cotation"),
+    FL_CT_117("Validation Suite Etape Cotation"),
     //
 
     /**

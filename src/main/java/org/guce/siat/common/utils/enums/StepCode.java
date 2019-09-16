@@ -187,6 +187,12 @@ public enum StepCode {
     //
     ST_CT_49("Confirmation RDV pour inspection"),
     //
+    ST_CT_51("Demande de modification"),
+    ST_CT_52("Recevabilité - Demande de modification"),
+    ST_CT_53("Cotation - Demande de modification"),
+    ST_CT_54("Rejet demande de modification"),
+    ST_CT_55("Traitement demande de modification"),
+    ST_CT_56("Signature demande de modification"),
 
     // AP Step Code
     /**

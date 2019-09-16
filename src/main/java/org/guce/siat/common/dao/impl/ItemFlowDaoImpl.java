@@ -169,6 +169,20 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
             return null;
         }
     }
+    @Override
+    public ItemFlow findItemFlowByFileItemAndFlow2(final FileItem fileItem, final FlowCode flowCode) {
+        try {
+            final String hqlString = "SELECT i FROM ItemFlow i WHERE i.flow.code=:flowCode AND i.fileItem.id= :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.flow.code=:flowCode AND i1.fileItem.id = :fileItemId) ";
+            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlString, ItemFlow.class);
+            query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
+            query.setParameter("flowCode", flowCode.name());
+
+            return query.getSingleResult();
+        } catch (final NoResultException | NonUniqueResultException e) {
+            LOG.info(Objects.toString(e));
+            return null;
+        }
+    }
 
     /*
 	 * (non-Javadoc)
