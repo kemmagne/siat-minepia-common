@@ -96,6 +96,7 @@ public interface ItemFlowService extends AbstractService<ItemFlow>
 	 * @return the list
 	 */
 	ItemFlow findItemFlowByFileItemAndFlow(final FileItem fileItem, FlowCode flowCode);
+	ItemFlow findItemFlowByFileItemAndFlow2(final FileItem fileItem, FlowCode flowCode);
 
 
 	/**

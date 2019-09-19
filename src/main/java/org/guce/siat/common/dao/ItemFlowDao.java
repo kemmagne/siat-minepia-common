@@ -61,6 +61,7 @@ public interface ItemFlowDao extends AbstractJpaDao<ItemFlow> {
      * @return the list
      */
     ItemFlow findItemFlowByFileItemAndFlow(final FileItem fileItem, final FlowCode flowCode);
+    ItemFlow findItemFlowByFileItemAndFlow2(final FileItem fileItem, final FlowCode flowCode);
 
     /**
      * Find item flow by file item and flow.
