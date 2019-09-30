@@ -2048,7 +2048,15 @@ public enum FlowCode {
     /**
      * The F l_ c cvs_07.
      */
-    FL_CT_CVS_07("Signature du CCT (CVS)");
+    FL_CT_CVS_07("Signature du CCT (CVS)"),
+    /**
+     * The F l_ c cvs_04.
+     */
+    FL_CT_CVS_08("Rejet Suite vérification Approfondie"),
+    /**
+     * The F l_ c cvs_05.
+     */
+    FL_CT_CVS_09("CI requis à vérification Approfondie");
 
 
     /**
