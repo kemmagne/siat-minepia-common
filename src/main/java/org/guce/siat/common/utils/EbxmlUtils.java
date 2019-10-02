@@ -1,6 +1,7 @@
 package org.guce.siat.common.utils;
 
 import hk.hku.cecid.ebms.pkg.EbxmlMessage;
+import hk.hku.cecid.piazza.commons.util.UtilitiesException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class EbxmlUtils {
         return map;
     }
 
-    public static OrchestraEbxmlMessage mapToEbxml(Map<String, Object> map) throws SOAPException, IOException {
+    public static OrchestraEbxmlMessage mapToEbxml(Map<String, Object> map) throws SOAPException, IOException, UtilitiesException {
 
         final byte[] xmlBytes = (byte[]) map.get(ESBConstants.FLOW);
         final Map<String, byte[]> attachments = (Map<String, byte[]>) map.get(ESBConstants.ATTACHMENT);
@@ -82,38 +83,32 @@ public class EbxmlUtils {
         final String toPartyId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/ROUTAGE/DESTINATAIRE");
         final String messageId = Generator.generateMessageID();
 
-        try {
-            OrchestraEbxmlMessage ebxml = new OrchestraEbxmlMessage(fromPartyId, toPartyId, conversationId, service, action, messageId);
-            ebxml.getMessageHeader().setServiceType("OCS");
-            ebxml.addAckRequested(true);
-            if (refEbxmlMsg != null) {
-                final String refMessageId = refEbxmlMsg.getMessageId();
-                ebxml.getMessageHeader().setRefToMessageId(refMessageId);
-                EbxmlMessage ms = new EbxmlMessage();
-                ms.addMessageHeader();
-                ms.getMessageHeader().setMessageId(refMessageId);
-                ms.addAckRequested(true);
-                String time = CalendarUtility.date2UTC(Calendar.getInstance().getTime(), Calendar.getInstance().getTimeZone());
-                ebxml.addAcknowledgment(time, ms);
-            }
-            DataHandler dh = new DataHandler(new ByteArrayDataSource(xmlBytes, MediaType.APPLICATION_XML_VALUE));
-            ebxml.addPayloadContainer(dh, ebxml.getAction(), ebxml.getDescription());
+        OrchestraEbxmlMessage ebxml = new OrchestraEbxmlMessage(fromPartyId, toPartyId, conversationId, service, action, messageId);
+        ebxml.getMessageHeader().setServiceType("OCS");
+        ebxml.addAckRequested(true);
+        if (refEbxmlMsg != null) {
+            final String refMessageId = refEbxmlMsg.getMessageId();
+            ebxml.getMessageHeader().setRefToMessageId(refMessageId);
+            EbxmlMessage ms = new EbxmlMessage();
+            ms.addMessageHeader();
+            ms.getMessageHeader().setMessageId(refMessageId);
+            ms.addAckRequested(true);
+            String time = CalendarUtility.date2UTC(Calendar.getInstance().getTime(), Calendar.getInstance().getTimeZone());
+            ebxml.addAcknowledgment(time, ms);
+        }
+        DataHandler dh = new DataHandler(new ByteArrayDataSource(xmlBytes, MediaType.APPLICATION_XML_VALUE));
+        ebxml.addPayloadContainer(dh, ebxml.getAction(), ebxml.getDescription());
 
-            if (MapUtils.isNotEmpty(attachments)) {
-                for (Map.Entry<String, byte[]> attachment : attachments.entrySet()) {
-                    String attachmentName = attachment.getKey();
-                    byte[] attachmentBytes = attachment.getValue();
-                    dh = new DataHandler(new ByteArrayDataSource(attachmentBytes, MediaType.APPLICATION_OCTET_STREAM_VALUE));
-                    ebxml.addPayloadContainer(dh, attachmentName, attachmentName);
-                }
+        if (MapUtils.isNotEmpty(attachments)) {
+            for (Map.Entry<String, byte[]> attachment : attachments.entrySet()) {
+                String attachmentName = attachment.getKey();
+                byte[] attachmentBytes = attachment.getValue();
+                dh = new DataHandler(new ByteArrayDataSource(attachmentBytes, MediaType.APPLICATION_OCTET_STREAM_VALUE));
+                ebxml.addPayloadContainer(dh, attachmentName, attachmentName);
             }
-
-            return ebxml;
-        } catch (Exception ex) {
-            LOG.error(ex.getMessage(), ex);
         }
 
-        return null;
+        return ebxml;
     }
 
     private static EbxmlMessage getEbxmlMessageFromBytes(final byte[] ebxmlBytes) throws SOAPException, IOException {
