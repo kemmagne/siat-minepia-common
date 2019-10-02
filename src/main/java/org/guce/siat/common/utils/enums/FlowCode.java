@@ -381,6 +381,8 @@ public enum FlowCode {
     FL_CT_115("Refus signature demande de modification"),
     FL_CT_116("Rejet Suite Etape Cotation"),
     FL_CT_117("Validation Suite Etape Cotation"),
+    FL_CT_118("Renouvellement RDV"),
+    FL_CT_119("Inspection physique"),
     //
 
     /**
