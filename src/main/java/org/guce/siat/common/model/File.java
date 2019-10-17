@@ -259,6 +259,17 @@ public class File extends AbstractModel implements Serializable {
     @Column(name = "LAST_DECISION_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastDecisionDate;
+    
+    @ManyToOne
+    @JoinColumn(name = "PARENT_FILE_ID", referencedColumnName = "ID")
+    private File parent;
+    
+    @OneToMany(mappedBy = "parent")
+    private List<File> childrensList;
+    
+   
+    @Column(name = "NUMERO_DOSSIER_BASE")
+    private String numeroDossierBase;
 
     /**
      * Gets the id.
@@ -877,6 +888,33 @@ public class File extends AbstractModel implements Serializable {
     public void setLastDecisionDate(Date lastDecisionDate) {
         this.lastDecisionDate = lastDecisionDate;
     }
+
+    public File getParent() {
+        return parent;
+    }
+
+    public void setParent(File parent) {
+        this.parent = parent;
+    }
+
+    public List<File> getChildrensList() {
+        return childrensList;
+    }
+
+    public void setChildrensList(List<File> childrensList) {
+        this.childrensList = childrensList;
+    }
+
+    public String getNumeroDossierBase() {
+        return numeroDossierBase;
+    }
+
+    public void setNumeroDossierBase(String numeroDossierBase) {
+        this.numeroDossierBase = numeroDossierBase;
+    }
+
+    
+    
 
     /*
 	 * (non-Javadoc)

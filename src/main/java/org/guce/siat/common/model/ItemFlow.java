@@ -102,6 +102,10 @@ public class ItemFlow extends AbstractModel implements Serializable {
      */
     @Column(name = "MESSAGE_ID")
     private String messageId;
+    
+    @ManyToOne
+    @JoinColumn(name = "ASSIGNED_USER_ID", referencedColumnName = "ID")
+    private User assignedUser;
 
     /**
      * Instantiates a new item flow.
@@ -284,6 +288,24 @@ public class ItemFlow extends AbstractModel implements Serializable {
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
+    }
+    
+    /**
+     * Gets the assigned user.
+     *
+     * @return the assignedUser
+     */
+    public User getAssignedUser() {
+        return assignedUser;
+    }
+
+    /**
+     * Sets the assigned user.
+     *
+     * @param assignedUser the assignedUser to set
+     */
+    public void setAssignedUser(final User assignedUser) {
+        this.assignedUser = assignedUser;
     }
 
     /*

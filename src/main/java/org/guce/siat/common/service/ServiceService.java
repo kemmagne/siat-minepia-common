@@ -3,6 +3,7 @@ package org.guce.siat.common.service;
 import java.util.List;
 
 import org.guce.siat.common.model.Administration;
+import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Organism;
 import org.guce.siat.common.model.Service;
 import org.guce.siat.common.model.SubDepartment;
@@ -60,5 +61,15 @@ public interface ServiceService extends AbstractService<Service>
 	 * @return the list
 	 */
 	List<Service> findServicesByAdministration(Administration currentAdministration);
+        
+        
+        /**
+	 * Find services by FileType.
+	 *
+	 * @param fileType
+	 *           the fileType
+	 * @return the list
+	 */
+	List<Service> findServicesByAdministration(FileType fileType);
 
 }

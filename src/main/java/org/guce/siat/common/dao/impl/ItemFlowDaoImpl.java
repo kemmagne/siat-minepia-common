@@ -58,17 +58,27 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
     @Override
     public ItemFlow findLastItemFlowByFileItem(final FileItem fileItem) {
         if (!Objects.equals(fileItem, null)) {
-            final StringBuilder hqlBuilder = new StringBuilder();
-            hqlBuilder.append("SELECT it FROM ItemFlow it ");
-            hqlBuilder.append("WHERE it.fileItem.id = :fileItemId ");
-            hqlBuilder.append("AND it.id = (SELECT Max(it1.id) FROM ItemFlow it1 WHERE it1.fileItem.id = :fileItemId ) ");
 
-            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
-            query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
-            final List<ItemFlow> itemFlows = query.getResultList();
-            if (CollectionUtils.isNotEmpty(itemFlows)) {
-                return itemFlows.get(0);
+            final TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT it FROM ItemFlow it WHERE it.fileItem.id = :fileItemId ORDER BY it.id DESC", ItemFlow.class);
+            query.setParameter("fileItemId", fileItem.getId());
+            query.setMaxResults(1);
+
+            try {
+                return query.getSingleResult();
+            } catch (NoResultException nre) {
             }
+
+//            final StringBuilder hqlBuilder = new StringBuilder();
+//            hqlBuilder.append("SELECT it FROM ItemFlow it ");
+//            hqlBuilder.append("WHERE it.fileItem.id = :fileItemId ");
+//            hqlBuilder.append("AND it.id = (SELECT Max(it1.id) FROM ItemFlow it1 WHERE it1.fileItem.id = :fileItemId ) ");
+//
+//            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
+//            query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
+//            final List<ItemFlow> itemFlows = query.getResultList();
+//            if (CollectionUtils.isNotEmpty(itemFlows)) {
+//                return itemFlows.get(0);
+//            }
         }
         return null;
     }
@@ -165,7 +175,20 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 
             return query.getSingleResult();
         } catch (final NoResultException | NonUniqueResultException e) {
-            LOG.info(Objects.toString(e));
+            return null;
+        }
+    }
+
+    @Override
+    public ItemFlow findItemFlowByFileItemAndFlow2(final FileItem fileItem, final FlowCode flowCode) {
+        try {
+            final String hqlString = "SELECT i FROM ItemFlow i WHERE i.flow.code=:flowCode AND i.fileItem.id= :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.flow.code=:flowCode AND i1.fileItem.id = :fileItemId) ";
+            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlString, ItemFlow.class);
+            query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
+            query.setParameter("flowCode", flowCode.name());
+
+            return query.getSingleResult();
+        } catch (final NoResultException | NonUniqueResultException e) {
             return null;
         }
     }
@@ -186,7 +209,6 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 
             return query.getSingleResult();
         } catch (final NoResultException | NonUniqueResultException e) {
-            LOG.info(Objects.toString(e));
             return null;
         }
     }
@@ -208,7 +230,6 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 
             return query.getSingleResult();
         } catch (final NoResultException | NonUniqueResultException e) {
-            LOG.info(Objects.toString(e));
             return null;
         }
     }
@@ -226,7 +247,6 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
             try {
                 return query.getSingleResult();
             } catch (NoResultException | NonUniqueResultException e) {
-                LOG.error(Objects.toString(e));
             }
         }
 
@@ -315,7 +335,6 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 
             return query.getSingleResult();
         } catch (final NoResultException | NonUniqueResultException e) {
-            LOG.info(Objects.toString(e));
             return null;
         }
     }
@@ -327,10 +346,9 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
         query.setMaxResults(1);
         try {
             return query.getSingleResult();
-        } catch (Exception ex) {
+        } catch (NoResultException nre) {
             return null;
         }
     }
 
 }
-

@@ -1,190 +1,190 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿riadh elouni (relouni) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-	elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
-	<xs:element name="DOCUMENT">
-		<xs:annotation>
-			<xs:documentation>Document APERAK</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="TYPE_DOCUMENT">
-					<xs:simpleType>
-						<xs:restriction base="xs:string">
-							<xs:maxLength value="35" />
-						</xs:restriction>
-					</xs:simpleType>
-				</xs:element>
-				<xs:element name="MESSAGE">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="TYPE_MESSAGE">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="6" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="DATE_EMISSION">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="50" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="ETAT">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="3" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="NUMERO_MESSAGE">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="61" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="NUMERO_MESSAGE_ORIGINE">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="61" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="DATE_EMISSION_MSG_ORIGINE">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="50" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="REFERENCE_DOSSIER">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="NUMERO_DOSSIER">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="35" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="NUMERO_DEMANDE">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="35" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="SERVICE">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="35" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="REFERENCE_GUCE">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="50" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="REFERENCE_SIAT">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="35" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="DATE_CREATION">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="50" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="SI">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="10" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="ROUTAGE">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="EMETTEUR">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="35" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="DESTINATAIRE">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="35" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="ERREURS" minOccurs="0">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="ERREUR" minOccurs="0">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="CODE_ERREUR" minOccurs="0">
-											<xs:simpleType>
-												<xs:restriction base="xs:string">
-													<xs:maxLength value="50" />
-												</xs:restriction>
-											</xs:simpleType>
-										</xs:element>
-										<xs:element name="LIBELLE_ERREUR" minOccurs="0">
-											<xs:simpleType>
-												<xs:restriction base="xs:string">
-													<xs:maxLength value="255" />
-												</xs:restriction>
-											</xs:simpleType>
-										</xs:element>
-										<xs:element name="REFERENCE_DONNEE" minOccurs="0">
-											<xs:simpleType>
-												<xs:restriction base="xs:string">
-													<xs:maxLength value="255" />
-												</xs:restriction>
-											</xs:simpleType>
-										</xs:element>
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="CONTENT" minOccurs="0">
-					<xs:complexType>
-						<xs:sequence minOccurs="0">
-							<xs:element name="OBESERVATION" minOccurs="0">
-								<xs:simpleType>
-									<xs:restriction base="xs:string">
-										<xs:maxLength value="255" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+           elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+    <xs:element name="DOCUMENT">
+        <xs:annotation>
+            <xs:documentation>Document APERAK</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="TYPE_DOCUMENT">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="35" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="MESSAGE">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="TYPE_MESSAGE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="6" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="DATE_EMISSION">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="50" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="ETAT">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="3" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="NUMERO_MESSAGE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="61" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="NUMERO_MESSAGE_ORIGINE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="61" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="DATE_EMISSION_MSG_ORIGINE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="50" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="REFERENCE_DOSSIER">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="NUMERO_DOSSIER">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="35" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="NUMERO_DEMANDE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="35" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="SERVICE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="35" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="REFERENCE_GUCE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="50" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="REFERENCE_SIAT">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="35" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="DATE_CREATION">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="50" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="SI">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="10" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="ROUTAGE">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="EMETTEUR">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="35" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="DESTINATAIRE">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="35" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="ERREURS" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ERREUR" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="CODE_ERREUR" minOccurs="0">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:maxLength value="50" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="LIBELLE_ERREUR" minOccurs="0">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:maxLength value="3000" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="REFERENCE_DONNEE" minOccurs="0">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:maxLength value="255" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="CONTENT" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                            <xs:element name="OBESERVATION" minOccurs="0">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="255" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>
