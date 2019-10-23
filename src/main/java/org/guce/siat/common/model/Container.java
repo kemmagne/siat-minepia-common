@@ -2,8 +2,6 @@ package org.guce.siat.common.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +25,6 @@ public class Container implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Basic(optional = false)
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTAINER_SEQ")
     @SequenceGenerator(name = "CONTAINER_SEQ", sequenceName = "CONTAINER_SEQ", allocationSize = 1)
