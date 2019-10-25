@@ -12,7 +12,7 @@
 
     <groupId>org.guce.siat.common</groupId>
     <artifactId>siat-common</artifactId>
-    <version>2.0.13</version>
+    <version>2.0.14</version>
     <name>siat-common</name>
 
     <properties>
@@ -133,12 +133,6 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.entitymanager.version}</version>
         </dependency>
-        <!--        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>${oracle.version}</version>
-            <scope>provided</scope>
-        </dependency>-->
         <!-- AspectJ -->
         <dependency>
             <groupId>org.aspectj</groupId>

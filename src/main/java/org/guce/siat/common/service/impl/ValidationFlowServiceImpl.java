@@ -894,11 +894,11 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         final List<String> stringLineNumbers = XmlXPathUtils.findSingleValuesList(LINE_NUMBER_EXPRESSION, rootElement);
         final String numSiat = XmlXPathUtils.findSingleValue(REFERENCE_SIAT_EXPRESSION, rootElement);
         final List<Integer> lineNumberList = new ArrayList<>();
-//        if (stringLineNumbers.size() <= 999) {
-        for (final String lineNumber : stringLineNumbers) {
-            lineNumberList.add(Integer.valueOf(lineNumber));
+        if (stringLineNumbers.size() <= 999) {
+            for (final String lineNumber : stringLineNumbers) {
+                lineNumberList.add(Integer.valueOf(lineNumber));
+            }
         }
-//        }
 
         extractedFileItems = fileItemDao.findByLineNumberAndNumSiat(lineNumberList, numSiat);
 

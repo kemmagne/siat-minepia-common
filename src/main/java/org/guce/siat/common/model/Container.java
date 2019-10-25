@@ -2,6 +2,7 @@ package org.guce.siat.common.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class Container implements Serializable {
     @SequenceGenerator(name = "CONTAINER_SEQ", sequenceName = "CONTAINER_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(name = "CONT_NUMBER", length = 11)
+    @Column(name = "CONT_NUMBER", length = 11, nullable = false)
     private String contNumber;
     @Column(name = "CONT_SEAL1", length = 20)
     private String contSeal1;
@@ -62,7 +63,7 @@ public class Container implements Serializable {
     /**
      * The file
      */
-    @JoinColumn(name = "FILE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "FILE_ID", referencedColumnName = "ID", nullable = false)
     @ManyToOne
     private File file;
 
@@ -192,6 +193,32 @@ public class Container implements Serializable {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.contNumber);
+        hash = 53 * hash + Objects.hashCode(this.file);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Container other = (Container) obj;
+        if (!Objects.equals(this.contNumber, other.contNumber)) {
+            return false;
+        }
+        return Objects.equals(this.file, other.file);
     }
 
 }
