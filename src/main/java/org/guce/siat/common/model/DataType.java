@@ -85,6 +85,9 @@ public class DataType extends AbstractModel implements Serializable {
     @Column(name = "CODE", length = 100)
     private String code;
 
+    @Column(name = "DISABLED")
+    private Boolean disabled;
+
     /**
      * Instantiates a new data type.
      */
@@ -272,6 +275,14 @@ public class DataType extends AbstractModel implements Serializable {
      */
     public void setObjectType(final String objectType) {
         this.objectType = objectType;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
     /*
