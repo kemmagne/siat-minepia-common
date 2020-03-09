@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.guce.siat.common.service.impl;
 
 import java.util.List;
@@ -173,5 +170,15 @@ public class FlowServiceImpl extends AbstractServiceImpl<Flow> implements FlowSe
     public Flow findByToStep(final Step step) {
         return flowDao.findByToStep(step);
     }
-}
 
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.service.FlowService#findByToStep(org.guce.siat.common.model.Step, org.guce.siat.common.model.FileType)
+     */
+    @Override
+    public Flow findByToStep(Step step, FileType fileType) {
+        return flowDao.findByToStep(step, fileType);
+    }
+
+}

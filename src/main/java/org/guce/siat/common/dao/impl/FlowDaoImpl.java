@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -460,4 +461,32 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
         }
 
     }
+
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.FlowDao#findByToStep(org.guce.siat.common.model.Step, org.guce.siat.common.model.FileType)
+     */
+    @Override
+    public Flow findByToStep(Step step, FileType fileType) {
+
+        if (fileType == null || step == null) {
+            return null;
+        }
+
+        Query query = super.entityManager.createNativeQuery("SELECT F.ID FROM FLOW F JOIN STEP S ON S.ID = F.TO_STEP AND S.ID = ?currentStepId JOIN FILE_TYPE_STEP FS ON FS.STEP_ID = F.FROM_STEP AND FS.FILE_TYPE_ID = ?fileTypeId");
+
+        query.setParameter("currentStepId", step.getId());
+        query.setParameter("fileTypeId", fileType.getId());
+
+        query.setMaxResults(1);
+
+        try {
+            Object flowId = query.getSingleResult();
+            return find((Long) flowId);
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
 }

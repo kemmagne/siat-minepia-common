@@ -114,5 +114,14 @@ public interface FlowService extends AbstractService<Flow> {
      */
     Flow findByToStep(Step step);
 
-}
+    /**
+     * find flow by file type and to step
+     *
+     * @param step the to step
+     * @param fileType the file type
+     *
+     * @return the flow
+     */
+    Flow findByToStep(Step step, FileType fileType);
 
+}

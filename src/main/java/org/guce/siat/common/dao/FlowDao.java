@@ -1,6 +1,3 @@
-/*
- *
- */
 package org.guce.siat.common.dao;
 
 import java.util.List;
@@ -116,5 +113,15 @@ public interface FlowDao extends AbstractJpaDao<Flow> {
      * @return the flow
      */
     Flow findByToStep(Step step);
-}
 
+    /**
+     * find flow by file type and to step
+     *
+     * @param step the to step
+     * @param fileType the file type
+     *
+     * @return the flow
+     */
+    Flow findByToStep(Step step, FileType fileType);
+
+}
