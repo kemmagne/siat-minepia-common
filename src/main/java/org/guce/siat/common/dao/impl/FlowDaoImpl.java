@@ -474,17 +474,22 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             return null;
         }
 
-        Query query = super.entityManager.createNativeQuery("SELECT F.ID FROM FLOW F JOIN STEP S ON S.ID = F.TO_STEP AND S.ID = ?currentStepId JOIN FILE_TYPE_STEP FS ON FS.STEP_ID = F.FROM_STEP AND FS.FILE_TYPE_ID = ?fileTypeId");
+        Query query = super.entityManager.createNativeQuery("SELECT F.ID FROM FLOW F JOIN STEP S ON S.ID = F.TO_STEP AND S.ID = ? JOIN FILE_TYPE_STEP FS ON FS.STEP_ID = F.FROM_STEP AND FS.FILE_TYPE_ID = ?");
 
-        query.setParameter("currentStepId", step.getId());
-        query.setParameter("fileTypeId", fileType.getId());
+        query.setParameter(1, step.getId());
+        query.setParameter(2, fileType.getId());
 
         query.setMaxResults(1);
 
         try {
+
             Object flowId = query.getSingleResult();
-            return find((Long) flowId);
-        } catch (NoResultException nre) {
+            Number flowIdNb = (Number) flowId;
+            Long flowIdLong = flowIdNb.longValue();
+
+            return find(flowIdLong);
+        } catch (Exception ex) {
+            LOG.error(Objects.toString(ex), ex);
             return null;
         }
     }
