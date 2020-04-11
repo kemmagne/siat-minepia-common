@@ -97,4 +97,9 @@ public class FileFieldValue extends AbstractModel implements Serializable {
         primaryKey.setFileField(fileField);
     }
 
+    @Override
+    public String toString() {
+        return "FileFieldValue{" + "primaryKey=" + primaryKey + ", value=" + value + '}';
+    }
+
 }

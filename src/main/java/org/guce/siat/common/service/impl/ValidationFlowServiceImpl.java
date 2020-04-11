@@ -49,6 +49,8 @@ import org.w3c.dom.Element;
 @Transactional(readOnly = true)
 public class ValidationFlowServiceImpl implements ValidationFlowService {
 
+    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("COCACM1", "COCAFM1");
+
     /**
      * The Constant LOG.
      */
@@ -400,7 +402,6 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 && contentHasCodeDecision(rootElement) && !isCancelFlux(rootElement) && !isPaymentRequest(rootElement) && correspondenceFileAndFileItems(rootElement));
         LOG.info("#####validateGeneralInformations workflowValidation : " + workflowValidation);
         return commonValidation && workflowValidation;
-
     }
 
     /**
@@ -442,17 +443,17 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
     //TODO fix this method
     private boolean validateAtMINEPIA(final Element rootElement) {
 
-        boolean haveCCT = false;
+        boolean haveCCT;
 
-        final String numeroCCTExpression = "/DOCUMENT/CONTENT/NUMERO_CCT";
-
-        final String numeroCCT = XmlXPathUtils.findSingleValue(numeroCCTExpression, rootElement);
-
-        final File cctFile = fileDao.findByNumDossierGuce(numeroCCT);
-
-        if (cctFile != null && FileTypeCode.CCT_CT.equals(cctFile.getFileType().getCode())) {
-            haveCCT = true;
-        }
+//        final String numeroCCTExpression = "/DOCUMENT/CONTENT/NUMERO_CCT";
+//
+//        final String numeroCCT = XmlXPathUtils.findSingleValue(numeroCCTExpression, rootElement);
+//
+//        final File cctFile = fileDao.findByNumDossierGuce(numeroCCT);
+//
+//        if (cctFile != null && FileTypeCode.CCT_CT.equals(cctFile.getFileType().getCode())) {
+////            haveCCT = true;
+//        }
         //FIXME remove this line ()
         haveCCT = true;
         return haveCCT;
@@ -526,7 +527,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
     private boolean validateCancelRequest(final Element rootElement) {
         LOG.info("####### Start validateCancelRequest ####### ");
         boolean validateCancelRequest = false;
-        final List<FileTypeCode> fileTypeListMinusCT = new ArrayList<FileTypeCode>();
+        final List<FileTypeCode> fileTypeListMinusCT = new ArrayList<>();
         fileTypeListMinusCT.addAll(Arrays.asList(FileTypeCode.values()));
         final List<FileTypeCode> fileTypeListCT = Arrays.asList(FileTypeCode.CCT_CT, FileTypeCode.CCT_CT_E, FileTypeCode.CC_CT, FileTypeCode.CQ_CT);
         final List<String> flowCodes = Arrays.asList(FlowCode.FL_CT_61.name(), FlowCode.FL_CO_147.name(),
@@ -539,11 +540,11 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 final List<FileItem> fileItems = fileToSearch.getFileItemsList();
                 if (CollectionUtils.isNotEmpty(fileItems)) {
                     final FileType fileType = fileToSearch.getFileType();
-                    Step currentStep = null;
+                    Step currentStep;
                     //Vérifier si le nombre maximal des demandes d'annulation a été atteint
                     final ParamsOrganism nbrCancelRequestParam = paramsOrganismDao.findParamsOrganismByOrganismAndName(fileItems
                             .get(0).getFile().getBureau().getService().getSubDepartment().getOrganism(), "MaxCancelRequest");
-                    Long paramOrganismValue = null;
+                    Long paramOrganismValue;
                     if (nbrCancelRequestParam != null) {
                         paramOrganismValue = Long.parseLong(nbrCancelRequestParam.getValue());
                     } else {
@@ -600,14 +601,14 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 final List<FileItem> fileItems = fileToSearch.getFileItemsList();
                 if (CollectionUtils.isNotEmpty(fileItems)) {
                     final FileType fileType = fileToSearch.getFileType();
-                    Step currentStep = null;
+                    Step currentStep;
 
                     if (FileTypeCode.CC_BQ.equals(fileType.getCode())) {
                         currentStep = fileItems.get(0).getStep();
 
                         final boolean isApDecision = fileTypeStepDao.isApDecisionByFileTypeAndStep(fileType, currentStep);
                         if (isApDecision) {
-                            validateCARequest = true;
+//                            validateCARequest = true;
                         }
                     }
                     validateCARequest = true;
@@ -731,8 +732,8 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return true, if successful
      */
     private boolean validateLastFlow(final List<FileItem> fileItems, final String... flowCodes) {
-        ItemFlow lastItemFlow = null;
-        Flow lastFlow = null;
+        ItemFlow lastItemFlow;
+        Flow lastFlow;
         for (final FileItem fileItem : fileItems) {
             if (fileItem != null) {
                 lastItemFlow = itemFlowDao.findLastSentItemFlowByFileItem(fileItem);
@@ -912,12 +913,14 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return true, if is initiator flow
      */
     private boolean isInitiatorFlow(final Element rootElement) {
-        final String numDossierGuce = findNumDossierGuce(rootElement);
+
+        String numDossierGuce = findNumDossierGuce(rootElement);
 
         if (StringUtils.isNotBlank(numDossierGuce)) {
-            final File file = fileDao.findByNumDossierGuce(numDossierGuce);
+            File file = fileDao.findByNumDossierGuce(numDossierGuce);
+            String docType = getDocumentType(rootElement);
 
-            return file == null;
+            return file == null || (INIT_MODIFICATION_FLOWS_LIST.contains(docType));
         }
 
         return true;

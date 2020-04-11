@@ -387,10 +387,7 @@ public class FileType extends AbstractModel implements Serializable {
             return false;
         }
         final FileType other = (FileType) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())));
     }
 
     /*

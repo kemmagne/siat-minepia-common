@@ -193,7 +193,6 @@ public enum StepCode {
     ST_CT_54("Rejet demande de modification"),
     ST_CT_55("Traitement demande de modification"),
     ST_CT_56("Signature demande de modification"),
-
     // AP Step Code
     /**
      * The S t_ a p_42.
@@ -740,16 +739,35 @@ public enum StepCode {
      */
     ST_CC_72("Acceptation suite analyse"),
     /**
+     * The S t_ c c_73.
+     */
+    ST_CC_73("Dépôt demande de modification"),
+    /**
+     * The S t_ c c_74.
+     */
+    ST_CC_74("Recevabilité demande de modification"),
+    /**
+     * The S t_ c c_75.
+     */
+    ST_CC_75("Cotation Demande de modification"),
+    /**
+     * The S t_ c c_76.
+     */
+    ST_CC_76("Etude Demande de modification"),
+    /**
+     * The S t_ c c_77.
+     */
+    ST_CC_77("Signature Demande de modification"),
+    /**
      * The S t_ c c_cvs 01.
      */
     ST_CT_CVS_01("Vérification approfondie"),
     /**
      * The S t_ c c_cvs 02.
      */
-    
     ST_CT_50("Retour du dossier pour réorientation"),
     ST_CT_CVS_02("Vérification suite validation");
-    
+
     /**
      * The label.
      */

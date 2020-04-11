@@ -116,4 +116,9 @@ public class FileFieldValueId implements Serializable {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "FileFieldValueId{" + "file=" + file + ", fileField=" + fileField + '}';
+    }
+
 }

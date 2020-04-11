@@ -265,7 +265,7 @@ public class File extends AbstractModel implements Serializable {
     private File parent;
 
     @OneToMany(mappedBy = "parent")
-    private List<File> childrensList;
+    private List<File> childrenList;
 
     @Column(name = "NUMERO_DOSSIER_BASE")
     private String numeroDossierBase;
@@ -899,12 +899,12 @@ public class File extends AbstractModel implements Serializable {
         this.parent = parent;
     }
 
-    public List<File> getChildrensList() {
-        return childrensList;
+    public List<File> getChildrenList() {
+        return childrenList;
     }
 
-    public void setChildrensList(List<File> childrensList) {
-        this.childrensList = childrensList;
+    public void setChildrenList(List<File> childrenList) {
+        this.childrenList = childrenList;
     }
 
     public String getNumeroDossierBase() {

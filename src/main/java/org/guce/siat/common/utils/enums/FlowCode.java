@@ -2024,6 +2024,38 @@ public enum FlowCode {
      */
     FL_CC_171("Rejet Definitif suite recevablité"),
     /**
+     * The F l_ c c_172.
+     */
+    FL_CC_172("Demande de modification"),
+    /**
+     * The F l_ c c_173.
+     */
+    FL_CC_173("Validation Suite Recevabilité"),
+    /**
+     * The F l_ c c_174.
+     */
+    FL_CC_174("Rejet Suite Recevabilité"),
+    /**
+     * The F l_ c c_175.
+     */
+    FL_CC_175("Cotation"),
+    /**
+     * The F l_ c c_176.
+     */
+    FL_CC_176("Validation suite étude approfondie"),
+    /**
+     * The F l_ c c_177.
+     */
+    FL_CC_177("Rejet suite étude approfondie"),
+    /**
+     * The F l_ c c_178.
+     */
+    FL_CC_178("Refus d'autorisation - Retour à l'étude"),
+    /**
+     * The F l_ c c_179.
+     */
+    FL_CC_179("Autorisation modification"),
+    /**
      * The F l_ c cvs_01.
      */
     FL_CT_CVS_01("Vérification approfondie"),
@@ -2060,7 +2092,6 @@ public enum FlowCode {
      */
     FL_CT_CVS_09("CI requis à vérification Approfondie");
 
-
     /**
      * The label.
      */
@@ -2085,4 +2116,3 @@ public enum FlowCode {
     }
 
 }
-

@@ -78,17 +78,21 @@ public final class ConverterGuceSiatUtils {
      * @return the reference dossier
      * @throws UtilitiesException the utilities exception
      */
-    public static REFERENCEDOSSIER generateReferenceDossier(final File file, final Boolean isCancelResponse)
-            throws UtilitiesException {
+    public static REFERENCEDOSSIER generateReferenceDossier(final File file, final Boolean isCancelResponse) throws UtilitiesException {
 
         final REFERENCEDOSSIER referencedossier = new REFERENCEDOSSIER();
+
+        String numeroDossier = file.getNumeroDossier();
+        if (file.getParent() != null && file.getReferenceSiat().startsWith(InformationSystemCode.CC.name())) {
+            numeroDossier = file.getParent().getNumeroDossier();
+        }
 
         //	reference dossier
         referencedossier.setREFERENCEGUCE(file.getReferenceGuce());
         referencedossier.setREFERENCESIAT(file.getReferenceSiat());
         referencedossier.setDATECREATION(EbmsUtility.date2UTC(file.getCreatedDate(), TimeZone.getDefault()));
         referencedossier.setNUMERODEMANDE(file.getNumeroDemande() == null ? StringUtils.EMPTY : file.getNumeroDemande());
-        referencedossier.setNUMERODOSSIER(file.getNumeroDossier());
+        referencedossier.setNUMERODOSSIER(numeroDossier);
         referencedossier.setSERVICE(file.getFileTypeGuce());
         switch (file.getFileType().getCode()) {
             //CT

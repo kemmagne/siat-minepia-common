@@ -1,4 +1,4 @@
-package ws.test;
+package org.guce.siat.common.service.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
