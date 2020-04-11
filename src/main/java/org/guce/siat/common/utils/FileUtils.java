@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.commons.lang3.BooleanUtils;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
+import org.guce.siat.common.utils.enums.InformationSystemCode;
 
 /**
  *
@@ -42,6 +43,16 @@ public class FileUtils {
         } while (parent != null);
 
         return root;
+    }
+
+    public static String getNumeroDossierGuce(File file) {
+
+        String numeroDossier = file.getNumeroDossier();
+        if (file.getParent() != null && file.getReferenceSiat().startsWith(InformationSystemCode.CC.name())) {
+            numeroDossier = file.getParent().getNumeroDossier();
+        }
+
+        return numeroDossier;
     }
 
     private FileUtils() {

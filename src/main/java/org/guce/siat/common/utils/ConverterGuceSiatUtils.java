@@ -82,10 +82,7 @@ public final class ConverterGuceSiatUtils {
 
         final REFERENCEDOSSIER referencedossier = new REFERENCEDOSSIER();
 
-        String numeroDossier = file.getNumeroDossier();
-        if (file.getParent() != null && file.getReferenceSiat().startsWith(InformationSystemCode.CC.name())) {
-            numeroDossier = file.getParent().getNumeroDossier();
-        }
+        String numeroDossier = FileUtils.getNumeroDossierGuce(file);
 
         //	reference dossier
         referencedossier.setREFERENCEGUCE(file.getReferenceGuce());
