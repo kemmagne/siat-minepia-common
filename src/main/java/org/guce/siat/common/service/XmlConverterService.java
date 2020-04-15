@@ -31,8 +31,7 @@ public interface XmlConverterService {
      * @throws NullPointerException the null pointer exception
      * @throws ValidationException the validation exception
      */
-    File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException,
-            NullPointerException, ValidationException;
+    File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException, NullPointerException, ValidationException;
 
     /**
      * Convert document to file.
@@ -58,9 +57,7 @@ public interface XmlConverterService {
      * @throws JAXBException
      * @throws ParseException
      */
-    Serializable convertFileToDocument(final File file, List<FileItem> fileItemList, final List<ItemFlow> itemFlowList,
-            Flow flowToExecute) throws UtilitiesException, JAXBException, SAXException, IOException, ParseException;
+    Serializable convertFileToDocument(final File file, List<FileItem> fileItemList, final List<ItemFlow> itemFlowList, Flow flowToExecute) throws UtilitiesException, JAXBException, SAXException, IOException, ParseException;
 
     void rollbackFile(File destinationFile, File previousFile);
 }
-

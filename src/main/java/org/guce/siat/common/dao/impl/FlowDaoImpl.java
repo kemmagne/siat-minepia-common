@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -474,22 +473,19 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             return null;
         }
 
-        Query query = super.entityManager.createNativeQuery("SELECT F.ID FROM FLOW F JOIN STEP S ON S.ID = F.TO_STEP AND S.ID = ? JOIN FILE_TYPE_STEP FS ON FS.STEP_ID = F.FROM_STEP AND FS.FILE_TYPE_ID = ?");
+//        Query query = super.entityManager.createNativeQuery("SELECT F.ID FROM FLOW F JOIN STEP S ON S.ID = F.TO_STEP AND S.ID = ? JOIN FILE_TYPE_STEP FS ON FS.STEP_ID = F.FROM_STEP AND FS.FILE_TYPE_ID = ?");
+        TypedQuery<Flow> query = super.entityManager.createQuery("SELECT ftf.pk.flow FROM FileTypeFlow ftf WHERE ftf.pk.fileType = :fileType AND ftf.pk.flow.toStep = :toStep", Flow.class);
 
-        query.setParameter(1, step.getId());
-        query.setParameter(2, fileType.getId());
+        query.setParameter("fileType", fileType);
+        query.setParameter("toStep", step);
 
         query.setMaxResults(1);
 
         try {
 
-            Object flowId = query.getSingleResult();
-            Number flowIdNb = (Number) flowId;
-            Long flowIdLong = flowIdNb.longValue();
-
-            return find(flowIdLong);
-        } catch (Exception ex) {
-            LOG.error(Objects.toString(ex), ex);
+            return query.getSingleResult();
+        } catch (NoResultException ex) {
+            LOG.warn(Objects.toString(ex), ex);
             return null;
         }
     }
