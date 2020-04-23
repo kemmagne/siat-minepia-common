@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.commons.lang3.BooleanUtils;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
+import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.utils.enums.InformationSystemCode;
 
 /**
@@ -31,6 +32,17 @@ public class FileUtils {
                 }
             }
         }
+
+        for (FileItem sfi : source.getFileItemsList()) {
+            for (FileItem dfi : dest.getFileItemsList()) {
+                if (sfi.getLineNumber().equals(dfi.getLineNumber())) {
+                    sfi.setQuantity(dfi.getQuantity());
+                    sfi.setFobValue(dfi.getFobValue());
+                    break;
+                }
+            }
+        }
+
     }
 
     public static File getRootFile(File current) {
