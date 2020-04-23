@@ -131,20 +131,20 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
             user.setDelegatorList(delegatorUserList);
 
             // ************** Set delegated authorities to the logged user **************
-            final Set<Authority> delegatedAuthorityList = new HashSet<Authority>();
+            final Set<Authority> delegatedAuthorityList = new HashSet<>();
 
             for (final User dUser : delegatorUserList) {
                 delegatedAuthorityList.addAll(dUser.getAuthorities());
             }
-            user.setDelegatedAuthorityList(new ArrayList<Authority>(delegatedAuthorityList));
+            user.setDelegatedAuthorityList(new ArrayList<>(delegatedAuthorityList));
 
             // ************** Set delegated userAuthority to the logged user **************
-            final List<UserAuthority> delegatedUserAuthorityList = new ArrayList<UserAuthority>();
+            final List<UserAuthority> delegatedUserAuthorityList = new ArrayList<>();
 
             for (final User dUser : delegatorUserList) {
                 delegatedUserAuthorityList.addAll(dUser.getUserAuthorityList());
             }
-            user.setDelegatedUserAuthorityList(new ArrayList<UserAuthority>(delegatedUserAuthorityList));
+            user.setDelegatedUserAuthorityList(new ArrayList<>(delegatedUserAuthorityList));
         }
 
         return user;
@@ -179,7 +179,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     public List<User> findAllActiveAdminsNotaffected() {
         final List<Organism> allOrganism = organismDao.findAll();
         final List<User> users = userDao.findUsersByAuthorities(AuthorityConstants.ADMIN_ORGANISME.getCode());
-        final List<User> returnedUsers = new ArrayList<User>();
+        final List<User> returnedUsers = new ArrayList<>();
 
         for (final User user : users) {
             boolean found = false;
@@ -216,7 +216,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     @Override
     public List<User> findControleursByService(final Service service) {
         final List<User> users = userDao.findUsersByAuthorities(AuthorityConstants.CONTROLEUR.getCode());
-        final List<User> returnedUsers = new ArrayList<User>();
+        final List<User> returnedUsers = new ArrayList<>();
         for (final User user : users) {
             if (user.getAdministration() != null && user.getAdministration() instanceof Bureau && service != null
                     && ((Bureau) user.getAdministration()).getService().getId().equals(service.getId())) {
@@ -342,7 +342,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
             }
         }
 
-        final List<Long> subAdministrationsIds = new ArrayList<Long>();
+        final List<Long> subAdministrationsIds = new ArrayList<>();
 
         for (final Administration ad : subAdministrations) {
             subAdministrationsIds.add(ad.getId());
@@ -372,8 +372,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
      */
     @Override
     public List<User> findUsersByAdministrationAndAuthorities(final Administration administration, final String... authorities) {
-        final List<Administration> subAdministrations = administrationService
-                .getRecursiveSubAdministrationByAdministration(administration);
+        final List<Administration> subAdministrations = administrationService.getRecursiveSubAdministrationByAdministration(administration);
 
         @SuppressWarnings("unchecked")
         final List<Long> subAdministrationIds = (List<Long>) CollectionUtils.collect(subAdministrations, new Transformer() {
@@ -407,6 +406,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     /* (non-Javadoc)
 	 * @see org.guce.siat.common.service.UserService#findByStepAndFileTypeAndAdministration(java.lang.Long, java.lang.Long, java.util.List)
      */
+    @Override
     public List<User> findByStepAndFileTypeAndAdministration(Long stepId, Long fileTypeId, List<Bureau> bureauList) {
         return userDao.findByStepAndFileTypeAndAdministration(stepId, fileTypeId, bureauList);
     }
@@ -414,6 +414,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     /* (non-Javadoc)
 	 * @see org.guce.siat.common.service.UserService#findSuperUserByFileType(org.guce.siat.common.utils.enums.FileTypeCode)
      */
+    @Override
     public List<User> findSuperUserByFileType(FileTypeCode fileTypeCode, Long bureauId) {
         return userDao.findSuperUserByFileType(fileTypeCode, bureauId);
     }

@@ -7,6 +7,7 @@ import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileType;
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Ignore;
 
 /**
  *
@@ -14,6 +15,7 @@ import org.junit.Assert;
  */
 public class FileUtilsTest {
 
+    @Ignore
     @Test
     public void testApplyModifications() {
         File source = new File();
@@ -47,6 +49,7 @@ public class FileUtilsTest {
         Assert.assertEquals(value, dest.getFileFieldValueList().get(0).getValue());
     }
 
+    @Ignore
     @Test
     public void testGetRootFile() {
 
