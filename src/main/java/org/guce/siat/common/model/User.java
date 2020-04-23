@@ -884,10 +884,7 @@ public class User extends AbstractModel implements Serializable {
         if (!Objects.equals(this.enabled, other.enabled)) {
             return false;
         }
-        if (!Objects.equals(this.deleted, other.deleted)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.deleted, other.deleted);
     }
 
     /*
@@ -915,4 +912,3 @@ public class User extends AbstractModel implements Serializable {
     }
 
 }
-

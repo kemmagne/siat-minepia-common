@@ -24,6 +24,7 @@ import org.guce.siat.common.model.Company;
 import org.guce.siat.common.model.Container;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
+import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.enums.FileTypeCode;
@@ -101,21 +102,17 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
          * java.util.List)
      */
     @Override
-    public File quickSearch(final String documentNumberFilter, final Administration administration,
-            final List<FileTypeCode> fileTypeCodes) {
-        return quickSearch(documentNumberFilter,
-                new ArrayList<Administration>(Collections.singletonList(administration)),
-                fileTypeCodes);
+    public File quickSearch(final String documentNumberFilter, final Administration administration, final List<FileTypeCode> fileTypeCodes) {
+        return quickSearch(documentNumberFilter, new ArrayList<>(Collections.singletonList(administration)), fileTypeCodes);
     }
 
     @Override
-    public File quickSearch(final String documentNumberFilter, final List<Administration> administrations,
-            final List<FileTypeCode> fileTypeCodes) {
+    public File quickSearch(final String documentNumberFilter, final List<Administration> administrations, final List<FileTypeCode> fileTypeCodes) {
         try {
             final StringBuilder hqlQuery = new StringBuilder();
             final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(administrations);
 
-            final Map<String, Object> params = new HashMap<String, Object>();
+            final Map<String, Object> params = new HashMap<>();
 
             params.put("documentNumberFilter", documentNumberFilter);
 
@@ -186,6 +183,7 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
          * org.guce.siat.common.dao.FileDao#findByNumeroDemandeAndFileTypeGuce(java.lang.String,
          * java.lang.String)
      */
+    @Override
     public File findByNumeroDemandeAndFileTypeGuce(final String numeroDemande, final String fileTypeGuce) {
         try {
             final String hqlString = "FROM File f WHERE f.numeroDemande = :numeroDemande AND f.fileTypeGuce = :fileTypeGuce";
@@ -374,4 +372,18 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
             query.executeUpdate();
         }
     }
+
+    @Override
+    public List<File> findByNumeroDemandeAndBureau(String currentFileNumber, String numeroDemande, Bureau bureau, Step cotationStep) {
+
+        TypedQuery<File> query = entityManager.createQuery("SELECT DISTINCT f FROM File f JOIN f.fileItemsList fi WHERE f.bureau = :bureau AND f.numeroDemande = :numeroDemande AND f.numeroDossier <> :currentFileNumber AND fi.step = :cotationStep", File.class);
+
+        query.setParameter("bureau", bureau);
+        query.setParameter("numeroDemande", numeroDemande);
+        query.setParameter("currentFileNumber", currentFileNumber);
+        query.setParameter("cotationStep", cotationStep);
+
+        return query.getResultList();
+    }
+
 }

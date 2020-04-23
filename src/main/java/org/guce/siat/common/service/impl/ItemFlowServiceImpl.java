@@ -163,21 +163,22 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#takeDecision(java.util.List, java.util.List)
      */
     @Override
-    //@Transactional(readOnly = false)
     public void takeDecision(final List<ItemFlow> itemFlowList, final List<ItemFlowData> flowDatas) {
         final List<FileItem> fileItemList = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlowList) {
             final ItemFlow item = itemFlowDao.save(itemFlow);
-            final List<ItemFlowData> itemFlowDatas = new ArrayList<>();
-            for (final ItemFlowData flowData : flowDatas) {
-                final ItemFlowData itemFlowData = new ItemFlowData();
-                itemFlowData.setDataType(flowData.getDataType());
-                itemFlowData.setValue(flowData.getValue());
-                itemFlowData.setItemFlow(item);
-                itemFlowDatas.add(itemFlowData);
+            if (CollectionUtils.isNotEmpty(flowDatas)) {
+                final List<ItemFlowData> itemFlowDatas = new ArrayList<>();
+                for (final ItemFlowData flowData : flowDatas) {
+                    final ItemFlowData itemFlowData = new ItemFlowData();
+                    itemFlowData.setDataType(flowData.getDataType());
+                    itemFlowData.setValue(flowData.getValue());
+                    itemFlowData.setItemFlow(item);
+                    itemFlowDatas.add(itemFlowData);
+                }
+                itemFlowDataDao.saveOrUpdateList(itemFlowDatas);
             }
-            itemFlowDataDao.saveOrUpdateList(itemFlowDatas);
 
             // Set draft = true to be updated
             itemFlow.getFileItem().setDraft(Boolean.TRUE);
@@ -345,10 +346,9 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * java.util.List)
      */
     @Override
-    //@Transactional(readOnly = false)
     public void sendDecisionsToDispatchCctFile(final File file, final List<FileItem> fileItems) {
-        final List<ItemFlow> draftItemFlows = new ArrayList<ItemFlow>();
-        final List<FileItem> items = new ArrayList<FileItem>();
+        final List<ItemFlow> draftItemFlows = new ArrayList<>();
+        final List<FileItem> items = new ArrayList<>();
         for (final FileItem fileItem : fileItems) {
             if (fileItem.getDraft()) {
                 final ItemFlow draftItemFlow = itemFlowDao.findDraftByFileItem(fileItem);
@@ -402,6 +402,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
     public ItemFlow findItemFlowByFileItemAndFlow(final FileItem fileItem, final FlowCode flowCode) {
         return itemFlowDao.findItemFlowByFileItemAndFlow(fileItem, flowCode);
     }
+
     @Override
     public ItemFlow findItemFlowByFileItemAndFlow2(final FileItem fileItem, final FlowCode flowCode) {
         return itemFlowDao.findItemFlowByFileItemAndFlow2(fileItem, flowCode);
@@ -591,4 +592,3 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
     }
 
 }
-
