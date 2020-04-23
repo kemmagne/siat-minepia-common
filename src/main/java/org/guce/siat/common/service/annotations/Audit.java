@@ -7,20 +7,18 @@ import java.lang.annotation.Target;
 
 import org.apache.commons.lang.StringUtils;
 
-
 /**
  * The Interface Audit.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Audit
-{
+public @interface Audit {
 
+    /**
+     * Operation type.
+     *
+     * @return the string
+     */
+    String operationType() default StringUtils.EMPTY;
 
-	/**
-	 * Operation type.
-	 *
-	 * @return the string
-	 */
-	String operationType() default StringUtils.EMPTY;
 }
