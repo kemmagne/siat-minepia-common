@@ -374,14 +374,14 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
     }
 
     @Override
-    public List<File> findByNumeroDemandeAndBureau(String currentFileNumber, String numeroDemande, Bureau bureau, Step cotationStep) {
+    public List<File> findByNumeroDemandeAndBureau(String currentFileNumber, String numeroDemande, Bureau bureau, Step treatmentStep) {
 
-        TypedQuery<File> query = entityManager.createQuery("SELECT DISTINCT f FROM File f JOIN f.fileItemsList fi WHERE f.bureau = :bureau AND f.numeroDemande = :numeroDemande AND f.numeroDossier <> :currentFileNumber AND fi.step = :cotationStep", File.class);
+        TypedQuery<File> query = entityManager.createQuery("SELECT DISTINCT f FROM File f JOIN f.fileItemsList fi JOIN fi.itemFlowsList if WHERE f.bureau = :bureau AND f.numeroDemande = :numeroDemande AND f.numeroDossier <> :currentFileNumber AND (fi.step = :treatmentStep OR if.flow.fromStep = :treatmentStep)", File.class);
 
         query.setParameter("bureau", bureau);
         query.setParameter("numeroDemande", numeroDemande);
         query.setParameter("currentFileNumber", currentFileNumber);
-        query.setParameter("cotationStep", cotationStep);
+        query.setParameter("treatmentStep", treatmentStep);
 
         return query.getResultList();
     }

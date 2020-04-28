@@ -133,7 +133,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
      */
     @Override
     public List<ItemFlow> findLastItemFlowsByFileItemList(final List<FileItem> fileItemList) {
-        final List<ItemFlow> returnedItemFlowList = new ArrayList<ItemFlow>();
+        final List<ItemFlow> returnedItemFlowList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(fileItemList)) {
             for (final FileItem fileItem : fileItemList) {
                 final ItemFlow itemFlow = itemFlowDao.findLastItemFlowByFileItem(fileItem);
@@ -203,7 +203,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 
         itemFlowDao.deleteList(itemFlows);
 
-        final List<FileItem> fileItemList = new ArrayList<FileItem>();
+        final List<FileItem> fileItemList = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlows) {
             // Set draft = false to be updated
@@ -222,9 +222,9 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
     @Override
     //@Transactional(readOnly = false)
     public Map<FileItem, Flow> sendDecisions(final File file, final List<FileItem> fileItems) {
-        final Map<FileItem, Flow> returnedMap = new HashMap<FileItem, Flow>();
-        final List<FileItem> items = new ArrayList<FileItem>();
-        final List<ItemFlow> draftItemFlows = new ArrayList<ItemFlow>();
+        final Map<FileItem, Flow> returnedMap = new HashMap<>();
+        final List<FileItem> items = new ArrayList<>();
+        final List<ItemFlow> draftItemFlows = new ArrayList<>();
         for (final FileItem fileItem : fileItems) {
             if (fileItem.getDraft()) {
                 final ItemFlow draftItemFlow = itemFlowDao.findDraftByFileItem(fileItem);
@@ -323,8 +323,8 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
     @Override
     //@Transactional(readOnly = false)
     public void sendDecisionsToDispatchFile(final File file) {
-        final List<ItemFlow> draftItemFlows = new ArrayList<ItemFlow>();
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<ItemFlow> draftItemFlows = new ArrayList<>();
+        final List<FileItem> fileItems = new ArrayList<>();
         for (final FileItem fileItem : file.getFileItemsList()) {
             if (fileItem.getDraft()) {
                 final ItemFlow draftItemFlow = itemFlowDao.findDraftByFileItem(fileItem);

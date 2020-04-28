@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.FlowDao;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -179,6 +180,11 @@ public class FlowServiceImpl extends AbstractServiceImpl<Flow> implements FlowSe
     @Override
     public Flow findByToStep(Step step, FileType fileType) {
         return flowDao.findByToStep(step, fileType);
+    }
+
+    @Override
+    public List<Flow> findAdmissibilityValidationFlows(File currentFile) {
+        return flowDao.findAdmissibilityValidationFlows(currentFile);
     }
 
 }

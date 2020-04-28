@@ -184,6 +184,9 @@ public class User extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<UserAuthority> userAuthorityList;
 
+    @OneToMany(mappedBy = "assignedUser")
+    private List<Transfer> transfersList;
+
     /**
      * The authorities string.
      */
@@ -607,6 +610,14 @@ public class User extends AbstractModel implements Serializable {
         this.userAuthorityList = userAuthorityList;
     }
 
+    public List<Transfer> getTransfersList() {
+        return transfersList;
+    }
+
+    public void setTransfersList(List<Transfer> transfersList) {
+        this.transfersList = transfersList;
+    }
+
     /**
      * Gets the authorities string.
      *
@@ -641,7 +652,7 @@ public class User extends AbstractModel implements Serializable {
      * @return the authorities
      */
     public Collection<Authority> getAuthorities() {
-        authorities = new HashSet<Authority>();
+        authorities = new HashSet<>();
 
         if (CollectionUtils.isNotEmpty(userAuthorityList)) {
             for (final UserAuthority userAuthority : userAuthorityList) {
@@ -713,7 +724,7 @@ public class User extends AbstractModel implements Serializable {
      */
     public List<Authority> getMergedAuthoritiesList() {
         if (CollectionUtils.isEmpty(mergedAuthoritiesList)) {
-            final Set<Authority> authoritiesSet = new HashSet<Authority>();
+            final Set<Authority> authoritiesSet = new HashSet<>();
 
             authoritiesSet.addAll(this.getAuthorities());
 
@@ -721,7 +732,7 @@ public class User extends AbstractModel implements Serializable {
                 authoritiesSet.addAll(this.getDelegatedAuthorityList());
             }
 
-            mergedAuthoritiesList = new ArrayList<Authority>(authoritiesSet);
+            mergedAuthoritiesList = new ArrayList<>(authoritiesSet);
         }
 
         return mergedAuthoritiesList;
@@ -761,7 +772,7 @@ public class User extends AbstractModel implements Serializable {
      */
     public List<User> getMergedDelegatorList() {
         if (CollectionUtils.isEmpty(mergedDelegatorList)) {
-            mergedDelegatorList = new ArrayList<User>();
+            mergedDelegatorList = new ArrayList<>();
 
             mergedDelegatorList.add(this);
 
@@ -815,7 +826,7 @@ public class User extends AbstractModel implements Serializable {
      */
     public List<UserAuthority> getMergedUserAuthorityList() {
         if (CollectionUtils.isEmpty(mergedUserAuthorityList)) {
-            mergedUserAuthorityList = new ArrayList<UserAuthority>();
+            mergedUserAuthorityList = new ArrayList<>();
 
             mergedUserAuthorityList.addAll(this.userAuthorityList);
 

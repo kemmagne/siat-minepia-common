@@ -1,5 +1,7 @@
 package org.guce.siat.common.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.FlowDao;
 import org.guce.siat.common.dao.exception.DAOException;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -138,7 +141,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
     public Flow findFlowByLabelSourceAndTarget(final String flowLabel, final String source, final String target, final String local) {
         try {
             if (StringUtils.isNotEmpty(source) && StringUtils.isNotEmpty(target)) {
-                String hqlString = null;
+                String hqlString;
                 if ("fr".equals(local)) {
                     hqlString = "SELECT f FROM Flow f WHERE f.labelFr = :flowLabel AND f.fromStep.id = :source  AND f.toStep.id = :target";
                 } else {
@@ -202,6 +205,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 * @see org.guce.siat.common.dao.FlowDao#findFlowByCurrentStep(org.guce.siat.common.model.Step)
      */
     @Transactional
+    @Override
     public Flow findFlowByCurrentStep(final Step step) {
         try {
             if (step != null) {
@@ -453,7 +457,11 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
         } catch (final NonUniqueResultException e) {
             LOG.info(Objects.toString(e));
             //Cas du CCT (step FinCCT)
-            return query.getResultList().get(0);
+            if (query != null) {
+                return query.getResultList().get(0);
+            } else {
+                return null;
+            }
         } catch (final NoResultException nre) {
             LOG.info(Objects.toString(nre));
             return null;
@@ -488,6 +496,26 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             LOG.warn(Objects.toString(ex), ex);
             return null;
         }
+    }
+
+    @Override
+    public List<Flow> findAdmissibilityValidationFlows(File currentFile) {
+
+        List<FileTypeCode> fileTypeCodes = Arrays.asList(currentFile.getFileType().getCode());
+
+        TypedQuery<Step> stepQuery = super.entityManager.createQuery("SELECT DISTINCT ftf.pk.flow.fromStep FROM FileTypeFlow ftf WHERE ftf.pk.fileType.code IN (:fileTypeCodes) AND ftf.pk.flow.isCota = true", Step.class);
+        stepQuery.setParameter("fileTypeCodes", fileTypeCodes);
+        List<Step> cotationSteps = stepQuery.getResultList();
+        if (cotationSteps.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        TypedQuery<Flow> flowQuery = super.entityManager.createQuery("SELECT DISTINCT ftf.pk.flow FROM FileTypeFlow ftf WHERE ftf.pk.fileType.code IN (:fileTypeCodes) AND ftf.pk.flow.toStep IN (:cotationSteps)", Flow.class);
+        flowQuery.setParameter("fileTypeCodes", fileTypeCodes);
+        flowQuery.setParameter("cotationSteps", cotationSteps);
+        List<Flow> flows = flowQuery.getResultList();
+
+        return flows;
     }
 
 }

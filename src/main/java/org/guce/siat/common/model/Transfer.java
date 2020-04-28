@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -46,6 +43,9 @@ public class Transfer extends AbstractModel implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(name = "FILE_ID", referencedColumnName = "ID")
     private File file;
+
+    @Column(name = "NUMERO_DEMANDE", length = 35)
+    private String numeroDemande;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
@@ -90,6 +90,14 @@ public class Transfer extends AbstractModel implements Serializable {
         this.file = file;
     }
 
+    public String getNumeroDemande() {
+        return numeroDemande;
+    }
+
+    public void setNumeroDemande(String numeroDemande) {
+        this.numeroDemande = numeroDemande;
+    }
+
     public User getUser() {
         return user;
     }
@@ -112,6 +120,13 @@ public class Transfer extends AbstractModel implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        if (createdDate == null) {
+            createdDate = Calendar.getInstance().getTime();
+        }
     }
 
 }

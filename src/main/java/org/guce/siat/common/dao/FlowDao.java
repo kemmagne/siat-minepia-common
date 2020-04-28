@@ -1,6 +1,7 @@
 package org.guce.siat.common.dao;
 
 import java.util.List;
+import org.guce.siat.common.model.File;
 
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
@@ -123,5 +124,7 @@ public interface FlowDao extends AbstractJpaDao<Flow> {
      * @return the flow
      */
     Flow findByToStep(Step step, FileType fileType);
+
+    List<Flow> findAdmissibilityValidationFlows(File currentFile);
 
 }

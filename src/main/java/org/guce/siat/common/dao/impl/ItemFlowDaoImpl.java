@@ -95,8 +95,7 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
             hqlBuilder.append("SELECT it FROM ItemFlow it ");
             hqlBuilder.append("WHERE it.flow.outgoing = 1 ");
             hqlBuilder.append("AND it.fileItem.id = :fileItemId ");
-            hqlBuilder
-                    .append("AND it.id = (SELECT Max(it1.id) FROM ItemFlow it1 WHERE it1.flow.outgoing = 1 AND it1.fileItem.id = :fileItemId ) ");
+            hqlBuilder.append("AND it.id = (SELECT Max(it1.id) FROM ItemFlow it1 WHERE it1.flow.outgoing = 1 AND it1.fileItem.id = :fileItemId ) ");
 
             final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
             query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());

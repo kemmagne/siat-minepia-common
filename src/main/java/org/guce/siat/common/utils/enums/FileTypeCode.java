@@ -243,19 +243,19 @@ public enum FileTypeCode {
      */
     CCT_CT_E_PVI("Phytosanitary inspection report", "Procès verbal d'inspection phytosanitaire"),
     /**
-     * Procès verbal d'échantillonnage
+     * Procès verbal d'emptage
      */
-    CCT_CT_E_PVE("Sampling report", "Procès verbal d'échantillonnage");
+    CCT_CT_E_PVE("Potting report", "Procès verbal d'empotage");
 
     /**
      * The label en.
      */
-    private String labelEn;
+    private final String labelEn;
 
     /**
      * The labl fr.
      */
-    private String lablFr;
+    private final String lablFr;
 
     /**
      * Instantiates a new file type code.
@@ -286,4 +286,5 @@ public enum FileTypeCode {
     public String getLabelEn() {
         return labelEn;
     }
+
 }
