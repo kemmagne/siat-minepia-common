@@ -91,11 +91,12 @@ public enum AuthorityConstants {
      */
     DOUANE("DOUANE", "Douane"),
     STATISTIQUE("STAT", "Statistiques"),
-    GESTION_AGENTS("GA", "Gestion des Agents"),
     /**
      * The consignataire navire.
      */
-    CONSIGNATAIRE_NAVIRE("CONS_NAV", "Consignataire Navire");
+    CONSIGNATAIRE_NAVIRE("CONS_NAV", "Consignataire Navire"),
+    CAISSIER("CA", "Caissier"),
+    GESTION_AGENTS("GA", "Gestion des Agents");
 
     /**
      * The code.
