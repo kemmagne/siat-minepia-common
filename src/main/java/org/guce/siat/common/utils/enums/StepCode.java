@@ -181,7 +181,7 @@ public enum StepCode {
     ST_CT_43("Demande de Traitement"),
     ST_CT_44("Recevabilité - Demande de Traitement"),
     ST_CT_45("Demande de supervision"),
-    ST_CT_46("Recevabilité - Demande de Traitement"),
+    ST_CT_46("Recevabilité - Demande de supervision"),
     ST_CT_47("Cotation"),
     ST_CT_48("Confirmation RDV pour traitement"),
     //
@@ -193,6 +193,14 @@ public enum StepCode {
     ST_CT_54("Rejet demande de modification"),
     ST_CT_55("Traitement demande de modification"),
     ST_CT_56("Signature demande de modification"),
+    
+    // The S t_ c t for payment
+    
+    /**
+     * The S t_ c t_58.
+     */
+    ST_CT_57("Validation Facture"),
+    
     // AP Step Code
     /**
      * The S t_ a p_42.
