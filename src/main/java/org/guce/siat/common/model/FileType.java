@@ -65,6 +65,9 @@ public class FileType extends AbstractModel implements Serializable {
     @Column(name = "LABEL_EN")
     private String labelEn;
 
+    @Column(name = "PAYMENT_FILE_TYPE")
+    private String paymentFileType;
+
     /**
      * The role list.
      */
@@ -362,6 +365,14 @@ public class FileType extends AbstractModel implements Serializable {
 
     public void setFlowList(List<Flow> flowList) {
         this.flowList = flowList;
+    }
+
+    public String getPaymentFileType() {
+        return paymentFileType;
+    }
+
+    public void setPaymentFileType(String paymentFileType) {
+        this.paymentFileType = paymentFileType;
     }
 
     /*
