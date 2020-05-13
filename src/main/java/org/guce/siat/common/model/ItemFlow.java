@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -102,7 +103,7 @@ public class ItemFlow extends AbstractModel implements Serializable {
      */
     @Column(name = "MESSAGE_ID")
     private String messageId;
-    
+
     @ManyToOne
     @JoinColumn(name = "ASSIGNED_USER_ID", referencedColumnName = "ID")
     private User assignedUser;
@@ -289,7 +290,7 @@ public class ItemFlow extends AbstractModel implements Serializable {
     public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
-    
+
     /**
      * Gets the assigned user.
      *
@@ -356,4 +357,3 @@ public class ItemFlow extends AbstractModel implements Serializable {
     }
 
 }
-

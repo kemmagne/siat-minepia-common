@@ -350,4 +350,40 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
         }
     }
 
+    @Override
+    public ItemFlow findPreviousItemFlow(ItemFlow itemFlow) {
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.flow = :flow ORDER BY if.id", ItemFlow.class);
+        query.setParameter("flow", itemFlow.getFlow());
+        query.setMaxResults(1);
+        ItemFlow minItemFlow = query.getSingleResult();
+
+        query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.id < :minItemFlowId ORDER BY if.id DESC", ItemFlow.class);
+        query.setParameter("minItemFlowId", minItemFlow.getId());
+        query.setMaxResults(1);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    @Override
+    public ItemFlow findNextItemFlow(ItemFlow itemFlow) {
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.flow = :flow ORDER BY if.id DESC", ItemFlow.class);
+        query.setParameter("flow", itemFlow.getFlow());
+        query.setMaxResults(1);
+        ItemFlow maxItemFlow = query.getSingleResult();
+
+        query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.id > :maxItemFlowId ORDER BY if.id", ItemFlow.class);
+        query.setParameter("maxItemFlowId", maxItemFlow.getId());
+        query.setMaxResults(1);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
 }

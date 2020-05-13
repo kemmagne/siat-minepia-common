@@ -125,6 +125,6 @@ public interface FlowDao extends AbstractJpaDao<Flow> {
      */
     Flow findByToStep(Step step, FileType fileType);
 
-    List<Flow> findAdmissibilityValidationFlows(File currentFile);
+    List<Flow> findBeforeCotationStepFlows(File currentFile);
 
 }

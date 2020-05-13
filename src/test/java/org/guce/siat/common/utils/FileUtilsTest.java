@@ -1,6 +1,10 @@
 package org.guce.siat.common.utils;
 
+import com.google.zxing.WriterException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
+import org.apache.commons.io.IOUtils;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileField;
 import org.guce.siat.common.model.FileFieldValue;
@@ -63,6 +67,14 @@ public class FileUtilsTest {
         current.setParent(root);
 
         Assert.assertEquals(root, FileUtils.getRootFile(current));
+    }
+
+    @Ignore
+    @Test
+    public void testQRCodeCreation() throws WriterException, IOException {
+        String content = "#{NEF, SIAT, Total à payer, Date, Chargeur, Validateur}";
+        byte[] bytes = QRCodeUtils.createQRImage(content, 100);
+        IOUtils.write(bytes, new FileOutputStream("qr-code.png"));
     }
 
 }

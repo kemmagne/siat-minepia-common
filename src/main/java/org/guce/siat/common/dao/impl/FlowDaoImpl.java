@@ -499,7 +499,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
     }
 
     @Override
-    public List<Flow> findAdmissibilityValidationFlows(File currentFile) {
+    public List<Flow> findBeforeCotationStepFlows(File currentFile) {
 
         List<FileTypeCode> fileTypeCodes = Arrays.asList(currentFile.getFileType().getCode());
 

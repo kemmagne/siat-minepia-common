@@ -183,8 +183,8 @@ public class FlowServiceImpl extends AbstractServiceImpl<Flow> implements FlowSe
     }
 
     @Override
-    public List<Flow> findAdmissibilityValidationFlows(File currentFile) {
-        return flowDao.findAdmissibilityValidationFlows(currentFile);
+    public List<Flow> findBeforeCotationStepFlows(File currentFile) {
+        return flowDao.findBeforeCotationStepFlows(currentFile);
     }
 
 }

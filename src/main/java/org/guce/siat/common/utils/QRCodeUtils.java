@@ -69,46 +69,51 @@ public class QRCodeUtils {
         ImageIO.write(image, fileType, qrFile);
     }
 
-	
-	public static byte[] generateQR(String data, int size) {
-        try {
-            return createQRImage(data, size, QR_CODE_IMAGE_FILE_TYPE);
-        }
-        catch (Exception ex) {
-            Logger.getLogger(QRCodeUtils.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return null;
+    public static byte[] createQRImage(String qrCodeContent, int size) throws WriterException, IOException {
+        return createQRImage(qrCodeContent, size, QR_CODE_IMAGE_FILE_TYPE);
     }
 
-    public static byte[] createQRImage(String qrCodeText, int size, String fileType) throws WriterException, IOException {
-        // Create the ByteMatrix for the QR-Code that encodes the given String
-        HashMap hintMap = new HashMap();
-        hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText,
-                BarcodeFormat.QR_CODE, size, size, hintMap);
-        // Make the BufferedImage that are to hold the QRCode
-        int matrixWidth = byteMatrix.getWidth();
-        BufferedImage image = new BufferedImage(matrixWidth, matrixWidth,
-                BufferedImage.TYPE_INT_RGB);
+    public static byte[] createQRImage(String qrCodeContent, int size, String fileType) throws WriterException, IOException {
+
+        Map<EncodeHintType, Object> hinMap = new HashMap<>();
+        hinMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        QRCodeWriter writer = new QRCodeWriter();
+        BitMatrix byteMatrix = writer.encode(qrCodeContent, BarcodeFormat.QR_CODE, size, size, hinMap);
+        // make the BuffredImage that are to hold the QRCode
+        int matrixWith = byteMatrix.getWidth();
+        BufferedImage image = new BufferedImage(matrixWith, matrixWith, BufferedImage.TYPE_INT_RGB);
         image.createGraphics();
 
         Graphics graphics = (Graphics) image.getGraphics();
         graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, matrixWidth, matrixWidth);
-        // Paint and save the image using the ByteMatrix
+        graphics.fillRect(0, 0, matrixWith, matrixWith);
+        // paint and save the image useing the byteMatrix
         graphics.setColor(Color.BLACK);
 
-        for (int i = 0; i < matrixWidth; i++) {
-            for (int j = 0; j < matrixWidth; j++) {
+        for (int i = 0; i < matrixWith; i++) {
+            for (int j = 0; j < matrixWith; j++) {
                 if (byteMatrix.get(i, j)) {
                     graphics.fillRect(i, j, 1, 1);
                 }
             }
         }
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ImageIO.write(image, fileType, out);
-        return out.toByteArray();
+
+        byte[] bytes;
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            ImageIO.write(image, fileType, bos);
+            bytes = bos.toByteArray();
+        }
+
+        return bytes;
+    }
+
+    public static byte[] generateQR(String data, int size) {
+        try {
+            return createQRImage(data, size, QR_CODE_IMAGE_FILE_TYPE);
+        } catch (Exception ex) {
+            Logger.getLogger(QRCodeUtils.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
     }
 
 }

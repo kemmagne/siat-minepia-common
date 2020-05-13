@@ -29,6 +29,7 @@ import org.guce.siat.common.model.ParamsOrganism;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.service.ValidationFlowService;
 import org.guce.siat.common.utils.XmlXPathUtils;
+import org.guce.siat.common.utils.ebms.ESBConstants;
 import org.guce.siat.common.utils.enums.AuthorityConstants;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.FlowCode;
@@ -142,13 +143,17 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
     @Override
     public boolean validateFlowFromGuce(final Element rootElement) throws ValidationException, IndexOutOfBoundsException {
         LOG.info("####### Start Validattion Module ####### ");
+
+        if (isInvoiceFromGuce(rootElement)) {
+            return true;
+        }
+
         if ((isCancelFlux(rootElement) && !validateCancelRequest(rootElement)) || !validateDocuments(rootElement)) {
             LOG.error("####### Validation Failed  ####### ");
             throw new ValidationException(validationExceptionMessage);
         }
 
         return true;
-
     }
 
     /**
@@ -168,11 +173,18 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                     && (flowSiat.getFlowSiat().equals(FlowCode.FL_CT_61.name())
                     || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_147.name())
                     || (flowSiat.getFlowSiat().equals(FlowCode.FL_CO_147.name()))
-                    || (flowSiat.getFlowSiat().equals(FlowCode.FL_SF_147.name())) || (flowSiat.getFlowSiat()
-                    .equals(FlowCode.FL_CC_147.name())));
+                    || (flowSiat.getFlowSiat().equals(FlowCode.FL_SF_147.name()))
+                    || (flowSiat.getFlowSiat().equals(FlowCode.FL_CC_147.name())));
         }
         LOG.info("#######isCancelFlux result : " + result);
         return result;
+    }
+
+    private boolean isInvoiceFromGuce(Element rootElement) {
+
+        String flowGuce = getDocumentType(rootElement);
+
+        return ESBConstants.INVOICE_FLOW_GUCE.equals(flowGuce);
     }
 
     /**
@@ -183,19 +195,24 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      */
     private boolean isPaymentRequest(final Element rootElement) {
         LOG.info("####### Start isPaymentRequest####### ");
-        boolean result = false;
         final String flowGuce = getDocumentType(rootElement);
-        if (StringUtils.isNotBlank(flowGuce)) {
-            final FlowGuceSiat flowSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(flowGuce);
-            result = flowSiat != null
-                    && flowSiat.getFlowSiat() != null
-                    && (flowSiat.getFlowSiat().equals(FlowCode.FL_CT_93.name())
-                    || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_166.name())
-                    || (flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name()))
-                    || (flowSiat.getFlowSiat()
-                            .equals(FlowCode.FL_CC_156.name())));
+        final String numDossier = findNumDossierGuce(rootElement);
+        final File file = fileDao.findByNumDossierGuce(numDossier);
+        final FlowGuceSiat flowSiat;
+        if (file != null) {
+            flowSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuceAndFileType(flowGuce, file.getFileType().getId());
+        } else {
+            flowSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(flowGuce);
         }
-        LOG.info("#######isCancelFlux result : " + result);
+        boolean result = flowSiat != null
+                && flowSiat.getFlowSiat() != null
+                && (flowSiat.getFlowSiat().equals(FlowCode.FL_CT_93.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_123.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_126.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_166.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name()));
+        LOG.info("#######isPaymentRequest result : " + result);
         return result;
     }
 

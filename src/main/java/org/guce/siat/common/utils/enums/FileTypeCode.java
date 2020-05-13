@@ -245,7 +245,8 @@ public enum FileTypeCode {
     /**
      * Procès verbal d'emptage
      */
-    CCT_CT_E_PVE("Potting report", "Procès verbal d'empotage");
+    CCT_CT_E_PVE("Potting report", "Procès verbal d'empotage"),
+    PAYMENT("Payment", "Paiement");
 
     /**
      * The label en.

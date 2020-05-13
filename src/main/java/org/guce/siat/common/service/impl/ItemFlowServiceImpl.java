@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.guce.siat.common.service.impl;
 
 import java.util.ArrayList;
@@ -589,6 +586,16 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
     @Override
     public ItemFlow findDraftByFileItem(final FileItem fileItem) {
         return itemFlowDao.findDraftByFileItem(fileItem);
+    }
+
+    @Override
+    public ItemFlow findPreviousItemFlow(ItemFlow itemFlow) {
+        return itemFlowDao.findPreviousItemFlow(itemFlow);
+    }
+
+    @Override
+    public ItemFlow findNextItemFlow(ItemFlow itemFlow) {
+        return itemFlowDao.findNextItemFlow(itemFlow);
     }
 
 }
