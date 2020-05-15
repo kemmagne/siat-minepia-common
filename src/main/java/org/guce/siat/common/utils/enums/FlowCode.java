@@ -393,6 +393,13 @@ public enum FlowCode {
     FL_CT_124("Facturation"),
     FL_CT_125("Retour Facturation"),
     FL_CT_126("Encaissement"),
+    //
+
+    FL_CT_127("Demande CI"),
+    //
+
+    //
+    //
     /**
      * AP Flow Code
      */

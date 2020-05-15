@@ -193,14 +193,16 @@ public enum StepCode {
     ST_CT_54("Rejet demande de modification"),
     ST_CT_55("Traitement demande de modification"),
     ST_CT_56("Signature demande de modification"),
-    
     // The S t_ c t for payment
-    
+
     /**
      * The S t_ c t_58.
      */
     ST_CT_57("Validation Facture"),
-    
+    //
+    ST_CT_58("Cotation"),
+    ST_CT_59("Etude suite notification de RDV pour empotage"),
+    //
     // AP Step Code
     /**
      * The S t_ a p_42.
