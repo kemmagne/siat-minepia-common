@@ -1,6 +1,8 @@
 package org.guce.siat.common.dao;
 
 import java.util.List;
+import org.guce.siat.common.model.Container;
+import org.guce.siat.common.model.File;
 
 /**
  *
@@ -15,5 +17,7 @@ public interface CoreDao {
     <T> void update(T entity);
 
     <T> List<T> update(List<T> entities);
+
+    Container findContainerByFileAndNumber(File file, String contNumber);
 
 }

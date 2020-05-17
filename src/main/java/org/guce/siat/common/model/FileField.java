@@ -1,7 +1,6 @@
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * The Class FileField.
  */
 @Entity
-@Table(name = "FILE_FIELD", uniqueConstraints = @UniqueConstraint(columnNames
-        = {"CODE", "FILE_TYPE_ID"}))
+@Table(name = "FILE_FIELD", uniqueConstraints = @UniqueConstraint(columnNames = {"CODE", "FILE_TYPE_ID"}))
 @XmlRootElement
 public class FileField extends AbstractModel implements Serializable {
 

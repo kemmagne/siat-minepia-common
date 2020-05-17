@@ -2,8 +2,12 @@ package org.guce.siat.common.dao.impl;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import org.guce.siat.common.dao.CoreDao;
+import org.guce.siat.common.model.Container;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.utils.Constants;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +73,23 @@ public class CoreDaoImpl implements CoreDao {
         }
 
         return entities;
+    }
+
+    @Override
+    public Container findContainerByFileAndNumber(File file, String contNumber) {
+
+        TypedQuery<Container> query = entityManager.createQuery("SELECT c FROM Container c WHERE c.file.id = :fileId AND c.contNumber = :contNumber", Container.class);
+
+        query.setParameter("fileId", file.getId());
+        query.setParameter("contNumber", contNumber);
+
+        query.setMaxResults(1);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
     }
 
 }
