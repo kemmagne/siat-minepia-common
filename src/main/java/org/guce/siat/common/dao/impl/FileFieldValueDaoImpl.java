@@ -4,11 +4,9 @@
 package org.guce.siat.common.dao.impl;
 
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
-
 import org.guce.siat.common.dao.FileFieldValueDao;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileField;
@@ -83,8 +81,7 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 
         try {
 
-            final TypedQuery<FileField> query = entityManager.createQuery("FROM FileField f WHERE f.code= :fieldCode",
-                    FileField.class);
+            final TypedQuery<FileField> query = entityManager.createQuery("FROM FileField f WHERE f.code= :fieldCode", FileField.class);
             query.setParameter("fieldCode".intern(), fieldCode);
             return query.getSingleResult();
 

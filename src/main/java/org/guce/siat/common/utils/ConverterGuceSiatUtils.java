@@ -2,7 +2,6 @@ package org.guce.siat.common.utils;
 
 import java.util.List;
 import java.util.TimeZone;
-
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.model.Attachment;
 import org.guce.siat.common.model.File;
@@ -278,20 +277,22 @@ public final class ConverterGuceSiatUtils {
      */
     public static DECISIONORGANISME generateDecisionOrganisme(final Flow flowToExecute, final ItemFlowData itemFlowDataToInsert) {
 
+        if (itemFlowDataToInsert == null) {
+            return new DECISIONORGANISME();
+        }
+
         final DECISIONORGANISME decisionorganisme = new DECISIONORGANISME();
 
         decisionorganisme.setCODE(flowToExecute.getCode());
         decisionorganisme.setLIBELLE(flowToExecute.getLabelFr());
-        if (itemFlowDataToInsert != null) {
-            final FileType fileType = itemFlowDataToInsert.getItemFlow().getFileItem().getFile().getFileType();
-            final List<FileTypeFlow> fileTypeFlows = fileType.getFileTypeFlowList();
-            for (final FileTypeFlow fileTypeFlow : fileTypeFlows) {
-                if (flowToExecute.getCode().equals(fileTypeFlow.getPk().getFlow().getCode())) {
-                    decisionorganisme.setLIBELLE(fileTypeFlow.getLabelFr());
-                }
+        final FileType fileType = itemFlowDataToInsert.getItemFlow().getFileItem().getFile().getFileType();
+        final List<FileTypeFlow> fileTypeFlows = fileType.getFileTypeFlowList();
+        for (final FileTypeFlow fileTypeFlow : fileTypeFlows) {
+            if (flowToExecute.getCode().equals(fileTypeFlow.getPk().getFlow().getCode())) {
+                decisionorganisme.setLIBELLE(fileTypeFlow.getLabelFr());
             }
-            decisionorganisme.setOBSERVATION(itemFlowDataToInsert.getValue());
         }
+        decisionorganisme.setOBSERVATION(itemFlowDataToInsert.getValue());
 
         return decisionorganisme;
 

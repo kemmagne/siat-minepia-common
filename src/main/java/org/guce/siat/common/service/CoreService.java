@@ -1,4 +1,4 @@
-package org.guce.siat.common.dao;
+package org.guce.siat.common.service;
 
 import java.util.List;
 import org.guce.siat.common.model.Container;
@@ -8,7 +8,7 @@ import org.guce.siat.common.model.File;
  *
  * @author ht
  */
-public interface CoreDao {
+public interface CoreService {
 
     <T> T save(T entity);
 

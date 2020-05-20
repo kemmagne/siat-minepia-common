@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author ht
  */
-@Repository("dao")
+@Repository("coreDao")
 @Transactional
 public class CoreDaoImpl implements CoreDao {
 
@@ -75,6 +75,19 @@ public class CoreDaoImpl implements CoreDao {
         return entities;
     }
 
+    @Override
+    public <T> void delete(T entity) {
+        entityManager.remove(entityManager.merge(entity));
+    }
+
+    @Override
+    public <T> void delete(List<T> entities) {
+        for (T entity : entities) {
+            delete(entity);
+        }
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public Container findContainerByFileAndNumber(File file, String contNumber) {
 
