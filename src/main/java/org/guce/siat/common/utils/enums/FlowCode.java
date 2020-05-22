@@ -396,6 +396,9 @@ public enum FlowCode {
     //
 
     FL_CT_127("Demande CI"),
+    FL_CT_128("Complément d'informations"),
+    FL_CT_129("Rejet"),
+    //    FL_CT_129("Rejet"),
     //
 
     //

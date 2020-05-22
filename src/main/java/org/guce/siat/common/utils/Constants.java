@@ -658,4 +658,8 @@ public interface Constants {
      */
     String DOUANE_PARTNER = "DOUANE";
 
+    String YES_FR = "Oui";
+
+    String NO_FR = "Non";
+
 }

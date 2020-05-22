@@ -51,6 +51,8 @@ public interface ConstantsXsdPaths {
      */
     String CCT_CT_E_XSD_PATH = "/xsd/CT/CCT/CCT_CT_E.xsd";
 
+    String CCT_PVE_PATH = "/xsd/CT/PVE/PVE.xsd";
+
     /**
      * The Constant CC_CT_XSD_PATH.
      */

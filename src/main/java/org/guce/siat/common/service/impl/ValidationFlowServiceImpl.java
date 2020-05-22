@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -725,8 +724,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                         if (CollectionUtils.isNotEmpty(fileItems)) {
                             for (final FileItem fileItem : fileItems) {
                                 if (!fileItem.getStep().equals(toBeExecutedFlow.getFromStep())) {
-                                    validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                                            ValidationType.VALIDATE_LAST_FLOW.getCode());
+                                    validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.VALIDATE_LAST_FLOW.getCode());
                                     return false;
 
                                 }

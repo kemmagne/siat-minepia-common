@@ -5,11 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.FlowDao;
@@ -363,6 +361,9 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             }
             case FL_CT_101: {
                 return findFlowByCode(FlowCode.FL_CT_99.name());//...
+            }
+            case FL_CT_127: {
+                return findFlowByCode(FlowCode.FL_CT_128.name());//...
             }
 
             // FT
