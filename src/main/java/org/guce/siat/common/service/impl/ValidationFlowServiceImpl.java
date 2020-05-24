@@ -199,7 +199,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         final File file = fileDao.findByNumDossierGuce(numDossier);
         final FlowGuceSiat flowSiat;
         if (file != null) {
-            flowSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuceAndFileType(flowGuce, file.getFileType().getId());
+            flowSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuceAndFileType(flowGuce, file.getFileType());
         } else {
             flowSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(flowGuce);
         }
@@ -208,6 +208,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 && (flowSiat.getFlowSiat().equals(FlowCode.FL_CT_93.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_123.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_126.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_135.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_166.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name()));

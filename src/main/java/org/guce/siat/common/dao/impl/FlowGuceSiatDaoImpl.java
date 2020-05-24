@@ -1,12 +1,11 @@
 package org.guce.siat.common.dao.impl;
 
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
-
 import org.guce.siat.common.dao.FlowGuceSiatDao;
+import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.FlowGuceSiat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,11 +53,11 @@ public class FlowGuceSiatDaoImpl extends AbstractJpaDaoImpl<FlowGuceSiat> implem
     }
 
     @Override
-    public FlowGuceSiat findFlowGuceSiatByFlowGuceAndFileType(final String flowGuce, final Long fileTypeId) {
+    public FlowGuceSiat findFlowGuceSiatByFlowGuceAndFileType(final String flowGuce, final FileType fileType) {
         try {
             final TypedQuery<FlowGuceSiat> query = super.entityManager.createQuery("SELECT b FROM FlowGuceSiat b WHERE b.flowGuce = :flowGuce AND b.fileType.id = :fileTypeId", FlowGuceSiat.class);
             query.setParameter("flowGuce", flowGuce);
-            query.setParameter("fileTypeId", fileTypeId);
+            query.setParameter("fileTypeId", fileType.getId());
             query.setMaxResults(1);
             return query.getSingleResult();
         } catch (final NoResultException | NonUniqueResultException e) {

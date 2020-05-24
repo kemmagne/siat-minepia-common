@@ -398,11 +398,22 @@ public enum FlowCode {
     FL_CT_127("Demande CI"),
     FL_CT_128("Complément d'informations"),
     FL_CT_129("Rejet"),
-    //    FL_CT_129("Rejet"),
     //
 
+    FL_CT_130("Notification de rendez-vous pour empotage"),
+    FL_CT_131("Validation sans facturation"),
+    FL_CT_132("Facturation"),
+    FL_CT_133("Autorisation Facture"),
+    FL_CT_134("Retour à la facturation"),
+    FL_CT_135("Encaissement"),
+    FL_CT_136("Cotation"),
+    FL_CT_137("Demande CI"),
+    FL_CT_138("Procès verbal pour signature"),
+    FL_CT_139("Complément d'informations"),
+    FL_CT_140("Autorisation procès verbal"),
+    FL_CT_141("Retour à la validation"),
     //
-    //
+
     /**
      * AP Flow Code
      */

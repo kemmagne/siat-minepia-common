@@ -43,6 +43,11 @@ public final class DateUtils {
     public static final String PATTERN_YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
     /**
+     * The Constant PATTERN_YYYY_MM_DD_HH_MM_SS.
+     */
+    public static final String PATTERN_YYYY_MM_DD_HH_MM_SS_FR = "dd/MM/yyyy HH:mm:ss";
+
+    /**
      * The Constant PATTERN_YYYY_MM_DD_HH_MM_SS_Z.
      */
     public static final String PATTERN_YYYY_MM_DD_HH_MM_SS_Z = "yyyy-MM-dd HH:mm:ss z";

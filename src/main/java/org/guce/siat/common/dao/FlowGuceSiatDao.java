@@ -1,5 +1,6 @@
 package org.guce.siat.common.dao;
 
+import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.FlowGuceSiat;
 
 /**
@@ -8,14 +9,19 @@ import org.guce.siat.common.model.FlowGuceSiat;
 public interface FlowGuceSiatDao extends AbstractJpaDao<FlowGuceSiat> {
 
     /**
-     * Find bureau by type and organism
      *
      * @param flowGuce the flow guce
      * @return the list
      */
     FlowGuceSiat findFlowGuceSiatByFlowGuce(String flowGuce);
 
-    FlowGuceSiat findFlowGuceSiatByFlowGuceAndFileType(final String flowGuce, final Long fileTypeId);
+    /**
+     *
+     * @param flowGuce
+     * @param fileType
+     * @return
+     */
+    FlowGuceSiat findFlowGuceSiatByFlowGuceAndFileType(final String flowGuce, final FileType fileType);
 
     /**
      * Find flow guce siat by flow siat.

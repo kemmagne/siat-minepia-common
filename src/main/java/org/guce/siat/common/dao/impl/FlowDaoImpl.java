@@ -73,7 +73,9 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             query.setParameter("stepId", step.getId());
             query.setParameter("fileTypeId", fileType.getId());
 
-            return query.getResultList();
+            List<Flow> flows = query.getResultList();
+
+            return flows;
         }
 
         return Collections.emptyList();
@@ -357,13 +359,16 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
                 return findFlowByCode(FlowCode.FL_CT_71.name());
             }
             case FL_CT_96: {
-                return findFlowByCode(FlowCode.FL_CT_99.name());//...
+                return findFlowByCode(FlowCode.FL_CT_99.name());
             }
             case FL_CT_101: {
-                return findFlowByCode(FlowCode.FL_CT_99.name());//...
+                return findFlowByCode(FlowCode.FL_CT_99.name());
             }
             case FL_CT_127: {
-                return findFlowByCode(FlowCode.FL_CT_128.name());//...
+                return findFlowByCode(FlowCode.FL_CT_128.name());
+            }
+            case FL_CT_137: {
+                return findFlowByCode(FlowCode.FL_CT_139.name());
             }
 
             // FT

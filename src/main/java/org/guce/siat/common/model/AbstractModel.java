@@ -1,9 +1,11 @@
 package org.guce.siat.common.model;
 
+import java.io.Serializable;
+
 /**
  * The Class AbstractModel.
  */
-public class AbstractModel {
+public class AbstractModel implements Serializable {
 
     /**
      * The id.

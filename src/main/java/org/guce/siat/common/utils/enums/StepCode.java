@@ -196,12 +196,17 @@ public enum StepCode {
     // The S t_ c t for payment
 
     /**
-     * The S t_ c t_58.
+     * The S t_ c t_57.
      */
     ST_CT_57("Validation Facture"),
     //
-    ST_CT_58("Cotation"),
-    ST_CT_59("Etude suite notification de RDV pour empotage"),
+    ST_CT_58("Dépot Dossier Empotage Suite Notification RDV"),
+    ST_CT_59("Recevabilité suite notification de RDV pour empotage"),
+    ST_CT_60("Validation Facture"),
+    ST_CT_61("Encaissement"),
+    ST_CT_62("Cotation"),
+    ST_CT_63("Validation Procès Verbal Empotage"),
+    ST_CT_64("Signature Procès Verbal Empotage"),
     //
     // AP Step Code
     /**
