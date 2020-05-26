@@ -30,6 +30,8 @@ public interface ESBConstants {
      */
     String SERVICE = "service".intern();
 
+    String CONVERSATION_ID = "conversationId".intern();
+
     /**
      * The Constant MESSAGE.
      */

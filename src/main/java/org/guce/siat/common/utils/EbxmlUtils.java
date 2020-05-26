@@ -51,6 +51,8 @@ public class EbxmlUtils {
         byte[] xmlBytes = IOUtils.toByteArray(is);
         map.put(ESBConstants.FLOW, xmlBytes);
 
+        map.put(ESBConstants.CONVERSATION_ID, ebxmlMessage.getConversationId());
+
         final Map<String, byte[]> attachedByteFiles = new HashMap<>();
 
         while (iterator.hasNext()) {
@@ -132,7 +134,7 @@ public class EbxmlUtils {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public static void setEbxmlMessageByteStream(final EbxmlMessage ebxmlMessage) throws SOAPException, IOException {
-        try (ByteArrayOutputStream ebxmlMessageByteStream = new ByteArrayOutputStream()) {
+        try ( ByteArrayOutputStream ebxmlMessageByteStream = new ByteArrayOutputStream()) {
             ebxmlMessage.getSOAPMessage().writeTo(ebxmlMessageByteStream);
             ebxmlMessage.setBytes(ebxmlMessageByteStream.toByteArray());
         }
