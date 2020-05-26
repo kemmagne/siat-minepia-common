@@ -1,5 +1,7 @@
 package org.guce.siat.common.utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -205,6 +207,16 @@ public final class DateUtils {
     public static String formatSimpleDateForOracle(final Date date) {
         final SimpleDateFormat simpleFormat = new SimpleDateFormat(PATTERN_YYYY_MM_DD_HH_MM_SS);
         return simpleFormat.format(date);
+    }
+
+    public static Date parse(String date, String pattern) {
+        final DateFormat simpleFormat = new SimpleDateFormat(pattern);
+
+        try {
+            return simpleFormat.parse(date);
+        } catch (ParseException ex) {
+            return null;
+        }
     }
 
     /**

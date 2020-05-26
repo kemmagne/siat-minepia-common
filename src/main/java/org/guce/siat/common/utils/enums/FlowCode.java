@@ -412,6 +412,7 @@ public enum FlowCode {
     FL_CT_139("Complément d'informations"),
     FL_CT_140("Autorisation procès verbal"),
     FL_CT_141("Retour à la validation"),
+    FL_CT_142("Notification suite signature rapport empotage"),
     //
 
     /**
