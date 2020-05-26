@@ -270,7 +270,7 @@ public class File extends AbstractModel implements Serializable {
     @Column(name = "NUMERO_DOSSIER_BASE")
     private String numeroDossierBase;
 
-    @OneToMany(mappedBy = "file")
+    @OneToMany(mappedBy = "file", orphanRemoval = true)
     private List<Container> containers;
 
     /**

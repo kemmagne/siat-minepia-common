@@ -402,8 +402,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         }
         LOG.info("#####start validateGeneralInformations");
         //		Validation Générale
-        final boolean commonValidation = contentHasDocumentType(rootElement) && contentHasGuceNumber(rootElement)
-                && contentHasNumMessage(rootElement);
+        final boolean commonValidation = contentHasDocumentType(rootElement) && contentHasGuceNumber(rootElement) && contentHasNumMessage(rootElement);
         if (!commonValidation) {
             return false;
         }
@@ -813,10 +812,10 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         if (StringUtils.isNotBlank(numMessage)) {
             return true;
         }
-        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                ValidationType.CONTENT_HAS_NUM_MESSAGE.getCode());
-        return false;
 
+        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.CONTENT_HAS_NUM_MESSAGE.getCode());
+
+        return false;
     }
 
     /**
@@ -839,8 +838,8 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             return true;
         }
 
-        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                ValidationType.CONTENT_HAS_CODE_DECISION.getCode());
+        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.CONTENT_HAS_CODE_DECISION.getCode());
+
         return false;
     }
 
@@ -858,10 +857,9 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             return true;
 
         }
-        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                ValidationType.CONTENT_HAS_DOCUMENT_TYPE.getCode());
-        return false;
+        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.CONTENT_HAS_DOCUMENT_TYPE.getCode());
 
+        return false;
     }
 
     /**
@@ -877,10 +875,9 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             return true;
         }
 
-        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                ValidationType.CONTENT_HAS_GUCE_NUMBER.getCode());
-        return false;
+        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.CONTENT_HAS_GUCE_NUMBER.getCode());
 
+        return false;
     }
 
     /**
@@ -890,12 +887,14 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return the decision code
      */
     private String getDecisionCode(final Element rootElement) {
+
         final String codeFileDecision = XmlXPathUtils.findSingleValue(CODE_DECISION_EXPRESSION, rootElement);
+
         if (StringUtils.isNotBlank(codeFileDecision)) {
             return codeFileDecision;
         }
-        return XmlXPathUtils.findSingleValue(CODE_PRODUCT_DECISION_EXPRESSION, rootElement);
 
+        return XmlXPathUtils.findSingleValue(CODE_PRODUCT_DECISION_EXPRESSION, rootElement);
     }
 
     /**
