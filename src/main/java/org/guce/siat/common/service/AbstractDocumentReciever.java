@@ -1,12 +1,9 @@
 package org.guce.siat.common.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.dao.ItemFlowDao;
-import org.guce.siat.common.mail.MailConstants;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.utils.XmlXPathUtils;
@@ -58,26 +55,26 @@ public abstract class AbstractDocumentReciever implements DocumentReciever {
 
             if (AperakType.APERAK_C.name().equals(documentType) || AperakType.APERAK_J.name().equals(documentType)) {
                 //rollback the last decision
-                String senderMail = null;
-                for (final FileItem fileItem : fileItems) {
-                    final ItemFlow itemflow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItem);
-                    senderMail = itemflow.getSender().getEmail();
-                    itemflow.setReceived(AperakType.APERAK_C.getCharCode());
-                    itemflow.setSent(Boolean.FALSE);
-                    itemFlowDao.update(itemflow);
-
-                    fileItem.setDraft(Boolean.TRUE);
-                    fileItem.setStep(itemflow.getFlow().getFromStep());
-                    fileItemDao.update(fileItem);
-                }
-                final String templateFileName = NEGATIVE_APERAK_MAIL;
-                final Map<String, String> map = new HashMap<>();
-                map.put(MailConstants.SUBJECT, "SIAT : Dossier non envoyé");
-                map.put(MailConstants.FROM, mailService.getFromValue());
-                map.put(MailConstants.EMAIL, senderMail);
-                map.put("refSiat", siatFile.getReferenceSiat());
-                map.put(MailConstants.VMF, templateFileName);
-                mailService.sendMail(map);
+//                String senderMail = null;
+//                for (final FileItem fileItem : fileItems) {
+//                    final ItemFlow itemflow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItem);
+//                    senderMail = itemflow.getSender().getEmail();
+//                    itemflow.setReceived(AperakType.APERAK_C.getCharCode());
+//                    itemflow.setSent(Boolean.FALSE);
+//                    itemFlowDao.update(itemflow);
+//
+//                    fileItem.setDraft(Boolean.TRUE);
+//                    fileItem.setStep(itemflow.getFlow().getFromStep());
+//                    fileItemDao.update(fileItem);
+//                }
+//                final String templateFileName = NEGATIVE_APERAK_MAIL;
+//                final Map<String, String> map = new HashMap<>();
+//                map.put(MailConstants.SUBJECT, "SIAT : Dossier non envoyé");
+//                map.put(MailConstants.FROM, mailService.getFromValue());
+//                map.put(MailConstants.EMAIL, senderMail);
+//                map.put("refSiat", siatFile.getReferenceSiat());
+//                map.put(MailConstants.VMF, templateFileName);
+//                mailService.sendMail(map);
                 return true;
             } else if (AperakType.APERAK_D.name().equals(documentType) || AperakType.APERAK_F.name().equals(documentType)) {
                 for (final FileItem fileItem : fileItems) {

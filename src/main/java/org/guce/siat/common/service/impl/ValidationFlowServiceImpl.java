@@ -51,6 +51,8 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
 
     private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("COCACM1", "COCAFM1");
 
+    private static final List<String> NOTIFICATION_FLOWS_LIST = Arrays.asList(FlowCode.FL_CT_142.name());
+
     /**
      * The Constant LOG.
      */
@@ -144,6 +146,10 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         LOG.info("####### Start Validattion Module ####### ");
 
         if (isInvoiceFromGuce(rootElement)) {
+            return true;
+        }
+
+        if (isNotificationFlow(rootElement)) {
             return true;
         }
 
@@ -681,6 +687,18 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         return true;
     }
 
+    private boolean isNotificationFlow(Element rootElement) {
+
+        final String flowGuce = getDocumentType(rootElement);
+
+        if (StringUtils.isBlank(flowGuce)) {
+            return false;
+        }
+
+        final FlowGuceSiat flowGuceSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(flowGuce);
+        return flowGuceSiat.getFlowSiat() != null && NOTIFICATION_FLOWS_LIST.contains(flowGuceSiat.getFlowSiat());
+    }
+
     /**
      * Validate flow.
      *
@@ -695,6 +713,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             final FlowGuceSiat flowGuceSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(flowGuce);
 
             if (flowGuceSiat != null) {
+
                 Flow toBeExecutedFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
                 final List<FileItem> fileItems = extractFileItems(rootElement);
                 if (toBeExecutedFlow == null) {
