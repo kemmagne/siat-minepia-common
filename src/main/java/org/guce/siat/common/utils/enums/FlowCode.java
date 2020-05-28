@@ -415,6 +415,11 @@ public enum FlowCode {
     FL_CT_142("Notification suite signature rapport empotage"),
     //
 
+    FL_CT_143("Facturation"),
+    FL_CT_144("Retour à la facturation"),
+    FL_CT_145("Encaissement"),
+    //
+
     /**
      * AP Flow Code
      */
