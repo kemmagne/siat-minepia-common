@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.guce.siat.common.dao.impl;
 
 import java.util.Objects;
@@ -36,9 +33,32 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
      * Instantiates a new file field value dao impl.
      */
     public FileFieldValueDaoImpl() {
-        super();
         setClasse(FileFieldValue.class);
     }
+
+//    @Override
+//    public List<FileFieldValue> saveOrUpdateList(List<FileFieldValue> entitiesList) {
+//        for (int i = 1; i <= entitiesList.size(); i++) {
+//
+//            FileFieldValue entity = entitiesList.get(i - 1);
+//
+//            FileFieldValueId primaryKey = new FileFieldValueId();
+//            primaryKey.setFile(entity.getFile());
+//            primaryKey.setFileField(entity.getFileField());
+//
+//            if (super.entityManager.find(FileFieldValue.class, primaryKey) != null) {
+//                entity = super.entityManager.merge(entity);
+//            } else {
+//                super.entityManager.persist(entity);
+//            }
+//            if ((i % Constants.TEN) == 0) {
+//                this.entityManager.flush();
+//                this.entityManager.clear();
+//            }
+//            entitiesList.set(i - 1, entity);
+//        }
+//        return entitiesList;
+//    }
 
     /*
          * (non-Javadoc)
@@ -102,10 +122,9 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 
         try {
 
-            final TypedQuery<FileItemFieldValue> query = entityManager
-                    .createQuery(
-                            "SELECT f FROM FileItemFieldValue f WHERE f.primaryKey.fileItemField.code= :fieldItemCode AND f.primaryKey.fileItem =:fileItem",
-                            FileItemFieldValue.class);
+            final TypedQuery<FileItemFieldValue> query = entityManager.createQuery(
+                    "SELECT f FROM FileItemFieldValue f WHERE f.primaryKey.fileItemField.code= :fieldItemCode AND f.primaryKey.fileItem =:fileItem",
+                    FileItemFieldValue.class);
             query.setParameter("fieldItemCode".intern(), code);
             query.setParameter("fileItem".intern(), fileItem);
             return query.getSingleResult();

@@ -1,10 +1,12 @@
 package org.guce.siat.common.utils;
 
+import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.BooleanUtils;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileItem;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.InformationSystemCode;
 
 /**
@@ -45,6 +47,19 @@ public class FileUtils {
 
     }
 
+    public static void retrieveNonExisting(File root, File currentFile) {
+
+        List<FileFieldValue> rootFileFieldValues = root.getFileFieldValueList();
+        List<FileFieldValue> fileFieldValues = currentFile.getFileFieldValueList();
+
+        for (FileFieldValue rffv : rootFileFieldValues) {
+
+            for (FileFieldValue ffv : fileFieldValues) {
+
+            }
+        }
+    }
+
     public static File getRootFile(File current) {
 
         File root, parent = current;
@@ -60,7 +75,7 @@ public class FileUtils {
     public static String getNumeroDossierGuce(File file) {
 
         String numeroDossier = file.getNumeroDossier();
-        if (file.getParent() != null && file.getReferenceSiat().startsWith(InformationSystemCode.CC.name())) {
+        if (file.getParent() != null && (file.getReferenceSiat().startsWith(InformationSystemCode.CC.name()) || (file.getReferenceSiat().startsWith(InformationSystemCode.CT.name()) && Arrays.asList(FileTypeCode.CCT_CT_E_PVE).contains(file.getFileType().getCode())))) {
             numeroDossier = file.getParent().getNumeroDossier();
         }
 
