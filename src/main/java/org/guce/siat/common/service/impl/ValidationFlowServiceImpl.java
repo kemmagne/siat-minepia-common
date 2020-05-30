@@ -589,10 +589,8 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                     } else if (fileTypeListCT.contains(fileType.getCode())) {
                         for (final FileItem fileItem : fileItems) {
                             currentStep = fileItem.getStep();
-                            if (!StepCode.ST_CT_04.equals(currentStep.getStepCode())
-                                    || itemFlowDao.findNbrDecisionByFileItemHistory(flowCodes, fileItem) >= paramOrganismValue) {
-                                validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                                        ValidationType.CANCEL_REQUEST_UNAUTHORIZED.getCode());
+                            if (!StepCode.ST_CT_04.equals(currentStep.getStepCode()) || itemFlowDao.findNbrDecisionByFileItemHistory(flowCodes, fileItem) >= paramOrganismValue) {
+                                validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.CANCEL_REQUEST_UNAUTHORIZED.getCode());
                                 return false;
                             }
                         }
@@ -865,7 +863,9 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             codeFileDecision = XmlXPathUtils.findSingleValue(CODE_DECISION_EXPRESSION, rootElement);
         }
 
-        if (StringUtils.isNotBlank(codeProductDecision) || StringUtils.isNotBlank(codeFileDecision)) {
+        String numeroDossier = findNumDossierGuce(rootElement);
+        File file = fileDao.findByNumDossierGuce(numeroDossier);
+        if (StringUtils.isNotBlank(codeProductDecision) || StringUtils.isNotBlank(codeFileDecision) || (file != null && FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode()))) {
             return true;
         }
 
