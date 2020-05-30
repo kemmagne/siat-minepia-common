@@ -1,6 +1,7 @@
 package org.guce.siat.common.dao;
 
 import java.util.List;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
@@ -136,5 +137,7 @@ public interface ItemFlowDao extends AbstractJpaDao<ItemFlow> {
     ItemFlow findPreviousItemFlow(ItemFlow itemFlow);
 
     ItemFlow findNextItemFlow(ItemFlow itemFlow);
+
+    ItemFlow findLastDecisionByFile(File file);
 
 }

@@ -707,21 +707,32 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return true, if successful
      */
     private boolean validateFlow(final Element rootElement) {
+
         final String flowGuce = getDocumentType(rootElement);
         boolean returnedValue = false;
 
         if (StringUtils.isNotBlank(flowGuce)) {
+
             final FlowGuceSiat flowGuceSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(flowGuce);
 
             if (flowGuceSiat != null) {
 
                 Flow toBeExecutedFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
-                final List<FileItem> fileItems = extractFileItems(rootElement);
                 if (toBeExecutedFlow == null) {
-                    toBeExecutedFlow = flowDao.findCiResponseFlow(getDecisionCode(rootElement));
+                    String ciRequestFlow = getDecisionCode(rootElement);
+                    if (StringUtils.isNotBlank(ciRequestFlow)) {
+                        toBeExecutedFlow = flowDao.findCiResponseFlow(ciRequestFlow);
+                    } else {
+                        String numeroDossier = findNumDossierGuce(rootElement);
+                        File file = fileDao.findByNumDossierGuce(numeroDossier);
+                        ItemFlow itemFlow = itemFlowDao.findLastDecisionByFile(file);
+                        toBeExecutedFlow = itemFlow != null ? flowDao.findCiResponseFlow(itemFlow.getFlow().getCode()) : null;
+                    }
                 }
 
-                if (CollectionUtils.isNotEmpty(fileItems)) {
+                final List<FileItem> fileItems = extractFileItems(rootElement);
+
+                if (toBeExecutedFlow != null && CollectionUtils.isNotEmpty(fileItems)) {
                     //Demande RDV Visite
                     if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_21.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_20.name());

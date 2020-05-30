@@ -7,6 +7,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.ItemFlowDao;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
@@ -377,6 +378,25 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 
         query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.id > :maxItemFlowId ORDER BY if.id", ItemFlow.class);
         query.setParameter("maxItemFlowId", maxItemFlow.getId());
+        query.setMaxResults(1);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    @Override
+    public ItemFlow findLastDecisionByFile(File file) {
+
+        if (file == null) {
+            return null;
+        }
+
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.fileItem.file.id = :fileId ORDER BY if.id DESC", ItemFlow.class);
+
+        query.setParameter("fileId", file.getId());
         query.setMaxResults(1);
 
         try {
