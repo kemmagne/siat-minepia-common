@@ -3,7 +3,6 @@ package org.guce.siat.common.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.guce.siat.common.dao.AbstractJpaDao;
@@ -186,6 +185,11 @@ public class FileServiceImpl extends AbstractServiceImpl<File> implements FileSe
     @Override
     public List<File> findByNumeroDemandeAndBureau(File currentFile, Step cotationStep) {
         return fileDao.findByNumeroDemandeAndBureau(currentFile.getNumeroDossier(), currentFile.getNumeroDemande(), currentFile.getBureau(), cotationStep);
+    }
+
+    @Override
+    public List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType) {
+        return fileDao.findByNumeroDemandeAndFileType(numeroDemande, fileType);
     }
 
 }

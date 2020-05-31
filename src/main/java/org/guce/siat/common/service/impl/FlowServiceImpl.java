@@ -1,7 +1,6 @@
 package org.guce.siat.common.service.impl;
 
 import java.util.List;
-
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.FlowDao;
 import org.guce.siat.common.model.File;
@@ -185,6 +184,17 @@ public class FlowServiceImpl extends AbstractServiceImpl<Flow> implements FlowSe
     @Override
     public List<Flow> findBeforeCotationStepFlows(File currentFile) {
         return flowDao.findBeforeCotationStepFlows(currentFile);
+    }
+
+
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.service.FlowService#findCiResponseFlow(java.lang.String)
+     */
+    @Override
+    public Flow findCiResponseFlow(final String flowSiatCode) {
+        return flowDao.findCiResponseFlow(flowSiatCode);
     }
 
 }

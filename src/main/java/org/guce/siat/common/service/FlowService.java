@@ -2,7 +2,6 @@ package org.guce.siat.common.service;
 
 import java.util.List;
 import org.guce.siat.common.model.File;
-
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -126,5 +125,13 @@ public interface FlowService extends AbstractService<Flow> {
     Flow findByToStep(Step step, FileType fileType);
 
     List<Flow> findBeforeCotationStepFlows(File currentFile);
+
+    /**
+     * Find ci response flow.
+     *
+     * @param flowSiatCode the flow siat code
+     * @return the flow
+     */
+    Flow findCiResponseFlow(String flowSiatCode);
 
 }

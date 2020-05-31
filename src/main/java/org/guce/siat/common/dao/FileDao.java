@@ -2,12 +2,12 @@ package org.guce.siat.common.dao;
 
 import java.util.List;
 import java.util.Map;
-
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.Company;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
+import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.FileTypeCode;
@@ -127,5 +127,7 @@ public interface FileDao extends AbstractJpaDao<File> {
     void updateSpecificColumn(Map<String, ?> paramsMap, File file);
 
     List<File> findByNumeroDemandeAndBureau(String currentFileNumber, String numeroDemande, Bureau bureau, Step cotationStep);
+
+    List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType);
 
 }

@@ -2,11 +2,11 @@ package org.guce.siat.common.service;
 
 import java.util.List;
 import java.util.Map;
-
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Company;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
+import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.FileTypeCode;
@@ -100,5 +100,7 @@ public interface FileService extends AbstractService<File> {
     void updateSpecificColumn(final Map<String, ?> paramsMap, final File file);
 
     List<File> findByNumeroDemandeAndBureau(File currentFile, Step cotationStep);
+
+    List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType);
 
 }
