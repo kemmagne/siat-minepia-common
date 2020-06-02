@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.AppointmentDao;
@@ -238,6 +237,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
                 fItem.setDraft(Boolean.FALSE);
                 items.add(fItem);
 
+                //if (decision != null && (decision.getOutgoing() == 1 || (decision.getOutgoing() == 0 && CollectionUtils.isNotEmpty(decision.getCopyRecipientsList())))) {
                 if (decision.getOutgoing() == 1
                         || (decision.getOutgoing() == 0 && CollectionUtils.isNotEmpty(decision.getCopyRecipientsList()))) {
                     returnedMap.put(fItem, decision);
