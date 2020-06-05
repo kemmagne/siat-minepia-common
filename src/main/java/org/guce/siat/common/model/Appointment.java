@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -106,8 +100,7 @@ public class Appointment extends AbstractModel implements Serializable {
     /**
      * The appointment item flow list.
      */
-    @OneToMany(mappedBy = "primaryKey.appointment", cascade
-            = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "primaryKey.appointment", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<AppointmentItemFlow> appointmentItemFlowList = new ArrayList<>();
 
     /**
@@ -117,17 +110,15 @@ public class Appointment extends AbstractModel implements Serializable {
     private String inspectionPlace;
 
     /**
+     * the bundle for printing informations to another view
+     */
+    @Column(name = "BUNDLE", length = 30)
+    private String bundle;
+
+    /**
      * Instantiates a new appointment.
      */
     public Appointment() {
-    }
-
-    /**
-     * Pre persist.
-     */
-    @PrePersist
-    public void prePersist() {
-        this.deleted = Boolean.FALSE;
     }
 
     /*
@@ -331,6 +322,14 @@ public class Appointment extends AbstractModel implements Serializable {
         this.inspectionPlace = inspectionPlace;
     }
 
+    public String getBundle() {
+        return bundle;
+    }
+
+    public void setBundle(String bundle) {
+        this.bundle = bundle;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -354,10 +353,7 @@ public class Appointment extends AbstractModel implements Serializable {
             return false;
         }
         final Appointment other = (Appointment) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())));
     }
 
     /*
@@ -382,6 +378,14 @@ public class Appointment extends AbstractModel implements Serializable {
         builder.append(history);
         builder.append("]");
         return builder.toString();
+    }
+
+    /**
+     * Pre persist.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.deleted = Boolean.FALSE;
     }
 
 }

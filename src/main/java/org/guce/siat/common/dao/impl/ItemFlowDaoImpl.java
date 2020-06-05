@@ -406,4 +406,19 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
         }
     }
 
+    @Override
+    public List<ItemFlow> findLastItemFlowsByFileAndFlow(File file, FlowCode flowCode) {
+
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.fileItem.file.id = :fileId AND if.flow.code = :flowCode ORDER BY if.id DESC", ItemFlow.class);
+
+        query.setParameter("fileId", file.getId());
+        query.setParameter("flowCode", flowCode.name());
+
+        if (CollectionUtils.isNotEmpty(file.getFileItemsList())) {
+            query.setMaxResults(file.getFileItemsList().size());
+        }
+
+        return query.getResultList();
+    }
+
 }

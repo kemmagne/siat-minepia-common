@@ -140,4 +140,6 @@ public interface ItemFlowDao extends AbstractJpaDao<ItemFlow> {
 
     ItemFlow findLastDecisionByFile(File file);
 
+    List<ItemFlow> findLastItemFlowsByFileAndFlow(final File file, final FlowCode flowCode);
+
 }

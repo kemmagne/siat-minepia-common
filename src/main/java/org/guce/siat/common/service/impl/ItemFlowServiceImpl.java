@@ -159,11 +159,15 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#takeDecision(java.util.List, java.util.List)
      */
     @Override
-    public void takeDecision(final List<ItemFlow> itemFlowList, final List<ItemFlowData> flowDatas) {
+    public List<ItemFlow> takeDecision(final List<ItemFlow> itemFlowList, final List<ItemFlowData> flowDatas) {
+
+        List<ItemFlow> toReturn = new ArrayList<>();
+
         final List<FileItem> fileItemList = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlowList) {
             final ItemFlow item = itemFlowDao.save(itemFlow);
+            toReturn.add(item);
             if (CollectionUtils.isNotEmpty(flowDatas)) {
                 final List<ItemFlowData> itemFlowDatas = new ArrayList<>();
                 for (final ItemFlowData flowData : flowDatas) {
@@ -183,6 +187,8 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 
         // Update fileItems : Set draft = true
         fileItemDao.saveOrUpdateList(fileItemList);
+
+        return toReturn;
     }
 
     /*

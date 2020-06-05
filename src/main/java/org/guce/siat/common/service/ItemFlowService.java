@@ -2,7 +2,6 @@ package org.guce.siat.common.service;
 
 import java.util.List;
 import java.util.Map;
-
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.Flow;
@@ -53,8 +52,9 @@ public interface ItemFlowService extends AbstractService<ItemFlow> {
      *
      * @param itemFlowList the item flow list
      * @param flowDatas the flow datas
+     * @return
      */
-    void takeDecision(List<ItemFlow> itemFlowList, List<ItemFlowData> flowDatas);
+    List<ItemFlow> takeDecision(List<ItemFlow> itemFlowList, List<ItemFlowData> flowDatas);
 
     /**
      * Send decisions.
