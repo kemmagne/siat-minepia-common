@@ -393,7 +393,9 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             case FL_CC_160: {
                 return findFlowByCode(FlowCode.FL_CC_161.name());
             }
-
+            case FL_CT_146: {
+                return findFlowByCode(FlowCode.FL_CT_147.name());
+            }
             default:
                 return null;
         }

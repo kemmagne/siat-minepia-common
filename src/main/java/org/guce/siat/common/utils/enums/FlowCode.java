@@ -420,6 +420,10 @@ public enum FlowCode {
     FL_CT_145("Encaissement"),
     //
 
+    FL_CT_146("Demande CI"),
+    FL_CT_147("Complément d'informations"),
+    //
+
     /**
      * AP Flow Code
      */
