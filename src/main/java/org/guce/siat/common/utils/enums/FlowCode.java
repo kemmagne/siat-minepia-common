@@ -424,6 +424,9 @@ public enum FlowCode {
     FL_CT_147("Complément d'informations"),
     //
 
+    FL_CT_148("Demande CI"),
+    //
+
     /**
      * AP Flow Code
      */
