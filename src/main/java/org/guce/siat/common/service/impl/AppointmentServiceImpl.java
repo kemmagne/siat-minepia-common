@@ -156,8 +156,6 @@ public class AppointmentServiceImpl extends AbstractServiceImpl<Appointment> imp
             appointment.getAppointmentItemFlowList().add(appIflow);
         }
 
-        appointment.setDeleted(Boolean.TRUE);
-
         if (appointment.getId() == null) {
             save(appointment);
         } else {
