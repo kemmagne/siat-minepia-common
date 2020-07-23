@@ -40,18 +40,20 @@ public class TaskResendMessage {
 
     public void resendMessage() {
         File messagesFolderFile = new File(messagesFolder);
+        messagesFolderFile.mkdirs();
         Collection<File> filesCollections = FileUtils.listFiles(messagesFolderFile, new String[]{"ebxml"}, false);
         if (CollectionUtils.isNotEmpty(filesCollections)) {
             for (final File file : filesCollections) {
-                try {
-                    final OrchestraEbxmlMessage ebxml = FACTORY.createFromFile(file.getAbsolutePath());
-                    fileProducer.sendViaRest(ebxml, null);
-                } catch (Exception ex) {
-                    LOG.error(null, ex);
+                synchronized (file) {
+                    try {
+                        final OrchestraEbxmlMessage ebxml = FACTORY.createFromFile(file.getAbsolutePath());
+                        fileProducer.sendViaRest(ebxml, null);
+                    } catch (Exception ex) {
+                        LOG.error(null, ex);
+                    }
                 }
             }
         }
     }
 
 }
-

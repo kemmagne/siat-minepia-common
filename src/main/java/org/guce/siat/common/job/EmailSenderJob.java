@@ -2,10 +2,18 @@ package org.guce.siat.common.job;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.guce.siat.common.mail.bo.EmailSenderService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -39,21 +47,47 @@ public class EmailSenderJob extends QuartzJobBean {
         Collection<File> filesCollections = FileUtils.listFiles(mailsFolderFile, new String[]{"json"}, false);
         if (CollectionUtils.isNotEmpty(filesCollections)) {
             for (final File file : filesCollections) {
-                if (file.exists()) {
+                synchronized (file) {
+
+                    if (!file.exists()) {
+                        continue;
+                    }
+
                     try {
-                        synchronized (file) {
-                            final ObjectMapper objectMapper = new ObjectMapper();
-                            Map<String, Object> map = objectMapper.readValue(file, Map.class);
-                            emailSenderService.send(map);
-                            if (file.exists()) {
-                                file.delete();
-                            }
+                        final ObjectMapper objectMapper = new ObjectMapper();
+                        Map<String, Object> map = objectMapper.readValue(file, Map.class);
+                        emailSenderService.send(map);
+                        if (file.exists()) {
+                            file.delete();
                         }
                     } catch (Exception ex) {
-                        LOG.error(null, ex);
+                        LOG.error(file.getName(), ex);
+                        if (file.exists()) {
+                            moveFile(file);
+                        }
                     }
                 }
             }
+        }
+    }
+
+    public String moveFile(File file) {
+
+        try {
+
+            String notSentDirPath = String.format("%s/error/%s", mailsFolder, new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime()));
+            File notSentDir = new File(notSentDirPath);
+            notSentDir.mkdirs();
+            File notSentFile = new File(notSentDir, file.getName());
+            try ( InputStream fis = new FileInputStream(file);  OutputStream fos = new FileOutputStream(notSentFile)) {
+                IOUtils.copy(fis, fos);
+            }
+            file.delete();
+
+            return notSentFile.getPath();
+        } catch (IOException ex) {
+            LOG.warn(file.getName(), ex);
+            return null;
         }
     }
 
