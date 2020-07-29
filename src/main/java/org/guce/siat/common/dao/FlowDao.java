@@ -2,7 +2,6 @@ package org.guce.siat.common.dao;
 
 import java.util.List;
 import org.guce.siat.common.model.File;
-
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -59,6 +58,14 @@ public interface FlowDao extends AbstractJpaDao<Flow> {
      * @return the flow
      */
     Flow findFlowByCurrentStep(Step step);
+
+    /**
+     * Find cotation flow by current step.
+     *
+     * @param step the step
+     * @return the flow
+     */
+    Flow findCotationFlowByCurrentStep(Step step);
 
     /**
      * Find flow by code.

@@ -198,13 +198,12 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
         return Collections.emptyList();
     }
 
-
     /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.dao.FlowDao#findFlowByCurrentStep(org.guce.siat.common.model.Step)
      */
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Flow findFlowByCurrentStep(final Step step) {
         try {
@@ -222,12 +221,35 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
         }
     }
 
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.FlowDao#findCotationFlowByCurrentStep(org.guce.siat.common.model.Step)
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public Flow findCotationFlowByCurrentStep(final Step step) {
+        try {
+            if (step != null) {
+                final String hqlString = " FROM Flow f WHERE f.fromStep.id = :currentStepId AND f.isCota = 1";
+                final TypedQuery<Flow> query = super.entityManager.createQuery(hqlString, Flow.class);
+                query.setParameter("currentStepId", step.getId());
+                return query.getSingleResult();
+            } else {
+                return null;
+            }
+        } catch (final NoResultException | NonUniqueResultException e) {
+            LOG.info(Objects.toString(e));
+            return null;
+        }
+    }
 
     /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.dao.FlowDao#findCiResponseFlow(java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public Flow findCiResponseFlow(final String flowSiatCode) {
         FlowCode flowCode = FlowCode.valueOf(flowSiatCode);
