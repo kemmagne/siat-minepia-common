@@ -187,7 +187,7 @@ public class File extends AbstractModel implements Serializable {
     /**
      * The file items list.
      */
-    @OneToMany(mappedBy = "file", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "file", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<FileItem> fileItemsList;
 
     /**
@@ -272,6 +272,9 @@ public class File extends AbstractModel implements Serializable {
 
     @OneToMany(mappedBy = "file", orphanRemoval = true)
     private List<Container> containers;
+
+    @Transient
+    private Step step;
 
     /**
      * Gets the id.
@@ -584,7 +587,7 @@ public class File extends AbstractModel implements Serializable {
     public List<FileFieldValue> getNonRepeatablefileFieldValueList() {
 
         if (CollectionUtils.isEmpty(nonRepeatablefileFieldValueList)) {
-            nonRepeatablefileFieldValueList = new ArrayList<FileFieldValue>();
+            nonRepeatablefileFieldValueList = new ArrayList<>();
             for (final FileFieldValue fileFieldValue : getFileFieldValueList()) {
                 if (!fileFieldValue.getFileField().getRepeatable()) {
                     nonRepeatablefileFieldValueList.add(fileFieldValue);
@@ -923,6 +926,16 @@ public class File extends AbstractModel implements Serializable {
         this.containers = containers;
     }
 
+    @Deprecated
+    public Step getStep() {
+        return step;
+    }
+
+    @Deprecated
+    public void setStep(Step step) {
+        this.step = step;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -978,6 +991,13 @@ public class File extends AbstractModel implements Serializable {
     private void prePersist() {
         if (lastDecisionDate == null) {
             lastDecisionDate = Calendar.getInstance().getTime();
+        }
+    }
+
+//    @PostLoad
+    private void postLoad() {
+        if (CollectionUtils.isNotEmpty(getFileItemsList())) {
+            setStep(getFileItemsList().get(0).getStep());
         }
     }
 
