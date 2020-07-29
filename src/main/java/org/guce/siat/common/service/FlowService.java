@@ -60,6 +60,14 @@ public interface FlowService extends AbstractService<Flow> {
     Flow findFlowByCurrentStep(Step step);
 
     /**
+     * Find flow by current step.
+     *
+     * @param step the step
+     * @return the flow
+     */
+    Flow findCotationFlowByCurrentStep(Step step);
+
+    /**
      * Find flow by sent file item.
      *
      * @param fileItem the file item
