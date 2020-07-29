@@ -27,13 +27,6 @@ public class FlowServiceImpl extends AbstractServiceImpl<Flow> implements FlowSe
     @Autowired
     private FlowDao flowDao;
 
-    /**
-     * Instantiates a new flow service impl.
-     */
-    public FlowServiceImpl() {
-        super();
-    }
-
     /*
 	 * (non-Javadoc)
 	 *
@@ -96,9 +89,21 @@ public class FlowServiceImpl extends AbstractServiceImpl<Flow> implements FlowSe
 	 *
 	 * @see org.guce.siat.core.ct.service.FlowService#findFlowByCurrentStep(org.guce.siat.core.ct.model.Step)
      */
+    @Transactional(readOnly = true)
     @Override
     public Flow findFlowByCurrentStep(final Step step) {
         return flowDao.findFlowByCurrentStep(step);
+    }
+
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.core.ct.service.FlowService#findCotationFlowByCurrentStep(org.guce.siat.core.ct.model.Step)
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public Flow findCotationFlowByCurrentStep(final Step step) {
+        return flowDao.findCotationFlowByCurrentStep(step);
     }
 
     /*
