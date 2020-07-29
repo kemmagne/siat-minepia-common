@@ -1,7 +1,6 @@
 package org.guce.siat.common.dao;
 
 import java.util.List;
-
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.User;
@@ -86,6 +85,14 @@ public interface UserDao extends AbstractJpaDao<User> {
      * @return the list
      */
     List<User> findUsersByAdministrationsIds(Long... administrationsIds);
+
+    /**
+     *
+     * @param positionType
+     * @param administrationIds
+     * @return
+     */
+    List<User> findUsersByAdministrationsIdsAndPosition(PositionType positionType, Long... administrationIds);
 
     /**
      * Find users by administration and positions.

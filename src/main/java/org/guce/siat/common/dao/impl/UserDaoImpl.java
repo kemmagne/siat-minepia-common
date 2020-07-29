@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.guce.siat.common.dao.impl;
 
 import java.util.ArrayList;
@@ -11,12 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.guce.siat.common.dao.ParamsDao;
@@ -281,6 +276,22 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
             return query.getResultList();
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<User> findUsersByAdministrationsIdsAndPosition(PositionType positionType, Long... administrationIds) {
+
+        List<Long> admins = Arrays.asList(administrationIds);
+
+        if (CollectionUtils.isEmpty(admins)) {
+            return Collections.emptyList();
+        }
+
+        TypedQuery<User> query = super.entityManager.createQuery("SELECT u FROM User u WHERE u.position = :positionType AND u.administration.id IN (:administrationIds)", User.class);
+        query.setParameter("positionType", positionType);
+        query.setParameter("administrationIds", admins);
+
+        return query.getResultList();
     }
 
 
