@@ -12,18 +12,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
  * @author yenke
  */
 @Entity
-@Table(name = "CONTAINER"
-//, uniqueConstraints = @UniqueConstraint(columnNames = {"CONT_NUMBER", "FILE_ID"})
-)
+@Table(name = "CONTAINER", uniqueConstraints = @UniqueConstraint(columnNames = {"CONT_NUMBER", "FILE_ID"}))
 public class Container implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "ID")
