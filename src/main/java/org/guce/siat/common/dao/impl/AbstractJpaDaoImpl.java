@@ -2,13 +2,13 @@ package org.guce.siat.common.dao.impl;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.utils.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Class AbstractJpaDao.
@@ -16,6 +16,8 @@ import org.guce.siat.common.utils.Constants;
  * @param <T> the generic type
  */
 public abstract class AbstractJpaDaoImpl<T extends Serializable> implements AbstractJpaDao<T> {
+
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The classe.
