@@ -156,7 +156,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
             final T entity = this.entityManager.merge(entitiesList.get(i - 1));
             if ((i % Constants.TEN) == 0) {
                 this.entityManager.flush();
-                this.entityManager.clear();
+//                this.entityManager.clear();
             }
             entitiesList.set(i - 1, entity);
         }
@@ -176,7 +176,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
             this.entityManager.persist(entity);
             if ((i % Constants.TEN) == 0) {
                 this.entityManager.flush();
-                this.entityManager.clear();
+//                this.entityManager.clear();
             }
             entitiesList.set(i - 1, entity);
         }
@@ -195,7 +195,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
             for (final T entity : entitiesList) {
                 if (++i % Constants.TEN == 0) {
                     this.entityManager.flush();
-                    this.entityManager.clear();
+//                    this.entityManager.clear();
                 }
                 this.entityManager.remove(this.entityManager.merge(entity));
             }

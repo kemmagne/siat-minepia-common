@@ -3,6 +3,7 @@ package org.guce.siat.common.dao.impl;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import org.guce.siat.common.dao.CoreDao;
@@ -43,11 +44,14 @@ public class CoreDaoImpl implements CoreDao {
 
             if ((i % Constants.TEN) == 0) {
                 entityManager.flush();
-                entityManager.clear();
+//                entityManager.clear();
             }
 
             entities.set(i - 1, entity);
         }
+
+        entityManager.flush();
+//        entityManager.clear();
 
 //        return entities;
     }
@@ -66,7 +70,7 @@ public class CoreDaoImpl implements CoreDao {
 
             if ((i % Constants.TEN) == 0) {
                 entityManager.flush();
-                entityManager.clear();
+//                entityManager.clear();
             }
 
             entities.set(i - 1, entity);
@@ -81,10 +85,33 @@ public class CoreDaoImpl implements CoreDao {
     }
 
     @Override
+    public <T> void deleteNoMerge(T entity) {
+        entityManager.remove(entity);
+    }
+
+    @Override
     public <T> void delete(List<T> entities) {
         for (T entity : entities) {
             delete(entity);
         }
+    }
+
+    @Override
+    public <T> void deleteNoMerge(List<T> entities) {
+        for (T entity : entities) {
+            deleteNoMerge(entity);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Container> findContainersByFile(File file) {
+
+        TypedQuery<Container> query = entityManager.createQuery("SELECT c FROM Container c WHERE c.file.id = :fileId", Container.class);
+
+        query.setParameter("fileId", file.getId());
+
+        return query.getResultList();
     }
 
     @Transactional(readOnly = true)
@@ -96,11 +123,9 @@ public class CoreDaoImpl implements CoreDao {
         query.setParameter("fileId", file.getId());
         query.setParameter("contNumber", contNumber);
 
-        query.setMaxResults(1);
-
         try {
             return query.getSingleResult();
-        } catch (NoResultException nre) {
+        } catch (NoResultException | NonUniqueResultException nre) {
             return null;
         }
     }
