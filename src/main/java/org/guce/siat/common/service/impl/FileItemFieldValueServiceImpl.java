@@ -58,7 +58,7 @@ public class FileItemFieldValueServiceImpl extends AbstractServiceImpl<FileItemF
 
 
 	/* (non-Javadoc)
-	 * @see org.guce.siat.common.service.FileItemFieldValueService#findValueByFileItemFieldAndFileItem(java.lang.String, org.guce.siat.common.model.FileItem)
+	 * @see org.guce.siat.common.service.FileItemFieldValueService#findValueByFileItemFieldAndFile(java.lang.String, org.guce.siat.common.model.FileItem)
 	 */
 	@Override
 	public FileItemFieldValue findValueByFileItemFieldAndFileItem(String FileItemFieldCode, FileItem fileItem) {
