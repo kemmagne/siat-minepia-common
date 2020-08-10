@@ -1,10 +1,8 @@
 package org.guce.siat.common.utils;
 
 import java.nio.charset.StandardCharsets;
-
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,8 +33,16 @@ public final class SecurityUtils {
      */
     public static String getCurrentUser() {
 
-        return SecurityContextHolder.getContext().getAuthentication() != null ? SecurityContextHolder.getContext()
-                .getAuthentication().getName() : "Scheduled Job";
+        /**
+         * The try catch bloc has been added for tests purpose
+         */
+        try {
+            return SecurityContextHolder.getContext().getAuthentication() != null
+                    ? SecurityContextHolder.getContext().getAuthentication().getName()
+                    : "Scheduled Job";
+        } catch (Exception ex) {
+            return "ROOT";
+        }
     }
 
     /**
@@ -46,9 +52,15 @@ public final class SecurityUtils {
      */
     public static String getCurrentAddressIp() {
 
-        final HttpServletRequest curRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-        return curRequest.getRemoteAddr();
+        /**
+         * The try catch bloc has been added for tests purpose
+         */
+        try {
+            final HttpServletRequest curRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            return curRequest.getRemoteAddr();
+        } catch (Exception ex) {
+            return StringUtils.EMPTY;
+        }
     }
 
     /**
@@ -105,4 +117,3 @@ public final class SecurityUtils {
     }
 
 }
-
