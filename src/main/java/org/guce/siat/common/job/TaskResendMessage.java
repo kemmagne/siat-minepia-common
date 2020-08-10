@@ -2,11 +2,14 @@ package org.guce.siat.common.job;
 
 import java.io.File;
 import java.util.Collection;
+import javax.annotation.PostConstruct;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.orchestra.core.OrchestraEbxmlMessageFactory;
 import org.guce.siat.common.service.FileProducer;
+import org.guce.siat.common.utils.PropertiesConstants;
+import org.guce.siat.common.utils.PropertiesLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class TaskResendMessage {
     private static final OrchestraEbxmlMessageFactory FACTORY = OrchestraEbxmlMessageFactory.getInstance();
 
     @Autowired
+    private PropertiesLoader propertiesLoader;
+
+    @Autowired
     private FileProducer fileProducer;
 
     /**
@@ -37,6 +43,11 @@ public class TaskResendMessage {
      */
     @Value("${messages.folder}")
     private String messagesFolder;
+
+    @PostConstruct
+    public void init() {
+        messagesFolder = propertiesLoader.getProperty(PropertiesConstants.MESSAGES_FOLDER);
+    }
 
     public void resendMessage() {
         File messagesFolderFile = new File(messagesFolder);

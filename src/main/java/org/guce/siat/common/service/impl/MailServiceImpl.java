@@ -8,9 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import org.guce.siat.common.mail.bo.EmailSenderService;
-
+import javax.annotation.PostConstruct;
+import org.guce.siat.common.mail.MailConstants;
 import org.guce.siat.common.service.MailService;
+import org.guce.siat.common.utils.PropertiesConstants;
+import org.guce.siat.common.utils.PropertiesLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,10 @@ public class MailServiceImpl implements MailService {
      */
     private static final Logger LOG = LoggerFactory.getLogger(MailServiceImpl.class);
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("_yyyyMMdd_HHmmss.SSS");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmm");
+
+    @Autowired
+    private PropertiesLoader propertiesLoader;
 
     /**
      * the messages folder
@@ -52,17 +57,12 @@ public class MailServiceImpl implements MailService {
     @Value("${mailSender.replyTo}")
     private String replyTo;
 
-    /**
-     * The reply to.
-     */
-    @Value("${application.environment}")
-    private String applicationEnv;
-
-    /**
-     * The email sender service.
-     */
-    @Autowired
-    private EmailSenderService emailSenderService;
+    @PostConstruct
+    public void init() {
+        mailsFolder = propertiesLoader.getProperty(PropertiesConstants.MAILS_FOLDER);
+        from = propertiesLoader.getProperty(PropertiesConstants.MAIL_FROM);
+        replyTo = propertiesLoader.getProperty(PropertiesConstants.MAIL_REPLY_TO);
+    }
 
     /*
 	 * (non-Javadoc)
@@ -81,7 +81,8 @@ public class MailServiceImpl implements MailService {
     }
 
     private void backupEmail(final Map<String, String> map) {
-        final String backupEmailFileName = String.format("email%s.json",
+        final String backupEmailFileName = String.format("email_%s_%s.json",
+                map.get(MailConstants.EMAIL),
                 DATE_FORMAT.format(Calendar.getInstance().getTime()));
         final File backupEmailFile = new File(mailsFolder, backupEmailFileName);
         backupEmailFile.getParentFile().mkdirs();
@@ -150,4 +151,3 @@ public class MailServiceImpl implements MailService {
     }
 
 }
-

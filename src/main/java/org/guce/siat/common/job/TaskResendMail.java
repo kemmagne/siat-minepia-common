@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.guce.siat.common.mail.bo.EmailSenderService;
+import org.guce.siat.common.utils.PropertiesConstants;
+import org.guce.siat.common.utils.PropertiesLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class TaskResendMail {
      */
     private static final Logger LOG = LoggerFactory.getLogger(TaskResendMail.class);
 
+    @Autowired
+    private PropertiesLoader propertiesLoader;
+
     /**
      * the mails folder
      */
@@ -35,6 +41,11 @@ public class TaskResendMail {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @PostConstruct
+    public void init() {
+        mailsFolder = propertiesLoader.getProperty(PropertiesConstants.MAILS_FOLDER);
+    }
 
     public void resendMail() {
         File mailsFolderFile = new File(mailsFolder);

@@ -5,6 +5,7 @@ import java.util.List;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.service.AbstractService;
 import org.guce.siat.common.service.annotations.Audit;
+import org.guce.siat.common.utils.enums.AuditConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -76,7 +77,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
 	 * @see org.guce.siat.common.service.AbstractService#save(java.io.Serializable)
      */
     @Transactional(readOnly = false)
-    @Audit(operationType = "SAVE")
+    @Audit(operationType = AuditConstants.SAVE)
     @Override
     public T save(final T entity) {
         return getJpaDao().save(entity);
@@ -88,7 +89,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
 	 * @see org.guce.siat.common.service.AbstractService#update(java.io.Serializable)
      */
     @Transactional(readOnly = false)
-    @Audit(operationType = "UPDATE")
+    @Audit(operationType = AuditConstants.UPDATE)
     @Override
     public void update(final T entity) {
         getJpaDao().update(entity);
@@ -100,7 +101,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
 	 * @see org.guce.siat.common.service.AbstractService#delete(java.io.Serializable)
      */
     @Transactional(readOnly = false)
-    @Audit(operationType = "DELETE")
+    @Audit(operationType = AuditConstants.DELETE)
     @Override
     public void delete(final T entity) {
         getJpaDao().delete(entity);
@@ -112,7 +113,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
 	 * @see org.guce.siat.common.service.AbstractService#deleteById(java.lang.Long)
      */
     @Transactional(readOnly = false)
-    @Audit(operationType = "DELETE")
+    @Audit(operationType = AuditConstants.DELETE)
     @Override
     public void deleteById(final Long entityId) {
         getJpaDao().deleteById(entityId);
@@ -124,7 +125,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
 	 * @see org.guce.siat.common.service.AbstractService#saveOrUpdateList(java.util.List)
      */
     @Transactional(readOnly = false)
-    @Audit(operationType = "SAVE")
+    @Audit(operationType = AuditConstants.SAVE)
     @Override
     public List<T> saveOrUpdateList(final List<T> entitiesList) {
         return getJpaDao().saveOrUpdateList(entitiesList);
@@ -136,7 +137,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
 	 * @see org.guce.siat.common.service.AbstractService#saveList(java.util.List)
      */
     @Transactional(readOnly = false)
-    @Audit(operationType = "SAVE")
+    @Audit(operationType = AuditConstants.SAVE)
     @Override
     public List<T> saveList(final List<T> entitiesList) {
         return getJpaDao().saveList(entitiesList);
@@ -148,7 +149,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
      * @param entitiesList the entities list
      */
     @Transactional(readOnly = false)
-    @Audit(operationType = "DELETE")
+    @Audit(operationType = AuditConstants.DELETE)
     @Override
     public void deleteList(final List<T> entitiesList) {
         getJpaDao().deleteList(entitiesList);

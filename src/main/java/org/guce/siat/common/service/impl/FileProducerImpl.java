@@ -19,6 +19,8 @@ import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.FileProducer;
 import org.guce.siat.common.utils.EbxmlUtils;
+import org.guce.siat.common.utils.PropertiesConstants;
+import org.guce.siat.common.utils.PropertiesLoader;
 import org.guce.siat.common.utils.SecurityUtils;
 import org.guce.siat.common.utils.ebms.ESBConstants;
 import org.slf4j.Logger;
@@ -53,6 +55,9 @@ public class FileProducerImpl implements FileProducer {
     private static final String LOGIN = "@4wWYa3!9fhMS@dqMlKY";
     private static final String PASSWORD = "ek5zD]hKv4@WuD$5";
 
+    @Autowired
+    private PropertiesLoader propertiesLoader;
+
     /**
      * The item flow dao.
      */
@@ -76,6 +81,9 @@ public class FileProducerImpl implements FileProducer {
 
     @PostConstruct
     public void init() {
+        messagesFolder = propertiesLoader.getProperty(PropertiesConstants.MESSAGES_FOLDER);
+        webserviceUrl = propertiesLoader.getProperty(PropertiesConstants.WEBSERVICE_URL);
+
         restTemplate = new RestTemplate();
         final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setBufferRequestBody(false);
@@ -191,4 +199,3 @@ public class FileProducerImpl implements FileProducer {
     }
 
 }
-

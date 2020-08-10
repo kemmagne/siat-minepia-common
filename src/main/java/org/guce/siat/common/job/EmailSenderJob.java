@@ -11,10 +11,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.guce.siat.common.mail.bo.EmailSenderService;
+import org.guce.siat.common.utils.PropertiesConstants;
+import org.guce.siat.common.utils.PropertiesLoader;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -37,34 +39,53 @@ public class EmailSenderJob extends QuartzJobBean {
      */
     private String mailsFolder;
 
+    /**
+     * The email sender service
+     */
     private EmailSenderService emailSenderService;
+
+    /**
+     * The properties loader bean
+     */
+    private PropertiesLoader propertiesLoader;
+
+    /**
+     * This method is just for test purpose
+     *
+     * @throws JobExecutionException
+     */
+    public void executeInternal1() throws JobExecutionException {
+        executeInternal(null);
+    }
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
+        if (StringUtils.isBlank(mailsFolder)) {
+            mailsFolder = propertiesLoader.getProperty(PropertiesConstants.MAILS_FOLDER);
+        }
+
         File mailsFolderFile = new File(mailsFolder);
         mailsFolderFile.mkdirs();
         Collection<File> filesCollections = FileUtils.listFiles(mailsFolderFile, new String[]{"json"}, false);
-        if (CollectionUtils.isNotEmpty(filesCollections)) {
-            for (final File file : filesCollections) {
-                synchronized (file) {
+        for (final File file : filesCollections) {
+            synchronized (file) {
 
-                    if (!file.exists()) {
-                        continue;
+                if (!file.exists()) {
+                    continue;
+                }
+
+                try {
+                    final ObjectMapper objectMapper = new ObjectMapper();
+                    Map<String, Object> map = objectMapper.readValue(file, Map.class);
+                    emailSenderService.send(map);
+                    if (file.exists()) {
+                        file.delete();
                     }
-
-                    try {
-                        final ObjectMapper objectMapper = new ObjectMapper();
-                        Map<String, Object> map = objectMapper.readValue(file, Map.class);
-                        emailSenderService.send(map);
-                        if (file.exists()) {
-                            file.delete();
-                        }
-                    } catch (Exception ex) {
-                        LOG.error(file.getName(), ex);
-                        if (file.exists()) {
-                            moveFile(file);
-                        }
+                } catch (Exception ex) {
+                    LOG.error(file.getName(), ex);
+                    if (file.exists()) {
+                        moveFile(file);
                     }
                 }
             }
@@ -97,6 +118,10 @@ public class EmailSenderJob extends QuartzJobBean {
 
     public void setEmailSenderService(EmailSenderService emailSenderService) {
         this.emailSenderService = emailSenderService;
+    }
+
+    public void setPropertiesLoader(PropertiesLoader propertiesLoader) {
+        this.propertiesLoader = propertiesLoader;
     }
 
 }
