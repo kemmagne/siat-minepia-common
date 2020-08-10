@@ -1,17 +1,21 @@
 package org.guce.siat.common.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
+import org.apache.commons.lang.RandomStringUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.OrganismDao;
 import org.guce.siat.common.dao.SubDepartmentDao;
 import org.guce.siat.common.dao.UserDao;
+import org.guce.siat.common.mail.MailConstants;
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Authority;
 import org.guce.siat.common.model.Bureau;
@@ -23,8 +27,11 @@ import org.guce.siat.common.model.User;
 import org.guce.siat.common.model.UserAuthority;
 import org.guce.siat.common.service.AdministrationService;
 import org.guce.siat.common.service.DelegationService;
+import org.guce.siat.common.service.MailService;
 import org.guce.siat.common.service.UserService;
 import org.guce.siat.common.service.annotations.Audit;
+import org.guce.siat.common.utils.Constants;
+import org.guce.siat.common.utils.enums.AuditConstants;
 import org.guce.siat.common.utils.enums.AuthorityConstants;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.PositionType;
@@ -37,6 +44,12 @@ import org.springframework.transaction.annotation.Transactional;
 @org.springframework.stereotype.Service("userService")
 @Transactional(readOnly = true)
 public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
+
+    /**
+     * The mail service.
+     */
+    @Autowired
+    private MailService mailService;
 
     /**
      * The user dao.
@@ -68,13 +81,6 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     @Autowired
     SubDepartmentDao subDepartmentDao;
 
-    /**
-     * Instantiates a new user service impl.
-     */
-    public UserServiceImpl() {
-        super();
-    }
-
     /*
 	 * (non-Javadoc)
 	 *
@@ -82,7 +88,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
      */
     @Override
     @Transactional(readOnly = false)
-    @Audit(operationType = "SAVE")
+    @Audit(operationType = AuditConstants.SAVE)
     public void createUser(final User user) {
         userDao.createUser(user);
     }
@@ -94,7 +100,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
      */
     @Override
     @Transactional(readOnly = false)
-    @Audit(operationType = "SAVE")
+    @Audit(operationType = AuditConstants.UPDATE)
     public void updateUser(final User user) {
         userDao.updateUser(user);
     }
@@ -280,7 +286,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
      */
     @Override
     @Transactional(readOnly = false)
-    @Audit(operationType = "BAD_CREDENTIALS")
+    @Audit(operationType = AuditConstants.BAD_CREDENTIALS)
     public User updateFailAttempts(final User user) {
         return userDao.updateFailAttempts(user);
     }
@@ -417,6 +423,44 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     @Override
     public List<User> findSuperUserByFileType(FileTypeCode fileTypeCode, Long bureauId) {
         return userDao.findSuperUserByFileType(fileTypeCode, bureauId);
+    }
+
+    @Transactional(readOnly = false)
+    @Audit(operationType = AuditConstants.PASSWORD_RESET)
+    @Override
+    public String resetUserPassword(User selectedUser) {
+
+        String newPassword = RandomStringUtils.randomAlphanumeric(Constants.TEN);
+
+        selectedUser.setFirstLogin(Boolean.TRUE);
+        selectedUser.setAttempts(Constants.ZERO);
+        selectedUser.setPassword(newPassword);
+
+        updateUser(selectedUser);
+
+        Map<String, String> map = new HashMap<>();
+
+        String language = selectedUser.getPreferedLanguage() != null ? selectedUser.getPreferedLanguage().toLowerCase() : Locale.FRENCH.getLanguage();
+        String template = String.format("/vms/resetUserPassword_%s.vm", language);
+        String subject = null;
+        if (Locale.FRENCH.getLanguage().equalsIgnoreCase(selectedUser.getPreferedLanguage())) {
+            subject = "SIAT : Réinitialition du mot de passe";
+        } else if (Locale.ENGLISH.getLanguage().equalsIgnoreCase(selectedUser.getPreferedLanguage())) {
+            subject = "SIAT : Password Reset";
+        }
+
+        map.put(MailConstants.FROM, mailService.getFromValue());
+        map.put(MailConstants.SUBJECT, subject);
+        map.put(MailConstants.EMAIL, selectedUser.getEmail());
+        map.put(MailConstants.VMF, template);
+        map.put("lastName", selectedUser.getLastName());
+        map.put("firstName", selectedUser.getFirstName());
+        map.put("login", selectedUser.getLogin());
+        map.put("password", newPassword);
+
+        mailService.sendMail(map);
+
+        return newPassword;
     }
 
 }
