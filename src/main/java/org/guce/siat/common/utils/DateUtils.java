@@ -109,6 +109,11 @@ public final class DateUtils {
     public static final String PATTERN_DDMMYYYY = "dd/MM/yyyy";
 
     /**
+     * The Constant PATTERN_DD_MM_YY.
+     */
+    public static final String PATTERN_DD_MM_YY = "dd/MM/yy";
+
+    /**
      * Instantiates a new date utils.
      */
     private DateUtils() {
