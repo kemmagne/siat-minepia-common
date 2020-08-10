@@ -1,7 +1,6 @@
 package org.guce.siat.common.service;
 
 import java.util.List;
-
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.Organism;
@@ -75,17 +74,16 @@ public interface UserService extends AbstractService<User> {
      * @return the list
      */
     List<User> findInspectorsByBureau(Bureau bureau);
-    
-    
+
     /**
      * Find cotation agent by minister.
      *
      * @param bureau the service
-     * @param role the role 
+     * @param role the role
      * @return the list
      */
     List<User> findCotationsAgentByBureauAndRole(Bureau bureau, String role);
-    
+
     /**
      * Update fail attempts.
      *
@@ -148,5 +146,6 @@ public interface UserService extends AbstractService<User> {
      */
     List<User> findSuperUserByFileType(FileTypeCode fileTypeCode, Long bureauId);
 
-}
+    String resetUserPassword(User user);
 
+}
