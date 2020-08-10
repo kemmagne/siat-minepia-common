@@ -4,8 +4,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.apache.commons.lang.StringUtils;
+import org.guce.siat.common.utils.enums.AuditConstants;
 
 /**
  * The Interface Audit.
@@ -19,6 +18,6 @@ public @interface Audit {
      *
      * @return the string
      */
-    String operationType() default StringUtils.EMPTY;
+    AuditConstants operationType();
 
 }
