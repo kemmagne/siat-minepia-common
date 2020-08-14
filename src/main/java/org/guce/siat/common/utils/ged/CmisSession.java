@@ -1,9 +1,9 @@
 package org.guce.siat.common.utils.ged;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
 import org.apache.chemistry.opencmis.client.api.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,16 +46,27 @@ public final class CmisSession {
 
     private Properties getConnectionParameters() {
 
-        final Properties prop = new Properties();
-        final String filename = "global-config.properties";
-        try (InputStream input = CmisSession.class.getClassLoader().getResourceAsStream(filename)) {
+        Properties prop = new Properties();
+        String localConfigFileName = "global-config.properties";
+        try ( InputStream input = CmisSession.class.getClassLoader().getResourceAsStream(localConfigFileName)) {
 
             if (input == null) {
-                LOG.error("Sorry, unable to find {}", filename);
+                LOG.error("Sorry, unable to find {}", localConfigFileName);
                 return null;
             }
 
             prop.load(input);
+
+            String fileSystemConfigFile = prop.getProperty("global-config.properties");
+            prop = new Properties();
+            try ( InputStream input2 = new FileInputStream(fileSystemConfigFile)) {
+                if (input2 == null) {
+                    LOG.error("Sorry, unable to find {}", fileSystemConfigFile);
+                    return null;
+                }
+
+                prop.load(input2);
+            }
 
         } catch (final IOException ex) {
             LOG.error(ex.getMessage(), ex);
@@ -65,4 +76,3 @@ public final class CmisSession {
 
     }
 }
-
