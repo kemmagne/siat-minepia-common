@@ -1,6 +1,10 @@
 package org.guce.siat.common.service.impl;
 
+import javax.annotation.PostConstruct;
 import org.guce.siat.common.service.ApplicationPropretiesService;
+import org.guce.siat.common.utils.PropertiesConstants;
+import org.guce.siat.common.utils.PropertiesLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -12,9 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("applicationPropretiesService")
 @Transactional(readOnly = true)
-@PropertySources(value =
-{ @PropertySource("classpath:global-config.properties") })
+@PropertySources(value
+        = {
+            @PropertySource("classpath:global-config.properties")})
 public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesService {
+
+    @Autowired
+    private PropertiesLoader propertiesLoader;
 
     /**
      * The column separator.
@@ -64,6 +72,11 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
     @Value("${repeatableSeparator}")
     private String repeatableSeparator;
 
+    @PostConstruct
+    public void init() {
+        attachementFolder = propertiesLoader.getProperty(PropertiesConstants.ATTACHMENT_FOLDER);
+    }
+
     /**
      * Gets the column separator.
      *
@@ -96,7 +109,7 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
      *
      * @return the custom row separator
      */
-	@Override
+    @Override
     public String getCustomRowSeparator() {
         return customRowSeparator;
     }
