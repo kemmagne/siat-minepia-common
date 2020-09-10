@@ -434,6 +434,9 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
 
         selectedUser.setFirstLogin(Boolean.TRUE);
         selectedUser.setAttempts(Constants.ZERO);
+        selectedUser.setAccountNonLocked(true);
+        selectedUser.setCredentialsNonExpired(true);
+        selectedUser.setAccountNonExpired(true);
         selectedUser.setPassword(newPassword);
 
         updateUser(selectedUser);
