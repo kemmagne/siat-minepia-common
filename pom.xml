@@ -6,34 +6,18 @@
     <parent>
         <groupId>org.guce.siat</groupId>
         <artifactId>siat</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
     </parent>
 
     <groupId>org.guce.siat.common</groupId>
     <artifactId>siat-common</artifactId>
-    <version>2.0.28</version>
+    <version>2.0.29</version>
 
     <name>siat-common</name>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <resource.dir>src/main/resources</resource.dir>
         <jersey.version>2.25</jersey.version>
-        <java.version>1.7</java.version>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>guce-repository</id>
-            <name>Depot Maven du GUCE</name>
-            <url>https://repo.guce.local/maven/repository/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>guce-repository</id>
-            <name>Depot Maven du GUCE</name>
-            <url>https://repo.guce.local/maven/repository/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencies>
         <!-- Spring 4 dependencies -->
@@ -593,31 +577,5 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <testSource>${java.version}</testSource>
-                    <testTarget>${java.version}</testTarget>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 </project>
