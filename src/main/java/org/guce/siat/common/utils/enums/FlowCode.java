@@ -429,6 +429,10 @@ public enum FlowCode {
     FL_CT_148("Demande CI"),
     //
 
+    FL_CT_149("Demande Empotage"),
+    FL_CT_150("Demande Modification Empotage"),
+    //
+
     /**
      * AP Flow Code
      */
