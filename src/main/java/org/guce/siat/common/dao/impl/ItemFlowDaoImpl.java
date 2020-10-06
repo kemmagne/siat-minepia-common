@@ -18,14 +18,13 @@ import org.guce.siat.common.utils.enums.StepCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The Class ItemFlowDaoImpl.
  */
 @Repository("itemFlowDao")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(readOnly = true)
 public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements ItemFlowDao {
 
     /**
@@ -68,18 +67,6 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
                 return query.getSingleResult();
             } catch (NoResultException nre) {
             }
-
-//            final StringBuilder hqlBuilder = new StringBuilder();
-//            hqlBuilder.append("SELECT it FROM ItemFlow it ");
-//            hqlBuilder.append("WHERE it.fileItem.id = :fileItemId ");
-//            hqlBuilder.append("AND it.id = (SELECT Max(it1.id) FROM ItemFlow it1 WHERE it1.fileItem.id = :fileItemId ) ");
-//
-//            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
-//            query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
-//            final List<ItemFlow> itemFlows = query.getResultList();
-//            if (CollectionUtils.isNotEmpty(itemFlows)) {
-//                return itemFlows.get(0);
-//            }
         }
         return null;
     }

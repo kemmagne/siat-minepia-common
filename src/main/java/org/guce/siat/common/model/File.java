@@ -38,7 +38,7 @@ public class File extends AbstractModel implements Serializable {
     /**
      * The Constant serialVersionUID.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -6412240945201954603L;
 
     /**
      * The id.
