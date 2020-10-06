@@ -56,7 +56,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
     /**
      * The Constant LOG.
      */
-    private static final Logger LOG = LoggerFactory.getLogger(ValidationFlowServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The Constant LOCAL_BUNDLE_NAME.
@@ -143,7 +143,9 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      */
     @Override
     public boolean validateFlowFromGuce(final Element rootElement) throws ValidationException, IndexOutOfBoundsException {
-        LOG.info("####### Start Validattion Module ####### ");
+        logger.info("####### Start Validattion Module ####### ");
+
+        validationExceptionMessage = null;
 
         if (isInvoiceFromGuce(rootElement)) {
             return true;
@@ -154,7 +156,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         }
 
         if ((isCancelFlux(rootElement) && !validateCancelRequest(rootElement)) || !validateDocuments(rootElement)) {
-            LOG.error("####### Validation Failed  ####### ");
+            logger.error("####### Validation Failed  ####### ");
             throw new ValidationException(validationExceptionMessage);
         }
 
@@ -168,7 +170,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return true, if is cancel flux
      */
     private boolean isCancelFlux(final Element rootElement) {
-        LOG.info("####### Start isCancelFlux####### ");
+        logger.info("####### Start isCancelFlux####### ");
         boolean result = false;
         final String flowGuce = getDocumentType(rootElement);
         if (StringUtils.isNotBlank(flowGuce)) {
@@ -181,7 +183,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                     || (flowSiat.getFlowSiat().equals(FlowCode.FL_SF_147.name()))
                     || (flowSiat.getFlowSiat().equals(FlowCode.FL_CC_147.name())));
         }
-        LOG.info("#######isCancelFlux result : " + result);
+        logger.info("#######isCancelFlux result : " + result);
         return result;
     }
 
@@ -199,7 +201,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return true, if is payment request
      */
     private boolean isPaymentRequest(final Element rootElement) {
-        LOG.info("####### Start isPaymentRequest####### ");
+        logger.info("####### Start isPaymentRequest####### ");
         final String flowGuce = getDocumentType(rootElement);
         final String numDossier = findNumDossierGuce(rootElement);
         final File file = fileDao.findByNumDossierGuce(numDossier);
@@ -219,7 +221,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_166.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name()));
-        LOG.info("#######isPaymentRequest result : " + result);
+        logger.info("#######isPaymentRequest result : " + result);
         return result;
     }
 
@@ -230,7 +232,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return true, if is counter analyse request
      */
     private boolean isCounterAnalyseRequest(final Element rootElement) {
-        LOG.info("####### Start isCountreAnalyserRequest####### ");
+        logger.info("####### Start isCountreAnalyserRequest####### ");
         boolean result = false;
         final String flowGuce = getDocumentType(rootElement);
         if (StringUtils.isNotBlank(flowGuce)) {
@@ -238,7 +240,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             result = flowGuceSiat != null && FlowCode.FL_CC_159.name().equals(flowGuceSiat.getFlowSiat());
 
         }
-        LOG.info("#######isCountreAnalyserRequest result : " + result);
+        logger.info("#######isCountreAnalyserRequest result : " + result);
         return result;
     }
 
@@ -407,14 +409,14 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         if (isCancelFlux(rootElement) || isPaymentRequest(rootElement)) {
             return true;
         }
-        LOG.info("#####start validateGeneralInformations");
+        logger.info("#####start validateGeneralInformations");
         //		Validation Générale
         final boolean commonValidation = contentHasDocumentType(rootElement) && contentHasGuceNumber(rootElement) && contentHasNumMessage(rootElement);
         if (!commonValidation) {
             return false;
         }
 
-        LOG.info("#####validateGeneralInformations commonValidation : " + commonValidation);
+        logger.info("#####validateGeneralInformations commonValidation : " + commonValidation);
         //		Validation au cours du workFlow
         //				extractFileItems(rootElement).get(0).getFile().getFileType().getCode())){
         final List<FileItem> extractFileItemsResult = extractFileItems(rootElement);
@@ -423,7 +425,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 && (!FileTypeCode.AM_MANIFEST.equals(extractFileItemsResult.get(0).getFile().getFileType().getCode())
                 && !isInitiatorFlow(rootElement) && contentHasSiatNumber(rootElement) && validateFlow(rootElement)
                 && contentHasCodeDecision(rootElement) && !isCancelFlux(rootElement) && !isPaymentRequest(rootElement) && correspondenceFileAndFileItems(rootElement));
-        LOG.info("#####validateGeneralInformations workflowValidation : " + workflowValidation);
+        logger.info("#####validateGeneralInformations workflowValidation : " + workflowValidation);
         return commonValidation && workflowValidation;
     }
 
@@ -548,7 +550,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return true, if successful
      */
     private boolean validateCancelRequest(final Element rootElement) {
-        LOG.info("####### Start validateCancelRequest ####### ");
+        logger.info("####### Start validateCancelRequest ####### ");
         boolean validateCancelRequest = false;
         final List<FileTypeCode> fileTypeListMinusCT = new ArrayList<>();
         fileTypeListMinusCT.addAll(Arrays.asList(FileTypeCode.values()));
@@ -600,7 +602,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             }
         }
 
-        LOG.info("####### Start validateCancelRequest boolean : " + validateCancelRequest);
+        logger.info("####### Start validateCancelRequest boolean : " + validateCancelRequest);
         return validateCancelRequest;
     }
 
@@ -612,7 +614,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      * @return true, if successful
      */
     private boolean validateCounterAnalyseRequest(final Element rootElement) {
-        LOG.info("####### Start validateCounterAnalyseRequest ####### ");
+        logger.info("####### Start validateCounterAnalyseRequest ####### ");
         boolean validateCARequest = false;
         final String refSiat = findSiatNumber(rootElement);
         if (StringUtils.isNotBlank(refSiat)) {
@@ -637,7 +639,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             }
         }
 
-        LOG.info("####### validateCounterAnalyseRequest result : " + validateCARequest);
+        logger.info("####### validateCounterAnalyseRequest result : " + validateCARequest);
         return validateCARequest;
     }
 
@@ -749,17 +751,15 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                     } // Demande de Contre Analyse CC-BQ
                     else if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CC_159.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CC_164.name());
-                    } else {
-                        if (CollectionUtils.isNotEmpty(fileItems)) {
-                            for (final FileItem fileItem : fileItems) {
-                                if (!fileItem.getStep().equals(toBeExecutedFlow.getFromStep())) {
-                                    validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.VALIDATE_LAST_FLOW.getCode());
-                                    return false;
+                    } else if (CollectionUtils.isNotEmpty(fileItems)) {
+                        for (final FileItem fileItem : fileItems) {
+                            if (!fileItem.getStep().equals(toBeExecutedFlow.getFromStep())) {
+                                validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.VALIDATE_LAST_FLOW.getCode());
+                                return false;
 
-                                }
                             }
-                            returnedValue = true;
                         }
+                        returnedValue = true;
                     }
                 }
 
@@ -791,8 +791,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             }
         }
 
-        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                ValidationType.VALIDATE_LAST_FLOW.getCode());
+        validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.VALIDATE_LAST_FLOW.getCode());
         return false;
     }
 
