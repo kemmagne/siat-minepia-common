@@ -1,5 +1,6 @@
 package org.guce.siat.common.service.impl;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.dao.FlowDao;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.dao.ItemFlowDataDao;
+import org.guce.siat.common.dao.ParamsDao;
 import org.guce.siat.common.dao.StepDao;
 import org.guce.siat.common.dao.UserDao;
 import org.guce.siat.common.model.File;
@@ -20,11 +22,16 @@ import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
+import org.guce.siat.common.model.Params;
 import org.guce.siat.common.model.Step;
+import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.ItemFlowService;
+import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.enums.AperakType;
 import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.common.utils.enums.StepCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +40,10 @@ import org.springframework.transaction.annotation.Transactional;
  * The Class ItemFlowServiceImpl.
  */
 @Service("itemFlowService")
-@Transactional//(readOnly = true)
+@Transactional(readOnly = true)
 public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implements ItemFlowService {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The item flow dao.
@@ -83,6 +92,12 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
      */
     @Autowired
     private StepDao stepDao;
+
+    /**
+     * the params dao
+     */
+    @Autowired
+    private ParamsDao paramsDao;
 
     /**
      * Instantiates a new item flow service impl.
@@ -158,6 +173,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 *
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#takeDecision(java.util.List, java.util.List)
      */
+    @Transactional(readOnly = false)
     @Override
     public List<ItemFlow> takeDecision(final List<ItemFlow> itemFlowList, final List<ItemFlowData> flowDatas) {
 
@@ -196,8 +212,8 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 *
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#rollBackDecisionForDispatchFile(java.util.List)
      */
+    @Transactional(readOnly = false)
     @Override
-    //@Transactional(readOnly = false)
     public void rollBackDecisionForDispatchFile(final List<Long> fileItems) {
         final List<ItemFlow> itemFlows = itemFlowDao.findItemFlowsByFileItemList(fileItems);
 
@@ -221,12 +237,13 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 *
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#sendDecisions(org.guce.siat.core.ct.model.File, java.util.List)
      */
+    @Transactional(readOnly = false)
     @Override
-    //@Transactional(readOnly = false)
     public Map<FileItem, Flow> sendDecisions(final File file, final List<FileItem> fileItems) {
         final Map<FileItem, Flow> returnedMap = new HashMap<>();
         final List<FileItem> items = new ArrayList<>();
         final List<ItemFlow> draftItemFlows = new ArrayList<>();
+        Step step = null;
         for (final FileItem fileItem : fileItems) {
             if (fileItem.getDraft()) {
                 final ItemFlow draftItemFlow = itemFlowDao.findDraftByFileItem(fileItem);
@@ -239,13 +256,12 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
                     // If the executed flow is "Rejet Annulation" (FL_CT_63) --> his toStep is null so we must return the fileItem step to the last step before "Etude demande d'annulation"
                     fItem.setStep(findLastStepBeforeCancellingRequest(fItem));
                 }
+                step = fItem.getStep();
 
                 fItem.setDraft(Boolean.FALSE);
                 items.add(fItem);
 
-                //if (decision != null && (decision.getOutgoing() == 1 || (decision.getOutgoing() == 0 && CollectionUtils.isNotEmpty(decision.getCopyRecipientsList())))) {
-                if (decision.getOutgoing() == 1
-                        || (decision.getOutgoing() == 0 && CollectionUtils.isNotEmpty(decision.getCopyRecipientsList()))) {
+                if (decision != null && (decision.getOutgoing() == 1 || (decision.getOutgoing() == 0 && CollectionUtils.isNotEmpty(decision.getCopyRecipientsList())))) {
                     returnedMap.put(fItem, decision);
                 }
                 draftItemFlow.setSent(Boolean.TRUE);
@@ -256,8 +272,13 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
         }
         fileItemDao.saveOrUpdateList(items);
         itemFlowDao.saveOrUpdateList(draftItemFlows);
-        return returnedMap;
+//
+//        Map<FileItem, Flow> map;
+//        if (step != null && (map = checkIfSystemDecisionMustBeTaken(file, fileItems, step)) != null) {
+//            return map;
+//        }
 
+        return returnedMap;
     }
 
     /**
@@ -323,8 +344,8 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 *
 	 * @see org.guce.siat.core.ct.service.ItemFlowService#sendDecisionsToDispatchFile(org.guce.siat.core.ct.model.File)
      */
+    @Transactional(readOnly = false)
     @Override
-    //@Transactional(readOnly = false)
     public void sendDecisionsToDispatchFile(final File file) {
         final List<ItemFlow> draftItemFlows = new ArrayList<>();
         final List<FileItem> fileItems = new ArrayList<>();
@@ -348,6 +369,7 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 	 * @see org.guce.siat.common.service.ItemFlowService#sendDecisionsToDispatchCctFile(org.guce.siat.common.model.File,
 	 * java.util.List)
      */
+    @Transactional(readOnly = false)
     @Override
     public void sendDecisionsToDispatchCctFile(final File file, final List<FileItem> fileItems) {
         final List<ItemFlow> draftItemFlows = new ArrayList<>();
@@ -602,6 +624,54 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
     @Override
     public ItemFlow findNextItemFlow(ItemFlow itemFlow) {
         return itemFlowDao.findNextItemFlow(itemFlow);
+    }
+
+    private Map<FileItem, Flow> checkIfSystemDecisionMustBeTaken(File currentFile, List<FileItem> fileItems, Step currentStep) {
+
+        String paramsName = MessageFormat.format("system.automatic.decison.{0}.{1}.{2}", currentFile.getBureau().getCode(),
+                currentFile.getFileType().getCode(), currentStep.getStepCode());
+        Params params = paramsDao.findParamsByName(paramsName);
+
+        Flow flow;
+        try {
+            FlowCode flowCode = Enum.valueOf(FlowCode.class, params.getValue());
+            flow = flowDao.findFlowByCode(flowCode.name());
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            logger.error("The value {} at the params {} is not a valid flow", params.getValue(), params);
+            return null;
+        }
+
+        return saveSystemDecisions(fileItems, flow);
+    }
+
+    private Map<FileItem, Flow> saveSystemDecisions(List<FileItem> fileItems, Flow flow) {
+
+        Map<FileItem, Flow> returnedMap = new HashMap<>();
+        User systemUser = userDao.getUserByLogin(Constants.SYSTEM_USER_LOGIN);
+        List<ItemFlow> itemFlows = new ArrayList<>();
+        for (FileItem fileItem : fileItems) {
+            ItemFlow itemFlow = new ItemFlow();
+
+            itemFlow.setFileItem(fileItem);
+            itemFlow.setFlow(flow);
+            itemFlow.setReceived(AperakType.APERAK_D.getCharCode());
+            itemFlow.setSender(systemUser);
+            itemFlow.setSent(Boolean.TRUE);
+            itemFlow.setUnread(Boolean.FALSE);
+
+            fileItem.setStep(flow.getToStep());
+
+            if (CollectionUtils.isNotEmpty(flow.getCopyRecipientsList())) {
+                returnedMap.put(fileItem, flow);
+            }
+
+            itemFlows.add(itemFlow);
+        }
+
+        itemFlowDao.saveList(itemFlows);
+        fileItemDao.saveOrUpdateList(fileItems);
+
+        return returnedMap;
     }
 
 }
