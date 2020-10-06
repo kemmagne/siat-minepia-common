@@ -22,13 +22,15 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "CONTAINER", uniqueConstraints = @UniqueConstraint(columnNames = {"CONT_NUMBER", "FILE_ID"}))
 public class Container implements Serializable {
 
+    private static final long serialVersionUID = -212745789515592123L;
+
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTAINER_SEQ")
     @SequenceGenerator(name = "CONTAINER_SEQ", sequenceName = "CONTAINER_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(name = "CONT_NUMBER", length = 11, nullable = false)
+    @Column(name = "CONT_NUMBER", length = 11)
     private String contNumber;
     @Column(name = "CONT_SEAL1", length = 20)
     private String contSeal1;
