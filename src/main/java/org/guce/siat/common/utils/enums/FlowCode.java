@@ -433,6 +433,10 @@ public enum FlowCode {
     FL_CT_150("Demande Modification Empotage"),
     //
 
+    // phyto new workflow
+    FL_CT_151("Demande Empotage"),
+    //
+
     /**
      * AP Flow Code
      */

@@ -2,7 +2,6 @@ package org.guce.siat.common.model;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.guce.siat.common.utils.enums.StepCode;
 import org.hibernate.annotations.Cascade;
 
@@ -93,17 +91,21 @@ public class Step extends AbstractModel implements Serializable {
      */
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "STEP_AUTHORITY", joinColumns
-            = {
-                @JoinColumn(name = "STEP_ID", referencedColumnName = "ID")}, inverseJoinColumns
-            = {
-                @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    @JoinTable(name = "STEP_AUTHORITY", joinColumns = {
+        @JoinColumn(name = "STEP_ID", referencedColumnName = "ID")
+    }, inverseJoinColumns = {
+        @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")
+    })
     private List<Authority> roleList;
 
     /**
      * Instantiates a new step.
      */
     public Step() {
+    }
+
+    public Step(StepCode stepCode) {
+        this.stepCode = stepCode;
     }
 
     /**

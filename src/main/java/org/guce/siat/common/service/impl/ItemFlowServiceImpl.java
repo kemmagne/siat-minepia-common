@@ -251,12 +251,12 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
                 final FileItem fItem = fileItemDao.find(fileItem.getId());
 
                 if (decision != null && decision.getToStep() != null) {
-                    fItem.setStep(decision.getToStep());
+                    step = decision.getToStep();
                 } else {
                     // If the executed flow is "Rejet Annulation" (FL_CT_63) --> his toStep is null so we must return the fileItem step to the last step before "Etude demande d'annulation"
-                    fItem.setStep(findLastStepBeforeCancellingRequest(fItem));
+                    step = findLastStepBeforeCancellingRequest(fItem);
                 }
-                step = fItem.getStep();
+                fItem.setStep(step);
 
                 fItem.setDraft(Boolean.FALSE);
                 items.add(fItem);
