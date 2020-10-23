@@ -208,6 +208,8 @@ public enum StepCode {
     ST_CT_63("Validation Procès Verbal Empotage"),
     ST_CT_64("Signature Procès Verbal Empotage"),
     //
+    ST_CT_65("Validation pour Signature"),
+    //
     // AP Step Code
     /**
      * The S t_ a p_42.
