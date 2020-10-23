@@ -4,8 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
+import org.guce.siat.common.model.Params;
 import org.guce.siat.common.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +63,10 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
         this.classe = classeToSet;
     }
 
+    public Class<T> getClasse() {
+        return classe;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -86,7 +95,11 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findAll() {
-        return this.entityManager.createQuery("FROM " + this.classe.getName()).getResultList();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery(getClasse());
+        Root<Params> root = cq.from(getClasse());
+        return entityManager.createQuery(cq.select(root)).getResultList();
+//        return this.entityManager.createQuery("FROM " + this.classe.getName()).getResultList();
     }
 
     /*
@@ -97,7 +110,13 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findActiveItems() {
-        return this.entityManager.createQuery("FROM " + this.classe.getSimpleName() + " WHERE deleted = false").getResultList();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery(getClasse());
+        Root<T> root = cq.from(getClasse());
+        cq.where(builder.equal(root.get("deleted"), false));
+        TypedQuery<T> query = entityManager.createQuery(cq.select(root));
+        return query.getResultList();
+//        return this.entityManager.createQuery("FROM " + this.classe.getSimpleName() + " WHERE deleted = false").getResultList();
     }
 
     /*
