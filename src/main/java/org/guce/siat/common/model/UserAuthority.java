@@ -49,6 +49,14 @@ public class UserAuthority extends AbstractModel implements GrantedAuthority, Se
     @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")
     private Authority authorityGranted;
 
+    public UserAuthority() {
+    }
+
+    public UserAuthority(User user, Authority authorityGranted) {
+        this.user = user;
+        this.authorityGranted = authorityGranted;
+    }
+
 
     /*
 	 * (non-Javadoc)

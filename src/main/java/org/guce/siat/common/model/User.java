@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -26,7 +25,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.lang.StringUtils;
@@ -246,6 +244,10 @@ public class User extends AbstractModel implements Serializable {
      * Instantiates a new user.
      */
     public User() {
+    }
+
+    public User(Long id) {
+        this.id = id;
     }
 
     /*
