@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.guce.siat.common.service.impl;
 
 import java.util.ArrayList;
@@ -9,6 +6,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.AppointmentDao;
+import org.guce.siat.common.dao.CoreDao;
 import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.AppointmentItemFlow;
@@ -30,14 +28,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class AppointmentServiceImpl extends AbstractServiceImpl<Appointment> implements AppointmentService {
 
+    @Autowired
+    private CoreDao dao;
+
+    @Autowired
+    private FileDao fileDao;
     /**
      * The appointment DAO.
      */
     @Autowired
     private AppointmentDao appointmentDao;
-
-    @Autowired
-    private FileDao fileDao;
 
     /**
      * Instantiates a new appointment service impl.
@@ -141,9 +141,11 @@ public class AppointmentServiceImpl extends AbstractServiceImpl<Appointment> imp
         return appointmentDao.findRelatedAppointments(currentFile, fileTypeCodes);
     }
 
+    @Transactional(readOnly = false)
     @Override
     public void saveAppointment(Appointment appointment, List<ItemFlow> itemFlows) {
 
+        List<AppointmentItemFlow> appointmentItemFlowList = new ArrayList<>();
         for (ItemFlow itemFlow : itemFlows) {
 
             AppointmentItemFlow appIflow = new AppointmentItemFlow();
@@ -153,17 +155,20 @@ public class AppointmentServiceImpl extends AbstractServiceImpl<Appointment> imp
             appIflow.setDeleted(Boolean.FALSE);
             appIflow.setItemFlow(itemFlow);
 
-            appointment.getAppointmentItemFlowList().add(appIflow);
+            appointmentItemFlowList.add(appIflow);
         }
 
         if (appointment.getId() == null) {
+            appointment.setAppointmentItemFlowList(appointmentItemFlowList);
             save(appointment);
         } else {
+            dao.save(appointmentItemFlowList);
             update(appointment);
         }
 
     }
 
+    @Transactional(readOnly = false)
     @Override
     public void rollbackAppointmentDecision(List<ItemFlow> itemFlows) {
 
