@@ -391,7 +391,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
         final Map<String, Object> params = new HashedMap();
 
         hqlQuery.append("SELECT DISTINCT u FROM User u INNER JOIN u.userAuthorityList aut ");
-        hqlQuery.append("WHERE u.deleted = false ");
+        hqlQuery.append("WHERE u.enabled = true AND u.deleted = false ");
         if (CollectionUtils.isNotEmpty(Arrays.asList(authorities))) {
             hqlQuery.append("AND aut.authorityGranted.role IN (:authorities) ");
             params.put("authorities", Arrays.asList(authorities));
