@@ -631,6 +631,9 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
         String paramsName = MessageFormat.format("system.automatic.decison.{0}.{1}.{2}", currentFile.getBureau().getCode(),
                 currentFile.getFileType().getCode(), currentStep.getStepCode());
         Params params = paramsDao.findParamsByName(paramsName);
+        if (params == null) {
+            return null;
+        }
 
         Flow flow;
         try {
@@ -657,9 +660,10 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
             itemFlow.setReceived(AperakType.APERAK_D.getCharCode());
             itemFlow.setSender(systemUser);
             itemFlow.setSent(Boolean.TRUE);
-            itemFlow.setUnread(Boolean.FALSE);
+            itemFlow.setUnread(Boolean.TRUE);
 
             fileItem.setStep(flow.getToStep());
+            fileItem.setDraft(Boolean.FALSE);
 
             if (CollectionUtils.isNotEmpty(flow.getCopyRecipientsList())) {
                 returnedMap.put(fileItem, flow);
