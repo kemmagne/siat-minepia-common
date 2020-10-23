@@ -1,9 +1,13 @@
 package org.guce.siat.common.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 import javax.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -15,6 +19,8 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:global-config.properties")
 @Component("propertiesLoader")
 public class PropertiesLoader {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The global config file path
@@ -32,7 +38,17 @@ public class PropertiesLoader {
     @PostConstruct
     public void init() throws IOException {
         properties = new Properties();
-        properties.load(new FileInputStream(globalConfigFilePath));
+        try {
+            properties.load(new FileInputStream(globalConfigFilePath));
+        } catch (FileNotFoundException fnfe) {
+            logger.error(fnfe.getMessage(), fnfe);
+            globalConfigFilePath = new StringBuilder(System.getProperty("user.home"))
+                    .append(File.separator).append("siat")
+                    .append(File.separator).append("config")
+                    .append(File.separator).append("ct")
+                    .append(File.separator).append("global-config.properties").toString();
+            properties.load(new FileInputStream(globalConfigFilePath));
+        }
     }
 
     /**
