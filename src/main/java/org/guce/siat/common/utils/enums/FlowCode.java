@@ -433,10 +433,11 @@ public enum FlowCode {
     FL_CT_150("Demande Modification Empotage"),
     //
 
-    // phyto new workflow
-    FL_CT_151("Demande Empotage"),
-    //
-
+    // phyto new flows
+    FL_CT_151("Autorisation suite étude"),
+    FL_CT_152("Retour pour ré-examen"),
+    FL_CT_153("Validation pour signature"),
+    FL_CT_154("Retour pour ré-examen"),
     /**
      * AP Flow Code
      */
