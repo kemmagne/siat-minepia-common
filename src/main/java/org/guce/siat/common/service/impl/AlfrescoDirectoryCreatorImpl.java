@@ -118,8 +118,8 @@ public class AlfrescoDirectoryCreatorImpl implements AlfrescoDirectoryCreator {
                 }
 
                 final StringBuilder ministryPathBuilder = new StringBuilder();
-                ministryPathBuilder.append(GED_DIRECTORY + SLASH + appName);
-                Folder ministryFolder = null;
+                ministryPathBuilder.append(GED_DIRECTORY).append(SLASH).append(appName);
+                Folder ministryFolder;
                 try {
                     ministryPathBuilder.append(SLASH);
                     ministryPathBuilder.append(siatFile.getBureau().getService().getSubDepartment().getOrganism().getMinistry()
@@ -131,7 +131,7 @@ public class AlfrescoDirectoryCreatorImpl implements AlfrescoDirectoryCreator {
                 }
                 final StringBuilder organismPathBuilder = new StringBuilder();
                 organismPathBuilder.append(ministryPathBuilder.toString());
-                Folder organismFolder = null;
+                Folder organismFolder;
                 try {
                     organismPathBuilder.append(SLASH);
                     organismPathBuilder.append(siatFile.getBureau().getService().getSubDepartment().getOrganism().getAbreviation());
@@ -142,7 +142,7 @@ public class AlfrescoDirectoryCreatorImpl implements AlfrescoDirectoryCreator {
                 }
                 final StringBuilder subDepartmentPathBuilder = new StringBuilder();
                 subDepartmentPathBuilder.append(organismPathBuilder.toString());
-                Folder subDepartmentFolder = null;
+                Folder subDepartmentFolder;
 
                 try {
                     subDepartmentPathBuilder.append(SLASH);
@@ -155,7 +155,7 @@ public class AlfrescoDirectoryCreatorImpl implements AlfrescoDirectoryCreator {
 
                 final StringBuilder servicePathBuilder = new StringBuilder();
                 servicePathBuilder.append(subDepartmentPathBuilder.toString());
-                Folder serviceFolder = null;
+                Folder serviceFolder;
                 try {
                     servicePathBuilder.append(SLASH);
                     servicePathBuilder.append(siatFile.getBureau().getService().getAbreviation());
@@ -208,7 +208,7 @@ public class AlfrescoDirectoryCreatorImpl implements AlfrescoDirectoryCreator {
     public String generateAlfrescoPath(final File siatFile) {
 
         final StringBuilder pathBuilder = new StringBuilder();
-        pathBuilder.append(GED_DIRECTORY + SLASH + appName);
+        pathBuilder.append(GED_DIRECTORY).append(SLASH).append(appName);
         if (siatFile.getBureau() != null) {
             pathBuilder.append(SLASH);
             pathBuilder.append(siatFile.getBureau().getService().getSubDepartment().getOrganism().getMinistry().getLabelFr());

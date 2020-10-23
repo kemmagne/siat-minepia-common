@@ -26,10 +26,6 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource dataSource() throws Exception {
-
-        Properties props = new Properties();
-        props.load(new ClassPathResource("datasource.properties").getInputStream());
-//        HikariConfig config = new HikariConfig(props);
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("oracle.jdbc.OracleDriver");
         config.setJdbcUrl("jdbc:oracle:thin:@htserver:1521:GUCE");

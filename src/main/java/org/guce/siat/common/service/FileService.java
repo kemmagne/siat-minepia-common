@@ -99,7 +99,7 @@ public interface FileService extends AbstractService<File> {
      */
     void updateSpecificColumn(final Map<String, ?> paramsMap, final File file);
 
-    List<File> findByNumeroDemandeAndBureau(File currentFile, Step cotationStep);
+    List<File> findByNumeroDemandeAndBureau(File currentFile, Step treatmentStep);
 
     List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType);
 
