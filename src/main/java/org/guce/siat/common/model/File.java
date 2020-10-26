@@ -989,6 +989,9 @@ public class File extends AbstractModel implements Serializable {
 
     @PrePersist
     private void prePersist() {
+        if (createdDate == null) {
+            createdDate = Calendar.getInstance().getTime();
+        }
         if (lastDecisionDate == null) {
             lastDecisionDate = Calendar.getInstance().getTime();
         }
