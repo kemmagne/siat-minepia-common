@@ -22,10 +22,6 @@ public class TransferServiceImpl extends AbstractServiceImpl<Transfer> implement
     @Autowired
     private TransferDao transferDao;
 
-    public TransferServiceImpl() {
-        super();
-    }
-
     @Override
     public AbstractJpaDao<Transfer> getJpaDao() {
         return transferDao;

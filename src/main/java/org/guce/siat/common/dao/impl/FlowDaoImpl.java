@@ -84,14 +84,14 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
     @Override
     public List<Flow> findFlowsByFromStepAndFileType2(Step step, FileType fileType) {
 
-        if (step != null) {
-            final TypedQuery<Flow> query = super.entityManager.createQuery("SELECT ftf.pk.flow FROM FileTypeFlow ftf, Flow f WHERE ftf.pk.flow.id = f.id AND f.fromStep.id = :stepId AND ftf.pk.fileType.id = :fileTypeId AND (f.toStep.id IN (SELECT fts.primaryKey.step.id FROM FileTypeStep fts WHERE fts.primaryKey.fileType.id = :fileTypeId) OR f.toStep is null)", Flow.class);
-            query.setParameter("stepId", step.getId());
-            query.setParameter("fileTypeId", fileType.getId());
-            return query.getResultList();
+        if (step == null) {
+            return Collections.emptyList();
         }
 
-        return Collections.emptyList();
+        final TypedQuery<Flow> query = super.entityManager.createQuery("SELECT ftf.pk.flow FROM FileTypeFlow ftf, Flow f WHERE ftf.pk.flow.id = f.id AND f.fromStep.id = :stepId AND ftf.pk.fileType.id = :fileTypeId AND (f.toStep.id IN (SELECT fts.primaryKey.step.id FROM FileTypeStep fts WHERE fts.primaryKey.fileType.id = :fileTypeId) OR f.toStep is null)", Flow.class);
+        query.setParameter("stepId", step.getId());
+        query.setParameter("fileTypeId", fileType.getId());
+        return query.getResultList();
     }
 
     /*

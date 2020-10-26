@@ -2,8 +2,6 @@ package org.guce.siat.common.model;
 
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,15 +40,13 @@ public class Administration extends AbstractModel implements Serializable {
     /**
      * The label fr.
      */
-    @Basic(optional = false)
-    @Column(name = "LABEL_FR")
+    @Column(name = "LABEL_FR", nullable = false)
     protected String labelFr;
 
     /**
      * The label en.
      */
-    @Basic(optional = false)
-    @Column(name = "LABEL_EN")
+    @Column(name = "LABEL_EN", nullable = false)
     protected String labelEn;
 
     /**
@@ -76,7 +72,7 @@ public class Administration extends AbstractModel implements Serializable {
      *
      * @param id
      */
-    public Administration(final Long id) {
+    public Administration(Long id) {
         this.id = id;
     }
 

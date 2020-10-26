@@ -3,7 +3,7 @@ package org.guce.siat.common.model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import javax.persistence.Basic;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,13 +25,9 @@ import javax.persistence.TemporalType;
 @Table(name = "TRANSFER")
 public class Transfer extends AbstractModel implements Serializable {
 
-    /**
-     * The Constant serialVersionUID.
-     */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2977636569762088374L;
 
     @Id
-    @Basic(optional = false)
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRANSFER_SEQ")
     @SequenceGenerator(name = "TRANSFER_SEQ", sequenceName = "TRANSFER_SEQ", allocationSize = 1, initialValue = 1)
@@ -40,19 +36,19 @@ public class Transfer extends AbstractModel implements Serializable {
     /**
      * The file.
      */
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "FILE_ID", referencedColumnName = "ID")
+    @ManyToOne
+    @JoinColumn(name = "FILE_ID", referencedColumnName = "ID", nullable = false)
     private File file;
 
     @Column(name = "NUMERO_DEMANDE", length = 35)
     private String numeroDemande;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "ASSIGNED_USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "ASSIGNED_USER_ID", referencedColumnName = "ID", nullable = false)
     private User assignedUser;
 
     /**
@@ -127,6 +123,28 @@ public class Transfer extends AbstractModel implements Serializable {
         if (createdDate == null) {
             createdDate = Calendar.getInstance().getTime();
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Transfer other = (Transfer) obj;
+        return Objects.equals(this.id, other.id);
     }
 
 }
