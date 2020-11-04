@@ -6,11 +6,13 @@ import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Authority;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.File;
+import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Params;
 import org.guce.siat.common.model.Transfer;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.AuthorityConstants;
 import org.guce.siat.common.utils.enums.AuthorityType;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.ParamsCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class TestDataBuilder {
 
+    @Autowired
+    private FileTypeDao fileTypeDao;
     @Autowired
     private TransferDao transferDao;
     @Autowired
@@ -63,6 +67,12 @@ public class TestDataBuilder {
         return userDao.save(user);
     }
 
+    public FileType getFileType() {
+        FileType fileType = new FileType();
+        fileType.setCode(FileTypeCode.IDE);
+        return fileTypeDao.save(fileType);
+    }
+
     public File getFile() {
         File file = new File();
         file.setReferenceSiat(RandomStringUtils.randomAlphanumeric(35));
@@ -72,6 +82,7 @@ public class TestDataBuilder {
         file.setFileTypeGuce(RandomStringUtils.randomAlphanumeric(35));
         file.setEmetteur(RandomStringUtils.randomAlphanumeric(35));
         file.setDestinataire(RandomStringUtils.randomAlphanumeric(35));
+        file.setFileType(getFileType());
         return fileDao.save(file);
     }
 
@@ -131,6 +142,10 @@ public class TestDataBuilder {
 
     public ParamsDao getParamsDao() {
         return paramsDao;
+    }
+
+    public FileTypeDao getFileTypeDao() {
+        return fileTypeDao;
     }
 
 }

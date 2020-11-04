@@ -58,6 +58,7 @@ public class TransferDaoImpl extends AbstractJpaDaoImpl<Transfer> implements Tra
                 builder.equal(assignedUser.get(User_.administration), currrentBureau),
                 builder.equal(root.get(Transfer_.numeroDemande), numeroDemande)
         ));
+        cq.orderBy(builder.desc(root.get(Transfer_.id)));
 
         TypedQuery<Transfer> query = super.entityManager.createQuery(cq);
         query.setMaxResults(1);

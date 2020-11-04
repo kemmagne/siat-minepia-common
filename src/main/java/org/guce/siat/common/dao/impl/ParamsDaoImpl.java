@@ -75,7 +75,7 @@ public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsD
         CriteriaQuery cq = builder.createQuery(getClasse());
         Root<Params> root = cq.from(getClasse());
         cq.where(builder.equal(root.get(Params_.paramsCategory), category));
-        TypedQuery<Params> query = super.entityManager.createQuery(cq.select(root));
+        TypedQuery<Params> query = super.entityManager.createQuery(cq);
         return query.getResultList();
     }
 
