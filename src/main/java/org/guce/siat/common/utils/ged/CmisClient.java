@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.chemistry.opencmis.client.api.CmisObject;
 import org.apache.chemistry.opencmis.client.api.Document;
 import org.apache.chemistry.opencmis.client.api.Folder;
@@ -60,7 +59,7 @@ public class CmisClient {
     /**
      * The connections.
      */
-    private static final Map<String, Session> connections = new ConcurrentHashMap<String, Session>();
+    private static final Map<String, Session> CONNECTIONS = new ConcurrentHashMap<>();
 
     /**
      * Instantiates a new cmis client.
@@ -80,7 +79,7 @@ public class CmisClient {
      */
     public Session getSession(final String connectionName, final String username, final String pwd, final String urlRepo,
             final String idRepo) {
-        Session session = connections.get(connectionName);
+        Session session = CONNECTIONS.get(connectionName);
         if (session == null) {
             LOGGER.info("Not connected, creating new connection to" + " Alfresco with the connection id (" + connectionName + ")");
             // No connection to Alfresco available, create a new one
@@ -95,7 +94,7 @@ public class CmisClient {
             parameters.put(SessionParameter.REPOSITORY_ID, idRepo);
             session = sessionFactory.createSession(parameters);
             // Save connection for reuse
-            connections.put(connectionName, session);
+            CONNECTIONS.put(connectionName, session);
         } else {
             LOGGER.info("Already connected to Alfresco with the " + "connection id (" + connectionName + ")");
         }
@@ -423,9 +422,10 @@ public class CmisClient {
     public static ContentStream getDocumentByPath(final Session session, final String path) {
         try {
             LOGGER.info("Getting object by path " + path);
-            final Document doc = (Document) session.getObjectByPath(path);
+            Document doc = (Document) session.getObjectByPath(path);
             return doc.getContentStream();
-        } catch (final CmisObjectNotFoundException e) {
+        } catch (CmisObjectNotFoundException confe) {
+            LOGGER.error(confe.getMessage(), confe);
             return null;
         }
     }
@@ -439,7 +439,7 @@ public class CmisClient {
      */
     public ContentStream getDocumentById(final Session session, final String id) {
         LOGGER.info("Getting object by Id " + id);
-        final Document doc = (Document) session.getObject(new ObjectIdImpl(id));
+        Document doc = (Document) session.getObject(new ObjectIdImpl(id));
         return doc.getContentStream();
     }
 
@@ -488,4 +488,3 @@ public class CmisClient {
     }
 
 }
-

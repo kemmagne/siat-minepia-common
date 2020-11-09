@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
+    "org.guce.siat.common.utils",
     "org.guce.siat.common.dao"
 //, "org.guce.siat.common.service"
 })
