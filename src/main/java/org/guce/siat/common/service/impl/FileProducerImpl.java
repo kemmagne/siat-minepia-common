@@ -2,7 +2,6 @@ package org.guce.siat.common.service.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -12,6 +11,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.xml.soap.SOAPException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.orchestra.core.OrchestraEbxmlMessageFactory;
@@ -44,7 +44,8 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service("fileProducer")
 @PropertySources({
-    @PropertySource("classpath:global-config.properties")})
+    @PropertySource("classpath:global-config.properties")
+})
 public class FileProducerImpl implements FileProducer {
 
     /**
@@ -100,11 +101,11 @@ public class FileProducerImpl implements FileProducer {
 
         LOG.info("######## Start sending Message");
         try {
-            final OrchestraEbxmlMessage ebxml = EbxmlUtils.mapToEbxml(data);
+            OrchestraEbxmlMessage ebxml = EbxmlUtils.mapToEbxml(data);
             // save the message id to item flows
-            final List<ItemFlow> itemFlows = (List<ItemFlow>) data.get(ESBConstants.ITEM_FLOWS);
+            List<ItemFlow> itemFlows = (List<ItemFlow>) data.get(ESBConstants.ITEM_FLOWS);
             if (CollectionUtils.isNotEmpty(itemFlows)) {
-                final int nbIfs = itemFlows.size();
+                int nbIfs = itemFlows.size();
                 for (int index = 0; index < nbIfs; index++) {
                     itemFlows.get(index).setMessageId(ebxml.getMessageId());
                 }
@@ -128,18 +129,19 @@ public class FileProducerImpl implements FileProducer {
     @Override
     public void sendViaRest(final OrchestraEbxmlMessage ebxml, final org.guce.siat.common.model.File file) throws Exception {
         try {
-            final byte[] ebxmlData = ebxml.getData();
+            byte[] ebxmlData = ebxml.getData();
             final InputStream in = new ByteArrayInputStream(ebxmlData);
-            final RequestCallback requestCallback = new RequestCallback() {
+            RequestCallback requestCallback = new RequestCallback() {
                 @Override
                 public void doWithRequest(ClientHttpRequest request) throws IOException {
                     request.getHeaders().add("Content-type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
                     request.getHeaders().add("Authorization", SecurityUtils.getBasicAuth(LOGIN, PASSWORD));
                     IOUtils.copy(in, request.getBody());
+                    IOUtils.closeQuietly(in);
                 }
             };
 
-            final HttpMessageConverterExtractor<String> responseExtractor = new HttpMessageConverterExtractor<>(String.class, restTemplate.getMessageConverters());
+            HttpMessageConverterExtractor<String> responseExtractor = new HttpMessageConverterExtractor<>(String.class, restTemplate.getMessageConverters());
 
             restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
             backupNotSentMsg(ebxml, Boolean.TRUE, file);
@@ -150,44 +152,39 @@ public class FileProducerImpl implements FileProducer {
     }
 
     private void backupNotSentMsg(final OrchestraEbxmlMessage ebxml, final boolean sent, org.guce.siat.common.model.File file) throws SOAPException, IOException {
-        final String messageID = ebxml.getMessageId();
+        String messageID = ebxml.getMessageId();
         if (file == null) {
-            final ItemFlow itemFlow = itemFlowDao.findByMessageId(messageID);
+            ItemFlow itemFlow = itemFlowDao.findByMessageId(messageID);
             if (itemFlow != null) {
                 file = itemFlow.getFileItem().getFile();
             }
         }
-        final String fileName = String.format("%s.ebxml", messageID);
+        String fileName = String.format("%s.ebxml", messageID);
         java.io.File notSentFile = new java.io.File(messagesFolder, fileName);
         notSentFile.getParentFile().mkdirs();
-        final byte[] ebxmlData = ebxml.getData();
+        byte[] ebxmlData = ebxml.getData();
         if (!notSentFile.exists()) {
-            IOUtils.write(ebxmlData, new FileOutputStream(notSentFile));
-        } else {
-            if (sent) {
-                if (file != null) {
-                    StringBuilder builder = new StringBuilder(messagesFolder);
-                    if (!messagesFolder.endsWith("/")) {
-                        builder.append("/");
-                    }
-                    builder.append("backups")
-                            .append(new SimpleDateFormat("/yyyy/MM/dd").format(Calendar.getInstance().getTime()));
-                    File backupFile = new File(builder.toString());
-                    backupFile.mkdirs();
-                    final String backupFileName = String.format("%s_%s_%s.ebxml", file.getNumeroDossier(), ebxml.getAction(), ebxml.getMessageId());
-                    backupFile = new File(backupFile, backupFileName);
-                    IOUtils.write(ebxmlData, new FileOutputStream(backupFile));
+            FileUtils.writeByteArrayToFile(notSentFile, ebxmlData);
+        } else if (sent) {
+            if (file != null) {
+                StringBuilder builder = new StringBuilder(messagesFolder);
+                if (!messagesFolder.endsWith("/")) {
+                    builder.append("/");
                 }
-                notSentFile.delete();
+                builder.append("backups").append(new SimpleDateFormat("/yyyy/MM/dd").format(Calendar.getInstance().getTime()));
+                String backupFileName = String.format("%s_%s_%s.ebxml", file.getNumeroDossier(), ebxml.getAction(), ebxml.getMessageId());
+                File backupFile = new File(builder.toString(), backupFileName);
+                FileUtils.writeByteArrayToFile(backupFile, ebxmlData);
             }
+            notSentFile.delete();
         }
     }
 
     @Override
     public boolean resendDecision(final ItemFlow itemFlow) {
         try {
-            final String messageID = itemFlow.getMessageId();
-            final String backupFileName = String.format("%s.ebxml", messageID);
+            String messageID = itemFlow.getMessageId();
+            String backupFileName = String.format("%s.ebxml", messageID);
             java.io.File backupFile = new java.io.File(messagesFolder, backupFileName);
             OrchestraEbxmlMessage ebxml = OrchestraEbxmlMessageFactory.getInstance().createFromFile(backupFile.getAbsolutePath());
             sendViaRest(ebxml, itemFlow.getFileItem().getFile());
