@@ -438,6 +438,12 @@ public enum FlowCode {
     FL_CT_152("Retour pour ré-examen"),
     FL_CT_153("Validation pour signature"),
     FL_CT_154("Retour pour ré-examen"),
+    //
+
+    FL_CT_155("Demande Complément d'information"),
+    FL_CT_156("Complément d'information"),
+    //
+
     /**
      * AP Flow Code
      */
