@@ -44,19 +44,19 @@ public class ProcessMessageServiceImpl implements ProcessMessageService {
     private ParamsDao paramsDao;
 
     @Override
-    public byte[] process(byte[] message, DocumentReciever documentReciever) {
+    public byte[] process(byte[] ebxmlData, DocumentReciever documentReciever) {
 
         OrchestraEbxmlMessage response = null;
 
         Map<String, Object> messageMap = null;
         try {
-            messageMap = EbxmlUtils.ebxmlToMap(message);
+            messageMap = EbxmlUtils.ebxmlToMap(ebxmlData);
             byte[] xmlBytes = (byte[]) messageMap.get(ESBConstants.FLOW);
             if (xmlBytes != null) {
                 try {
                     DOCUMENT document = JAXBUtil.unmarshall(xmlBytes, DOCUMENT.class);
                     LOG.info(MessageFormat.format("Trying to integrate message {0} from file {1} of type {2} from partner {3}", document.getMESSAGE().getNUMEROMESSAGE(), document.getREFERENCEDOSSIER().getNUMERODOSSIER(), document.getTYPEDOCUMENT(), document.getROUTAGE().getEMETTEUR()));
-                    backup(propertiesLoader, paramsDao, xmlBytes, document);
+                    backup(propertiesLoader, paramsDao, ebxmlData, document);
                 } catch (Exception ex) {
                     LOG.error("Couldn't get infos from xml : " + ex.getMessage(), ex);
                 }
