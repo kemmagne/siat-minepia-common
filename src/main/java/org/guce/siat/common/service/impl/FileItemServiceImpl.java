@@ -6,7 +6,6 @@ package org.guce.siat.common.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.FileItemDao;
@@ -191,7 +190,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
             for (final FileItem fileItem : fileItemList) {
 
                 //personnalisation des labels dans les fileItems par procedure
-                FileTypeStep fileTypeStep = null;
+                FileTypeStep fileTypeStep;
 
                 fileTypeStep = fileTypeStepDao
                         .findFileTypeStepByFileTypeAndStep(fileItem.getFile().getFileType(), fileItem.getStep());
@@ -279,7 +278,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
                 final boolean assignedUserAllowed = assignedUser == null
                         // logged user == assigned user
                         || (assignedUser != null && SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(
-                                assignedUser.getId()))
+                        assignedUser.getId()))
                         // logged user != assigned user AND role of logged user != role of assigned user  AND l'aasignedUser have not an authority on step authorities
                         || (assignedUser != null
                         && !SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(assignedUser.getId())
@@ -296,9 +295,12 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
             FileTypeStep fileTypeStep;
 
             fileTypeStep = fileTypeStepDao.findFileTypeStepByFileTypeAndStep(fileItem.getFile().getFileType(), fileItem.getStep());
-            if (fileTypeStep != null && fileTypeStep.getLabelFr() != null) {
+            if (fileTypeStep != null) {
                 fileItem.setRedefinedLabelEn((fileTypeStep.getLabelEn()));
                 fileItem.setRedefinedLabelFr((fileTypeStep.getLabelFr()));
+            } else {
+                fileItem.setRedefinedLabelEn(fileItem.getStep().getLabelEn());
+                fileItem.setRedefinedLabelFr(fileItem.getStep().getLabelFr());
             }
 
         }
@@ -309,6 +311,11 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
     /**
      * (non-Javadoc)
      *
+     * @param bureaus
+     * @param loggedUser
+     * @param informationSystemCode
+     * @param listUserAuthorityFileTypes
+     * @return
      * @see
      * org.guce.siat.common.service.FileItemService#findFilesByServiceAndAuthoritiesAndFileType(java.util.List,
      * org.guce.siat.common.model.User,
@@ -381,7 +388,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
                 final boolean assignedUserAllowed = assignedUser == null
                         // logged user == assigned user
                         || (assignedUser != null && SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(
-                                assignedUser.getId()))
+                        assignedUser.getId()))
                         // logged user != assigned user AND role of logged user != role of assigned user  AND l'aasignedUser have not an authority on step authorities
                         || (assignedUser != null
                         && !SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(assignedUser.getId())
@@ -439,28 +446,36 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
     public List<FileItem> findFileItemForRetreiveByFilter(final List<Bureau> bureaus, final User loggedUser,
             final InformationSystemCode informationSystemCode, final List<UserAuthorityFileType> listUserAuthorityFileTypes,
             final RetrieveSearchFilter filter, final StepCode acceptationStep) {
-        List<FileItem> fileItemsWithoutDraft = new ArrayList<FileItem>();
-        List<FileTypeCode> fileTypeCodeList = new ArrayList<FileTypeCode>();
+        List<FileItem> fileItemsWithoutDraft;
+        List<FileTypeCode> fileTypeCodeList = new ArrayList<>();
 
         if (filter.getFileType() == null) {
-            if (InformationSystemCode.AP.equals(informationSystemCode)) {
-                fileTypeCodeList.addAll(FILETYPE_AP_CODE_LIST);
-            } else if (InformationSystemCode.CO.equals(informationSystemCode)) {
-                fileTypeCodeList.addAll(FILETYPE_CO_CODE_LIST);
-            } else if (InformationSystemCode.SF.equals(informationSystemCode)) {
-                fileTypeCodeList.addAll(FILETYPE_SF_CODE_LIST);
-            } else if (InformationSystemCode.CC.equals(informationSystemCode)) {
-                fileTypeCodeList.addAll(FILETYPE_CC_CODE_LIST);
+            if (null != informationSystemCode) {
+                switch (informationSystemCode) {
+                    case AP:
+                        fileTypeCodeList.addAll(FILETYPE_AP_CODE_LIST);
+                        break;
+                    case CO:
+                        fileTypeCodeList.addAll(FILETYPE_CO_CODE_LIST);
+                        break;
+                    case SF:
+                        fileTypeCodeList.addAll(FILETYPE_SF_CODE_LIST);
+                        break;
+                    case CC:
+                        fileTypeCodeList.addAll(FILETYPE_CC_CODE_LIST);
+                        break;
+                    default:
+                        break;
+                }
             }
         } else {
-            fileTypeCodeList = new ArrayList<FileTypeCode>();
+            fileTypeCodeList = new ArrayList<>();
             fileTypeCodeList.add(filter.getFileType().getCode());
         }
 
-        fileItemsWithoutDraft = fileItemDao.findFileItemForRetreiveByFilter(bureaus, loggedUser, fileTypeCodeList, acceptationStep,
-                filter);
+        fileItemsWithoutDraft = fileItemDao.findFileItemForRetreiveByFilter(bureaus, loggedUser, fileTypeCodeList, acceptationStep, filter);
 
-        final List<FileItem> returnFileItems = new ArrayList<FileItem>();
+        final List<FileItem> returnFileItems = new ArrayList<>();
 
         for (final FileItem fileItem : fileItemsWithoutDraft) {
             final FileType fileType = fileItem.getFile().getFileType();
@@ -473,7 +488,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
 
                 if (loggedUserHasAuthorityOnFileType && userHasRoleOnFileItemStep) {
                     //personnalisation des labels dans les fileItems par procedure
-                    FileTypeStep fileTypeStep = null;
+                    FileTypeStep fileTypeStep;
 
                     fileTypeStep = fileTypeStepDao.findFileTypeStepByFileTypeAndStep(fileItem.getFile().getFileType(), fileItem.getStep());
                     if (fileTypeStep != null && fileTypeStep.getLabelFr() != null) {
@@ -501,4 +516,3 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
 
     }
 }
-

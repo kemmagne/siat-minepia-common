@@ -8,12 +8,14 @@ import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Params;
+import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.Transfer;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.AuthorityConstants;
 import org.guce.siat.common.utils.enums.AuthorityType;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.ParamsCategory;
+import org.guce.siat.common.utils.enums.StepCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class TestDataBuilder {
 
     @Autowired
+    private StepDao stepDao;
+    @Autowired
     private FileTypeDao fileTypeDao;
+    @Autowired
+    private FileTypeStepDao fileTypeStepDao;
     @Autowired
     private TransferDao transferDao;
     @Autowired
@@ -65,6 +71,14 @@ public class TestDataBuilder {
         user.setAdministration(getAdministration());
         user.setEnabled(true);
         return userDao.save(user);
+    }
+
+    public Step getStep() {
+        Step step = new Step(StepCode.ST_CO_42);
+        step.setIsFinal(Boolean.FALSE);
+        step.setLabelEn(RandomStringUtils.randomAlphabetic(35));
+        step.setLabelFr(RandomStringUtils.randomAlphabetic(35));
+        return stepDao.save(step);
     }
 
     public FileType getFileType() {
@@ -146,6 +160,14 @@ public class TestDataBuilder {
 
     public FileTypeDao getFileTypeDao() {
         return fileTypeDao;
+    }
+
+    public StepDao getStepDao() {
+        return stepDao;
+    }
+
+    public FileTypeStepDao getFileTypeStepDao() {
+        return fileTypeStepDao;
     }
 
 }
