@@ -622,6 +622,25 @@ public final class Constants {
      * The Constant INIT_LOG_INFO_MESSAGE.
      */
     public static final String INIT_LOG_INFO_MESSAGE = "Init {}";
+    /**
+     * The Constant FILE_EXIST.
+     */
+    public static final String INIT_LOG_FILE_EXIST = "File_ALREADY_EXIST {}"; 
+	
+	/**
+     * The Constant FOR GLOBAL STAMP CHOICE.
+     */
+    public static final String CHOICE_GLOBAL_STAMP = "CHOICE_GLOBAL_STAMP";
+	
+	/**
+     * The Constant FOR GLOBAL STAMP.
+     */
+    public static final String CHOICE_GLOBAL_URL_STAMP = "CHOICE_GLOBAL_URL_STAMP";
+	
+	/**
+     * The Constant FOR VALUE OF GLOBAL STAMP CHOICE.
+     */
+    public static final String VALUE_CHOICE_GLOBAL_STAMP = "NON";
 
     /**
      * The Constant PAYS_ORIGINE_CODE.
@@ -636,7 +655,20 @@ public final class Constants {
     /**
      * The Constant MODELE.
      */
-    public static final String MODELE = "MODELE";
+    public static final String MODELE = "MODELE";  
+	/**
+     * The Constant SIGNATURE.
+     */
+    public static final String SIGNATURE = "SIGNATURE";   
+	/**
+     * The Constant CACHET.
+     */
+    public static final String STAMP = "STAMP";
+	
+	/**
+     * The Constant CACHET UNIQUE.
+     */
+    public static final String UNIQUE_STAMP = "UNIQUE_STAMP";
 
     /**
      * The Constant FABRICANT.

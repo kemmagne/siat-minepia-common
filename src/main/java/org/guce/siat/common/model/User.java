@@ -88,6 +88,18 @@ public class User extends AbstractModel implements Serializable {
      */
     @Column(name = "TELEPHONE")
     private String telephone;
+	
+	 /**
+     * The path of the signature of user .
+     */
+    @Column(name = "SIGNATURE")
+    private String signatureUrl;    
+	
+	/**
+     * The path of the stamp of user.
+     */
+    @Column(name = "STAMP")
+    private String stampUrl;
 
     /**
      * The email.
@@ -591,6 +603,44 @@ public class User extends AbstractModel implements Serializable {
     public void setTheme(final Theme theme) {
         this.theme = theme;
     }
+	
+	/**
+     * Gets the Url of the signature.
+     *
+     * @return the signatureUrl
+     */
+    public String getSignatureUrl() {
+        return signatureUrl;
+    }
+
+    /**
+     * Sets the url of the signature.
+     *
+     * @param signatureUrl the signatureUrl to set
+     */
+    public void setSignatureUrl(String signatureUrl) {
+        this.signatureUrl = signatureUrl;
+    }
+	
+	
+	/**
+     * Gets the stamp.
+     *
+     * @return the stamp
+     */
+    public String getStampUrl() {
+        return stampUrl;
+    }
+
+    /**
+     * Sets the url of the stamp.
+     *
+     * @param stampUrl the stampUrl to set
+     */
+    public void setStampUrl(String stampUrl) {
+        this.stampUrl = stampUrl;
+    }
+	
 
     /**
      * Gets the user authority list.
@@ -918,6 +968,10 @@ public class User extends AbstractModel implements Serializable {
         builder.append(email);
         builder.append(", position=");
         builder.append(position);
+        builder.append(", signature=");
+        builder.append(signatureUrl);
+        builder.append(", stamp=");
+        builder.append(stampUrl);
         builder.append("]");
         return builder.toString();
     }
