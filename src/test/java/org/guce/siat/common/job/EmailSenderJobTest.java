@@ -2,6 +2,7 @@ package org.guce.siat.common.job;
 
 import java.io.File;
 import java.io.IOException;
+import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,7 +10,7 @@ import org.junit.Test;
  *
  * @author ht
  */
-public class EmailSenderJobTest {
+public class EmailSenderJobTest extends TestCase {
 
     @Test
     public void testMoveFileFileExists() throws IOException {

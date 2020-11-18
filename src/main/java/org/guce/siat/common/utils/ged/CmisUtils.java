@@ -76,11 +76,9 @@ public final class CmisUtils {
      * @param pathFolder the path folder
      * @return true, if successful
      */
-    public static boolean deleteDocument(List<String> files, String connectionName, String userNameRepo,
-            String pwdRepo, String ipRepo, String urlAtomRepo, String idRepo, String pathFolder) {
+    public static boolean deleteDocument(List<String> files, String connectionName, String userNameRepo, String pwdRepo, String ipRepo, String urlAtomRepo, String idRepo, String pathFolder) {
         CmisClient cmisClient = new CmisClient();
-        Session sessionCmisClient = cmisClient
-                .getSession(connectionName, userNameRepo, pwdRepo, ipRepo + urlAtomRepo, idRepo);
+        Session sessionCmisClient = cmisClient.getSession(connectionName, userNameRepo, pwdRepo, ipRepo + urlAtomRepo, idRepo);
         Folder folder = (Folder) sessionCmisClient.getObjectByPath(pathFolder);
         for (String delDocName : files) {
             try {
@@ -94,7 +92,6 @@ public final class CmisUtils {
             }
         }
         return true;
-
     }
 
     /**
@@ -118,7 +115,6 @@ public final class CmisUtils {
             }
         }
         return true;
-
     }
 
     /**
@@ -165,7 +161,6 @@ public final class CmisUtils {
      * @return the root folder
      */
     public static Folder getRootFolder(Session sessionCmisClient, String pathFolder) {
-
         return (Folder) sessionCmisClient.getObjectByPath(pathFolder);
     }
 }

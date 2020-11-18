@@ -40,7 +40,9 @@ import org.apache.chemistry.opencmis.commons.enums.PropertyType;
 import org.apache.chemistry.opencmis.commons.enums.VersioningState;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisUnauthorizedException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.guce.siat.common.model.Attachment;
 import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.DateUtils;
 import org.slf4j.Logger;
@@ -428,6 +430,26 @@ public class CmisClient {
             LOGGER.error(confe.getMessage(), confe);
             return null;
         }
+    }
+
+    public static Map<String, byte[]> extractAttachments(org.guce.siat.common.model.File file) {
+
+        Map<String, byte[]> attachments = new HashMap<>();
+
+        for (Attachment attachment : file.getAttachmentsList()) {
+            ContentStream contentStream = getDocumentByPath(CmisSession.getInstance(),
+                    attachment.getPath().concat(AlfrescoDirectoriesInitializer.SLASH).concat(attachment.getDocumentName()));
+            if (contentStream == null) {
+                continue;
+            }
+            try {
+                attachments.put(attachment.getDocumentName(), IOUtils.toByteArray(contentStream.getStream()));
+            } catch (IOException ex) {
+                LOGGER.error(ex.getMessage(), ex);
+            }
+        }
+
+        return attachments;
     }
 
     /**
