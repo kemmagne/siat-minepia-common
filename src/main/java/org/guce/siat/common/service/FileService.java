@@ -103,4 +103,20 @@ public interface FileService extends AbstractService<File> {
 
     List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType);
 
+    /**
+     * Find by num dossier guce.
+     *
+     * @param refGuce the ref guce
+     * @return the file
+     */
+    File findByNumDossierGuce(String refGuce);
+
+    /**
+     * Find by ref siat.
+     *
+     * @param refSiat the ref siat
+     * @return the file
+     */
+    File findByRefSiat(String refSiat);
+
 }

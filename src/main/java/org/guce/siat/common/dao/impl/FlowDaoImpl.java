@@ -254,6 +254,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
     public Flow findCiResponseFlow(final String flowSiatCode) {
         FlowCode flowCode = FlowCode.valueOf(flowSiatCode);
         switch (flowCode) {
+            //AP
             case FL_AP_86: {
                 return findFlowByCode(FlowCode.FL_AP_154.name());
             }
@@ -349,6 +350,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             case FL_AM_118: {
                 return findFlowByCode(FlowCode.FL_AM_146.name());
             }
+
             // CCT
             case FL_CT_02: {
                 return findFlowByCode(FlowCode.FL_CT_03.name());
@@ -395,19 +397,26 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             case FL_CT_155: {
                 return findFlowByCode(FlowCode.FL_CT_156.name());
             }
+            case FL_CT_146: {
+                return findFlowByCode(FlowCode.FL_CT_147.name());
+            }
+            case FL_CT_148: {
+                return findFlowByCode(FlowCode.FL_CT_130.name());
+            }
 
             // FT
             case FL_FT_86: {
                 return findFlowByCode(FlowCode.FL_FT_154.name());
             }
-            // SF
 
+            // SF
             case FL_SF_86: {
                 return findFlowByCode(FlowCode.FL_SF_154.name());
             }
             case FL_SF_113: {
                 return findFlowByCode(FlowCode.FL_SF_141.name());
             }
+
             // CC
             case FL_CC_86: {
                 return findFlowByCode(FlowCode.FL_CC_154.name());
@@ -418,12 +427,8 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             case FL_CC_160: {
                 return findFlowByCode(FlowCode.FL_CC_161.name());
             }
-            case FL_CT_146: {
-                return findFlowByCode(FlowCode.FL_CT_147.name());
-            }
-            case FL_CT_148: {
-                return findFlowByCode(FlowCode.FL_CT_130.name());
-            }
+
+            //
             default:
                 return null;
         }

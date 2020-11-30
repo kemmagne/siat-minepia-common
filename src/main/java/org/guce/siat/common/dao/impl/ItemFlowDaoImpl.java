@@ -46,7 +46,6 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
      * Instantiates a new item flow dao impl.
      */
     public ItemFlowDaoImpl() {
-        super();
         setClasse(ItemFlow.class);
     }
 
