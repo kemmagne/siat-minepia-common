@@ -39,941 +39,939 @@ import org.guce.siat.common.utils.enums.Theme;
  */
 @javax.persistence.Entity
 @Table(name = "USERS", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"LOGIN", "ENABLED", "DELETED"})}
+	@UniqueConstraint(columnNames = {"LOGIN", "ENABLED", "DELETED"})}
 )
 @XmlRootElement
 public class User extends AbstractModel implements Serializable {
 
-    /**
-     * The Constant serialVersionUID.
-     */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * The id.
-     */
-    @Id
-    @Basic(optional = false)
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
-    @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
-    private Long id;
-
-    /**
-     * The login.
-     */
-    @Column(name = "LOGIN")
-    private String login;
-
-    /**
-     * The first name.
-     */
-    @Column(name = "FIRST_NAME")
-    private String firstName;
-
-    /**
-     * The last name.
-     */
-    @Column(name = "LAST_NAME")
-    private String lastName;
-
-    /**
-     * The password.
-     */
-    @Column(name = "PASSWORD")
-    private String password;
-
-    /**
-     * The telephone.
-     */
-    @Column(name = "TELEPHONE")
-    private String telephone;
-	
-	 /**
-     * The path of the signature of user .
-     */
-    @Column(name = "SIGNATURE")
-    private String signatureUrl;    
-	
 	/**
-     * The path of the stamp of user.
-     */
-    @Column(name = "STAMP")
-    private String stampUrl;
+	 * The Constant serialVersionUID.
+	 */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * The email.
-     */
-    @Column(name = "EMAIL")
-    private String email;
+	/**
+	 * The id.
+	 */
+	@Id
+	@Basic(optional = false)
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
+	@SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
+	private Long id;
 
-    /**
-     * The prefered language.
-     */
-    @Column(name = "PREFERED_LANGUAGE")
-    private String preferedLanguage;
+	/**
+	 * The login.
+	 */
+	@Column(name = "LOGIN")
+	private String login;
 
-    /**
-     * The enabled.
-     */
-    @Column(name = "ENABLED")
-    private boolean enabled;
+	/**
+	 * The first name.
+	 */
+	@Column(name = "FIRST_NAME")
+	private String firstName;
 
-    /**
-     * The first login.
-     */
-    @Column(name = "FIRST_LOGIN")
-    private boolean firstLogin;
+	/**
+	 * The last name.
+	 */
+	@Column(name = "LAST_NAME")
+	private String lastName;
 
-    /**
-     * The deleted.
-     */
-    @Column(name = "DELETED")
-    private boolean deleted;
+	/**
+	 * The password.
+	 */
+	@Column(name = "PASSWORD")
+	private String password;
 
-    /**
-     * The account non expired.
-     */
-    @Column(name = "ACCOUNT_NON_EXPIRED")
-    private boolean accountNonExpired;
+	/**
+	 * The telephone.
+	 */
+	@Column(name = "TELEPHONE")
+	private String telephone;
 
-    /**
-     * The account non locked.
-     */
-    @Column(name = "ACCOUNT_NON_LOCKED")
-    private boolean accountNonLocked;
+	/**
+	 * The path of the signature of user .
+	 */
+	@Column(name = "SIGNATURE")
+	private String signatureLocation;
 
-    /**
-     * The credentials non expired.
-     */
-    @Column(name = "CREDENTIALS_NON_EXPIRED")
-    private boolean credentialsNonExpired;
+	/**
+	 * The path of the stamp of user.
+	 */
+	@Column(name = "STAMP")
+	private String stampLocation;
 
-    /**
-     * The attempts.
-     */
-    @Column(name = "ATTEMPTS")
-    private Integer attempts;
+	/**
+	 * The email.
+	 */
+	@Column(name = "EMAIL")
+	private String email;
 
-    /**
-     * The last attempts time.
-     */
-    @Column(name = "LAST_ATTEMPTS_TIME")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastAttemptsTime;
+	/**
+	 * The prefered language.
+	 */
+	@Column(name = "PREFERED_LANGUAGE")
+	private String preferedLanguage;
 
-    /**
-     * The position.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "POSITION")
-    private PositionType position;
+	/**
+	 * The enabled.
+	 */
+	@Column(name = "ENABLED")
+	private boolean enabled;
 
-    /**
-     * The theme.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "THEME")
-    private Theme theme;
+	/**
+	 * The first login.
+	 */
+	@Column(name = "FIRST_LOGIN")
+	private boolean firstLogin;
 
-    /**
-     * The administration.
-     */
-    @ManyToOne
-    @JoinColumn(name = "ADMINISTRATION_ID", referencedColumnName = "id")
-    private Administration administration;
+	/**
+	 * The deleted.
+	 */
+	@Column(name = "DELETED")
+	private boolean deleted;
 
-    /**
-     * The administration.
-     */
-    @ManyToOne
-    @JoinColumn(name = "ADMINISTRATION_EXTEND_ROLES", referencedColumnName = "id")
-    private Administration administrationExtendRoles;
+	/**
+	 * The account non expired.
+	 */
+	@Column(name = "ACCOUNT_NON_EXPIRED")
+	private boolean accountNonExpired;
 
-    /**
-     * The user authority list.
-     */
-    @OneToMany(mappedBy = "user")
-    private List<UserAuthority> userAuthorityList;
+	/**
+	 * The account non locked.
+	 */
+	@Column(name = "ACCOUNT_NON_LOCKED")
+	private boolean accountNonLocked;
 
-    @OneToMany(mappedBy = "assignedUser")
-    private List<Transfer> transfersList;
+	/**
+	 * The credentials non expired.
+	 */
+	@Column(name = "CREDENTIALS_NON_EXPIRED")
+	private boolean credentialsNonExpired;
 
-    /**
-     * The authorities string.
-     */
-    @Transient
-    private String authoritiesString;
+	/**
+	 * The attempts.
+	 */
+	@Column(name = "ATTEMPTS")
+	private Integer attempts;
 
-    /**
-     * The authorities.
-     */
-    @Transient
-    private Collection<Authority> authorities;
+	/**
+	 * The last attempts time.
+	 */
+	@Column(name = "LAST_ATTEMPTS_TIME")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastAttemptsTime;
 
-    /**
-     * The authorities list.
-     */
-    @Transient
-    private List<String> authoritiesList;
+	/**
+	 * The position.
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name = "POSITION")
+	private PositionType position;
 
-    /**
-     * The delegated authority list.
-     */
-    @Transient
-    private List<Authority> delegatedAuthorityList;
+	/**
+	 * The theme.
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name = "THEME")
+	private Theme theme;
 
-    /**
-     * The combined authorities : user authorities with their delegated
-     * authorities.
-     */
-    @Transient
-    private List<Authority> mergedAuthoritiesList;
+	/**
+	 * The administration.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "ADMINISTRATION_ID", referencedColumnName = "id")
+	private Administration administration;
 
-    /**
-     * The delegator list.
-     */
-    @Transient
-    private List<User> delegatorList;
+	/**
+	 * The administration.
+	 */
+	@ManyToOne
+	@JoinColumn(name = "ADMINISTRATION_EXTEND_ROLES", referencedColumnName = "id")
+	private Administration administrationExtendRoles;
 
-    /**
-     * The merged delegator list.
-     */
-    @Transient
-    private List<User> mergedDelegatorList;
+	/**
+	 * The user authority list.
+	 */
+	@OneToMany(mappedBy = "user")
+	private List<UserAuthority> userAuthorityList;
 
-    /**
-     * The delegated user authority list.
-     */
-    @Transient
-    private List<UserAuthority> delegatedUserAuthorityList;
+	@OneToMany(mappedBy = "assignedUser")
+	private List<Transfer> transfersList;
 
-    /**
-     * The merged user authority list.
-     */
-    @Transient
-    private List<UserAuthority> mergedUserAuthorityList;
+	/**
+	 * The authorities string.
+	 */
+	@Transient
+	private String authoritiesString;
 
-    /**
-     * Instantiates a new user.
-     */
-    public User() {
-    }
+	/**
+	 * The authorities.
+	 */
+	@Transient
+	private Collection<Authority> authorities;
 
-    /*
+	/**
+	 * The authorities list.
+	 */
+	@Transient
+	private List<String> authoritiesList;
+
+	/**
+	 * The delegated authority list.
+	 */
+	@Transient
+	private List<Authority> delegatedAuthorityList;
+
+	/**
+	 * The combined authorities : user authorities with their delegated
+	 * authorities.
+	 */
+	@Transient
+	private List<Authority> mergedAuthoritiesList;
+
+	/**
+	 * The delegator list.
+	 */
+	@Transient
+	private List<User> delegatorList;
+
+	/**
+	 * The merged delegator list.
+	 */
+	@Transient
+	private List<User> mergedDelegatorList;
+
+	/**
+	 * The delegated user authority list.
+	 */
+	@Transient
+	private List<UserAuthority> delegatedUserAuthorityList;
+
+	/**
+	 * The merged user authority list.
+	 */
+	@Transient
+	private List<UserAuthority> mergedUserAuthorityList;
+
+	/**
+	 * Instantiates a new user.
+	 */
+	public User() {
+	}
+
+	/*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.model.AbstractModel#getId()
-     */
-    @Override
-    public Long getId() {
-        return id;
-    }
+	 */
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-    /*
+	/*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.model.AbstractModel#setId(java.lang.Long)
-     */
-    @Override
-    public void setId(final Long id) {
-        this.id = id;
-    }
+	 */
+	@Override
+	public void setId(final Long id) {
+		this.id = id;
+	}
 
-    /**
-     * Gets the login.
-     *
-     * @return the login
-     */
-    public String getLogin() {
-        return login;
-    }
-
-    /**
-     * Sets the login.
-     *
-     * @param login the new login
-     */
-    public void setLogin(final String login) {
-        this.login = login;
-    }
-
-    /**
-     * Gets the first name.
-     *
-     * @return the first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Sets the first name.
-     *
-     * @param firstName the new first name
-     */
-    public void setFirstName(final String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Gets the last name.
-     *
-     * @return the last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Sets the last name.
-     *
-     * @param lastName the new last name
-     */
-    public void setLastName(final String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * Gets the password.
-     *
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets the password.
-     *
-     * @param password the new password
-     */
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
-    /**
-     * Gets the telephone.
-     *
-     * @return the telephone
-     */
-    public String getTelephone() {
-        return telephone;
-    }
-
-    /**
-     * Sets the telephone.
-     *
-     * @param telephone the new telephone
-     */
-    public void setTelephone(final String telephone) {
-        this.telephone = telephone;
-    }
-
-    /**
-     * Gets the email.
-     *
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Sets the email.
-     *
-     * @param email the new email
-     */
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets the prefered language.
-     *
-     * @return the prefered language
-     */
-    public String getPreferedLanguage() {
-        return preferedLanguage;
-    }
-
-    /**
-     * Sets the prefered language.
-     *
-     * @param preferedLanguage the new prefered language
-     */
-    public void setPreferedLanguage(final String preferedLanguage) {
-        this.preferedLanguage = preferedLanguage;
-    }
-
-    /**
-     * Gets the enabled.
-     *
-     * @return the enabled
-     */
-    public boolean getEnabled() {
-        return enabled;
-    }
-
-    /**
-     * Sets the enabled.
-     *
-     * @param enabled the new enabled
-     */
-    public void setEnabled(final boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    /**
-     * Gets the first login.
-     *
-     * @return the first login
-     */
-    public boolean getFirstLogin() {
-        return firstLogin;
-    }
-
-    /**
-     * Sets the first login.
-     *
-     * @param firstLogin the new first login
-     */
-    public void setFirstLogin(final boolean firstLogin) {
-        this.firstLogin = firstLogin;
-    }
-
-    /**
-     * Gets the deleted.
-     *
-     * @return the deleted
-     */
-    public boolean getDeleted() {
-        return deleted;
-    }
-
-    /**
-     * Sets the deleted.
-     *
-     * @param deleted the new deleted
-     */
-    public void setDeleted(final boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    /**
-     * Gets the account non expired.
-     *
-     * @return the accountNonExpired
-     */
-    public boolean getAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    /**
-     * Sets the account non expired.
-     *
-     * @param accountNonExpired the accountNonExpired to set
-     */
-    public void setAccountNonExpired(final boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    /**
-     * Gets the account non locked.
-     *
-     * @return the accountNonLocked
-     */
-    public boolean getAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    /**
-     * Sets the account non locked.
-     *
-     * @param accountNonLocked the accountNonLocked to set
-     */
-    public void setAccountNonLocked(final boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    /**
-     * Gets the credentials non expired.
-     *
-     * @return the credentialsNonExpired
-     */
-    public boolean getCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    /**
-     * Sets the credentials non expired.
-     *
-     * @param credentialsNonExpired the credentialsNonExpired to set
-     */
-    public void setCredentialsNonExpired(final boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-    }
-
-    /**
-     * Gets the attempts.
-     *
-     * @return the attempts
-     */
-    public Integer getAttempts() {
-        return attempts;
-    }
-
-    /**
-     * Sets the attempts.
-     *
-     * @param attempts the new attempts
-     */
-    public void setAttempts(final Integer attempts) {
-        this.attempts = attempts;
-    }
-
-    /**
-     * Gets the last attempts time.
-     *
-     * @return the last attempts time
-     */
-    public Date getLastAttemptsTime() {
-        return lastAttemptsTime;
-    }
-
-    /**
-     * Sets the last attempts time.
-     *
-     * @param lastAttemptsTime the new last attempts time
-     */
-    public void setLastAttemptsTime(final Date lastAttemptsTime) {
-        this.lastAttemptsTime = lastAttemptsTime;
-    }
-
-    /**
-     * Gets the administration.
-     *
-     * @return the administration
-     */
-    public Administration getAdministration() {
-        return administration;
-    }
-
-    /**
-     * Sets the administration.
-     *
-     * @param administration the new administration
-     */
-    public void setAdministration(final Administration administration) {
-        this.administration = administration;
-    }
-
-    /**
-     * Gets the position.
-     *
-     * @return the position
-     */
-    public PositionType getPosition() {
-        return position;
-    }
-
-    /**
-     * Sets the position.
-     *
-     * @param position the new position
-     */
-    public void setPosition(final PositionType position) {
-        this.position = position;
-    }
-
-    /**
-     * Gets the theme.
-     *
-     * @return the theme
-     */
-    public Theme getTheme() {
-        return theme;
-    }
-
-    /**
-     * Sets the theme.
-     *
-     * @param theme the theme to set
-     */
-    public void setTheme(final Theme theme) {
-        this.theme = theme;
-    }
-	
 	/**
-     * Gets the Url of the signature.
-     *
-     * @return the signatureUrl
-     */
-    public String getSignatureUrl() {
-        return signatureUrl;
-    }
+	 * Gets the login.
+	 *
+	 * @return the login
+	 */
+	public String getLogin() {
+		return login;
+	}
 
-    /**
-     * Sets the url of the signature.
-     *
-     * @param signatureUrl the signatureUrl to set
-     */
-    public void setSignatureUrl(String signatureUrl) {
-        this.signatureUrl = signatureUrl;
-    }
-	
-	
 	/**
-     * Gets the stamp.
-     *
-     * @return the stamp
-     */
-    public String getStampUrl() {
-        return stampUrl;
-    }
+	 * Sets the login.
+	 *
+	 * @param login the new login
+	 */
+	public void setLogin(final String login) {
+		this.login = login;
+	}
 
-    /**
-     * Sets the url of the stamp.
-     *
-     * @param stampUrl the stampUrl to set
-     */
-    public void setStampUrl(String stampUrl) {
-        this.stampUrl = stampUrl;
-    }
-	
+	/**
+	 * Gets the first name.
+	 *
+	 * @return the first name
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
 
-    /**
-     * Gets the user authority list.
-     *
-     * @return the user authority list
-     */
-    public List<UserAuthority> getUserAuthorityList() {
-        return userAuthorityList;
-    }
+	/**
+	 * Sets the first name.
+	 *
+	 * @param firstName the new first name
+	 */
+	public void setFirstName(final String firstName) {
+		this.firstName = firstName;
+	}
 
-    /**
-     * Sets the user authority list.
-     *
-     * @param userAuthorityList the new user authority list
-     */
-    public void setUserAuthorityList(final List<UserAuthority> userAuthorityList) {
-        this.userAuthorityList = userAuthorityList;
-    }
+	/**
+	 * Gets the last name.
+	 *
+	 * @return the last name
+	 */
+	public String getLastName() {
+		return lastName;
+	}
 
-    public List<Transfer> getTransfersList() {
-        return transfersList;
-    }
+	/**
+	 * Sets the last name.
+	 *
+	 * @param lastName the new last name
+	 */
+	public void setLastName(final String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setTransfersList(List<Transfer> transfersList) {
-        this.transfersList = transfersList;
-    }
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
 
-    /**
-     * Gets the authorities string.
-     *
-     * @return the authoritiesString
-     */
-    public String getAuthoritiesString() {
-        if (StringUtils.isEmpty(authoritiesString)) {
-            authoritiesString = Constants.EMPTY_STRING;
+	/**
+	 * Sets the password.
+	 *
+	 * @param password the new password
+	 */
+	public void setPassword(final String password) {
+		this.password = password;
+	}
 
-            if (userAuthorityList != null) {
-                for (final UserAuthority userAuthority : userAuthorityList) {
-                    authoritiesString += userAuthority.getAuthority() + ", ";
-                }
-            }
-        }
+	/**
+	 * Gets the telephone.
+	 *
+	 * @return the telephone
+	 */
+	public String getTelephone() {
+		return telephone;
+	}
 
-        return authoritiesString;
-    }
+	/**
+	 * Sets the telephone.
+	 *
+	 * @param telephone the new telephone
+	 */
+	public void setTelephone(final String telephone) {
+		this.telephone = telephone;
+	}
 
-    /**
-     * Sets the authorities string.
-     *
-     * @param authoritiesString the authoritiesString to set
-     */
-    public void setAuthoritiesString(final String authoritiesString) {
-        this.authoritiesString = authoritiesString;
-    }
+	/**
+	 * Gets the email.
+	 *
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
 
-    /**
-     * Gets the authorities.
-     *
-     * @return the authorities
-     */
-    public Collection<Authority> getAuthorities() {
-        authorities = new HashSet<>();
+	/**
+	 * Sets the email.
+	 *
+	 * @param email the new email
+	 */
+	public void setEmail(final String email) {
+		this.email = email;
+	}
 
-        if (CollectionUtils.isNotEmpty(userAuthorityList)) {
-            for (final UserAuthority userAuthority : userAuthorityList) {
-                authorities.add(userAuthority.getAuthorityGranted());
-            }
-        }
-        return authorities;
-    }
+	/**
+	 * Gets the prefered language.
+	 *
+	 * @return the prefered language
+	 */
+	public String getPreferedLanguage() {
+		return preferedLanguage;
+	}
 
-    /**
-     * Sets the authorities.
-     *
-     * @param authorities the authorities to set
-     */
-    public void setAuthorities(final Collection<Authority> authorities) {
-        this.authorities = authorities;
-    }
+	/**
+	 * Sets the prefered language.
+	 *
+	 * @param preferedLanguage the new prefered language
+	 */
+	public void setPreferedLanguage(final String preferedLanguage) {
+		this.preferedLanguage = preferedLanguage;
+	}
 
-    /**
-     * Gets the authorities list.
-     *
-     * @return the authoritiesList
-     */
-    @SuppressWarnings("unchecked")
-    public List<String> getAuthoritiesList() {
-        if (CollectionUtils.isEmpty(authoritiesList)) {
-            authoritiesList = (List<String>) CollectionUtils.collect(userAuthorityList, new Transformer() {
-                @Override
-                public Object transform(final Object userAuthoriy) {
-                    return ((UserAuthority) userAuthoriy).getAuthorityGranted().getRole();
-                }
-            });
-        }
+	/**
+	 * Gets the enabled.
+	 *
+	 * @return the enabled
+	 */
+	public boolean getEnabled() {
+		return enabled;
+	}
 
-        return authoritiesList;
-    }
+	/**
+	 * Sets the enabled.
+	 *
+	 * @param enabled the new enabled
+	 */
+	public void setEnabled(final boolean enabled) {
+		this.enabled = enabled;
+	}
 
-    /**
-     * Sets the authorities list.
-     *
-     * @param authoritiesList the authoritiesList to set
-     */
-    public void setAuthoritiesList(final List<String> authoritiesList) {
-        this.authoritiesList = authoritiesList;
-    }
+	/**
+	 * Gets the first login.
+	 *
+	 * @return the first login
+	 */
+	public boolean getFirstLogin() {
+		return firstLogin;
+	}
 
-    /**
-     * Gets the delegated authority list.
-     *
-     * @return the delegatedAuthorityList
-     */
-    public List<Authority> getDelegatedAuthorityList() {
-        return delegatedAuthorityList;
-    }
+	/**
+	 * Sets the first login.
+	 *
+	 * @param firstLogin the new first login
+	 */
+	public void setFirstLogin(final boolean firstLogin) {
+		this.firstLogin = firstLogin;
+	}
 
-    /**
-     * Sets the delegated authority list.
-     *
-     * @param delegatedAuthorityList the delegatedAuthorityList to set
-     */
-    public void setDelegatedAuthorityList(final List<Authority> delegatedAuthorityList) {
-        this.delegatedAuthorityList = delegatedAuthorityList;
-    }
+	/**
+	 * Gets the deleted.
+	 *
+	 * @return the deleted
+	 */
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    /**
-     * Gets the merged authorities list.
-     *
-     * @return the mergedAuthoritiesList
-     */
-    public List<Authority> getMergedAuthoritiesList() {
-        if (CollectionUtils.isEmpty(mergedAuthoritiesList)) {
-            final Set<Authority> authoritiesSet = new HashSet<>();
+	/**
+	 * Sets the deleted.
+	 *
+	 * @param deleted the new deleted
+	 */
+	public void setDeleted(final boolean deleted) {
+		this.deleted = deleted;
+	}
 
-            authoritiesSet.addAll(this.getAuthorities());
+	/**
+	 * Gets the account non expired.
+	 *
+	 * @return the accountNonExpired
+	 */
+	public boolean getAccountNonExpired() {
+		return accountNonExpired;
+	}
 
-            if (this.getDelegatedAuthorityList() != null) {
-                authoritiesSet.addAll(this.getDelegatedAuthorityList());
-            }
+	/**
+	 * Sets the account non expired.
+	 *
+	 * @param accountNonExpired the accountNonExpired to set
+	 */
+	public void setAccountNonExpired(final boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
 
-            mergedAuthoritiesList = new ArrayList<>(authoritiesSet);
-        }
+	/**
+	 * Gets the account non locked.
+	 *
+	 * @return the accountNonLocked
+	 */
+	public boolean getAccountNonLocked() {
+		return accountNonLocked;
+	}
 
-        return mergedAuthoritiesList;
-    }
+	/**
+	 * Sets the account non locked.
+	 *
+	 * @param accountNonLocked the accountNonLocked to set
+	 */
+	public void setAccountNonLocked(final boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
 
-    /**
-     * Sets the merged authorities list.
-     *
-     * @param mergedAuthoritiesList the mergedAuthoritiesList to set
-     */
-    public void setMergedAuthoritiesList(final List<Authority> mergedAuthoritiesList) {
-        this.mergedAuthoritiesList = mergedAuthoritiesList;
-    }
+	/**
+	 * Gets the credentials non expired.
+	 *
+	 * @return the credentialsNonExpired
+	 */
+	public boolean getCredentialsNonExpired() {
+		return credentialsNonExpired;
+	}
 
-    /**
-     * Gets the delegator list.
-     *
-     * @return the delegatorList
-     */
-    public List<User> getDelegatorList() {
-        return delegatorList;
-    }
+	/**
+	 * Sets the credentials non expired.
+	 *
+	 * @param credentialsNonExpired the credentialsNonExpired to set
+	 */
+	public void setCredentialsNonExpired(final boolean credentialsNonExpired) {
+		this.credentialsNonExpired = credentialsNonExpired;
+	}
 
-    /**
-     * Sets the delegator list.
-     *
-     * @param delegatorList the delegatorList to set
-     */
-    public void setDelegatorList(final List<User> delegatorList) {
-        this.delegatorList = delegatorList;
-    }
+	/**
+	 * Gets the attempts.
+	 *
+	 * @return the attempts
+	 */
+	public Integer getAttempts() {
+		return attempts;
+	}
 
-    /**
-     * Gets the merged delegator list.
-     *
-     * @return the mergedDelegatorList
-     */
-    public List<User> getMergedDelegatorList() {
-        if (CollectionUtils.isEmpty(mergedDelegatorList)) {
-            mergedDelegatorList = new ArrayList<>();
+	/**
+	 * Sets the attempts.
+	 *
+	 * @param attempts the new attempts
+	 */
+	public void setAttempts(final Integer attempts) {
+		this.attempts = attempts;
+	}
 
-            mergedDelegatorList.add(this);
+	/**
+	 * Gets the last attempts time.
+	 *
+	 * @return the last attempts time
+	 */
+	public Date getLastAttemptsTime() {
+		return lastAttemptsTime;
+	}
 
-            if (this.getDelegatorList() != null) {
-                mergedDelegatorList.addAll(this.getDelegatorList());
-            }
-        }
+	/**
+	 * Sets the last attempts time.
+	 *
+	 * @param lastAttemptsTime the new last attempts time
+	 */
+	public void setLastAttemptsTime(final Date lastAttemptsTime) {
+		this.lastAttemptsTime = lastAttemptsTime;
+	}
 
-        return mergedDelegatorList;
-    }
+	/**
+	 * Gets the administration.
+	 *
+	 * @return the administration
+	 */
+	public Administration getAdministration() {
+		return administration;
+	}
 
-    /**
-     * Sets the merged delegator list.
-     *
-     * @param mergedDelegatorList the mergedDelegatorList to set
-     */
-    public void setMergedDelegatorList(final List<User> mergedDelegatorList) {
-        this.mergedDelegatorList = mergedDelegatorList;
-    }
+	/**
+	 * Sets the administration.
+	 *
+	 * @param administration the new administration
+	 */
+	public void setAdministration(final Administration administration) {
+		this.administration = administration;
+	}
 
-    public Administration getAdministrationExtendRoles() {
-        return administrationExtendRoles;
-    }
+	/**
+	 * Gets the position.
+	 *
+	 * @return the position
+	 */
+	public PositionType getPosition() {
+		return position;
+	}
 
-    public void setAdministrationExtendRoles(Administration administrationExtendRoles) {
-        this.administrationExtendRoles = administrationExtendRoles;
-    }
+	/**
+	 * Sets the position.
+	 *
+	 * @param position the new position
+	 */
+	public void setPosition(final PositionType position) {
+		this.position = position;
+	}
 
-    /**
-     * Gets the delegated user authority list.
-     *
-     * @return the delegatedUserAuthorityList
-     */
-    public List<UserAuthority> getDelegatedUserAuthorityList() {
-        return delegatedUserAuthorityList;
-    }
+	/**
+	 * Gets the theme.
+	 *
+	 * @return the theme
+	 */
+	public Theme getTheme() {
+		return theme;
+	}
 
-    /**
-     * Sets the delegated user authority list.
-     *
-     * @param delegatedUserAuthorityList the delegatedUserAuthorityList to set
-     */
-    public void setDelegatedUserAuthorityList(final List<UserAuthority> delegatedUserAuthorityList) {
-        this.delegatedUserAuthorityList = delegatedUserAuthorityList;
-    }
+	/**
+	 * Sets the theme.
+	 *
+	 * @param theme the theme to set
+	 */
+	public void setTheme(final Theme theme) {
+		this.theme = theme;
+	}
 
-    /**
-     * Gets the merged user authority list.
-     *
-     * @return the mergedUserAuthorityList
-     */
-    public List<UserAuthority> getMergedUserAuthorityList() {
-        if (CollectionUtils.isEmpty(mergedUserAuthorityList)) {
-            mergedUserAuthorityList = new ArrayList<>();
+	/**
+	 * Gets the Url of the signature.
+	 *
+	 * @return the signatureLocation
+	 */
+	public String getSignatureLocation() {
+		return signatureLocation;
+	}
 
-            mergedUserAuthorityList.addAll(this.userAuthorityList);
+	/**
+	 * Sets the url of the signature.
+	 *
+	 * @param signatureLocation the signatureLocation to set
+	 */
+	public void setSignatureLocation(String signatureLocation) {
+		this.signatureLocation = signatureLocation;
+	}
 
-            if (this.getDelegatedUserAuthorityList() != null) {
-                mergedUserAuthorityList.addAll(this.getDelegatedUserAuthorityList());
-            }
-        }
+	/**
+	 * Gets the stamp.
+	 *
+	 * @return the stamp
+	 */
+	public String getStampLocation() {
+		return stampLocation;
+	}
 
-        return mergedUserAuthorityList;
-    }
+	/**
+	 * Sets the url of the stamp.
+	 *
+	 * @param stampLocation the stampLocation to set
+	 */
+	public void setStampLocation(String stampLocation) {
+		this.stampLocation = stampLocation;
+	}
 
-    /**
-     * Sets the merged user authority list.
-     *
-     * @param mergedUserAuthorityList the mergedUserAuthorityList to set
-     */
-    public void setMergedUserAuthorityList(final List<UserAuthority> mergedUserAuthorityList) {
-        this.mergedUserAuthorityList = mergedUserAuthorityList;
-    }
+	/**
+	 * Gets the user authority list.
+	 *
+	 * @return the user authority list
+	 */
+	public List<UserAuthority> getUserAuthorityList() {
+		return userAuthorityList;
+	}
 
-    /**
-     * Gets the audit bad credentials string.
-     *
-     * @return the audit bad credentials string
-     */
-    public String getAuditBadCredentialsString() {
-        final StringBuilder builder = new StringBuilder();
+	/**
+	 * Sets the user authority list.
+	 *
+	 * @param userAuthorityList the new user authority list
+	 */
+	public void setUserAuthorityList(final List<UserAuthority> userAuthorityList) {
+		this.userAuthorityList = userAuthorityList;
+	}
 
-        builder.append("User [login = ");
-        builder.append(login);
-        builder.append(", attempts = ");
-        builder.append(attempts);
-        builder.append(", lastAttemptsTime = ");
-        builder.append(lastAttemptsTime);
-        builder.append(", userLocked = ");
-        builder.append(accountNonLocked ? "False" : "True");
-        builder.append("]");
+	public List<Transfer> getTransfersList() {
+		return transfersList;
+	}
 
-        return builder.toString();
-    }
+	public void setTransfersList(List<Transfer> transfersList) {
+		this.transfersList = transfersList;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + Objects.hashCode(this.login);
-        hash = 17 * hash + Objects.hashCode(this.enabled);
-        hash = 17 * hash + Objects.hashCode(this.deleted);
-        return hash;
-    }
+	/**
+	 * Gets the authorities string.
+	 *
+	 * @return the authoritiesString
+	 */
+	public String getAuthoritiesString() {
+		if (StringUtils.isEmpty(authoritiesString)) {
+			authoritiesString = Constants.EMPTY_STRING;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final User other = (User) obj;
-        if (!Objects.equals(this.login, other.login)) {
-            return false;
-        }
-        if (!Objects.equals(this.enabled, other.enabled)) {
-            return false;
-        }
-        return Objects.equals(this.deleted, other.deleted);
-    }
+			if (userAuthorityList != null) {
+				for (final UserAuthority userAuthority : userAuthorityList) {
+					authoritiesString += userAuthority.getAuthority() + ", ";
+				}
+			}
+		}
 
-    /*
+		return authoritiesString;
+	}
+
+	/**
+	 * Sets the authorities string.
+	 *
+	 * @param authoritiesString the authoritiesString to set
+	 */
+	public void setAuthoritiesString(final String authoritiesString) {
+		this.authoritiesString = authoritiesString;
+	}
+
+	/**
+	 * Gets the authorities.
+	 *
+	 * @return the authorities
+	 */
+	public Collection<Authority> getAuthorities() {
+		authorities = new HashSet<>();
+
+		if (CollectionUtils.isNotEmpty(userAuthorityList)) {
+			for (final UserAuthority userAuthority : userAuthorityList) {
+				authorities.add(userAuthority.getAuthorityGranted());
+			}
+		}
+		return authorities;
+	}
+
+	/**
+	 * Sets the authorities.
+	 *
+	 * @param authorities the authorities to set
+	 */
+	public void setAuthorities(final Collection<Authority> authorities) {
+		this.authorities = authorities;
+	}
+
+	/**
+	 * Gets the authorities list.
+	 *
+	 * @return the authoritiesList
+	 */
+	@SuppressWarnings("unchecked")
+	public List<String> getAuthoritiesList() {
+		if (CollectionUtils.isEmpty(authoritiesList)) {
+			authoritiesList = (List<String>) CollectionUtils.collect(userAuthorityList, new Transformer() {
+				@Override
+				public Object transform(final Object userAuthoriy) {
+					return ((UserAuthority) userAuthoriy).getAuthorityGranted().getRole();
+				}
+			});
+		}
+
+		return authoritiesList;
+	}
+
+	/**
+	 * Sets the authorities list.
+	 *
+	 * @param authoritiesList the authoritiesList to set
+	 */
+	public void setAuthoritiesList(final List<String> authoritiesList) {
+		this.authoritiesList = authoritiesList;
+	}
+
+	/**
+	 * Gets the delegated authority list.
+	 *
+	 * @return the delegatedAuthorityList
+	 */
+	public List<Authority> getDelegatedAuthorityList() {
+		return delegatedAuthorityList;
+	}
+
+	/**
+	 * Sets the delegated authority list.
+	 *
+	 * @param delegatedAuthorityList the delegatedAuthorityList to set
+	 */
+	public void setDelegatedAuthorityList(final List<Authority> delegatedAuthorityList) {
+		this.delegatedAuthorityList = delegatedAuthorityList;
+	}
+
+	/**
+	 * Gets the merged authorities list.
+	 *
+	 * @return the mergedAuthoritiesList
+	 */
+	public List<Authority> getMergedAuthoritiesList() {
+		if (CollectionUtils.isEmpty(mergedAuthoritiesList)) {
+			final Set<Authority> authoritiesSet = new HashSet<>();
+
+			authoritiesSet.addAll(this.getAuthorities());
+
+			if (this.getDelegatedAuthorityList() != null) {
+				authoritiesSet.addAll(this.getDelegatedAuthorityList());
+			}
+
+			mergedAuthoritiesList = new ArrayList<>(authoritiesSet);
+		}
+
+		return mergedAuthoritiesList;
+	}
+
+	/**
+	 * Sets the merged authorities list.
+	 *
+	 * @param mergedAuthoritiesList the mergedAuthoritiesList to set
+	 */
+	public void setMergedAuthoritiesList(final List<Authority> mergedAuthoritiesList) {
+		this.mergedAuthoritiesList = mergedAuthoritiesList;
+	}
+
+	/**
+	 * Gets the delegator list.
+	 *
+	 * @return the delegatorList
+	 */
+	public List<User> getDelegatorList() {
+		return delegatorList;
+	}
+
+	/**
+	 * Sets the delegator list.
+	 *
+	 * @param delegatorList the delegatorList to set
+	 */
+	public void setDelegatorList(final List<User> delegatorList) {
+		this.delegatorList = delegatorList;
+	}
+
+	/**
+	 * Gets the merged delegator list.
+	 *
+	 * @return the mergedDelegatorList
+	 */
+	public List<User> getMergedDelegatorList() {
+		if (CollectionUtils.isEmpty(mergedDelegatorList)) {
+			mergedDelegatorList = new ArrayList<>();
+
+			mergedDelegatorList.add(this);
+
+			if (this.getDelegatorList() != null) {
+				mergedDelegatorList.addAll(this.getDelegatorList());
+			}
+		}
+
+		return mergedDelegatorList;
+	}
+
+	/**
+	 * Sets the merged delegator list.
+	 *
+	 * @param mergedDelegatorList the mergedDelegatorList to set
+	 */
+	public void setMergedDelegatorList(final List<User> mergedDelegatorList) {
+		this.mergedDelegatorList = mergedDelegatorList;
+	}
+
+	public Administration getAdministrationExtendRoles() {
+		return administrationExtendRoles;
+	}
+
+	public void setAdministrationExtendRoles(Administration administrationExtendRoles) {
+		this.administrationExtendRoles = administrationExtendRoles;
+	}
+
+	/**
+	 * Gets the delegated user authority list.
+	 *
+	 * @return the delegatedUserAuthorityList
+	 */
+	public List<UserAuthority> getDelegatedUserAuthorityList() {
+		return delegatedUserAuthorityList;
+	}
+
+	/**
+	 * Sets the delegated user authority list.
+	 *
+	 * @param delegatedUserAuthorityList the delegatedUserAuthorityList to set
+	 */
+	public void setDelegatedUserAuthorityList(final List<UserAuthority> delegatedUserAuthorityList) {
+		this.delegatedUserAuthorityList = delegatedUserAuthorityList;
+	}
+
+	/**
+	 * Gets the merged user authority list.
+	 *
+	 * @return the mergedUserAuthorityList
+	 */
+	public List<UserAuthority> getMergedUserAuthorityList() {
+		if (CollectionUtils.isEmpty(mergedUserAuthorityList)) {
+			mergedUserAuthorityList = new ArrayList<>();
+
+			mergedUserAuthorityList.addAll(this.userAuthorityList);
+
+			if (this.getDelegatedUserAuthorityList() != null) {
+				mergedUserAuthorityList.addAll(this.getDelegatedUserAuthorityList());
+			}
+		}
+
+		return mergedUserAuthorityList;
+	}
+
+	/**
+	 * Sets the merged user authority list.
+	 *
+	 * @param mergedUserAuthorityList the mergedUserAuthorityList to set
+	 */
+	public void setMergedUserAuthorityList(final List<UserAuthority> mergedUserAuthorityList) {
+		this.mergedUserAuthorityList = mergedUserAuthorityList;
+	}
+
+	/**
+	 * Gets the audit bad credentials string.
+	 *
+	 * @return the audit bad credentials string
+	 */
+	public String getAuditBadCredentialsString() {
+		final StringBuilder builder = new StringBuilder();
+
+		builder.append("User [login = ");
+		builder.append(login);
+		builder.append(", attempts = ");
+		builder.append(attempts);
+		builder.append(", lastAttemptsTime = ");
+		builder.append(lastAttemptsTime);
+		builder.append(", userLocked = ");
+		builder.append(accountNonLocked ? "False" : "True");
+		builder.append("]");
+
+		return builder.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 3;
+		hash = 17 * hash + Objects.hashCode(this.login);
+		hash = 17 * hash + Objects.hashCode(this.enabled);
+		hash = 17 * hash + Objects.hashCode(this.deleted);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final User other = (User) obj;
+		if (!Objects.equals(this.login, other.login)) {
+			return false;
+		}
+		if (!Objects.equals(this.enabled, other.enabled)) {
+			return false;
+		}
+		return Objects.equals(this.deleted, other.deleted);
+	}
+
+	/*
 	 * (non-Javadoc)
 	 *
 	 * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("User [id=");
-        builder.append(id);
-        builder.append(", login=");
-        builder.append(login);
-        builder.append(", firstName=");
-        builder.append(firstName);
-        builder.append(", lastName=");
-        builder.append(lastName);
-        builder.append(", email=");
-        builder.append(email);
-        builder.append(", position=");
-        builder.append(position);
-        builder.append(", signature=");
-        builder.append(signatureUrl);
-        builder.append(", stamp=");
-        builder.append(stampUrl);
-        builder.append("]");
-        return builder.toString();
-    }
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("User [id=");
+		builder.append(id);
+		builder.append(", login=");
+		builder.append(login);
+		builder.append(", firstName=");
+		builder.append(firstName);
+		builder.append(", lastName=");
+		builder.append(lastName);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append(", position=");
+		builder.append(position);
+		builder.append(", signature=");
+		builder.append(signatureLocation);
+		builder.append(", stamp=");
+		builder.append(stampLocation);
+		builder.append("]");
+		return builder.toString();
+	}
 
 }
