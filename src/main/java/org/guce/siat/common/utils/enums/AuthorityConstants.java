@@ -97,7 +97,8 @@ public enum AuthorityConstants {
     CONSIGNATAIRE_NAVIRE("CONS_NAV", "Consignataire Navire"),
     CAISSIER("CA", "Caissier"),
     GESTION_AGENTS("GA", "Gestion des Agents"),
-    VALIDATION_FACTURE("VF", "Validation Facture");
+    VALIDATION_FACTURE("VF", "Validation Facture"),
+    VALIDATION_SIGNATURE("VS", "Validation Signature");
 
     /**
      * The code.

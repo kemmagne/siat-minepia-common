@@ -12,6 +12,10 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +26,15 @@ import org.guce.siat.common.model.Company;
 import org.guce.siat.common.model.Container;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
+import org.guce.siat.common.model.FileItem;
+import org.guce.siat.common.model.FileItem_;
 import org.guce.siat.common.model.FileType;
+import org.guce.siat.common.model.FileType_;
+import org.guce.siat.common.model.File_;
+import org.guce.siat.common.model.Flow;
+import org.guce.siat.common.model.Flow_;
+import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.model.ItemFlow_;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.SiatUtils;
@@ -55,7 +67,6 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
      * Instantiates a new file dao impl.
      */
     public FileDaoImpl() {
-        super();
         setClasse(File.class);
     }
 
@@ -375,12 +386,21 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
     @Override
     public List<File> findByNumeroDemandeAndBureau(String currentFileNumber, String numeroDemande, Bureau bureau, Step treatmentStep) {
 
-        TypedQuery<File> query = entityManager.createQuery("SELECT DISTINCT f FROM File f JOIN f.fileItemsList fi JOIN fi.itemFlowsList if WHERE f.bureau = :bureau AND f.numeroDemande = :numeroDemande AND f.numeroDossier <> :currentFileNumber AND (fi.step = :treatmentStep OR if.flow.fromStep = :treatmentStep)", File.class);
+        CriteriaBuilder builder = super.entityManager.getCriteriaBuilder();
+        CriteriaQuery<File> cq = builder.createQuery(getClasse());
+        Root<File> from = cq.from(getClasse());
+        Join<File, FileItem> fileItems = from.join(File_.fileItemsList);
+        Join<FileItem, ItemFlow> itemFlows = fileItems.join(FileItem_.itemFlowsList);
+        Join<ItemFlow, Flow> flow = itemFlows.join(ItemFlow_.flow);
+        cq.where(builder.and(
+                builder.equal(from.get(File_.bureau), bureau),
+                builder.equal(from.get(File_.numeroDemande), numeroDemande),
+                builder.notEqual(from.get(File_.numeroDossier), currentFileNumber),
+                builder.or(builder.equal(fileItems.get(FileItem_.step), treatmentStep), builder.equal(flow.get(Flow_.fromStep), treatmentStep))
+        ));
+        cq.orderBy(builder.asc(from.get(File_.id)));
 
-        query.setParameter("bureau", bureau);
-        query.setParameter("numeroDemande", numeroDemande);
-        query.setParameter("currentFileNumber", currentFileNumber);
-        query.setParameter("treatmentStep", treatmentStep);
+        TypedQuery<File> query = super.getEntityManager().createQuery(cq);
 
         return query.getResultList();
     }
@@ -388,10 +408,31 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
     @Override
     public List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType) {
 
-        TypedQuery<File> query = entityManager.createQuery("SELECT f FROM File f WHERE f.numeroDemande = :numeroDemande AND f.fileType.code = :fileTypeCode", File.class);
+        CriteriaBuilder builder = super.entityManager.getCriteriaBuilder();
+        CriteriaQuery<File> cq = builder.createQuery(getClasse());
+        Root<File> from = cq.from(getClasse());
+        Join<File, FileType> fileTypeJ = from.join(File_.fileType);
+        cq.where(builder.and(
+                builder.equal(from.get(File_.numeroDemande), numeroDemande),
+                builder.equal(fileTypeJ.get(FileType_.id), fileType.getId()))
+        );
+        cq.orderBy(builder.asc(from.get(File_.id)));
 
-        query.setParameter("numeroDemande", numeroDemande);
-        query.setParameter("fileTypeCode", fileType.getCode());
+        TypedQuery<File> query = super.entityManager.createQuery(cq);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<File> findByNumeroDemande(String numeroDemande) {
+
+        CriteriaBuilder builder = super.entityManager.getCriteriaBuilder();
+        CriteriaQuery<File> cq = builder.createQuery(getClasse());
+        Root<File> from = cq.from(getClasse());
+        cq.where(builder.equal(from.get(File_.numeroDemande), numeroDemande));
+        cq.orderBy(builder.asc(from.get(File_.id)));
+
+        TypedQuery<File> query = super.entityManager.createQuery(cq);
 
         return query.getResultList();
     }

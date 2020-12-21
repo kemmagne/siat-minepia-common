@@ -183,13 +183,23 @@ public class FileServiceImpl extends AbstractServiceImpl<File> implements FileSe
     }
 
     @Override
-    public List<File> findByNumeroDemandeAndBureau(File currentFile, Step cotationStep) {
-        return fileDao.findByNumeroDemandeAndBureau(currentFile.getNumeroDossier(), currentFile.getNumeroDemande(), currentFile.getBureau(), cotationStep);
+    public List<File> findByNumeroDemandeAndBureau(File currentFile, Step treatmentStep) {
+        return fileDao.findByNumeroDemandeAndBureau(currentFile.getNumeroDossier(), currentFile.getNumeroDemande(), currentFile.getBureau(), treatmentStep);
     }
 
     @Override
     public List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType) {
         return fileDao.findByNumeroDemandeAndFileType(numeroDemande, fileType);
+    }
+
+    @Override
+    public File findByNumDossierGuce(String refGuce) {
+        return fileDao.findByNumDossierGuce(refGuce);
+    }
+
+    @Override
+    public File findByRefSiat(String refSiat) {
+        return fileDao.findByRefSiat(refSiat);
     }
 
 }

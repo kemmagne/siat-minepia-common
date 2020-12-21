@@ -251,12 +251,12 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
                 final FileItem fItem = fileItemDao.find(fileItem.getId());
 
                 if (decision != null && decision.getToStep() != null) {
-                    fItem.setStep(decision.getToStep());
+                    step = decision.getToStep();
                 } else {
                     // If the executed flow is "Rejet Annulation" (FL_CT_63) --> his toStep is null so we must return the fileItem step to the last step before "Etude demande d'annulation"
-                    fItem.setStep(findLastStepBeforeCancellingRequest(fItem));
+                    step = findLastStepBeforeCancellingRequest(fItem);
                 }
-                step = fItem.getStep();
+                fItem.setStep(step);
 
                 fItem.setDraft(Boolean.FALSE);
                 items.add(fItem);
@@ -272,11 +272,11 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
         }
         fileItemDao.saveOrUpdateList(items);
         itemFlowDao.saveOrUpdateList(draftItemFlows);
-//
-//        Map<FileItem, Flow> map;
-//        if (step != null && (map = checkIfSystemDecisionMustBeTaken(file, fileItems, step)) != null) {
-//            return map;
-//        }
+
+        Map<FileItem, Flow> map;
+        if (step != null && (map = checkIfSystemDecisionMustBeTakenAndTakeIt(file, fileItems, step)) != null) {
+            return map;
+        }
 
         return returnedMap;
     }
@@ -626,11 +626,14 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
         return itemFlowDao.findNextItemFlow(itemFlow);
     }
 
-    private Map<FileItem, Flow> checkIfSystemDecisionMustBeTaken(File currentFile, List<FileItem> fileItems, Step currentStep) {
+    private Map<FileItem, Flow> checkIfSystemDecisionMustBeTakenAndTakeIt(File currentFile, List<FileItem> fileItems, Step currentStep) {
 
         String paramsName = MessageFormat.format("system.automatic.decison.{0}.{1}.{2}", currentFile.getBureau().getCode(),
                 currentFile.getFileType().getCode(), currentStep.getStepCode());
         Params params = paramsDao.findParamsByName(paramsName);
+        if (params == null) {
+            return null;
+        }
 
         Flow flow;
         try {
@@ -657,9 +660,10 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
             itemFlow.setReceived(AperakType.APERAK_D.getCharCode());
             itemFlow.setSender(systemUser);
             itemFlow.setSent(Boolean.TRUE);
-            itemFlow.setUnread(Boolean.FALSE);
+            itemFlow.setUnread(Boolean.TRUE);
 
             fileItem.setStep(flow.getToStep());
+            fileItem.setDraft(Boolean.FALSE);
 
             if (CollectionUtils.isNotEmpty(flow.getCopyRecipientsList())) {
                 returnedMap.put(fileItem, flow);

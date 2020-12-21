@@ -12,16 +12,25 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.guce.siat.common.dao.ParamsDao;
 import org.guce.siat.common.dao.UserDao;
 import org.guce.siat.common.dao.exception.DAOException;
 import org.guce.siat.common.model.Administration;
+import org.guce.siat.common.model.Authority;
+import org.guce.siat.common.model.Authority_;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.Organism;
 import org.guce.siat.common.model.Params;
 import org.guce.siat.common.model.User;
+import org.guce.siat.common.model.UserAuthority;
+import org.guce.siat.common.model.UserAuthority_;
+import org.guce.siat.common.model.User_;
 import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.PositionType;
@@ -64,7 +73,6 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
      * Instantiates a new user dao impl.
      */
     public UserDaoImpl() {
-        super();
         setClasse(User.class);
     }
 
@@ -218,15 +226,24 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#findUsersByAuthorities(java.lang.String[])
      */
     @Override
-    public List<User> findUsersByAuthorities(final String... authoritiesList) {
-        final StringBuilder hqlQuery = new StringBuilder();
+    public List<User> findUsersByAuthorities(String... authoritiesList) {
 
-        hqlQuery.append("SELECT DISTINCT u FROM User u FULL JOIN u.userAuthorityList aut ");
-        hqlQuery.append("WHERE aut.authorityGranted.role IN (:authoritiesList) ");
-        hqlQuery.append("AND u.deleted = false ");
+        CriteriaBuilder builder = super.entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery(getClasse());
+        Root<User> root = cq.from(getClasse());
+        Join<User, UserAuthority> userAuth = root.join(User_.userAuthorityList);
+        Join<UserAuthority, Authority> auth = userAuth.join(UserAuthority_.authorityGranted);
+        CriteriaBuilder.In<String> in = builder.in(auth.get(Authority_.role));
+        for (String authority : authoritiesList) {
+            in.value(authority);
+        }
+        cq.where(builder.and(
+                in,
+                builder.equal(root.get(User_.deleted), false),
+                builder.equal(root.get(User_.enabled), true)
+        ));
 
-        final TypedQuery<User> query = super.entityManager.createQuery(hqlQuery.toString(), User.class);
-        query.setParameter("authoritiesList", Arrays.asList(authoritiesList));
+        TypedQuery<User> query = super.entityManager.createQuery(cq.distinct(true));
 
         return query.getResultList();
     }
@@ -391,7 +408,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
         final Map<String, Object> params = new HashedMap();
 
         hqlQuery.append("SELECT DISTINCT u FROM User u INNER JOIN u.userAuthorityList aut ");
-        hqlQuery.append("WHERE u.deleted = false ");
+        hqlQuery.append("WHERE u.enabled = true AND u.deleted = false ");
         if (CollectionUtils.isNotEmpty(Arrays.asList(authorities))) {
             hqlQuery.append("AND aut.authorityGranted.role IN (:authorities) ");
             params.put("authorities", Arrays.asList(authorities));

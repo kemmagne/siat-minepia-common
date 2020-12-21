@@ -63,12 +63,6 @@ public class Entity extends Administration {
     private Service service;
 
     /**
-     * Instantiates a new entity.
-     */
-    public Entity() {
-    }
-
-    /**
      * @param id the id to set
      */
     @Override
@@ -219,4 +213,3 @@ public class Entity extends Administration {
     }
 
 }
-

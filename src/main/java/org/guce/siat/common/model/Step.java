@@ -2,7 +2,6 @@ package org.guce.siat.common.model;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,8 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.guce.siat.common.utils.enums.StepCode;
 import org.hibernate.annotations.Cascade;
 
@@ -50,12 +49,16 @@ public class Step extends AbstractModel implements Serializable {
      */
     @Column(name = "LABELFR")
     private String labelFr;
+    @Transient
+    private String redefinedLabelFr;
 
     /**
      * The label en.
      */
     @Column(name = "LABELEN")
     private String labelEn;
+    @Transient
+    private String redefinedLabelEn;
 
     /**
      * The is final.
@@ -93,17 +96,21 @@ public class Step extends AbstractModel implements Serializable {
      */
     @ManyToMany
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @JoinTable(name = "STEP_AUTHORITY", joinColumns
-            = {
-                @JoinColumn(name = "STEP_ID", referencedColumnName = "ID")}, inverseJoinColumns
-            = {
-                @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    @JoinTable(name = "STEP_AUTHORITY", joinColumns = {
+        @JoinColumn(name = "STEP_ID", referencedColumnName = "ID")
+    }, inverseJoinColumns = {
+        @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")
+    })
     private List<Authority> roleList;
 
     /**
      * Instantiates a new step.
      */
     public Step() {
+    }
+
+    public Step(StepCode stepCode) {
+        this.stepCode = stepCode;
     }
 
     /**
@@ -162,6 +169,14 @@ public class Step extends AbstractModel implements Serializable {
         this.labelFr = labelFr;
     }
 
+    public String getRedefinedLabelFr() {
+        return redefinedLabelFr;
+    }
+
+    public void setRedefinedLabelFr(String redefinedLabelFr) {
+        this.redefinedLabelFr = redefinedLabelFr;
+    }
+
     /**
      * Gets the label en.
      *
@@ -178,6 +193,14 @@ public class Step extends AbstractModel implements Serializable {
      */
     public void setLabelEn(final String labelEn) {
         this.labelEn = labelEn;
+    }
+
+    public String getRedefinedLabelEn() {
+        return redefinedLabelEn;
+    }
+
+    public void setRedefinedLabelEn(String redefinedLabelEn) {
+        this.redefinedLabelEn = redefinedLabelEn;
     }
 
     /**

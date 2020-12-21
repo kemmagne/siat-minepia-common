@@ -275,6 +275,10 @@ public class File extends AbstractModel implements Serializable {
 
     @Transient
     private Step step;
+    @Transient
+    private String redefinedLabelEn;
+    @Transient
+    private String redefinedLabelFr;
 
     /**
      * Gets the id.
@@ -926,14 +930,28 @@ public class File extends AbstractModel implements Serializable {
         this.containers = containers;
     }
 
-    @Deprecated
     public Step getStep() {
         return step;
     }
 
-    @Deprecated
     public void setStep(Step step) {
         this.step = step;
+    }
+
+    public String getRedefinedLabelEn() {
+        return redefinedLabelEn;
+    }
+
+    public void setRedefinedLabelEn(String redefinedLabelEn) {
+        this.redefinedLabelEn = redefinedLabelEn;
+    }
+
+    public String getRedefinedLabelFr() {
+        return redefinedLabelFr;
+    }
+
+    public void setRedefinedLabelFr(String redefinedLabelFr) {
+        this.redefinedLabelFr = redefinedLabelFr;
     }
 
     /*
@@ -989,6 +1007,9 @@ public class File extends AbstractModel implements Serializable {
 
     @PrePersist
     private void prePersist() {
+        if (createdDate == null) {
+            createdDate = Calendar.getInstance().getTime();
+        }
         if (lastDecisionDate == null) {
             lastDecisionDate = Calendar.getInstance().getTime();
         }

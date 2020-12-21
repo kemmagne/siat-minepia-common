@@ -100,7 +100,7 @@ public class Appointment extends AbstractModel implements Serializable {
     /**
      * The appointment item flow list.
      */
-    @OneToMany(mappedBy = "primaryKey.appointment", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "primaryKey.appointment", cascade = {CascadeType.PERSIST}, orphanRemoval = true)
     private List<AppointmentItemFlow> appointmentItemFlowList = new ArrayList<>();
 
     /**

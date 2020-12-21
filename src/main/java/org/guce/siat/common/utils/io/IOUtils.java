@@ -1,18 +1,26 @@
 package org.guce.siat.common.utils.io;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import org.apache.commons.io.FileUtils;
 import org.guce.siat.common.utils.ebms.Generator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Class IOUtils.
  */
 public final class IOUtils {
 
-    private IOUtils() {
-    }
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(IOUtils.class);
 
     /**
      * Write bytes to file.
@@ -21,26 +29,28 @@ public final class IOUtils {
      * @param bytes the bytes
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public static void writeBytesToFile(final File theFile, final byte[] bytes) throws IOException {
+    public static void writeBytesToFile(File theFile, byte[] bytes) throws IOException {
+        FileUtils.writeByteArrayToFile(theFile, bytes);
+    }
 
-//        try ( InputStream is = new ByteArrayInputStream(bytes);  OutputStream fos = new FileOutputStream(theFile)) {
-//            org.apache.commons.io.IOUtils.copy(is, fos);
-//        }
-        BufferedOutputStream bos = null;
-
+    public static byte[] attachmentsToZip(Map<String, byte[]> attachments) {
         try {
-            FileOutputStream fos = new FileOutputStream(theFile);
-            bos = new BufferedOutputStream(fos);
-            bos.write(bytes);
-        } finally {
-            if (bos != null) {
-                try {
-                    //flush and close the BufferedOutputStream
-                    bos.flush();
-                    bos.close();
-                } catch (final Exception e) {
+            ByteArrayOutputStream zipOut = new ByteArrayOutputStream();
+            BufferedOutputStream buff = new BufferedOutputStream(zipOut);
+            try (ZipOutputStream zipStream = new ZipOutputStream(buff)) {
+                for (Map.Entry<String, byte[]> entry : attachments.entrySet()) {
+                    String attachmentName = entry.getKey();
+                    byte[] bytes = entry.getValue();
+                    ZipEntry zipEntry = new ZipEntry(attachmentName);
+                    zipStream.putNextEntry(zipEntry);
+                    zipStream.write(bytes);
+                    zipStream.closeEntry();
                 }
             }
+            return zipOut.toByteArray();
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+            return null;
         }
     }
 
@@ -52,4 +62,8 @@ public final class IOUtils {
     public static String generateMessageID() {
         return Generator.generateMessageID();
     }
+
+    private IOUtils() {
+    }
+
 }

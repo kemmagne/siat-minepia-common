@@ -82,6 +82,7 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
      *
      * @return the column separator
      */
+    @Override
     public String getColumnSeparator() {
         return columnSeparator;
     }
@@ -91,6 +92,7 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
      *
      * @return the row separator
      */
+    @Override
     public String getRowSeparator() {
         return rowSeparator;
     }
@@ -100,6 +102,7 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
      *
      * @return the custom column separator
      */
+    @Override
     public String getCustomColumnSeparator() {
         return customColumnSeparator;
     }
@@ -141,6 +144,7 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
      *
      * @return the attachementFolder
      */
+    @Override
     public String getAttachementFolder() {
         return attachementFolder;
     }

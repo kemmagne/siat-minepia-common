@@ -1,14 +1,12 @@
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.utils.enums.AuthorityType;
 
