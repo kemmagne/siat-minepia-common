@@ -3,6 +3,7 @@ package org.guce.siat.common.dao;
 import java.util.List;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
+import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.utils.enums.FileTypeCode;
@@ -37,7 +38,7 @@ public interface ItemFlowDao extends AbstractJpaDao<ItemFlow> {
      * @return the item flow
      */
     ItemFlow findLastSentItemFlowByFileItem(final FileItem fileItem);
-
+    
     /**
      * Find item flows by file item list.
      *
