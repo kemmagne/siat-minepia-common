@@ -1,3 +1,4 @@
+
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
@@ -84,6 +85,17 @@ public class User extends AbstractModel implements Serializable {
      */
     @Column(name = "TELEPHONE")
     private String telephone;
+	/**
+	 * The path of the signature of user .
+	 */
+	@Column(name = "SIGNATURE")
+	private String signatureLocation;
+
+	/**
+	 * The path of the stamp of user.
+	 */
+	@Column(name = "STAMP")
+	private String stampLocation;
 
     /**
      * The email.
@@ -267,6 +279,43 @@ public class User extends AbstractModel implements Serializable {
     public void setId(final Long id) {
         this.id = id;
     }
+	
+	
+	/**
+	 * Gets the Url of the signature.
+	 *
+	 * @return the signatureLocation
+	 */
+	public String getSignatureLocation() {
+		return signatureLocation;
+	}
+
+	/**
+	 * Sets the url of the signature.
+	 *
+	 * @param signatureLocation the signatureLocation to set
+	 */
+	public void setSignatureLocation(String signatureLocation) {
+		this.signatureLocation = signatureLocation;
+	}
+
+	/**
+	 * Gets the stamp.
+	 *
+	 * @return the stamp
+	 */
+	public String getStampLocation() {
+		return stampLocation;
+	}
+
+	/**
+	 * Sets the url of the stamp.
+	 *
+	 * @param stampLocation the stampLocation to set
+	 */
+	public void setStampLocation(String stampLocation) {
+		this.stampLocation = stampLocation;
+	}
 
     /**
      * Gets the login.
@@ -863,6 +912,10 @@ public class User extends AbstractModel implements Serializable {
         builder.append(lastAttemptsTime);
         builder.append(", userLocked = ");
         builder.append(accountNonLocked ? "False" : "True");
+		builder.append(", signature=");
+		builder.append(signatureLocation);
+		builder.append(", stamp=");
+		builder.append(stampLocation);
         builder.append("]");
 
         return builder.toString();
@@ -923,3 +976,4 @@ public class User extends AbstractModel implements Serializable {
     }
 
 }
+
