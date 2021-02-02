@@ -23,39 +23,37 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class CompanyDaoImpl extends AbstractJpaDaoImpl<Company> implements CompanyDao {
 
-	/**
-	 * The Constant LOG.
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(CompanyDaoImpl.class);
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(CompanyDaoImpl.class);
 
-	/**
-	 * Instantiates a new company dao impl.
-	 */
-	public CompanyDaoImpl() {
-		super();
-		setClasse(Company.class);
-	}
+    /**
+     * Instantiates a new company dao impl.
+     */
+    public CompanyDaoImpl() {
+        setClasse(Company.class);
+    }
 
-	@Override
-	public List<Company> findOperator() {
-		final String hqlString = "SELECT c FROM Company c WHERE c.companyType=:companyType";
-		final TypedQuery<Company> query = super.entityManager.createQuery(hqlString, Company.class);
-		query.setParameter("companyType", CompanyType.DECLARANT);
-		return query.getResultList();
-	}
+    @Override
+    public List<Company> findOperator() {
+        final String hqlString = "SELECT c FROM Company c WHERE c.companyType=:companyType";
+        final TypedQuery<Company> query = super.entityManager.createQuery(hqlString, Company.class);
+        query.setParameter("companyType", CompanyType.DECLARANT);
+        return query.getResultList();
+    }
 
-	@Override
-	public Company findCompanyByNumContribuable(final String numContribuable) {
-		try {
-			final String hqlString = "SELECT c FROM Company c WHERE c.numContribuable =:numContribuable";
-			final TypedQuery<Company> query = super.entityManager.createQuery(hqlString, Company.class);
-			query.setParameter("numContribuable", numContribuable);
-			return query.getSingleResult();
-		} catch (final NoResultException | NonUniqueResultException e) {
-			LOG.error("Error to get Company with num contribuable : {} --- Détails : {}", numContribuable, Objects.toString(e));
-			return null;
-		}
-
-	}
+    @Override
+    public Company findCompanyByNumContribuable(final String numContribuable) {
+        try {
+            final String hqlString = "SELECT c FROM Company c WHERE c.numContribuable = :numContribuable ORDER BY c.id DESC";
+            final TypedQuery<Company> query = super.entityManager.createQuery(hqlString, Company.class);
+            query.setParameter("numContribuable", numContribuable);
+            return query.getSingleResult();
+        } catch (final NoResultException | NonUniqueResultException e) {
+            LOG.error("Error to get Company with num contribuable : {} --- Détails : {}", numContribuable, Objects.toString(e));
+            return null;
+        }
+    }
 
 }
