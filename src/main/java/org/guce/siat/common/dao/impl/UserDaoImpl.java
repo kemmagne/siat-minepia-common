@@ -143,7 +143,8 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 
         // encode password before sending to database.
         user1.setPassword(encoder.encodePassword(user.getPassword(), user.getLogin()));
-
+	  
+	  
         if (LOG.isDebugEnabled()) {
             LOG.debug("encrypted password : {}", user1.getPassword());
         }
