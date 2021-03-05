@@ -424,6 +424,24 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
     }
 
     @Override
+    public List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileTypeCode fileTypeCode) {
+
+        CriteriaBuilder builder = super.entityManager.getCriteriaBuilder();
+        CriteriaQuery<File> cq = builder.createQuery(getClasse());
+        Root<File> from = cq.from(getClasse());
+        Join<File, FileType> fileTypeJ = from.join(File_.fileType);
+        cq.where(builder.and(
+                builder.equal(from.get(File_.numeroDemande), numeroDemande),
+                builder.equal(fileTypeJ.get(FileType_.code), fileTypeCode))
+        );
+        cq.orderBy(builder.desc(from.get(File_.id)));
+
+        TypedQuery<File> query = super.entityManager.createQuery(cq);
+
+        return query.getResultList();
+    }
+
+    @Override
     public List<File> findByNumeroDemande(String numeroDemande) {
 
         CriteriaBuilder builder = super.entityManager.getCriteriaBuilder();

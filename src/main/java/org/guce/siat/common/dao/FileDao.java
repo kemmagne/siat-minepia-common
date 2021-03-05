@@ -130,6 +130,8 @@ public interface FileDao extends AbstractJpaDao<File> {
 
     List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType);
 
+    List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileTypeCode fileTypeCode);
+
     List<File> findByNumeroDemande(String numeroDemande);
 
 }
