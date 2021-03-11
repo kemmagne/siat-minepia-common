@@ -5,6 +5,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 import org.guce.siat.common.dao.FileItemFieldValueDao;
 import org.guce.siat.common.model.FileItem;
+import org.guce.siat.common.model.FileItemField;
 import org.guce.siat.common.model.FileItemFieldValue;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,7 @@ public class FileItemFieldValueDaoImpl extends AbstractJpaDaoImpl<FileItemFieldV
         }
     }
 
+    @SuppressWarnings("JPQLValidation")
     @Override
     public FileItemFieldValue findValueByFileItemFieldAndFile(String fileItemFieldCode, FileTypeCode fileTypeCode, String numeroDemande) {
 
@@ -60,6 +62,23 @@ public class FileItemFieldValueDaoImpl extends AbstractJpaDaoImpl<FileItemFieldV
         try {
             return query.getSingleResult();
         } catch (final NoResultException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public FileItemField findByFileTypeAndCode(FileTypeCode fileTypeCode, String code) {
+
+        TypedQuery<FileItemField> query = super.entityManager.createQuery("SELECT fif FROM FileItemField fif WHERE fif.fileType.code = :fileTypeCode AND fif.code = :fifCode", FileItemField.class);
+
+        query.setParameter("fileTypeCode", fileTypeCode);
+        query.setParameter("fifCode", code);
+
+        query.setMaxResults(1);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException nre) {
             return null;
         }
     }
