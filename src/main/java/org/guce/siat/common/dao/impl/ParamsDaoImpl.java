@@ -16,14 +16,13 @@ import org.guce.siat.common.utils.enums.ParamsCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The Class ParamsDaoImpl.
  */
 @Repository("paramsDao")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional
 public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsDao {
 
     /**
@@ -35,7 +34,6 @@ public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsD
      * Instantiates a new params dao impl.
      */
     public ParamsDaoImpl() {
-        super();
         setClasse(Params.class);
     }
 
@@ -44,6 +42,7 @@ public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsD
 	 *
 	 * @see org.guce.siat.common.dao.ParamsDao#findParamsByName(java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public Params findParamsByName(final String name) {
         try {
@@ -64,6 +63,7 @@ public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsD
 	 *
 	 * @see org.guce.siat.common.dao.ParamsDao#findParamsByCategory(org.guce.siat.common.utils.enums.ParamsCategory)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Params> findParamsByCategory(ParamsCategory category) {
 

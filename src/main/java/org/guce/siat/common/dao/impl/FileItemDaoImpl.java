@@ -30,14 +30,13 @@ import org.guce.siat.common.utils.filter.RetrieveSearchFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The Class FileItemDaoImpl.
  */
 @Repository("fileItemDao")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional
 public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements FileItemDao {
 
     /**
@@ -49,7 +48,6 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
      * Instantiates a new file item dao impl.
      */
     public FileItemDaoImpl() {
-        super();
         setClasse(FileItem.class);
     }
 
@@ -58,6 +56,7 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 *
 	 * @see org.guce.siat.core.ct.dao.FileItemDao#findFileItemsByFile(org.guce.siat.core.ct.model.File)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findFileItemsByFile(final File file) {
         if (file != null) {
@@ -74,6 +73,7 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 *
 	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findDraftFileItemsByFile(org.guce.siat.core.ct.model.File)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findDraftFileItemsByFile(final File file) {
         if (file != null) {
@@ -85,16 +85,16 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
         return Collections.emptyList();
     }
 
-    /**
+    /*
      * (non-Javadoc)
      *
      * @see
      * org.guce.siat.common.dao.FileItemDao#findFileItemByServiceAndAuthoritiesAndFileType(java.util.List,
      * org.guce.siat.common.model.User, java.util.List, java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
-    public List<FileItem> findFileItemByServiceAndAuthoritiesAndFileType(final List<Bureau> bureauList, final User loggedUser,
-            final List<FileTypeCode> fileTypeCodeList, final List<StepCode> excludedStepList) {
+    public List<FileItem> findFileItemByServiceAndAuthoritiesAndFileType(final List<Bureau> bureauList, final User loggedUser, final List<FileTypeCode> fileTypeCodeList, final List<StepCode> excludedStepList) {
         final StringBuilder hqlBuilder = new StringBuilder();
         hqlBuilder.append("FROM FileItem fi ");
         hqlBuilder.append("WHERE fi.file.bureau IN (:bureauList) ");
@@ -127,9 +127,9 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
      * org.guce.siat.common.dao.FileItemDao#findFilesByServiceAndAuthoritiesAndFileType(java.util.List,
      * org.guce.siat.common.model.User, java.util.List, java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
-    public List<File> findFilesByServiceAndAuthoritiesAndFileType(final List<Bureau> bureauList, final User loggedUser,
-            final List<FileTypeCode> fileTypeCodeList, final List<StepCode> excludedStepList) {
+    public List<File> findFilesByServiceAndAuthoritiesAndFileType(final List<Bureau> bureauList, final User loggedUser, final List<FileTypeCode> fileTypeCodeList, final List<StepCode> excludedStepList) {
         final StringBuilder hqlBuilder = new StringBuilder();
         hqlBuilder.append("SELECT DISTINCT fi.file FROM FileItem fi ");
         hqlBuilder.append("WHERE fi.file.bureau IN (:bureauList) ");
@@ -162,6 +162,7 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 * @see org.guce.siat.core.ct.dao.FileItemDao#findFileItemFieldValueByFieldCode(org.guce.siat.core.ct.model.FileItem,
 	 * java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public FileItemFieldValue findFileItemFieldValueByFieldCode(final FileItem fileItem, final String fieldCode) {
         if (StringUtils.isNotEmpty(fieldCode)) {
@@ -179,6 +180,7 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 *
 	 * @see org.guce.siat.common.dao.FileItemDao#findFileItemByNumEbmsMsg(java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findFileItemByNumEbmsMsg(final String numEbmsMsg) {
         if (StringUtils.isNotBlank(numEbmsMsg)) {
@@ -197,10 +199,11 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 * org.guce.siat.common.model.User, java.util.List, org.guce.siat.common.utils.enums.StepCode,
 	 * org.guce.siat.core.ct.filter.RetrieveSearchFilter)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findFileItemForRetreiveByFilter(final List<Bureau> bureaus, final User loggedUser,
             final List<FileTypeCode> fileTypeCodeList, final StepCode stepApAcceptation, final RetrieveSearchFilter filter) {
-        final Map<String, Object> params = new HashMap<String, Object>();
+        final Map<String, Object> params = new HashMap<>();
         final StringBuilder hqlBuilder = new StringBuilder();
 
         hqlBuilder.append("FROM FileItem fi ");
@@ -253,6 +256,7 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 *
 	 * @see org.guce.siat.common.dao.FileItemDao#findFileItemFieldValueByFieldCode(java.lang.Long, java.lang.Long)
      */
+    @Transactional(readOnly = true)
     @Override
     public FileItemFieldValue findFileItemFieldValueByFieldCode(final Long idFileItem, final Long idItemField) {
         try {
@@ -271,9 +275,10 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
 	 *
 	 * @see org.guce.siat.common.dao.FileItemDao#findByLineNumberAndNumSiat(java.util.List, java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findByLineNumberAndNumSiat(final List<Integer> lineNumberList, final String refSiat) {
-        TypedQuery<FileItem> query = null;
+        TypedQuery<FileItem> query;
         if (CollectionUtils.isEmpty(lineNumberList)) {
             final String jpql = "SELECT f FROM FileItem f WHERE f.file.referenceSiat=:refSiat";
             query = super.entityManager.createQuery(jpql, FileItem.class);
@@ -289,5 +294,5 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
             return null;
         }
     }
-}
 
+}

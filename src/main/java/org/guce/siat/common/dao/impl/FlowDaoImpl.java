@@ -22,14 +22,13 @@ import org.guce.siat.common.utils.enums.FlowCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The Class FlowDaoImpl.
  */
 @Repository("flowDao")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional
 public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 
     /**
@@ -51,6 +50,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 * @see org.guce.siat.common.dao.FlowDao#findFlowsByFromStepAndFileType(org.guce.siat.common.model.Step,
 	 * org.guce.siat.common.model.FileType)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Flow> findFlowsByFromStepAndFileType(final Step step, final FileType fileType) {
         if (step != null) {
@@ -81,6 +81,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
         return Collections.emptyList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Flow> findFlowsByFromStepAndFileType2(Step step, FileType fileType) {
 
@@ -99,6 +100,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.core.ct.dao.FlowDao#findFlowBySentFileItems(java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public Flow findFlowBySentFileItem(final FileItem fileItem) {
         if (fileItem != null) {
@@ -121,6 +123,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.core.ct.dao.FlowDao#findByStepsIDs(java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Flow> findByStepsIDs(final List<Long> idsSteps) {
         if (CollectionUtils.isNotEmpty(idsSteps)) {
@@ -137,6 +140,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.core.ct.dao.FlowDao#findFlowByLabel(java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public Flow findFlowByLabelSourceAndTarget(final String flowLabel, final String source, final String target, final String local) {
         try {
@@ -169,6 +173,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.core.ct.dao.FlowDao#findFlowByCode(java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public Flow findFlowByCode(final String flowCode) {
         try {
@@ -187,6 +192,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.common.dao.FlowDao#findFlowListByFlowCodeList(java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Flow> findFlowListByFlowCodeList(final List<String> flowCodeList) {
         if (CollectionUtils.isNotEmpty(flowCodeList)) {
@@ -439,6 +445,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.common.dao.FlowDao#findFinalDecisions()
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Flow> findFinalDecisions() {
         final TypedQuery<Flow> query = super.entityManager.createQuery("FROM Flow f WHERE f.toStep.isFinal = true", Flow.class);
@@ -451,6 +458,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.common.dao.FlowDao#findFlowByFileType(org.guce.siat.common.utils.enums.FileTypeCode)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Flow> findFlowByFileType(final FileTypeCode fileType) {
         final TypedQuery<Flow> query = super.entityManager
@@ -467,6 +475,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.common.dao.FlowDao#findFlowByFileTypes(java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Flow> findFlowByFileTypes(final List<FileTypeCode> fileTypeCodes) {
         final TypedQuery<Flow> query = super.entityManager
@@ -483,6 +492,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.common.dao.FlowDao#findByToStep(org.guce.siat.common.model.Step)
      */
+    @Transactional(readOnly = true)
     @Override
     public Flow findByToStep(final Step step) {
 
@@ -515,6 +525,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 	 *
 	 * @see org.guce.siat.common.dao.FlowDao#findByToStep(org.guce.siat.common.model.Step, org.guce.siat.common.model.FileType)
      */
+    @Transactional(readOnly = true)
     @Override
     public Flow findByToStep(Step step, FileType fileType) {
 
@@ -539,6 +550,7 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Flow> findBeforeCotationStepFlows(File currentFile) {
 

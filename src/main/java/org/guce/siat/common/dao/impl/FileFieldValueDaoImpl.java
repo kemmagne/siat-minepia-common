@@ -14,14 +14,13 @@ import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The Class FileFieldValueDaoImpl.
  */
 @Repository("fileFieldValueDao")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(readOnly = true)
 public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> implements FileFieldValueDao {
 
     /**
@@ -35,30 +34,6 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
     public FileFieldValueDaoImpl() {
         setClasse(FileFieldValue.class);
     }
-
-//    @Override
-//    public List<FileFieldValue> saveOrUpdateList(List<FileFieldValue> entitiesList) {
-//        for (int i = 1; i <= entitiesList.size(); i++) {
-//
-//            FileFieldValue entity = entitiesList.get(i - 1);
-//
-//            FileFieldValueId primaryKey = new FileFieldValueId();
-//            primaryKey.setFile(entity.getFile());
-//            primaryKey.setFileField(entity.getFileField());
-//
-//            if (super.entityManager.find(FileFieldValue.class, primaryKey) != null) {
-//                entity = super.entityManager.merge(entity);
-//            } else {
-//                super.entityManager.persist(entity);
-//            }
-//            if ((i % Constants.TEN) == 0) {
-//                this.entityManager.flush();
-//                this.entityManager.clear();
-//            }
-//            entitiesList.set(i - 1, entity);
-//        }
-//        return entitiesList;
-//    }
 
     /*
          * (non-Javadoc)
@@ -117,6 +92,7 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
          * @see org.guce.siat.common.dao.FileFieldValueDao#findFileItemFieldValueByCodeAndFileItem(java.lang.String,
          * org.guce.siat.common.model.FileItem)
      */
+    @SuppressWarnings("JPQLValidation")
     @Override
     public FileItemFieldValue findFileItemFieldValueByCodeAndFileItem(final String code, final FileItem fileItem) {
 
@@ -157,6 +133,7 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
 
     }
 
+    @SuppressWarnings("JPQLValidation")
     @Override
     public FileFieldValue findValueByFileFieldAndFile(final String fileFieldCode, FileTypeCode fileTypeCode, String numeroDemande) {
         try {

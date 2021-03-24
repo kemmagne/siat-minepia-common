@@ -23,7 +23,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
     "org.guce.siat.common.utils",
-    "org.guce.siat.common.dao"
+    "org.guce.siat.common.dao",
+    "org.guce.siat.common.lookup"
 //, "org.guce.siat.common.service"
 })
 public class H2DataSourceConfig {

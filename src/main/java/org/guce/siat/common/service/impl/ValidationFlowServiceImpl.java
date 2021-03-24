@@ -964,7 +964,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
         if (StringUtils.isNotBlank(numDossierGuce)) {
             File file = fileDao.findByNumDossierGuce(numDossierGuce);
             String docType = getDocumentType(rootElement);
-
+            validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.VALIDATE_LAST_FLOW.getCode());
             return file == null || (INIT_MODIFICATION_FLOWS_LIST.contains(docType));
         }
 

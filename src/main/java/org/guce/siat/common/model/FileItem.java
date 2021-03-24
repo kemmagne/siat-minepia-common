@@ -119,7 +119,7 @@ public class FileItem extends AbstractModel implements Serializable {
      * The item flows list.
      */
     @OneToMany(mappedBy = "fileItem")
-    @OrderBy("created DESC")
+    @OrderBy("id DESC")
     private List<ItemFlow> itemFlowsList;
 
     /**
@@ -661,4 +661,3 @@ public class FileItem extends AbstractModel implements Serializable {
     }
 
 }
-
