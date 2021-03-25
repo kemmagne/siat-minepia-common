@@ -6,64 +6,57 @@ import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.CompanyDao;
 import org.guce.siat.common.model.Company;
 import org.guce.siat.common.service.CompanyService;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 /**
  * The Class CompanyServiceImpl.
  */
 @Service("companyService")
 @Transactional(readOnly = true)
-public class CompanyServiceImpl extends AbstractServiceImpl<Company> implements CompanyService
-{
+public class CompanyServiceImpl extends AbstractServiceImpl<Company> implements CompanyService {
 
-	/** The company dao. */
-	@Autowired
-	private CompanyDao companyDao;
+    /**
+     * The company dao.
+     */
+    @Autowired
+    private CompanyDao companyDao;
 
-
-	/**
-	 * Instantiates a new company service impl.
-	 */
-	public CompanyServiceImpl()
-	{
-		super();
-	}
-
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#getJpaDao()
-	 */
-	@Override
-	public AbstractJpaDao<Company> getJpaDao()
-	{
-		return companyDao;
-	}
+     */
+    @Override
+    public AbstractJpaDao<Company> getJpaDao() {
+        return companyDao;
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#setJpaDao(org.guce.siat.common.dao.AbstractJpaDao)
-	 */
-	@Override
-	public void setJpaDao(final AbstractJpaDao<Company> jpaDao)
-	{
-		this.companyDao = (CompanyDao) jpaDao;
-	}
+     */
+    @Override
+    public void setJpaDao(final AbstractJpaDao<Company> jpaDao) {
+        this.companyDao = (CompanyDao) jpaDao;
+    }
 
-	@Override
-	public List<Company> findOperator()
-	{
-		return companyDao.findOperator();
-	}
+    @Override
+    public List<Company> findOperator() {
+        return companyDao.findOperator();
+    }
 
-	@Override
-	public Company findCompanyByNumContribuable(final String numContribuable)
-	{
-		return companyDao.findCompanyByNumContribuable(numContribuable);
-	}
+    @Override
+    public Company findCompanyByNumContribuable(final String numContribuable) {
+        return companyDao.findCompanyByNumContribuable(numContribuable);
+    }
+
+    @Override
+    public List<Company> findCompaniesByFileTypes(FileTypeCode... fileTypeCodes) {
+        return companyDao.findCompaniesByFileTypes(fileTypeCodes);
+    }
 
 }

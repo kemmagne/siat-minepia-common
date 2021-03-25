@@ -146,7 +146,7 @@ public class File extends AbstractModel implements Serializable {
     /**
      * The validity date.
      */
-    @Column(name = "VALIDITY_DATE ")
+    @Column(name = "VALIDITY_DATE")
     @Temporal(TemporalType.DATE)
     private Date validityDate;
 
@@ -253,6 +253,7 @@ public class File extends AbstractModel implements Serializable {
     @ManyToOne
     @JoinColumn(name = "SIGNATORY_USER_ID")
     private User signatory;
+
     /**
      * The last decision date.
      */
