@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -39,7 +38,6 @@ public class Company extends AbstractModel implements Serializable {
      * The id.
      */
     @Id
-    @Basic(optional = false)
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMPANY_SEQ")
     @SequenceGenerator(name = "COMPANY_SEQ", sequenceName = "COMPANY_SEQ", allocationSize = 1)
@@ -231,12 +229,6 @@ public class Company extends AbstractModel implements Serializable {
      */
     @Column(name = "CNI")
     private String cNI;
-
-    /**
-     * Instantiates a new company.
-     */
-    public Company() {
-    }
 
     /*
 	 * (non-Javadoc)
