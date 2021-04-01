@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.PersistenceException;
 import javax.xml.bind.JAXBException;
@@ -32,6 +33,20 @@ public interface XmlConverterService {
      * @throws ValidationException the validation exception
      */
     File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException, NullPointerException, ValidationException;
+    
+    /**
+     * Save received file and execute flow.
+     *
+     * @param document the document
+     * @param attachementsMap
+     * @return the file
+     * @throws ParseException the parse exception
+     * @throws PersistenceException the persistence exception
+     * @throws NullPointerException the null pointer exception
+     * @throws ValidationException the validation exception
+     * @throws java.io.IOException
+     */
+    File saveReceivedFileAndAttachmentsAndExecuteFlow(final Serializable document, Map<String, byte[]> attachementsMap) throws ParseException, PersistenceException, NullPointerException, ValidationException, IOException;
 
     /**
      * Convert document to file.
