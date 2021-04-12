@@ -3,7 +3,7 @@ package org.guce.siat.common.service;
 import java.util.List;
 
 import org.guce.siat.common.model.Company;
-import org.guce.siat.common.utils.enums.FileTypeCode;
+import org.guce.siat.common.model.Pair;
 
 /**
  * The Interface CompanyService.
@@ -27,8 +27,8 @@ public interface CompanyService extends AbstractService<Company> {
 
     /**
      *
-     * @param fileTypeCodes
      * @return
      */
-    List<Company> findCompaniesByFileTypes(FileTypeCode... fileTypeCodes);
+    List<Pair> findCompanies();
+
 }

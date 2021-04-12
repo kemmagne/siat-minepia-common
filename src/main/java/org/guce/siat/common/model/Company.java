@@ -230,6 +230,9 @@ public class Company extends AbstractModel implements Serializable {
     @Column(name = "CNI")
     private String cNI;
 
+    public Company() {
+    }
+
     /*
 	 * (non-Javadoc)
 	 *

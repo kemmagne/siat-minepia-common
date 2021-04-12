@@ -1,17 +1,20 @@
 package org.guce.siat.common.dao.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.guce.siat.common.dao.CompanyDao;
 import org.guce.siat.common.model.Company;
+import org.guce.siat.common.model.Pair;
 import org.guce.siat.common.utils.enums.CompanyType;
-import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,13 +55,18 @@ public class CompanyDaoImpl extends AbstractJpaDaoImpl<Company> implements Compa
     }
 
     @Override
-    public List<Company> findCompaniesByFileTypes(FileTypeCode... fileTypeCodes) {
+    public List<Pair> findCompanies() {
 
-        TypedQuery<Company> query = super.entityManager.createQuery("SELECT DISTINCT f.client FROM File f WHERE f.fileType.code IN (:fileTypeCodes) AND f.bureau IS NOT NULL AND f.numeroDemande IS NOT NULL AND f.client.numContribuable IS NOT NULL", Company.class);
+        Query query = super.entityManager.createNativeQuery("SELECT C.NUM_CONTRIBUABLE, C.COMPANY_NAME FROM SIAT_CT.COMPANY C WHERE C.NUM_CONTRIBUABLE IS NOT NULL AND C.ID = (SELECT MAX(CC.ID) FROM SIAT_CT.COMPANY CC WHERE CC.NUM_CONTRIBUABLE = C.NUM_CONTRIBUABLE)");
 
-        query.setParameter("fileTypeCodes", Arrays.asList(fileTypeCodes));
+        List<Pair> companies = new ArrayList<>();
+        List list = query.getResultList();
+        for (Object object : list) {
+            Object[] line = (Object[]) object;
+            companies.add(new Pair((String) line[0], (String) line[1]));
+        }
 
-        return query.getResultList();
+        return companies;
     }
 
 }

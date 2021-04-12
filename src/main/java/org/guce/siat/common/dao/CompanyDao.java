@@ -3,7 +3,7 @@ package org.guce.siat.common.dao;
 import java.util.List;
 
 import org.guce.siat.common.model.Company;
-import org.guce.siat.common.utils.enums.FileTypeCode;
+import org.guce.siat.common.model.Pair;
 
 /**
  * The Interface CompanyDao.
@@ -27,9 +27,8 @@ public interface CompanyDao extends AbstractJpaDao<Company> {
 
     /**
      *
-     * @param fileTypeCodes
      * @return
      */
-    List<Company> findCompaniesByFileTypes(FileTypeCode... fileTypeCodes);
+    List<Pair> findCompanies();
 
 }
