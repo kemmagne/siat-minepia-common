@@ -1,10 +1,12 @@
 package org.guce.siat.common.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.CompanyDao;
 import org.guce.siat.common.model.Company;
+import org.guce.siat.common.model.Pair;
 import org.guce.siat.common.service.CompanyService;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +57,8 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Company> implements 
     }
 
     @Override
-    public List<Company> findCompaniesByFileTypes(FileTypeCode... fileTypeCodes) {
-        return companyDao.findCompaniesByFileTypes(fileTypeCodes);
+    public List<Pair> findCompanies() {
+        return companyDao.findCompanies();
     }
 
 }
