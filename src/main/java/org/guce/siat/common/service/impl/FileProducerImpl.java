@@ -150,10 +150,10 @@ public class FileProducerImpl implements FileProducer {
 
             String response = restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
             backupNotSentMsg(ebxml, Boolean.TRUE, file);
-            saveOrDeleteNotSendedMessageAsMessageToResend(ebxml, response);
+            //saveOrDeleteNotSendedMessageAsMessageToResend(ebxml, response);
         } catch (Exception ex) {
             backupNotSentMsg(ebxml, Boolean.FALSE, file);
-            saveOrDeleteNotSendedMessageAsMessageToResend(ebxml, null);
+            //saveOrDeleteNotSendedMessageAsMessageToResend(ebxml, null);
             throw ex;
         }
     }
