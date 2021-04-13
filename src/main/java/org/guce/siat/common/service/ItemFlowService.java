@@ -146,5 +146,14 @@ public interface ItemFlowService extends AbstractService<ItemFlow> {
     ItemFlow findNextItemFlow(ItemFlow itemFlow);
     
     List<ItemFlow> findLastItemFlowsByFileAndFlow(final File file, final FlowCode flowCode);
+    
+    /**
+     * Find item flows by file item list and Flow.
+     *
+     * @param fileItems the file items
+     * @param flowCode
+     * @return the list
+     */
+    List<ItemFlow> findItemFlowsByFileItemListAndFlow(List<Long> fileItems, FlowCode flowCode);
 
 }

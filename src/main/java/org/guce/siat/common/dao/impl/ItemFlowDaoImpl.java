@@ -130,6 +130,20 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
         query.setParameter(FILE_ITEM_QUERY_ATTRIBUTE, fileItems);
         return query.getResultList();
     }
+    
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findItemFlowsByFileItemListAndFlow(java.util.List, org.guce.siat.common.utils.enums.FlowCode)
+     */
+    @Override
+    public List<ItemFlow> findItemFlowsByFileItemListAndFlow(List<Long> fileItems, FlowCode flowCode) {
+        String qlString = "SELECT i FROM ItemFlow i WHERE  i.flow.code = :flowCode AND i.fileItem.id IN (:fileItems) ";
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery(qlString, ItemFlow.class);
+        query.setParameter(FILE_ITEM_QUERY_ATTRIBUTE, fileItems);
+        query.setParameter("flowCode", flowCode.name());
+        return query.getResultList();
+    }
 
     /*
 	 * (non-Javadoc)

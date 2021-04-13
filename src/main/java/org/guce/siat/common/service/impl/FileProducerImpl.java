@@ -17,7 +17,9 @@ import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.orchestra.core.OrchestraEbxmlMessageFactory;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.model.MessageToSend;
 import org.guce.siat.common.service.FileProducer;
+import org.guce.siat.common.service.MessageToSendService;
 import org.guce.siat.common.utils.EbxmlUtils;
 import org.guce.siat.common.utils.PropertiesConstants;
 import org.guce.siat.common.utils.PropertiesLoader;
@@ -58,6 +60,9 @@ public class FileProducerImpl implements FileProducer {
 
     @Autowired
     private PropertiesLoader propertiesLoader;
+
+    @Autowired
+    private MessageToSendService messageToSendService;
 
     /**
      * The item flow dao.
@@ -143,10 +148,12 @@ public class FileProducerImpl implements FileProducer {
 
             HttpMessageConverterExtractor<String> responseExtractor = new HttpMessageConverterExtractor<>(String.class, restTemplate.getMessageConverters());
 
-            restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
+            String response = restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
             backupNotSentMsg(ebxml, Boolean.TRUE, file);
+            saveOrDeleteNotSendedMessageAsMessageToResend(ebxml, response);
         } catch (Exception ex) {
             backupNotSentMsg(ebxml, Boolean.FALSE, file);
+            saveOrDeleteNotSendedMessageAsMessageToResend(ebxml, null);
             throw ex;
         }
     }
@@ -178,6 +185,28 @@ public class FileProducerImpl implements FileProducer {
             }
             notSentFile.delete();
         }
+    }
+
+    private void saveOrDeleteNotSendedMessageAsMessageToResend(final OrchestraEbxmlMessage ebxml, String response) {
+        if (ebxml != null) {
+            MessageToSend messageToSend = new MessageToSend();
+            messageToSend.setId(ebxml.getMessageId());
+            messageToSend.setEbxml(ebxml.getData());
+            messageToSend.setResendRetryNumber(0);
+            if (response == null || !"SIAT".equals(response)) {
+                if (messageToSendService.find(ebxml.getMessageId()) == null) {
+                    messageToSendService.save(messageToSend);
+                } else {
+                    messageToSend.setResendRetryNumber(messageToSend.getResendRetryNumber() + 1);
+                    messageToSendService.update(messageToSend);
+                }
+            } else if ("SIAT".equals(response)) {
+                if (messageToSendService.find(ebxml.getMessageId()) != null) {
+                    messageToSendService.delete(messageToSend);
+                }
+            }
+        }
+
     }
 
     @Override

@@ -683,4 +683,9 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
         return itemFlowDao.findLastItemFlowsByFileAndFlow(file, flowCode);
     }
 
+    @Override
+    public List<ItemFlow> findItemFlowsByFileItemListAndFlow(List<Long> fileItems, FlowCode flowCode) {
+        return itemFlowDao.findItemFlowsByFileItemListAndFlow(fileItems, flowCode);
+    }
+
 }
