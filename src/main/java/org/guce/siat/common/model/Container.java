@@ -12,14 +12,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  *
  * @author yenke
  */
 @Entity
-@Table(name = "CONTAINER", uniqueConstraints = @UniqueConstraint(columnNames = {"CONT_NUMBER", "FILE_ID"}))
+@Table(name = "CONTAINER"
+//        , uniqueConstraints = @UniqueConstraint(columnNames = {"CONT_NUMBER", "FILE_ID"})
+)
 public class Container implements Serializable {
 
     private static final long serialVersionUID = -212745789515592123L;
@@ -197,8 +198,7 @@ public class Container implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.contNumber);
-        hash = 53 * hash + Objects.hashCode(this.file);
+        hash = 79 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -214,10 +214,7 @@ public class Container implements Serializable {
             return false;
         }
         final Container other = (Container) obj;
-        if (!Objects.equals(this.contNumber, other.contNumber)) {
-            return false;
-        }
-        return Objects.equals(this.file, other.file);
+        return Objects.equals(this.id, other.id);
     }
 
 }
