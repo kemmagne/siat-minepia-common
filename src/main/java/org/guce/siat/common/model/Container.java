@@ -197,8 +197,23 @@ public class Container implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.contNumber);
+        hash = 79 * hash + Objects.hashCode(this.contSeal1);
+        hash = 79 * hash + Objects.hashCode(this.contSeal2);
+        hash = 79 * hash + Objects.hashCode(this.contSeal3);
+        hash = 79 * hash + Objects.hashCode(this.contGrossMass);
+        hash = 79 * hash + Objects.hashCode(this.contVolume);
+        hash = 79 * hash + Objects.hashCode(this.contNumberOfPackages);
+        hash = 79 * hash + Objects.hashCode(this.contMark);
+        hash = 79 * hash + Objects.hashCode(this.contRefrigerated);
+        hash = 79 * hash + Objects.hashCode(this.contDangerousIndicator);
+        hash = 79 * hash + Objects.hashCode(this.contType);
+        hash = 79 * hash + Objects.hashCode(this.contFull);
+        hash = 79 * hash + Objects.hashCode(this.contVgm);
+        hash = 79 * hash + Objects.hashCode(this.contDenomination);
+        hash = 79 * hash + Objects.hashCode(this.file);
         return hash;
     }
 
@@ -214,7 +229,52 @@ public class Container implements Serializable {
             return false;
         }
         final Container other = (Container) obj;
-        return Objects.equals(this.id, other.id);
+        if (!Objects.equals(this.contNumber, other.contNumber)) {
+            return false;
+        }
+        if (!Objects.equals(this.contSeal1, other.contSeal1)) {
+            return false;
+        }
+        if (!Objects.equals(this.contSeal2, other.contSeal2)) {
+            return false;
+        }
+        if (!Objects.equals(this.contSeal3, other.contSeal3)) {
+            return false;
+        }
+        if (!Objects.equals(this.contMark, other.contMark)) {
+            return false;
+        }
+        if (!Objects.equals(this.contType, other.contType)) {
+            return false;
+        }
+        if (!Objects.equals(this.contDenomination, other.contDenomination)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.contGrossMass, other.contGrossMass)) {
+            return false;
+        }
+        if (!Objects.equals(this.contVolume, other.contVolume)) {
+            return false;
+        }
+        if (!Objects.equals(this.contNumberOfPackages, other.contNumberOfPackages)) {
+            return false;
+        }
+        if (!Objects.equals(this.contRefrigerated, other.contRefrigerated)) {
+            return false;
+        }
+        if (!Objects.equals(this.contDangerousIndicator, other.contDangerousIndicator)) {
+            return false;
+        }
+        if (!Objects.equals(this.contFull, other.contFull)) {
+            return false;
+        }
+        if (!Objects.equals(this.contVgm, other.contVgm)) {
+            return false;
+        }
+        return Objects.equals(this.file, other.file);
     }
 
 }
