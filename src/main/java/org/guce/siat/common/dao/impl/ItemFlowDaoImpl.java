@@ -65,6 +65,25 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
             try {
                 return query.getSingleResult();
             } catch (NoResultException nre) {
+                LOG.error("can not extract single result", nre);
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public ItemFlow findLastItemFlowByFileItemAndFlow(FileItem fileItem, FlowCode flowCode) {
+        if (!Objects.equals(fileItem, null) && !Objects.equals(flowCode, null)) {
+
+            TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT it FROM ItemFlow it WHERE it.fileItem.id = :fileItemId AND it.flow.code = :flowCode ORDER BY it.id DESC", ItemFlow.class);
+            query.setParameter("fileItemId", fileItem.getId());
+            query.setParameter("flowCode", flowCode.name());
+            query.setMaxResults(1);
+
+            try {
+                return query.getSingleResult();
+            } catch (NoResultException nre) {
+                LOG.error("can not extract single result", nre);
             }
         }
         return null;
