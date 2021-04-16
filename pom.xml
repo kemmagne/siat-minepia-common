@@ -12,7 +12,6 @@
     <groupId>org.guce.siat.common</groupId>
     <artifactId>siat-common</artifactId>
     <version>2.1.17</version>
-
     <name>siat-common</name>
 
     <properties>

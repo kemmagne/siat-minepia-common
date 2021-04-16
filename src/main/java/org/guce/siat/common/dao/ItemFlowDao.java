@@ -3,6 +3,7 @@ package org.guce.siat.common.dao;
 import java.util.List;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
+import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.utils.enums.FileTypeCode;
@@ -21,6 +22,15 @@ public interface ItemFlowDao extends AbstractJpaDao<ItemFlow> {
      * @return the item flow
      */
     ItemFlow findLastItemFlowByFileItem(FileItem fileItem);
+    
+    /**
+     * Find last item flow by file item And Flow.
+     *
+     * @param fileItem the file item
+     * @param flowCode
+     * @return the item flow
+     */
+    ItemFlow findLastItemFlowByFileItemAndFlow(FileItem fileItem, FlowCode flowCode);
 
     /**
      * Find last o utgoing item flow by file item.
@@ -37,7 +47,7 @@ public interface ItemFlowDao extends AbstractJpaDao<ItemFlow> {
      * @return the item flow
      */
     ItemFlow findLastSentItemFlowByFileItem(final FileItem fileItem);
-
+    
     /**
      * Find item flows by file item list.
      *
@@ -45,6 +55,15 @@ public interface ItemFlowDao extends AbstractJpaDao<ItemFlow> {
      * @return the list
      */
     List<ItemFlow> findItemFlowsByFileItemList(List<Long> fileItems);
+    
+    /**
+     * Find item flows by file item list and Flow.
+     *
+     * @param fileItems the file items
+     * @param flowCode
+     * @return the list
+     */
+    List<ItemFlow> findItemFlowsByFileItemListAndFlow(List<Long> fileItems, FlowCode flowCode);
 
     /**
      * Find item flow by file item.

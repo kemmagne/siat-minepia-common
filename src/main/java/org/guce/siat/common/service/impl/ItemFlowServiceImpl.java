@@ -136,6 +136,12 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
     public ItemFlow findLastItemFlowByFileItem(final FileItem fileItem) {
         return itemFlowDao.findLastItemFlowByFileItem(fileItem);
     }
+    
+    @Override
+    public ItemFlow findLastItemFlowByFileItemAndFlow(FileItem fileItem, FlowCode flowCode) {
+        return itemFlowDao.findLastItemFlowByFileItemAndFlow(fileItem, flowCode);
+    }
+
 
     /*
 	 * (non-Javadoc)
@@ -678,4 +684,28 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
         return returnedMap;
     }
 
+    @Override
+    public List<ItemFlow> findLastItemFlowsByFileAndFlow(File file, FlowCode flowCode) {
+        return itemFlowDao.findLastItemFlowsByFileAndFlow(file, flowCode);
+    }
+
+    @Override
+    public List<ItemFlow> findItemFlowsByFileItemListAndFlow(List<Long> fileItems, FlowCode flowCode) {
+        return itemFlowDao.findItemFlowsByFileItemListAndFlow(fileItems, flowCode);
+    }
+
+    @Override
+    public List<ItemFlow> findLastItemFlowsByFileItemListAndFlow(List<FileItem> fileItems, FlowCode flowCode) {
+        final List<ItemFlow> returnedItemFlowList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(fileItems)) {
+            for (final FileItem fileItem : fileItems) {
+                final ItemFlow itemFlow = itemFlowDao.findLastItemFlowByFileItemAndFlow(fileItem, flowCode);
+                if (itemFlow != null) {
+                    returnedItemFlowList.add(itemFlow);
+                }
+            }
+        }
+
+        return returnedItemFlowList;
+    }
 }

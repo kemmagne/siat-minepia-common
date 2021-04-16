@@ -22,6 +22,15 @@ public interface ItemFlowService extends AbstractService<ItemFlow> {
      * @return the item flow
      */
     ItemFlow findLastItemFlowByFileItem(final FileItem fileItem);
+    
+    /**
+     * Find last item flow by file item And Flow.
+     *
+     * @param fileItem the file item
+     * @param flowCode
+     * @return the item flow
+     */
+    ItemFlow findLastItemFlowByFileItemAndFlow(final FileItem fileItem, FlowCode flowCode);
 
     /**
      * Find last item flow by file item.
@@ -144,5 +153,25 @@ public interface ItemFlowService extends AbstractService<ItemFlow> {
     ItemFlow findPreviousItemFlow(ItemFlow itemFlow);
 
     ItemFlow findNextItemFlow(ItemFlow itemFlow);
+    
+    List<ItemFlow> findLastItemFlowsByFileAndFlow(final File file, final FlowCode flowCode);
+    
+    /**
+     * Find item flows by file item list and Flow.
+     *
+     * @param fileItems the file items
+     * @param flowCode
+     * @return the list
+     */
+    List<ItemFlow> findItemFlowsByFileItemListAndFlow(List<Long> fileItems, FlowCode flowCode);
+    
+    /**
+     * Find last item flows by file item list and Flow.
+     *
+     * @param fileItems the file items
+     * @param flowCode
+     * @return the list
+     */
+    List<ItemFlow> findLastItemFlowsByFileItemListAndFlow(List<FileItem> fileItems, FlowCode flowCode);
 
 }
