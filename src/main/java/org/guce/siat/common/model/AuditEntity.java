@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
