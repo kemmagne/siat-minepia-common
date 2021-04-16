@@ -126,8 +126,7 @@ public class AuditDaoImpl extends AbstractJpaDaoImpl<AuditEntity> implements Aud
 
     @Override
     public List<AuditEntity> findByModel(final String model) {
-        final TypedQuery<AuditEntity> query = super.entityManager
-                .createQuery("SELECT a FROM AuditEntity a WHERE a.model = :model ORDER BY a.id DESC", AuditEntity.class);
+        final TypedQuery<AuditEntity> query = super.entityManager.createQuery("SELECT a FROM AuditEntity a WHERE a.model = :model ORDER BY a.id DESC", AuditEntity.class);
         query.setParameter("model", model);
         return query.getResultList();
     }
