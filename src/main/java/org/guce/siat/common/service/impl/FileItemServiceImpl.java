@@ -257,8 +257,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
                     break;
             }
         }
-        fileItemsWithoutDraft = fileItemDao.findFileItemByServiceAndAuthoritiesAndFileType(bureaus, loggedUser, fileTypeCodeList,
-                excludedStepList);
+        fileItemsWithoutDraft = fileItemDao.findFileItemByServiceAndAuthoritiesAndFileType(bureaus, loggedUser, fileTypeCodeList, excludedStepList);
 
         final List<FileItem> returnFileItems = new ArrayList<>();
 
@@ -266,19 +265,17 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
             final FileType fileType = fileItem.getFile().getFileType();
             final User assignedUser = fileItem.getFile().getAssignedUser();
 
-            final List<Authority> assignedUserAuthorities = userAuthorityFileTypeDao.findAuthoritiesByFileTypeAndUser(fileType,
-                    assignedUser);
+            final List<Authority> assignedUserAuthorities = userAuthorityFileTypeDao.findAuthoritiesByFileTypeAndUser(fileType, assignedUser);
 
             for (final UserAuthorityFileType userAuthorityFileType : listUserAuthorityFileTypes) {
                 final boolean loggedUserHasAuthorityOnFileType = fileType.getId().equals(userAuthorityFileType.getFileType().getId());
 
-                final boolean loggedUserHasRoleOnFileItemStep = fileItem.getStep().getRoleList()
-                        .contains(userAuthorityFileType.getUserAuthority().getAuthorityGranted());
+                final boolean loggedUserHasRoleOnFileItemStep = fileItem.getStep().getRoleList().contains(userAuthorityFileType.getUserAuthority().getAuthorityGranted());
 
                 final boolean assignedUserAllowed = assignedUser == null
                         // logged user == assigned user
                         || (assignedUser != null && SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(
-                        assignedUser.getId()))
+                                assignedUser.getId()))
                         // logged user != assigned user AND role of logged user != role of assigned user  AND l'aasignedUser have not an authority on step authorities
                         || (assignedUser != null
                         && !SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(assignedUser.getId())
@@ -388,7 +385,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
                 final boolean assignedUserAllowed = assignedUser == null
                         // logged user == assigned user
                         || (assignedUser != null && SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(
-                        assignedUser.getId()))
+                                assignedUser.getId()))
                         // logged user != assigned user AND role of logged user != role of assigned user  AND l'aasignedUser have not an authority on step authorities
                         || (assignedUser != null
                         && !SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(assignedUser.getId())

@@ -103,6 +103,9 @@ public class Step extends AbstractModel implements Serializable {
     })
     private List<Authority> roleList;
 
+    @Column(name = "IS_TREATMENT_STEP")
+    private Boolean treatmentStep;
+
     /**
      * Instantiates a new step.
      */
@@ -293,6 +296,14 @@ public class Step extends AbstractModel implements Serializable {
         this.stepCode = stepCode;
     }
 
+    public Boolean getTreatmentStep() {
+        return treatmentStep;
+    }
+
+    public void setTreatmentStep(Boolean treatmentStep) {
+        this.treatmentStep = treatmentStep;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -344,10 +355,7 @@ public class Step extends AbstractModel implements Serializable {
             return false;
         }
         final Step other = (Step) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())));
     }
 
 }
