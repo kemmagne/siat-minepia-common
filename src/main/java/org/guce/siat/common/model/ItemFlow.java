@@ -12,13 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.hibernate.annotations.DynamicInsert;
+import org.guce.siat.common.utils.SecurityUtils;
 
 /**
  * The Class ItemFlow.
@@ -26,7 +26,6 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity
 @Table(name = "ITEM_FLOW")
 @XmlRootElement
-@DynamicInsert(true)
 public class ItemFlow extends AbstractModel implements Serializable {
 
     /**
@@ -46,7 +45,7 @@ public class ItemFlow extends AbstractModel implements Serializable {
     /**
      * The created.
      */
-    @Column(name = "CREATED", nullable = false, columnDefinition = "TIMESTAMP DEFAULT SYSTIMESTAMP", insertable = false)
+    @Column(name = "CREATED", nullable = false, columnDefinition = "TIMESTAMP DEFAULT SYSTIMESTAMP", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
 
@@ -104,6 +103,9 @@ public class ItemFlow extends AbstractModel implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ASSIGNED_USER_ID", referencedColumnName = "ID")
     private User assignedUser;
+
+    @Column(name = "IP_ADDRESS", length = 20)
+    private String ipAddress;
 
     /**
      * Instantiates a new item flow.
@@ -306,6 +308,14 @@ public class ItemFlow extends AbstractModel implements Serializable {
         this.assignedUser = assignedUser;
     }
 
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -351,6 +361,11 @@ public class ItemFlow extends AbstractModel implements Serializable {
         builder.append(sent);
         builder.append(" ]");
         return builder.toString();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        setIpAddress(SecurityUtils.getCurrentAddressIp());
     }
 
 }
