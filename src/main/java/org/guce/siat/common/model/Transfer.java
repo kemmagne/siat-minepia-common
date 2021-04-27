@@ -1,7 +1,6 @@
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -54,7 +53,7 @@ public class Transfer extends AbstractModel implements Serializable {
     /**
      * The created date.
      */
-    @Column(name = "CREATED_DATE", nullable = false)
+    @Column(name = "CREATED_DATE", nullable = false, columnDefinition = "TIMESTAMP DEFAULT SYSTIMESTAMP", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
@@ -120,9 +119,6 @@ public class Transfer extends AbstractModel implements Serializable {
 
     @PrePersist
     private void prePersist() {
-        if (createdDate == null) {
-            createdDate = Calendar.getInstance().getTime();
-        }
     }
 
     @Override
