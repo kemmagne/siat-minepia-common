@@ -128,7 +128,6 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
     @Override
     public T save(T entity) {
         this.entityManager.persist(entity);
-        this.entityManager.flush();
         return entity;
     }
 
