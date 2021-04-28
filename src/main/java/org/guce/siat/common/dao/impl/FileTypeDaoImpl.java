@@ -22,14 +22,13 @@ import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The Class FileDaoImpl.
  */
 @Repository("fileTypeDao")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional
 public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements FileTypeDao {
 
     /**
@@ -49,6 +48,7 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	 *
 	 * @see org.guce.siat.core.ct.dao.FileTypeDao#findFileTypeByMinestry(org.guce.siat.common.model.Ministry)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileType> findFileTypeByMinistry(final Ministry ministry) {
         try {
@@ -72,6 +72,7 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	 *
 	 * @see org.guce.siat.common.dao.FileTypeDao#findByCode(org.guce.siat.common.utils.enums.FileTypeCode)
      */
+    @Transactional(readOnly = true)
     @Override
     public FileType findByCode(final FileTypeCode code) {
         try {
@@ -92,6 +93,7 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	 *
 	 * @see org.guce.siat.common.dao.FileTypeDao#findAuthoritiesByFileType(org.guce.siat.common.model.FileType)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<Authority> findAuthoritiesByFileType(final FileType filetype) {
         try {
@@ -114,6 +116,7 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
 	 *
 	 * @see org.guce.siat.common.dao.FileTypeDao#findFileTypesByCodes(java.lang.String[])
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileType> findFileTypesByCodes(final FileTypeCode... fileTypeCodes) {
         final StringBuilder hqlQuery = new StringBuilder();
@@ -182,6 +185,7 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<FileTypeService> findFileTypeServiceByFileType(FileType fileType) {
         final StringBuilder hqlQuery = new StringBuilder();
@@ -195,6 +199,7 @@ public class FileTypeDaoImpl extends AbstractJpaDaoImpl<FileType> implements Fil
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MinistryFileType findMinistryFileType(FileTypeCode fileTypeCode, String ministryCode) {
 

@@ -845,10 +845,8 @@ public final class RepetableUtil {
                 fieldValues.add(0, permitObtainingDateClient);
             }
             if (StringUtils.isNotBlank(selectedFileItem.getFile().getClient().getPermitApprovalDate())) {
-                final String permitApprovalDateLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                        "GeneralInformationLabel_permitApprovalDate");
-                final String permitApprovalDateLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                        "GeneralInformationLabel_permitApprovalDate");
+                final String permitApprovalDateLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_permitApprovalDate");
+                final String permitApprovalDateLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_permitApprovalDate");
                 final FileField fileFieldpermitApprovalDateClient = new FileField();
                 fileFieldpermitApprovalDateClient.setLabelFr(permitApprovalDateLabelFr);
                 fileFieldpermitApprovalDateClient.setLabelEn(permitApprovalDateLabelEn);
@@ -858,10 +856,8 @@ public final class RepetableUtil {
                 fieldValues.add(0, permitApprovalDateClient);
             }
             if (StringUtils.isNotBlank(selectedFileItem.getFile().getClient().getPermitType())) {
-                final String permitTypeLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                        "GeneralInformationLabel_permitType");
-                final String permitTypeLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                        "GeneralInformationLabel_permitType");
+                final String permitTypeLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_permitType");
+                final String permitTypeLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_permitType");
                 final FileField fileFieldpermitTypeClient = new FileField();
                 fileFieldpermitTypeClient.setLabelFr(permitTypeLabelFr);
                 fileFieldpermitTypeClient.setLabelEn(permitTypeLabelEn);
@@ -871,10 +867,8 @@ public final class RepetableUtil {
                 fieldValues.add(0, permitTypeClient);
             }
             if (StringUtils.isNotBlank(selectedFileItem.getFile().getClient().getProfession())) {
-                final String professionLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                        "GeneralInformationLabel_profession");
-                final String permitTypeLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                        "GeneralInformationLabel_profession");
+                final String professionLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_profession");
+                final String permitTypeLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_profession");
                 final FileField fileFieldprofessionClient = new FileField();
                 fileFieldprofessionClient.setLabelFr(professionLabelFr);
                 fileFieldprofessionClient.setLabelEn(permitTypeLabelEn);
@@ -884,10 +878,8 @@ public final class RepetableUtil {
                 fieldValues.add(0, professionClient);
             }
             if (StringUtils.isNotBlank(selectedFileItem.getFile().getClient().getcNI())) {
-                final String cniLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                        "GeneralInformationLabel_cni");
-                final String cniLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                        "GeneralInformationLabel_cni");
+                final String cniLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_cni");
+                final String cniLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_cni");
                 final FileField fileFieldcniClient = new FileField();
                 fileFieldcniClient.setLabelFr(cniLabelFr);
                 fileFieldcniClient.setLabelEn(cniLabelEn);
@@ -899,28 +891,22 @@ public final class RepetableUtil {
         }
 
         // File.Service
-        if (selectedFileItem.getFile().getBureau() != null
-                && selectedFileItem.getFile().getBureau().getService().getLabelEn() != null) {
-            final String serviceLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                    "GeneralInformationLabel_Service");
-            final String serviceLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                    "GeneralInformationLabel_Service");
+        if (selectedFileItem.getFile().getBureau() != null && selectedFileItem.getFile().getBureau().getService().getLabelEn() != null) {
+            final String serviceLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_Service");
+            final String serviceLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_Service");
             final FileField fileFieldService = new FileField();
             fileFieldService.setLabelFr(serviceLabelFr);
             fileFieldService.setLabelEn(serviceLabelEn);
             final FileFieldValue service = new FileFieldValue();
-            service.setValue(RepetableUtil.locale.equals(Locale.FRANCE) ? selectedFileItem.getFile().getBureau().getService()
-                    .getLabelFr() : selectedFileItem.getFile().getBureau().getService().getLabelEn());
+            service.setValue(RepetableUtil.locale.equals(Locale.FRANCE) ? selectedFileItem.getFile().getBureau().getService().getLabelFr() : selectedFileItem.getFile().getBureau().getService().getLabelEn());
             service.setFileField(fileFieldService);
             fieldValues.add(0, service);
         }
 
         // File.FileType
         if (selectedFileItem.getFile().getFileType() != null) {
-            final String natureLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                    "GeneralInformationLabel_nature");
-            final String natureLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                    "GeneralInformationLabel_nature");
+            final String natureLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_nature");
+            final String natureLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_nature");
             final FileField fileFieldFileType = new FileField();
             fileFieldFileType.setLabelFr(natureLabelFr);
             fileFieldFileType.setLabelEn(natureLabelEn);
@@ -932,23 +918,19 @@ public final class RepetableUtil {
         }
 
         // File.CreatedDate
-        final String dateLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                "GeneralInformationLabel_date");
-        final String dateLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                "GeneralInformationLabel_date");
+        final String dateLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_date");
+        final String dateLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_date");
         final FileField fileFieldCreateDate = new FileField();
         fileFieldCreateDate.setLabelFr(dateLabelFr);
         fileFieldCreateDate.setLabelEn(dateLabelEn);
         final FileFieldValue createDate = new FileFieldValue();
-        createDate.setValue(new java.text.SimpleDateFormat("dd/MM/yyyy").format(selectedFileItem.getFile().getCreatedDate()));
+        createDate.setValue(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_FR, selectedFileItem.getFile().getCreatedDate()));
         createDate.setFileField(fileFieldCreateDate);
         fieldValues.add(0, createDate);
 
         // File.ReferenceSiat
-        final String numSiatLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                "GeneralInformationLabel_numSiat");
-        final String numSiatLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                "GeneralInformationLabel_numSiat");
+        final String numSiatLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_numSiat");
+        final String numSiatLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_numSiat");
         final FileField fileFieldReferenceSiat = new FileField();
         fileFieldReferenceSiat.setLabelFr(numSiatLabelFr);
         fileFieldReferenceSiat.setLabelEn(numSiatLabelEn);
@@ -958,10 +940,8 @@ public final class RepetableUtil {
         fieldValues.add(0, referenceSiat);
 
         // File.NumeroDemande
-        final String numDemandeLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                "GeneralInformationLabel_numDemande");
-        final String numDemandeLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                "GeneralInformationLabel_numDemande");
+        final String numDemandeLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_numDemande");
+        final String numDemandeLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_numDemande");
         final FileField fileFieldNumeroDemande = new FileField();
         fileFieldNumeroDemande.setLabelFr(numDemandeLabelFr);
         fileFieldNumeroDemande.setLabelEn(numDemandeLabelEn);
@@ -971,10 +951,8 @@ public final class RepetableUtil {
         fieldValues.add(0, numeroDemande);
 
         // File.NumeroDossier
-        final String referenceGuceLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(
-                "GeneralInformationLabel_numGuce");
-        final String referenceGuceLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(
-                "GeneralInformationLabel_numGuce");
+        final String referenceGuceLabelFr = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString("GeneralInformationLabel_numGuce");
+        final String referenceGuceLabelEn = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString("GeneralInformationLabel_numGuce");
         final FileField fileFieldReferenceGuce = new FileField();
         fileFieldReferenceGuce.setLabelFr(referenceGuceLabelFr);
         fileFieldReferenceGuce.setLabelEn(referenceGuceLabelEn);

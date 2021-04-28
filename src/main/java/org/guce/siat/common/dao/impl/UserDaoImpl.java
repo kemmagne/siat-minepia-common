@@ -42,14 +42,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The Class UserDaoImpl.
  */
 @Repository("userDao")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional
 public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, UserDetailsService {
 
     /**
@@ -81,7 +80,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 *
 	 * @see org.guce.siat.common.dao.UserDao#loadUserByUsername(java.lang.String)
      */
-    @Transactional(readOnly = false)
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         try {
@@ -110,7 +109,6 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 *
 	 * @see org.guce.siat.common.dao.UserDao#createUser(org.guce.siat.common.model.User)
      */
-    @Transactional(readOnly = false)
     @Override
     public void createUser(final User user) {
         final User user1 = user;
@@ -132,7 +130,6 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 *
 	 * @see org.guce.siat.common.dao.UserDao#updateUser(org.guce.siat.common.model.User)
      */
-    @Transactional(readOnly = false)
     @Override
     public void updateUser(final User user) {
         final User user1 = user;
@@ -156,6 +153,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 *
 	 * @see org.guce.siat.common.dao.UserDao#getUserByLogin(java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public User getUserByLogin(final String username) {
         try {
@@ -175,6 +173,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 *
 	 * @see org.guce.siat.common.dao.UserDao#findByMail(java.lang.String)
      */
+    @Transactional(readOnly = true)
     @Override
     public User findByMail(final String email) {
         try {
@@ -226,6 +225,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 *
 	 * @see org.guce.siat.common.dao.UserDao#findUsersByAuthorities(java.lang.String[])
      */
+    @Transactional(readOnly = true)
     @Override
     public List<User> findUsersByAuthorities(String... authoritiesList) {
 
@@ -256,9 +256,9 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#findUsersByAdministrationsAndPositions(java.util.List,
 	 * org.guce.siat.common.utils.enums.PositionType[])
      */
+    @Transactional(readOnly = true)
     @Override
-    public List<User> findUsersByAdministrationsAndPositions(final List<Long> administrationIds,
-            final PositionType... positionList) {
+    public List<User> findUsersByAdministrationsAndPositions(final List<Long> administrationIds, final PositionType... positionList) {
         if (CollectionUtils.isNotEmpty(administrationIds)) {
             final StringBuilder hqlQuery = new StringBuilder();
 
@@ -282,6 +282,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 *
 	 * @see org.guce.siat.common.dao.UserDao#findUsersByAdministrationIds(java.lang.Long[])
      */
+    @Transactional(readOnly = true)
     @Override
     public List<User> findUsersByAdministrationsIds(final Long... administrationIds) {
         if (CollectionUtils.isNotEmpty(Arrays.asList(administrationIds))) {
@@ -296,6 +297,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
         return Collections.emptyList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<User> findUsersByAdministrationsIdsAndPosition(PositionType positionType, Long... administrationIds) {
 
@@ -320,9 +322,9 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * org.guce.siat.common.dao.UserDao#findUsersByAdministrationAndPositions(org.guce.siat.common.model.Administration,
 	 * org.guce.siat.common.utils.enums.PositionType[])
      */
+    @Transactional(readOnly = true)
     @Override
-    public List<User> findUsersByAdministrationsAndPositions(final Administration administration,
-            final PositionType... positionList) {
+    public List<User> findUsersByAdministrationsAndPositions(final Administration administration, final PositionType... positionList) {
         StringBuilder hqlQuery;
         TypedQuery<User> query;
         final List<User> usersList = new ArrayList<>();
@@ -402,8 +404,8 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * org.guce.siat.common.dao.UserDao#findUsersByAdministrationsAndAuthorities(org.guce.siat.common.model.Administration
 	 * , org.guce.siat.common.utils.enums.AuthorityConstants[])
      */
+    @Transactional(readOnly = true)
     @Override
-    @SuppressWarnings("unchecked")
     public List<User> findUsersByAdministrationAndAuthorities(final List<Long> administrationIds, final String... authorities) {
         final StringBuilder hqlQuery = new StringBuilder();
         final Map<String, Object> params = new HashedMap();
@@ -435,6 +437,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 	 * @see org.guce.siat.common.dao.UserDao#findByStepAndFileTypeAndAdministration(java.lang.Long, java.lang.Long,
 	 * java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<User> findByStepAndFileTypeAndAdministration(final Long stepId, final Long fileTypeId, final List<Bureau> bureauList) {
 
@@ -447,8 +450,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 
         final StringBuilder sqlQuery = new StringBuilder();
 
-        sqlQuery
-                .append("SELECT usrs.PREFERED_LANGUAGE, usrs.EMAIL, usrs.FIRST_NAME FROM user_authority ua, step_authority sa, file_type_step ftp, USERS usrs ");
+        sqlQuery.append("SELECT usrs.PREFERED_LANGUAGE, usrs.EMAIL, usrs.FIRST_NAME FROM user_authority ua, step_authority sa, file_type_step ftp, USERS usrs ");
         sqlQuery.append("WHERE ua.AUTHORITY_ID = sa.AUTHORITY_ID ");
         sqlQuery.append("AND sa.STEP_ID = ftp.STEP_ID ");
         sqlQuery.append("AND usrs.ID = ua.USER_ID AND usrs.ADMINISTRATION_ID IN (:bureauList) ");
@@ -478,6 +480,7 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
     /* (non-Javadoc)
 	 * @see org.guce.siat.common.dao.UserDao#findSuperUserByFileType(org.guce.siat.common.utils.enums.FileTypeCode)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<User> findSuperUserByFileType(FileTypeCode fileTypeCode, Long bureauId) {
 
@@ -518,4 +521,5 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
 
         return users;
     }
+
 }
