@@ -9,8 +9,10 @@
             </goals>
         </action>
         <action>
-            <actionName>CUSTOM-skip-test</actionName>
-            <displayName>skip-test</displayName>
+
+            <actionName>CUSTOM-skip-test-build</actionName>
+            <displayName>skip-test-build</displayName>
+
             <goals>
                 <goal>install</goal>
             </goals>
