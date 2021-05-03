@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.FileItemDao;
@@ -148,7 +146,9 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
         final TypedQuery<File> query = super.entityManager.createQuery(hqlBuilder.toString(), File.class);
 
         query.setParameter("bureauList", bureauList);
-        //The ids of the logged user combined with their delegator users
+		//The ids of the logged user combined with their delegator users
+		List<Long> listId = SiatUtils.getUserIds(loggedUser.getMergedDelegatorList());
+		System.out.println(" liste : " + listId);
         query.setParameter("userListIds", SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()));
         query.setParameter("listFileTypeCode", fileTypeCodeList);
         query.setParameter("excludedStepList", excludedStepList);

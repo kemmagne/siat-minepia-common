@@ -387,7 +387,7 @@ import javax.xml.bind.annotation.XmlType;
  *                   &lt;element name="RAISON_SOCIALE" minOccurs="0">
  *                     &lt;simpleType>
  *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *                         &lt;maxLength value="50"/>
+ *                         &lt;maxLength value="250"/>
  *                       &lt;/restriction>
  *                     &lt;/simpleType>
  *                   &lt;/element>
