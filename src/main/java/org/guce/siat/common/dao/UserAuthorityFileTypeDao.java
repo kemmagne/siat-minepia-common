@@ -7,6 +7,7 @@ import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
+import org.guce.siat.common.model.UserAuthority;
 import org.guce.siat.common.model.UserAuthorityFileType;
 
 /**
@@ -67,4 +68,11 @@ public interface UserAuthorityFileTypeDao extends AbstractJpaDao<UserAuthorityFi
      * @return the list
      */
     List<FileType> findFilesTypesByAuthorizedUser(User user);
+
+    /**
+     * Removes the used authorities.
+     *
+     * @param userAuthoritiesIds the user authorities ids
+     */
+    void removeUsedAuthritiesFileTypeByUserAuthorities(final List<Long> userAuthoritiesIds);
 }

@@ -230,5 +230,30 @@ public class UserAuthorityFileTypeDaoImpl extends AbstractJpaDaoImpl<UserAuthori
         }
         return Collections.emptyList();
     }
+    
+    
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.UserAuthorityFileTypeDao#removeUsedAuthritiesFileTypeByUserAuthorities(java.util.List)
+	 */
+	/**
+	 * Removes the used user authorities file type by user authorities.
+	 *
+	 * @param userAuthoritiesIds
+	 *           the user authorities ids
+	 */
+	@Override
+	public void removeUsedAuthritiesFileTypeByUserAuthorities(final List<Long> userAuthoritiesIds)
+	{
+		if (CollectionUtils.isNotEmpty(userAuthoritiesIds))
+		{
+			final StringBuilder hqlQuery = new StringBuilder();
+			hqlQuery.append("DELETE FROM UserAuthorityFileType uft WHERE uft.primaryKey.userAuthority.id IN (:authoritiesIds)");
+			final javax.persistence.Query query = entityManager.createQuery(hqlQuery.toString());
+			query.setParameter("authoritiesIds", userAuthoritiesIds);
+			query.executeUpdate();
+		}
+	}
 
 }
