@@ -1,15 +1,17 @@
 package org.guce.siat.common.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import org.guce.orchestra.core.OrchestraEbxmlMessage;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
-import org.guce.siat.common.dao.CarDao;
 import org.guce.siat.common.dao.MessageToSendDao;
-import org.guce.siat.common.model.Car;
 import org.guce.siat.common.model.MessageToSend;
-import org.guce.siat.common.model.Organism;
-import org.guce.siat.common.service.CarService;
 import org.guce.siat.common.service.MessageToSendService;
+import org.guce.siat.common.utils.EbxmlUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class MessageToSendServiceImpl extends AbstractServiceImpl<MessageToSend> implements MessageToSendService {
 
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(MessageToSendServiceImpl.class);
     /**
      * The messageToSend dao.
      */
@@ -54,9 +60,90 @@ public class MessageToSendServiceImpl extends AbstractServiceImpl<MessageToSend>
         this.messageToSendDao = (MessageToSendDao) jpaDao;
     }
 
+
     @Override
-    public List<MessageToSend> findByRetryNumberLessThanFive() {
-        return messageToSendDao.findByRetryNumberLessThanFive();
+    public MessageToSend findByMessageId(String messageId) {
+        return this.messageToSendDao.findByMessageId(messageId);
+    }
+
+    @Override
+    public void saveOrUpadateNotSendedMessageAsMessageToResend(Map data) {
+        try {
+            if (data != null) {
+                OrchestraEbxmlMessage ebxml = EbxmlUtils.mapToEbxml(data);
+                MessageToSend messageToSend = new MessageToSend();
+                messageToSend.setMessageId(ebxml.getMessageId());
+                messageToSend.setEbxml(ebxml.getData());
+                messageToSend.setResendRetryNumber(0);
+                messageToSend.setLastRetrySendTime(Calendar.getInstance().getTime());
+                MessageToSend messageToSendExist = messageToSendDao.findByMessageId(ebxml.getMessageId());
+                if (messageToSendExist == null) {
+                    messageToSendDao.save(messageToSend);
+                } else {
+                    messageToSendExist.setResendRetryNumber(messageToSend.getResendRetryNumber() + 1);
+                    messageToSendDao.update(messageToSendExist);
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public void deleteNotSendedMessageIfExistsAsMessageToResend(Map data) {
+        try {
+            if (data != null) {
+                OrchestraEbxmlMessage ebxml = EbxmlUtils.mapToEbxml(data);
+                MessageToSend messageToSendExist = messageToSendDao.findByMessageId(ebxml.getMessageId());
+                if (messageToSendExist != null) {
+                    messageToSendDao.delete(messageToSendExist);
+                }
+            }
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public void saveOrDeleteNotSendedMessageAsMessageToResend(MessageToSend messageToSend, String response) {
+        if (messageToSend != null) {
+            MessageToSend messageToSendExist = messageToSendDao.findByMessageId(messageToSend.getMessageId());
+            if (response == null || !"SIAT".equals(response)) {
+                if (messageToSendExist == null) {
+                    messageToSend.setResendRetryNumber(0);
+                    messageToSend.setLastRetrySendTime(Calendar.getInstance().getTime());
+                    messageToSendDao.save(messageToSend);
+                } else {
+                    messageToSend.setResendRetryNumber(messageToSend.getResendRetryNumber() + 1);
+                     messageToSend.setLastRetrySendTime(Calendar.getInstance().getTime());
+                    messageToSendDao.update(messageToSend);
+                }
+            } else if ("SIAT".equals(response)) {
+                if (messageToSendExist != null) {
+                    messageToSendDao.delete(messageToSend);
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<MessageToSend> getMessagesToResend(int maxRetrySendTimeNumber, int numberMinuteExcededBetweenTwoSend) {
+        return messageToSendDao.getMessagesToResend(maxRetrySendTimeNumber, numberMinuteExcededBetweenTwoSend);
+    }
+
+    @Override
+    public List<MessageToSend> getMessagesThatExceededMaxNumberRetryTime(int maxRetrySendTimeNumber) {
+        return messageToSendDao.getMessagesThatExceededMaxNumberRetryTime(maxRetrySendTimeNumber);
+    }
+
+    @Override
+    public List<MessageToSend> findMessagesExceededMaxNumberRetrySendAndMaxLifeTime(int maxRetrySendTimeNumber, int maxLifeTime) {
+        return messageToSendDao.findMessagesExceededMaxNumberRetrySendAndMaxLifeTime(maxRetrySendTimeNumber, maxLifeTime);
+    }
+
+    @Override
+    public void deleteMessagesExceededMaxNumberRetrySendAndMaxLifeTime(int maxRetrySendTimeNumber, int maxLifeTime) {
+        messageToSendDao.deleteMessagesExceededMaxNumberRetrySendAndMaxLifeTime(maxRetrySendTimeNumber, maxLifeTime);
     }
 
 }

@@ -1,40 +1,59 @@
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  * The Class MessageToSend.
  */
 @Entity
 @Table(name = "MESSAGE_TO_SEND")
-public class MessageToSend implements Serializable {
+public class MessageToSend extends AbstractModel implements Serializable {
 
     /**
      * The Constant serialVersionUID.
      */
     private static final long serialVersionUID = 1L;
+    
+    /**
+     * The id.
+     */
+    @Id
+    @Basic(optional = false)
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MESSAGE_TO_SEND_SEQ")
+    @SequenceGenerator(name = "MESSAGE_TO_SEND_SEQ", sequenceName = "MESSAGE_TO_SEND_SEQ", allocationSize = 1)
+    private Long id;
 
     /**
      * The messageId.
      */
-    @Id
-    @Column(name="MESSAGEID")
+    @Column(name="MESSAGE_ID")
     private String messageId;
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
+    @Column(name = "EBXML")
     private byte[] ebxml;
     
     @Column(name = "RESEND_RETRY_NUMBER")
     private int resendRetryNumber;
+    
+    @Column(name="LAST_RETRY_SEND_TIME")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date lastRetrySendTime;
 
     /**
      * Instantiates a new MessageToSend.
@@ -43,12 +62,13 @@ public class MessageToSend implements Serializable {
     }
 
     /**
-     * Gets the messageId.
+     * Gets the id.
      *
-     * @return the messageId
+     * @return the id
      */
-    public String getId() {
-        return messageId;
+    @Override
+    public Long getId() {
+        return id;
     }
 
     /**
@@ -56,8 +76,9 @@ public class MessageToSend implements Serializable {
      *
      * @param id the new messageId
      */
-    public void setId(final String id) {
-        this.messageId = id;
+    @Override
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     public String getMessageId() {
@@ -83,9 +104,15 @@ public class MessageToSend implements Serializable {
     public void setResendRetryNumber(int resendRetryNumber) {
         this.resendRetryNumber = resendRetryNumber;
     }
-    
-    
 
+    public Date getLastRetrySendTime() {
+        return lastRetrySendTime;
+    }
+
+    public void setLastRetrySendTime(Date lastRetrySendTime) {
+        this.lastRetrySendTime = lastRetrySendTime;
+    }
+    
     /*
 	 * (non-Javadoc)
 	 * 

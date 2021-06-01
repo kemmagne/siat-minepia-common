@@ -12,6 +12,8 @@ public final class PropertiesConstants {
     public static final String APPLICATION_ENV = "application.environment".intern();
 
     public static final String MESSAGES_FOLDER = "messages.folder".intern();
+    public static final String MAX_RETRY_TIME_NUMBER = "max.retry.time.number".intern();
+    public static final String NUMBER_MINUTE_EXCEEDED_BETWEEN_TWO_RETRY = "number.minute.exceed.between.two.retry".intern();
 
     public static final String GED_CONNECTION_NAME = "connectionName".intern();
     public static final String GED_USERNAME_REPO = "userNameRepo".intern();

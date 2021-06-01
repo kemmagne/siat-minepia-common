@@ -61,9 +61,6 @@ public class FileProducerImpl implements FileProducer {
     @Autowired
     private PropertiesLoader propertiesLoader;
 
-    @Autowired
-    private MessageToSendService messageToSendService;
-
     /**
      * The item flow dao.
      */
@@ -150,12 +147,40 @@ public class FileProducerImpl implements FileProducer {
 
             String response = restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
             backupNotSentMsg(ebxml, Boolean.TRUE, file);
-            //saveOrDeleteNotSendedMessageAsMessageToResend(ebxml, response);
         } catch (Exception ex) {
             backupNotSentMsg(ebxml, Boolean.FALSE, file);
-            //saveOrDeleteNotSendedMessageAsMessageToResend(ebxml, null);
             throw ex;
         }
+    }
+    
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.service.FileProducer#sendEbxmlViaRest(byte[])
+     */
+    @Override
+    public String sendEbxmlViaRest(final OrchestraEbxmlMessage ebxml) throws Exception {
+        String RESPONSE ="";
+        try {
+            byte[] ebxmlData = ebxml.getData();
+            final InputStream in = new ByteArrayInputStream(ebxmlData);
+            RequestCallback requestCallback = new RequestCallback() {
+                @Override
+                public void doWithRequest(ClientHttpRequest request) throws IOException {
+                    request.getHeaders().add("Content-type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
+                    request.getHeaders().add("Authorization", SecurityUtils.getBasicAuth(LOGIN, PASSWORD));
+                    IOUtils.copy(in, request.getBody());
+                    IOUtils.closeQuietly(in);
+                }
+            };
+
+            HttpMessageConverterExtractor<String> responseExtractor = new HttpMessageConverterExtractor<>(String.class, restTemplate.getMessageConverters());
+
+            RESPONSE = restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return RESPONSE;
     }
 
     private void backupNotSentMsg(final OrchestraEbxmlMessage ebxml, final boolean sent, org.guce.siat.common.model.File file) throws SOAPException, IOException {
@@ -185,28 +210,6 @@ public class FileProducerImpl implements FileProducer {
             }
             notSentFile.delete();
         }
-    }
-
-    private void saveOrDeleteNotSendedMessageAsMessageToResend(final OrchestraEbxmlMessage ebxml, String response) {
-        if (ebxml != null) {
-            MessageToSend messageToSend = new MessageToSend();
-            messageToSend.setId(ebxml.getMessageId());
-            messageToSend.setEbxml(ebxml.getData());
-            messageToSend.setResendRetryNumber(0);
-            if (response == null || !"SIAT".equals(response)) {
-                if (messageToSendService.find(ebxml.getMessageId()) == null) {
-                    messageToSendService.save(messageToSend);
-                } else {
-                    messageToSend.setResendRetryNumber(messageToSend.getResendRetryNumber() + 1);
-                    messageToSendService.update(messageToSend);
-                }
-            } else if ("SIAT".equals(response)) {
-                if (messageToSendService.find(ebxml.getMessageId()) != null) {
-                    messageToSendService.delete(messageToSend);
-                }
-            }
-        }
-
     }
 
     @Override
