@@ -73,13 +73,14 @@ public class TaskResendMessageToResend {
     /**
      * The maximum life time in minute
      */
-    @Value("${number.minute.exceed.between.two.retry}")
+    @Value("${max.life.time.in.minute}")
     private String maxLifeTime;
 
     @PostConstruct
     public void init() {
         maxRetryTimeNumber = propertiesLoader.getProperty(PropertiesConstants.MAX_RETRY_TIME_NUMBER);
         numberMinuteExceedBetweenTwoRetry = propertiesLoader.getProperty(PropertiesConstants.NUMBER_MINUTE_EXCEEDED_BETWEEN_TWO_RETRY);
+        maxLifeTime = propertiesLoader.getProperty(PropertiesConstants.MAX_LIFE_TIME_IN_MINUTE);
     }
 
     public void resendMessageNotAlreadySended() {
@@ -145,20 +146,20 @@ public class TaskResendMessageToResend {
             if (maxLifeTime != null && StringUtils.isNotBlank(maxLifeTime)) {
                 maxLifeTimeInt = Integer.parseInt(maxLifeTime);
             }
-            messageToSendService.deleteMessagesExceededMaxNumberRetrySendAndMaxLifeTime(maxRetryTimeNumberInt, maxLifeTimeInt);
-//            List<MessageToSend> messageToSendList = messageToSendService.getMessagesThatExceededMaxNumberRetryTime(maxRetryTimeNumberInt);
-//            for (MessageToSend messageToSend : messageToSendList) {
-//                synchronized (messageToSend) {
-//                    try {
-//                        //emailSenderService.send(....)
-//                        messageToSendService.delete(messageToSend);
-//
-//                    } catch (Exception ex) {
-//                        LOG.error(ex.getMessage(), ex);
-//                    }
-//                }
-//
-//            }
+//            messageToSendService.deleteMessagesExceededMaxNumberRetrySendAndMaxLifeTime(maxRetryTimeNumberInt, maxLifeTimeInt);
+            List<MessageToSend> messageToSendList = messageToSendService.findMessagesExceededMaxNumberRetrySendAndMaxLifeTime(maxRetryTimeNumberInt, maxLifeTimeInt);
+            for (MessageToSend messageToSend : messageToSendList) {
+                synchronized (messageToSend) {
+                    try {
+                        //emailSenderService.send(....)
+                        messageToSendService.delete(messageToSend);
+
+                    } catch (Exception ex) {
+                        LOG.error(ex.getMessage(), ex);
+                    }
+                }
+
+            }
             TransactionStatus tsCommit = transactionStatus;
             transactionStatus = null;
             transactionManager.commit(tsCommit);
