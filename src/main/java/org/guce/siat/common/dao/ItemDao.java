@@ -18,5 +18,7 @@ public interface ItemDao extends AbstractJpaDao<Item> {
     Item findByGoodsItemCode(final String goodsItemCode);
 
     List<Item> findNSHByFileTypes(FileTypeCode... fileTypeCodes);
+    
+    List<Item> findNSHByCodeAndDescriptionAndFileTypes(String searchQuery, FileTypeCode... fileTypeCodes);
 
 }

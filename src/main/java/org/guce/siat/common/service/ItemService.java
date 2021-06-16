@@ -18,4 +18,6 @@ public interface ItemService extends AbstractService<Item> {
     Item findByGoodsItemCode(final String goodsItemCode);
 
     List<Item> findNSHByFileTypes(FileTypeCode... fileTypeCodes);
+    
+    List<Item> findNSHByCodeAndDescriptionAndFileTypes(String searchQuery, FileTypeCode... fileTypeCodes);
 }

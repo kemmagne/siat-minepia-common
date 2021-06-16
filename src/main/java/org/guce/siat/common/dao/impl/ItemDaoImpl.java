@@ -56,5 +56,14 @@ public class ItemDaoImpl extends AbstractJpaDaoImpl<Item> implements ItemDao {
 
         return query.getResultList();
     }
+   
+    @Override
+    public List<Item> findNSHByCodeAndDescriptionAndFileTypes(String searchQuery, FileTypeCode... fileTypeCodes) {
 
+        TypedQuery<Item> query = super.entityManager.createQuery("SELECT DISTINCT fi.nsh FROM FileItem fi WHERE fi.file.fileType.code IN (:fileTypeCodes) AND fi.file.bureau IS NOT NULL AND fi.file.numeroDemande IS NOT NULL AND fi.nsh IS NOT NULL AND (lower(fi.nsh.goodsItemCode) LIKE concat('%', concat(:searchQuery,'%')) OR lower(fi.nsh.goodsItemDesc) LIKE concat('%', concat(:searchQuery,'%')))", Item.class);
+        query.setParameter("searchQuery", searchQuery);
+        query.setParameter("fileTypeCodes", Arrays.asList(fileTypeCodes));
+
+        return query.getResultList();
+    }
 }

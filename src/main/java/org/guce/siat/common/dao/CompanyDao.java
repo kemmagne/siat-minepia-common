@@ -30,5 +30,12 @@ public interface CompanyDao extends AbstractJpaDao<Company> {
      * @return
      */
     List<Pair> findCompanies();
+    
+    /**
+     *
+     * @param searchQuery
+     * @return
+     */
+    List<Pair> findCompaniesByNumeroContribuableOrCompanyName(String searchQuery);
 
 }

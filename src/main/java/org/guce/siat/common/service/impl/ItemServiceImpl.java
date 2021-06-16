@@ -58,4 +58,9 @@ public class ItemServiceImpl extends AbstractServiceImpl<Item> implements ItemSe
         return itemDao.findNSHByFileTypes(fileTypeCodes);
     }
 
+    @Override
+    public List<Item> findNSHByCodeAndDescriptionAndFileTypes(String searchQuery, FileTypeCode... fileTypeCodes) {
+        return itemDao.findNSHByCodeAndDescriptionAndFileTypes(searchQuery, fileTypeCodes);
+    }
+
 }

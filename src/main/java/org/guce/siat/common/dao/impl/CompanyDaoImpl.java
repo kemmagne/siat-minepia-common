@@ -57,7 +57,7 @@ public class CompanyDaoImpl extends AbstractJpaDaoImpl<Company> implements Compa
     @Override
     public List<Pair> findCompanies() {
 
-        Query query = super.entityManager.createNativeQuery("SELECT C.NUM_CONTRIBUABLE, C.COMPANY_NAME FROM SIAT_CT.COMPANY C WHERE C.NUM_CONTRIBUABLE IS NOT NULL AND C.ID = (SELECT MAX(CC.ID) FROM SIAT_CT.COMPANY CC WHERE CC.NUM_CONTRIBUABLE = C.NUM_CONTRIBUABLE)");
+        Query query = super.entityManager.createNativeQuery("SELECT C.NUM_CONTRIBUABLE, C.COMPANY_NAME FROM SIAT_CT.COMPANY C WHERE C.NUM_CONTRIBUABLE IS NOT NULL AND C.ID = (SELECT MAX(CC.ID) FROM SIAT_CT.COMPANY CC WHERE CC.NUM_CONTRIBUABLE = C.NUM_CONTRIBUABLE) ORDER BY C.COMPANY_NAME ASC");
 
         List<Pair> companies = new ArrayList<>();
         List list = query.getResultList();
@@ -69,4 +69,19 @@ public class CompanyDaoImpl extends AbstractJpaDaoImpl<Company> implements Compa
         return companies;
     }
 
+    
+    @Override
+    public List<Pair> findCompaniesByNumeroContribuableOrCompanyName(String searchQuery) {
+
+        Query query = super.entityManager.createNativeQuery("SELECT C.NUM_CONTRIBUABLE, C.COMPANY_NAME FROM SIAT_CT.COMPANY C WHERE C.NUM_CONTRIBUABLE IS NOT NULL AND C.ID = (SELECT MAX(CC.ID) FROM SIAT_CT.COMPANY CC WHERE CC.NUM_CONTRIBUABLE = C.NUM_CONTRIBUABLE) AND (LOWER(C.NUM_CONTRIBUABLE) LIKE concat('%', concat(:searchQuery,'%')) OR LOWER(C.COMPANY_NAME) LIKE concat('%', concat(:searchQuery,'%'))) ORDER BY C.COMPANY_NAME ASC");
+        query.setParameter("searchQuery", searchQuery);
+        List<Pair> companies = new ArrayList<>();
+        List list = query.getResultList();
+        for (Object object : list) {
+            Object[] line = (Object[]) object;
+            companies.add(new Pair((String) line[0], (String) line[1]));
+        }
+
+        return companies;
+    }
 }

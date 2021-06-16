@@ -30,5 +30,12 @@ public interface CompanyService extends AbstractService<Company> {
      * @return
      */
     List<Pair> findCompanies();
+    
+    /**
+     *
+     * @param searchQuery
+     * @return
+     */
+    List<Pair> findCompaniesByNumeroContribuableOrCompanyName(String searchQuery);
 
 }

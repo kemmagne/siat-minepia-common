@@ -60,7 +60,6 @@ public class MessageToSendServiceImpl extends AbstractServiceImpl<MessageToSend>
         this.messageToSendDao = (MessageToSendDao) jpaDao;
     }
 
-
     @Override
     public MessageToSend findByMessageId(String messageId) {
         return this.messageToSendDao.findByMessageId(messageId);
@@ -71,19 +70,25 @@ public class MessageToSendServiceImpl extends AbstractServiceImpl<MessageToSend>
         try {
             if (data != null) {
                 OrchestraEbxmlMessage ebxml = EbxmlUtils.mapToEbxml(data);
-                MessageToSend messageToSend = new MessageToSend();
-                messageToSend.setMessageId(ebxml.getMessageId());
-                messageToSend.setEbxml(ebxml.getData());
-                messageToSend.setResendRetryNumber(0);
-                messageToSend.setLastRetrySendTime(Calendar.getInstance().getTime());
+                if (ebxml == null) {
+                    return;
+                }
+                LOG.info("---------------------------------------------Sauvegarde du message à renvoyer plutard - DEBUT ----------------------------------------------");
+                LOG.info(ebxml.toString());
                 MessageToSend messageToSendExist = messageToSendDao.findByMessageId(ebxml.getMessageId());
                 if (messageToSendExist == null) {
+                    MessageToSend messageToSend = new MessageToSend();
+                    messageToSend.setMessageId(ebxml.getMessageId());
+                    messageToSend.setEbxml(ebxml.getData());
+                    messageToSend.setResendRetryNumber(0);
+                    messageToSend.setLastRetrySendTime(Calendar.getInstance().getTime());
                     messageToSendDao.save(messageToSend);
                 } else {
-                    messageToSendExist.setResendRetryNumber(messageToSend.getResendRetryNumber() + 1);
+                    messageToSendExist.setResendRetryNumber(messageToSendExist.getResendRetryNumber() + 1);
                     messageToSendDao.update(messageToSendExist);
                 }
             }
+            LOG.info("---------------------------------------------Sauvegarde du message à renvoyer plutard - FIN ----------------------------------------------");
         } catch (Exception ex) {
             LOG.error(ex.getMessage(), ex);
         }
@@ -94,11 +99,17 @@ public class MessageToSendServiceImpl extends AbstractServiceImpl<MessageToSend>
         try {
             if (data != null) {
                 OrchestraEbxmlMessage ebxml = EbxmlUtils.mapToEbxml(data);
+                if (ebxml == null) {
+                    return;
+                }
+                LOG.info("-----------------------------------------Suppression du message à renvoyer plutard - DEBUT ----------------------------------------------");
+                LOG.info(ebxml.toString());
                 MessageToSend messageToSendExist = messageToSendDao.findByMessageId(ebxml.getMessageId());
                 if (messageToSendExist != null) {
                     messageToSendDao.delete(messageToSendExist);
                 }
             }
+            LOG.info("---------------------------------------------Suppression du message à renvoyer plutard - FIN ----------------------------------------------");
         } catch (Exception ex) {
             LOG.error(ex.getMessage(), ex);
         }
@@ -115,7 +126,7 @@ public class MessageToSendServiceImpl extends AbstractServiceImpl<MessageToSend>
                     messageToSendDao.save(messageToSend);
                 } else {
                     messageToSend.setResendRetryNumber(messageToSend.getResendRetryNumber() + 1);
-                     messageToSend.setLastRetrySendTime(Calendar.getInstance().getTime());
+                    messageToSend.setLastRetrySendTime(Calendar.getInstance().getTime());
                     messageToSendDao.update(messageToSend);
                 }
             } else if ("SIAT".equals(response)) {

@@ -61,4 +61,9 @@ public class CompanyServiceImpl extends AbstractServiceImpl<Company> implements 
         return companyDao.findCompanies();
     }
 
+    @Override
+    public List<Pair> findCompaniesByNumeroContribuableOrCompanyName(String searchQuery) {
+        return companyDao.findCompaniesByNumeroContribuableOrCompanyName(searchQuery);
+    }
+
 }
