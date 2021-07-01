@@ -70,4 +70,9 @@ public class AttachmentServiceImpl extends AbstractServiceImpl<Attachment> imple
 		return attachmentDao.findAttachmentsByFile(file);
 	}
 
+        @Override
+        public Attachment findAttachmentByFileAndAttachmentTypeAndDocumentNameAndDocumentPath(File file, String attachmentType, String documentName, String documentPath) {
+            return attachmentDao.findAttachmentByFileAndAttachmentTypeAndDocumentNameAndDocumentPath(file, attachmentType, documentName, documentPath);
+        }
+
 }
