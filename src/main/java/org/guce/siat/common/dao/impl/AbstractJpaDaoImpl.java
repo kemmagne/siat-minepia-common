@@ -11,6 +11,7 @@ import javax.persistence.criteria.Root;
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.model.Params;
+import org.guce.siat.common.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      *
      * @param entityManager the new entity manager
      */
-    public void setEntityManager(EntityManager entityManager) {
+    public void setEntityManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -59,7 +60,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
 	 * @see org.guce.siat.common.dao.AbstractJpaDao#setClasse(java.lang.Class)
      */
     @Override
-    public void setClasse(Class<T> classeToSet) {
+    public final void setClasse(final Class<T> classeToSet) {
         this.classe = classeToSet;
     }
 
@@ -74,7 +75,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = true)
     @Override
-    public T find(Long id) {
+    public T find(final Long id) {
         return this.entityManager.find(this.classe, id);
     }
 
@@ -85,7 +86,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = true)
     @Override
-    public T find(String id) {
+    public T find(final String id) {
         return this.entityManager.find(this.classe, id);
     }
 
@@ -126,8 +127,9 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = false)
     @Override
-    public T save(T entity) {
+    public T save(final T entity) {
         this.entityManager.persist(entity);
+        this.entityManager.flush();
         return entity;
     }
 
@@ -139,7 +141,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = false)
     @Override
-    public void update(T entity) {
+    public void update(final T entity) {
         this.entityManager.merge(entity);
     }
 
@@ -151,7 +153,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = false)
     @Override
-    public void delete(T entity) {
+    public void delete(final T entity) {
         this.entityManager.remove(this.entityManager.merge(entity));
     }
 
@@ -162,8 +164,8 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = false)
     @Override
-    public void deleteById(Long entityId) {
-        T entity = this.find(entityId);
+    public void deleteById(final Long entityId) {
+        final T entity = this.find(entityId);
         this.delete(entity);
     }
 
@@ -174,7 +176,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = false)
     @Override
-    public List<T> saveOrUpdateList(List<T> entitiesList) {
+    public List<T> saveOrUpdateList(final List<T> entitiesList) {
         for (int i = 1; i <= entitiesList.size(); i++) {
             T entity = this.entityManager.merge(entitiesList.get(i - 1));
             entitiesList.set(i - 1, entity);
@@ -189,7 +191,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = false)
     @Override
-    public List<T> saveList(List<T> entitiesList) {
+    public List<T> saveList(final List<T> entitiesList) {
         for (int i = 1; i <= entitiesList.size(); i++) {
             T entity = entitiesList.get(i - 1);
             this.entityManager.persist(entity);
@@ -205,7 +207,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
      */
     @Transactional(readOnly = false)
     @Override
-    public void deleteList(List<T> entitiesList) {
+    public void deleteList(final List<T> entitiesList) {
         if (CollectionUtils.isNotEmpty(entitiesList)) {
             for (T entity : entitiesList) {
                 this.entityManager.remove(this.entityManager.merge(entity));
