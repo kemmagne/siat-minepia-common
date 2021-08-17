@@ -635,7 +635,7 @@ public final class Constants {
 	/**
      * The Constant FOR GLOBAL STAMP.
      */
-    public static final String CHOICE_GLOBAL_URL_STAMP = "CHOICE_GLOBAL_URL_STAMP";
+	public static final String CHOICE_GLOBAL_ID_STAMP = "CHOICE_GLOBAL_ID_STAMP";
 	
 	/**
      * The Constant FOR VALUE OF GLOBAL STAMP CHOICE.
