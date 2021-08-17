@@ -26,6 +26,7 @@ public interface FileProducer {
     boolean resendDecision(ItemFlow itemFlow);
 
     void sendViaRest(final OrchestraEbxmlMessage ebxml, final org.guce.siat.common.model.File file) throws Exception;
+    String sendEbxmlViaRest(final OrchestraEbxmlMessage ebxml) throws Exception;
 
 }
 

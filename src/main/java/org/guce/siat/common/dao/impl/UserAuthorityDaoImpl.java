@@ -34,7 +34,7 @@ public class UserAuthorityDaoImpl extends AbstractJpaDaoImpl<UserAuthority> impl
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.guce.siat.core.ct.dao.UserAuthorityDao#findByUserAndAuthoriy(org.guce.siat.common.model.User,
+	 * @see org.guce.siat.common.dao.UserAuthorityDao#findByUserAndAuthoriy(org.guce.siat.common.model.User,
 	 * org.guce.siat.common.model.Authority)
 	 */
 	@Override
@@ -60,7 +60,7 @@ public class UserAuthorityDaoImpl extends AbstractJpaDaoImpl<UserAuthority> impl
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see org.guce.siat.core.ct.dao.UserAuthorityDao#removeUnusedAuthrities(org.guce.siat.common.model.User,
+	 * @see org.guce.siat.common.dao.UserAuthorityDao#removeUnusedAuthrities(org.guce.siat.common.model.User,
 	 * java.util.List)
 	 */
 	/**
@@ -86,6 +86,31 @@ public class UserAuthorityDaoImpl extends AbstractJpaDaoImpl<UserAuthority> impl
 			final javax.persistence.Query query = entityManager.createQuery(hqlQuery.toString());
 			query.setParameter("userId", user.getId());
 			query.setParameter("authoritiesIds", listIds);
+			query.executeUpdate();
+		}
+	}
+        
+        
+        /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.UserAuthorityDao#removeUsedAuthrities(java.util.List)
+	 */
+	/**
+	 * Removes the used authrities.
+	 *
+	 * @param userAuthoritiesIds
+	 *           the user authorities ids
+	 */
+	@Override
+	public void removeUsedAuthrities(final List<Long> userAuthoritiesIds)
+	{
+		if (CollectionUtils.isNotEmpty(userAuthoritiesIds))
+		{
+			final StringBuilder hqlQuery = new StringBuilder();
+			hqlQuery.append("DELETE FROM UserAuthority u WHERE u.id IN (:authoritiesIds)");
+			final javax.persistence.Query query = entityManager.createQuery(hqlQuery.toString());
+			query.setParameter("authoritiesIds", userAuthoritiesIds);
 			query.executeUpdate();
 		}
 	}

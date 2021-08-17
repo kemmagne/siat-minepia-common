@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.guce.siat.common.model;
 
 import java.io.Serializable;
@@ -263,10 +260,7 @@ public class AuditEntity implements Serializable {
             return false;
         }
         final AuditEntity other = (AuditEntity) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())));
     }
 
     /*

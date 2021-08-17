@@ -178,11 +178,7 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
     @Override
     public List<T> saveOrUpdateList(final List<T> entitiesList) {
         for (int i = 1; i <= entitiesList.size(); i++) {
-            final T entity = this.entityManager.merge(entitiesList.get(i - 1));
-            if ((i % Constants.TEN) == 0) {
-                this.entityManager.flush();
-//                this.entityManager.clear();
-            }
+            T entity = this.entityManager.merge(entitiesList.get(i - 1));
             entitiesList.set(i - 1, entity);
         }
         return entitiesList;
@@ -197,13 +193,8 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
     @Override
     public List<T> saveList(final List<T> entitiesList) {
         for (int i = 1; i <= entitiesList.size(); i++) {
-            final T entity = entitiesList.get(i - 1);
-
+            T entity = entitiesList.get(i - 1);
             this.entityManager.persist(entity);
-            if ((i % Constants.TEN) == 0) {
-                this.entityManager.flush();
-//                this.entityManager.clear();
-            }
             entitiesList.set(i - 1, entity);
         }
         return entitiesList;
@@ -217,13 +208,8 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
     @Transactional(readOnly = false)
     @Override
     public void deleteList(final List<T> entitiesList) {
-        int i = 0;
         if (CollectionUtils.isNotEmpty(entitiesList)) {
-            for (final T entity : entitiesList) {
-                if (++i % Constants.TEN == 0) {
-                    this.entityManager.flush();
-//                    this.entityManager.clear();
-                }
+            for (T entity : entitiesList) {
                 this.entityManager.remove(this.entityManager.merge(entity));
             }
         }

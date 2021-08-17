@@ -23,7 +23,11 @@ public enum AuditConstants {
     /**
      * The password reset audit operation type
      */
-    PASSWORD_RESET("PASSWORD_RESET");
+    PASSWORD_RESET("PASSWORD_RESET"),
+    /**
+     * The product type agent association operation type
+     */
+    PRODUCT_TYPE_AGENT_ASSOCIATION("PRODUCT_TYPE_AGENT_ASSOCIATION");
 
     /**
      * The code.

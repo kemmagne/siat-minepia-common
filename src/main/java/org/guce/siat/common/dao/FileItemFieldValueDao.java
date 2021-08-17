@@ -1,6 +1,7 @@
 package org.guce.siat.common.dao;
 
 import org.guce.siat.common.model.FileItem;
+import org.guce.siat.common.model.FileItemField;
 import org.guce.siat.common.model.FileItemFieldValue;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 
@@ -19,4 +20,7 @@ public interface FileItemFieldValueDao extends AbstractJpaDao<FileItemFieldValue
     FileItemFieldValue findValueByFileItemFieldAndFileItem(String fileItemFieldCode, FileItem fileItem);
 
     FileItemFieldValue findValueByFileItemFieldAndFile(String fileItemFieldCode, FileTypeCode fileTypeCode, String numeroDemande);
+
+    FileItemField findByFileTypeAndCode(FileTypeCode fileTypeCode, String code);
+
 }

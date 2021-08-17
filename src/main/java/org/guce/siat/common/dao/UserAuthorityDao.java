@@ -34,4 +34,12 @@ public interface UserAuthorityDao extends AbstractJpaDao<UserAuthority>
 	 *           the user authorities
 	 */
 	void removeUnusedAuthrities(final User user, final List<UserAuthority> userAuthorities);
+        
+        /**
+	 * Removes the used authrities.
+	 *
+	 * @param userAuthoritiesIds
+	 *           the user authorities ids
+	 */
+	void removeUsedAuthrities(final List<Long> userAuthoritiesIds);
 }

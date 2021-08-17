@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.orchestra.core.OrchestraEbxmlMessageFactory;
+import org.guce.siat.common.mail.bo.EmailSenderService;
 import org.guce.siat.common.service.FileProducer;
 import org.guce.siat.common.utils.PropertiesConstants;
 import org.guce.siat.common.utils.PropertiesLoader;
@@ -38,6 +39,10 @@ public class TaskResendMessage {
     @Autowired
     private FileProducer fileProducer;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
+
+
     /**
      * the messages folder
      */
@@ -66,5 +71,4 @@ public class TaskResendMessage {
             }
         }
     }
-
 }

@@ -119,7 +119,7 @@ public class FileItem extends AbstractModel implements Serializable {
      * The item flows list.
      */
     @OneToMany(mappedBy = "fileItem")
-    @OrderBy("created DESC")
+    @OrderBy("id DESC")
     private List<ItemFlow> itemFlowsList;
 
     /**
@@ -469,10 +469,7 @@ public class FileItem extends AbstractModel implements Serializable {
             return false;
         }
         final FileItem other = (FileItem) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())));
     }
 
     /*
@@ -661,4 +658,3 @@ public class FileItem extends AbstractModel implements Serializable {
     }
 
 }
-

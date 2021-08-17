@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.PersistenceException;
 import javax.xml.bind.JAXBException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisConnectionException;
 
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
@@ -31,7 +33,22 @@ public interface XmlConverterService {
      * @throws NullPointerException the null pointer exception
      * @throws ValidationException the validation exception
      */
-    File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException, NullPointerException, ValidationException;
+    File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException, NullPointerException, ValidationException, CmisConnectionException;
+    
+    /**
+     * Save received file and execute flow.
+     *
+     * @param document the document
+     * @param attachementsMap
+     * @return the file
+     * @throws ParseException the parse exception
+     * @throws PersistenceException the persistence exception
+     * @throws NullPointerException the null pointer exception
+     * @throws ValidationException the validation exception
+     * @throws CmisConnectionException the Ged connection exception
+     * @throws java.io.IOException
+     */
+    File saveReceivedFileAndAttachmentsAndExecuteFlow(final Serializable document, Map<String, byte[]> attachementsMap) throws ParseException, PersistenceException, NullPointerException, ValidationException, CmisConnectionException, IOException;
 
     /**
      * Convert document to file.

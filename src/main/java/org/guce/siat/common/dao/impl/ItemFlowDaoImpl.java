@@ -55,16 +55,35 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findLastItemFlowByFileItem(java.lang.String)
      */
     @Override
-    public ItemFlow findLastItemFlowByFileItem(final FileItem fileItem) {
+    public ItemFlow findLastItemFlowByFileItem(FileItem fileItem) {
         if (!Objects.equals(fileItem, null)) {
 
-            final TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT it FROM ItemFlow it WHERE it.fileItem.id = :fileItemId ORDER BY it.id DESC", ItemFlow.class);
+            TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT it FROM ItemFlow it WHERE it.fileItem.id = :fileItemId ORDER BY it.id DESC", ItemFlow.class);
             query.setParameter("fileItemId", fileItem.getId());
             query.setMaxResults(1);
 
             try {
                 return query.getSingleResult();
             } catch (NoResultException nre) {
+                LOG.error("can not extract single result", nre);
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public ItemFlow findLastItemFlowByFileItemAndFlow(FileItem fileItem, FlowCode flowCode) {
+        if (!Objects.equals(fileItem, null) && !Objects.equals(flowCode, null)) {
+
+            TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT it FROM ItemFlow it WHERE it.fileItem.id = :fileItemId AND it.flow.code = :flowCode ORDER BY it.id DESC", ItemFlow.class);
+            query.setParameter("fileItemId", fileItem.getId());
+            query.setParameter("flowCode", flowCode.name());
+            query.setMaxResults(1);
+
+            try {
+                return query.getSingleResult();
+            } catch (NoResultException nre) {
+                LOG.error("can not extract single result", nre);
             }
         }
         return null;
@@ -76,17 +95,17 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * @see org.guce.siat.common.dao.ItemFlowDao#findLastOUtgoingItemFlowByFileItem(org.guce.siat.common.model.FileItem)
      */
     @Override
-    public ItemFlow findLastOutgoingItemFlowByFileItem(final FileItem fileItem) {
+    public ItemFlow findLastOutgoingItemFlowByFileItem(FileItem fileItem) {
         if (!Objects.equals(fileItem, null)) {
-            final StringBuilder hqlBuilder = new StringBuilder();
+            StringBuilder hqlBuilder = new StringBuilder();
             hqlBuilder.append("SELECT it FROM ItemFlow it ");
             hqlBuilder.append("WHERE it.flow.outgoing = 1 ");
             hqlBuilder.append("AND it.fileItem.id = :fileItemId ");
             hqlBuilder.append("AND it.id = (SELECT Max(it1.id) FROM ItemFlow it1 WHERE it1.flow.outgoing = 1 AND it1.fileItem.id = :fileItemId ) ");
 
-            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
+            TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
             query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
-            final List<ItemFlow> itemFlows = query.getResultList();
+            List<ItemFlow> itemFlows = query.getResultList();
             if (CollectionUtils.isNotEmpty(itemFlows)) {
                 return itemFlows.get(0);
             }
@@ -100,17 +119,17 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findLastSentItemFlowByFileItem(java.lang.Long)
      */
     @Override
-    public ItemFlow findLastSentItemFlowByFileItem(final FileItem fileItem) {
+    public ItemFlow findLastSentItemFlowByFileItem(FileItem fileItem) {
         if (!Objects.equals(fileItem, null)) {
-            final StringBuilder hqlBuilder = new StringBuilder();
+            StringBuilder hqlBuilder = new StringBuilder();
             hqlBuilder.append("SELECT i FROM ItemFlow i ");
             hqlBuilder.append("WHERE i.fileItem.id = :fileItemId ");
             hqlBuilder
                     .append("AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.fileItem.id = :fileItemId AND i1.sent = true) ");
 
-            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
+            TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
             query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
-            final List<ItemFlow> itemFlows = query.getResultList();
+            List<ItemFlow> itemFlows = query.getResultList();
             if (CollectionUtils.isNotEmpty(itemFlows)) {
                 return itemFlows.get(0);
             }
@@ -124,10 +143,24 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findItemFlowsByFileItemList(java.util.List)
      */
     @Override
-    public List<ItemFlow> findItemFlowsByFileItemList(final List<Long> fileItems) {
-        final String qlString = "SELECT i FROM ItemFlow i WHERE  i.sent = false AND i.fileItem.id IN (:fileItems) ";
-        final TypedQuery<ItemFlow> query = super.entityManager.createQuery(qlString, ItemFlow.class);
+    public List<ItemFlow> findItemFlowsByFileItemList(List<Long> fileItems) {
+        String qlString = "SELECT i FROM ItemFlow i WHERE  i.sent = false AND i.fileItem.id IN (:fileItems) ";
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery(qlString, ItemFlow.class);
         query.setParameter(FILE_ITEM_QUERY_ATTRIBUTE, fileItems);
+        return query.getResultList();
+    }
+    
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findItemFlowsByFileItemListAndFlow(java.util.List, org.guce.siat.common.utils.enums.FlowCode)
+     */
+    @Override
+    public List<ItemFlow> findItemFlowsByFileItemListAndFlow(List<Long> fileItems, FlowCode flowCode) {
+        String qlString = "SELECT i FROM ItemFlow i WHERE  i.flow.code = :flowCode AND i.fileItem.id IN (:fileItems) ";
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery(qlString, ItemFlow.class);
+        query.setParameter(FILE_ITEM_QUERY_ATTRIBUTE, fileItems);
+        query.setParameter("flowCode", flowCode.name());
         return query.getResultList();
     }
 
@@ -137,9 +170,9 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findItemFlowByFileItem(org.guce.siat.core.ct.model.FileItem)
      */
     @Override
-    public List<ItemFlow> findItemFlowByFileItem(final FileItem fileItem) {
-        final String hqlString = "SELECT i FROM ItemFlow i WHERE i.fileItem.id = :fileItemId AND i.sent = true ORDER BY i.id ASC";
-        final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlString, ItemFlow.class);
+    public List<ItemFlow> findItemFlowByFileItem(FileItem fileItem) {
+        String hqlString = "SELECT i FROM ItemFlow i WHERE i.fileItem.id = :fileItemId AND i.sent = true ORDER BY i.id ASC";
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlString, ItemFlow.class);
         query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
         return query.getResultList();
     }
@@ -152,29 +185,31 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * org.guce.siat.common.utils.enums.FlowCode)
      */
     @Override
-    public ItemFlow findItemFlowByFileItemAndFlow(final FileItem fileItem, final FlowCode flowCode) {
+    public ItemFlow findItemFlowByFileItemAndFlow(FileItem fileItem, FlowCode flowCode) {
         try {
-            final String hqlString = "SELECT i FROM ItemFlow i WHERE i.flow.code=:flowCode AND i.fileItem.id= :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.flow.code=:flowCode AND i1.fileItem.id = :fileItemId AND i1.sent = true) ";
-            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlString, ItemFlow.class);
+//            String hqlString = "SELECT i FROM ItemFlow i WHERE i.flow.code = :flowCode AND i.fileItem.id = :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.flow.code = :flowCode AND i1.fileItem.id = :fileItemId AND i1.sent = true) ";
+            TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT i FROM ItemFlow i WHERE i.flow.code = :flowCode AND i.fileItem.id = :fileItemId AND i.sent = true ORDER BY i.id DESC", ItemFlow.class);
             query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
             query.setParameter("flowCode", flowCode.name());
+            query.setMaxResults(1);
 
             return query.getSingleResult();
-        } catch (final NoResultException | NonUniqueResultException e) {
+        } catch (NoResultException | NonUniqueResultException e) {
             return null;
         }
     }
 
     @Override
-    public ItemFlow findItemFlowByFileItemAndFlow2(final FileItem fileItem, final FlowCode flowCode) {
+    public ItemFlow findItemFlowByFileItemAndFlow2(FileItem fileItem, FlowCode flowCode) {
         try {
-            final String hqlString = "SELECT i FROM ItemFlow i WHERE i.flow.code=:flowCode AND i.fileItem.id= :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.flow.code=:flowCode AND i1.fileItem.id = :fileItemId) ";
-            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlString, ItemFlow.class);
+            String hqlString = "SELECT i FROM ItemFlow i WHERE i.flow.code = :flowCode AND i.fileItem.id = :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.flow.code = :flowCode AND i1.fileItem.id = :fileItemId) ";
+            TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT i FROM ItemFlow i WHERE i.flow.code = :flowCode AND i.fileItem.id = :fileItemId ORDER BY i.id DESC", ItemFlow.class);
             query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
             query.setParameter("flowCode", flowCode.name());
+            query.setMaxResults(1);
 
             return query.getSingleResult();
-        } catch (final NoResultException | NonUniqueResultException e) {
+        } catch (NoResultException | NonUniqueResultException e) {
             return null;
         }
     }
@@ -186,15 +221,15 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * java.util.List)
      */
     @Override
-    public ItemFlow findItemFlowByFileItemAndFlow(final FileItem fileItem, final List<String> flowCodeList) {
+    public ItemFlow findItemFlowByFileItemAndFlow(FileItem fileItem, List<String> flowCodeList) {
         try {
-            final String hqlString = "SELECT i FROM ItemFlow i WHERE i.flow.code IN (:flowCodeList) AND i.fileItem.id= :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.flow.code IN (:flowCodeList) AND i1.fileItem.id = :fileItemId AND i1.sent = true) ";
-            final TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlString, ItemFlow.class);
+            String hqlString = "SELECT i FROM ItemFlow i WHERE i.flow.code IN (:flowCodeList) AND i.fileItem.id= :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.flow.code IN (:flowCodeList) AND i1.fileItem.id = :fileItemId AND i1.sent = true) ";
+            TypedQuery<ItemFlow> query = super.entityManager.createQuery(hqlString, ItemFlow.class);
             query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
             query.setParameter("flowCodeList", flowCodeList);
 
             return query.getSingleResult();
-        } catch (final NoResultException | NonUniqueResultException e) {
+        } catch (NoResultException | NonUniqueResultException e) {
             return null;
         }
     }
@@ -207,27 +242,23 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * org.guce.siat.common.model.FileItem)
      */
     @Override
-    public Long findNbrDecisionByFileItemHistory(final List<String> flowCodes, final FileItem fileItem) {
+    public Long findNbrDecisionByFileItemHistory(List<String> flowCodes, FileItem fileItem) {
         try {
-            final String hqlString = "SELECT COUNT(i) FROM ItemFlow i WHERE i.fileItem.id = :fileItemId AND i.flow.code IN (:flowCodes)";
-            final TypedQuery<Long> query = super.entityManager.createQuery(hqlString, Long.class);
+            String hqlString = "SELECT COUNT(i) FROM ItemFlow i WHERE i.fileItem.id = :fileItemId AND i.flow.code IN (:flowCodes)";
+            TypedQuery<Long> query = super.entityManager.createQuery(hqlString, Long.class);
             query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItem.getId());
             query.setParameter("flowCodes", flowCodes);
 
             return query.getSingleResult();
-        } catch (final NoResultException | NonUniqueResultException e) {
+        } catch (NoResultException | NonUniqueResultException e) {
             return null;
         }
     }
 
     @Override
-    public ItemFlow findDraftByFileItem(final FileItem fileItem) {
+    public ItemFlow findDraftByFileItem(FileItem fileItem) {
         if (!Objects.equals(fileItem, null)) {
-            final StringBuilder hqlBuilder = new StringBuilder();
-            hqlBuilder.append("SELECT i FROM ItemFlow i ");
-            hqlBuilder.append("WHERE i.sent = false AND i.fileItem.id = :fileItemId");
-
-            final TypedQuery<ItemFlow> query = entityManager.createQuery(hqlBuilder.toString(), ItemFlow.class);
+            TypedQuery<ItemFlow> query = entityManager.createQuery("SELECT i FROM ItemFlow i WHERE i.sent = false AND i.fileItem.id = :fileItemId ORDER BY i.id DESC", ItemFlow.class);
             query.setParameter("fileItemId", fileItem.getId());
             query.setMaxResults(1);
             try {
@@ -245,11 +276,11 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * @see org.guce.siat.core.ct.dao.ItemFlowDao#findLastSentItemFlowByFileItem(java.lang.Long)
      */
     @Override
-    public ItemFlow findLastSentItemFlowByFileItem(final Long fileItemId) {
-        final String qlString = "SELECT i FROM ItemFlow i WHERE i.fileItem.id= :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.fileItem.id = :fileItemId AND i1.sent = true) ";
-        final TypedQuery<ItemFlow> query = super.entityManager.createQuery(qlString, ItemFlow.class);
+    public ItemFlow findLastSentItemFlowByFileItem(Long fileItemId) {
+        String qlString = "SELECT i FROM ItemFlow i WHERE i.fileItem.id= :fileItemId AND i.id = (SELECT MAX(i1.id) FROM ItemFlow i1 WHERE i1.fileItem.id = :fileItemId AND i1.sent = true) ";
+        TypedQuery<ItemFlow> query = super.entityManager.createQuery(qlString, ItemFlow.class);
         query.setParameter(FILE_ITEMID_ID_QUERY_ATTRIBUTE, fileItemId);
-        final List<ItemFlow> itemFlows = query.getResultList();
+        List<ItemFlow> itemFlows = query.getResultList();
         if (CollectionUtils.isNotEmpty(itemFlows)) {
             return itemFlows.get(0);
         }
@@ -264,15 +295,15 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * .FileItem, java.util.List)
      */
     @Override
-    public List<FileItem> findFileItemsHistoryByNegativeDecisionsAndCompany(final FileItem fileItem, final List<StepCode> stepCodes) {
-        final StringBuilder hqlString = new StringBuilder();
+    public List<FileItem> findFileItemsHistoryByNegativeDecisionsAndCompany(FileItem fileItem, List<StepCode> stepCodes) {
+        StringBuilder hqlString = new StringBuilder();
 
         hqlString.append("SELECT DISTINCT i.fileItem FROM ItemFlow i ");
         hqlString.append("WHERE i.fileItem.file.client.companyType=:companyType ");
         hqlString.append("AND i.fileItem.file.client.id =:importerId ");
         hqlString.append("AND i.flow.toStep.stepCode IN (:stepCodes) ");
 
-        final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlString.toString(), FileItem.class);
+        TypedQuery<FileItem> query = super.entityManager.createQuery(hqlString.toString(), FileItem.class);
         query.setParameter("companyType", CompanyType.DECLARANT);
         query.setParameter("importerId", fileItem.getFile().getClient().getId());
         query.setParameter("stepCodes", stepCodes);
@@ -288,14 +319,14 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * .FileItem, java.util.List)
      */
     @Override
-    public List<FileItem> findFileItemsHistoryByNegativeDecisionsAndProduct(final FileItem fileItem, final List<StepCode> stepCodes) {
-        final StringBuilder hqlString = new StringBuilder();
+    public List<FileItem> findFileItemsHistoryByNegativeDecisionsAndProduct(FileItem fileItem, List<StepCode> stepCodes) {
+        StringBuilder hqlString = new StringBuilder();
 
         hqlString.append("SELECT DISTINCT i.fileItem FROM ItemFlow i ");
         hqlString.append("WHERE i.fileItem.id =:productId ");
         hqlString.append("AND i.flow.toStep.stepCode IN (:stepCodes) ");
 
-        final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlString.toString(), FileItem.class);
+        TypedQuery<FileItem> query = super.entityManager.createQuery(hqlString.toString(), FileItem.class);
         query.setParameter("productId", fileItem.getId());
         query.setParameter("stepCodes", stepCodes);
         return query.getResultList();
@@ -310,23 +341,23 @@ public class ItemFlowDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Ite
 	 * .FileTypeCode, java.lang.String)
      */
     @Override
-    public ItemFlowData retriveItemFlowDataDatabyFileTypeAndValue(final FileTypeCode fileTypeCode, final String value) {
+    public ItemFlowData retriveItemFlowDataDatabyFileTypeAndValue(FileTypeCode fileTypeCode, String value) {
         try {
-            final StringBuilder hqlBuilder = new StringBuilder();
+            StringBuilder hqlBuilder = new StringBuilder();
             hqlBuilder.append("FROM ItemFlowData i ");
             hqlBuilder.append("WHERE i.value = :value AND i.itemFlow.fileItem.file.fileType.code= :fileTypeCode");
-            final TypedQuery<ItemFlowData> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlowData.class);
+            TypedQuery<ItemFlowData> query = super.entityManager.createQuery(hqlBuilder.toString(), ItemFlowData.class);
             query.setParameter("value", value);
             query.setParameter("fileTypeCode", fileTypeCode);
 
             return query.getSingleResult();
-        } catch (final NoResultException | NonUniqueResultException e) {
+        } catch (NoResultException | NonUniqueResultException e) {
             return null;
         }
     }
 
     @Override
-    public ItemFlow findByMessageId(final String messageId) {
+    public ItemFlow findByMessageId(String messageId) {
         TypedQuery<ItemFlow> query = super.entityManager.createQuery("SELECT if FROM ItemFlow if WHERE if.messageId = :messageId", ItemFlow.class);
         query.setParameter("messageId", messageId);
         query.setMaxResults(1);

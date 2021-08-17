@@ -29,7 +29,6 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
      */
     public abstract void setJpaDao(AbstractJpaDao<T> jpaDao);
 
-
     /*
 	 * (non-Javadoc)
 	 *

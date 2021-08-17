@@ -17,7 +17,9 @@ import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.orchestra.core.OrchestraEbxmlMessageFactory;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.model.MessageToSend;
 import org.guce.siat.common.service.FileProducer;
+import org.guce.siat.common.service.MessageToSendService;
 import org.guce.siat.common.utils.EbxmlUtils;
 import org.guce.siat.common.utils.PropertiesConstants;
 import org.guce.siat.common.utils.PropertiesLoader;
@@ -143,12 +145,42 @@ public class FileProducerImpl implements FileProducer {
 
             HttpMessageConverterExtractor<String> responseExtractor = new HttpMessageConverterExtractor<>(String.class, restTemplate.getMessageConverters());
 
-            restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
+            String response = restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
             backupNotSentMsg(ebxml, Boolean.TRUE, file);
         } catch (Exception ex) {
             backupNotSentMsg(ebxml, Boolean.FALSE, file);
             throw ex;
         }
+    }
+    
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.service.FileProducer#sendEbxmlViaRest(byte[])
+     */
+    @Override
+    public String sendEbxmlViaRest(final OrchestraEbxmlMessage ebxml) throws Exception {
+        String RESPONSE ="";
+        try {
+            byte[] ebxmlData = ebxml.getData();
+            final InputStream in = new ByteArrayInputStream(ebxmlData);
+            RequestCallback requestCallback = new RequestCallback() {
+                @Override
+                public void doWithRequest(ClientHttpRequest request) throws IOException {
+                    request.getHeaders().add("Content-type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
+                    request.getHeaders().add("Authorization", SecurityUtils.getBasicAuth(LOGIN, PASSWORD));
+                    IOUtils.copy(in, request.getBody());
+                    IOUtils.closeQuietly(in);
+                }
+            };
+
+            HttpMessageConverterExtractor<String> responseExtractor = new HttpMessageConverterExtractor<>(String.class, restTemplate.getMessageConverters());
+
+            RESPONSE = restTemplate.execute(webserviceUrl, HttpMethod.POST, requestCallback, responseExtractor);
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return RESPONSE;
     }
 
     private void backupNotSentMsg(final OrchestraEbxmlMessage ebxml, final boolean sent, org.guce.siat.common.model.File file) throws SOAPException, IOException {

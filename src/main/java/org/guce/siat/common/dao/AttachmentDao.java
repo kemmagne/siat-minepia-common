@@ -20,4 +20,15 @@ public interface AttachmentDao extends AbstractJpaDao<Attachment>
 	 * @return the list
 	 */
 	List<Attachment> findAttachmentsByFile(File file);
+        
+        /**
+	 * Find attachments by file and attachment_type and document_name and document_path.
+	 *
+         * @param file the file
+	 * @param attachmentType the file
+         * @param documentName  the document name
+         * @param documentPath the document path
+	 * @return the Attachment
+	 */
+	Attachment findAttachmentByFileAndAttachmentTypeAndDocumentNameAndDocumentPath(File file, String attachmentType, String documentName, String documentPath);
 }
