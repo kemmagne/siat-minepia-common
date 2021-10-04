@@ -62,6 +62,10 @@ public final class ConstantsXsdPaths {
      * The Constant CQ_CT_XSD_PATH.
      */
     public static final String CQ_CT_XSD_PATH = "/xsd/CT/CCT/CQ_CT.xsd";
+    /**
+     * The Constant CQ_CT_XSD_PATH.
+     */
+    public static final String CCS_MINSANTE_XSD_PATH = "/xsd/CT/CCT/CCS_MINSANTE.xsd";
 
     /**
      * The Constant VT_MINEPIA_XSD_PATH.

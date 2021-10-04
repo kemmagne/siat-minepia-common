@@ -443,6 +443,11 @@ public enum FlowCode {
     FL_CT_155("Demande Complément d'information"),
     FL_CT_156("Complément d'information"),
     //
+    
+    //CCS MINSANTE new flows
+    FL_CT_157("Retour pour réorientation"),
+    FL_CT_158("Validation pour paiement"),
+    FL_CT_160("Encaissement"),
 
     /**
      * AP Flow Code

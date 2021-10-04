@@ -55,6 +55,10 @@ public enum FileTypeCode {
      */
     AI_MINSANTE("Import authorization MINSANTE", "Autorisation d'importation MINSANTE"),
     /**
+     * The ccs minsante.
+     */
+    CCS_MINSANTE("MINSANTE health control certificate", "Certificat de contrôle sanitaire MINSANTE"),
+    /**
      * The ai minmidt.
      */
     AI_MINMIDT("Import authorization MINMIDT", "Autorisation d'importation MINMIDT"),

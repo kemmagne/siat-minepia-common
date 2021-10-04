@@ -218,6 +218,8 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_126.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_135.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_145.name())
+                //Flow d'encaissement du CCS_MINSANTE
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_160.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_166.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name()));

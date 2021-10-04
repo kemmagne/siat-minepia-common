@@ -110,6 +110,9 @@ public final class ConverterGuceSiatUtils {
             case AI_MINSANTE:
                 referencedossier.setSI(InformationSystemCode.CT.name());
                 break;
+            case CCS_MINSANTE:
+                referencedossier.setSI(InformationSystemCode.CT.name());
+                break;
             case AI_MINMIDT:
                 referencedossier.setSI(InformationSystemCode.CT.name());
                 break;

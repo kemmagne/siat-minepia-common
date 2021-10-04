@@ -66,7 +66,8 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
      * The Constant FILETYPE_CCT_CODE_LIST.
      */
     private static final List<FileTypeCode> FILETYPE_CCT_CODE_LIST = Arrays.asList(FileTypeCode.CCT_CT, FileTypeCode.CCT_CT_E,
-            FileTypeCode.CC_CT, FileTypeCode.CQ_CT, FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_ATP, FileTypeCode.CCT_CT_E_FSTP, FileTypeCode.CCT_CT_E_PVE);
+            FileTypeCode.CC_CT, FileTypeCode.CQ_CT, FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_ATP, FileTypeCode.CCT_CT_E_FSTP, FileTypeCode.CCT_CT_E_PVE,
+            FileTypeCode.CCS_MINSANTE);
 
     /**
      * The Constant FILETYPE_AP_CODE_LIST.
