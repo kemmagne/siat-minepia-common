@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
 @Transactional(readOnly = true)
 public class ValidationFlowServiceImpl implements ValidationFlowService {
 
-    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("COCACM1", "COCAFM1", "E009", "E030");
+    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("COCACM1", "COCAFM1", "E009", "E030", "CSV009");
 
     private static final List<String> NOTIFICATION_FLOWS_LIST = Arrays.asList(FlowCode.FL_CT_142.name());
 
