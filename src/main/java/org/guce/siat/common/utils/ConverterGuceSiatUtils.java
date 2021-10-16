@@ -144,8 +144,7 @@ public final class ConverterGuceSiatUtils {
                 referencedossier.setSI(InformationSystemCode.CT.name());
                 break;
             case CCT_CT:
-                referencedossier.setSI(InformationSystemCode.CT.name());
-                break;
+            case CCT_CSV:
             case CCT_CT_E:
             case CCT_CT_E_PVI:
             case CCT_CT_E_ATP:
