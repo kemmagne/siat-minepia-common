@@ -75,6 +75,6 @@ public interface XmlConverterService {
      * @throws ParseException
      */
     Serializable convertFileToDocument(final File file, List<FileItem> fileItemList, final List<ItemFlow> itemFlowList, Flow flowToExecute) throws UtilitiesException, JAXBException, SAXException, IOException, ParseException;
-
+    
     void rollbackFile(File destinationFile, File previousFile);
 }

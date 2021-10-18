@@ -804,6 +804,10 @@ public enum FlowCode {
     FL_AP_200("Dépôt de dossier pour amendement AP"),
     FL_AP_201("Rejet suite recevabilité amendement AP"),
     FL_AP_202("Autorisation de l'amendement AP"),
+    FL_AP_VT1_01("Demande de visa technique"),
+    FL_AP_VT1_02("Validation suite recevabilité pour signature"),
+    FL_AP_VT1_03("Encaissement des frais de visa technique"),
+    FL_AP_VT1_04("Retour Signateur - Recevabilité"),
     /**
      * The F l_ a p_85.
      */
