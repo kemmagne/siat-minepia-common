@@ -808,6 +808,9 @@ public enum FlowCode {
     FL_AP_VT1_02("Validation suite recevabilité pour signature"),
     FL_AP_VT1_03("Encaissement des frais de visa technique"),
     FL_AP_VT1_04("Retour Signateur - Recevabilité"),
+    FL_AP_VT1_05("Demande de modifcation du visa technique"),
+    FL_AP_VT1_06("Validation Modification du visa technique"),
+    FL_AP_VT1_07("Rejet Modification du visa technique"),
     /**
      * The F l_ a p_85.
      */

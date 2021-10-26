@@ -304,6 +304,7 @@ public enum StepCode {
      */
     ST_AP_64("Paiement"),
     ST_AP_65("Paiement"),
+    ST_AP_VT1_01("Signature Modification du visa techique"),
     // CO Step Code
     /**
      * The S t_ c o_42.
