@@ -448,6 +448,11 @@ public enum FlowCode {
     FL_CT_157("Retour pour réorientation"),
     FL_CT_158("Validation pour paiement"),
     FL_CT_160("Encaissement"),
+    FL_CT_CCS_01("Demande de modification"),
+    FL_CT_CCS_02("Rejet demande de modification suite étude approfondie"),
+    FL_CT_CCS_03("Validation pour signature demande de modification suite étude"),
+    FL_CT_CCS_04("Rejet demande de modifications suite signature"),
+    FL_CT_CCS_05("Validation demande de modification"),
 
     /**
      * AP Flow Code
