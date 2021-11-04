@@ -210,6 +210,7 @@ public enum StepCode {
     //
     ST_CT_65("Validation pour Signature"),
     ST_CT_66("Signature"),
+    ST_CT_67("Signature"),
     //
     // AP Step Code
     /**
