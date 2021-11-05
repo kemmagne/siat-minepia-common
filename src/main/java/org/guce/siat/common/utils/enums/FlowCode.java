@@ -2132,6 +2132,7 @@ public enum FlowCode {
      * The F l_ c c_179.
      */
     FL_CC_179("Autorisation modification"),
+    FL_CC_180("Notification signature douane"),
     /**
      * The F l_ c cvs_01.
      */
