@@ -56,6 +56,13 @@ public class Item implements Serializable {
     @Column(name = "CUSTOMS_STATUS_CODE")
     private String customsStatusCode;
 
+    public Item() {
+    }
+
+    public Item(String goodsItemCode) {
+        this.goodsItemCode = goodsItemCode;
+    }
+
     /**
      * @return the goodsItemCode
      */
@@ -149,11 +156,8 @@ public class Item implements Serializable {
             return false;
         }
         final Item other = (Item) object;
-        if ((this.getGoodsItemCode() == null && other.getGoodsItemCode() != null)
-                || (this.getGoodsItemCode() != null && !this.getGoodsItemCode().equals(other.getGoodsItemCode()))) {
-            return false;
-        }
-        return true;
+        return !((this.getGoodsItemCode() == null && other.getGoodsItemCode() != null)
+                || (this.getGoodsItemCode() != null && !this.getGoodsItemCode().equals(other.getGoodsItemCode())));
     }
 
     /*
