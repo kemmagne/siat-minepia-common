@@ -460,6 +460,9 @@ public enum FlowCode {
     FL_CT_170("Rejet"),
     FL_CT_171("Transmission pour traitement"),
     FL_CT_172("Validation pour signature"),
+    FL_CT_173("Notification"),
+    FL_CT_174("Facturation"),
+    FL_CT_175("Paiement"),
     //
 
     /**
@@ -2139,6 +2142,7 @@ public enum FlowCode {
      * The F l_ c c_179.
      */
     FL_CC_179("Autorisation modification"),
+    FL_CC_180("Notification signature douane"),
     /**
      * The F l_ c cvs_01.
      */

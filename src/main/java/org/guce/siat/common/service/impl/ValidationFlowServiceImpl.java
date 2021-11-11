@@ -51,7 +51,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
 
     private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "VT109");
 
-    private static final List<String> NOTIFICATION_FLOWS_LIST = Arrays.asList(FlowCode.FL_CT_142.name());
+    private static final List<String> NOTIFICATION_FLOWS_LIST = Arrays.asList(FlowCode.FL_CC_180.name(), FlowCode.FL_CT_142.name());
 
     /**
      * The Constant LOG.
