@@ -1,30 +1,29 @@
 package org.guce.siat.common.dao;
 
 import junit.framework.TestCase;
-import org.guce.siat.common.dao.config.H2DataSourceConfig;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.FileTypeStep;
 import org.guce.siat.common.model.Step;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  *
  * @author ht
  */
-@Transactional
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {H2DataSourceConfig.class})
+//@Transactional
+@RunWith(MockitoJUnitRunner.class)
+//@ContextConfiguration(classes = {H2DataSourceConfig.class})
 public class FileTypeStepDaoTest extends TestCase {
 
-    @Autowired
+    @Mock
     private TestDataBuilder builder;
 
+    @Ignore
     @Test
     public void test_findFileTypeStepByFileTypeAndStep() {
         Step step = builder.getStep();

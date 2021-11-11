@@ -109,6 +109,10 @@ public enum FileTypeCode {
      */
     CCT_CT("Roadworthiness certificate", "Certificat de contrôle technique"),
     /**
+     * the cct csv
+     */
+    CCT_CSV("Veterinary health certificate", "Certificat sanitaire vétérinaire"),
+    /**
      * The cct ct e.
      */
     CCT_CT_E("Roadworthiness certificate for export", "Certificat de contrôle technique à l'export"),
@@ -267,7 +271,6 @@ public enum FileTypeCode {
     private FileTypeCode(final String labelEn, final String labelFr) {
         this.labelEn = labelEn;
         this.lablFr = labelFr;
-
     }
 
     /**

@@ -444,6 +444,9 @@ public enum FlowCode {
     FL_CT_156("Complément d'information"),
     //
 
+    FL_CT_159("Facturation"),
+    //
+
     /**
      * AP Flow Code
      */
