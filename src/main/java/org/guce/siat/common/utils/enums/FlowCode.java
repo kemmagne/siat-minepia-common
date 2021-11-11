@@ -461,6 +461,8 @@ public enum FlowCode {
     FL_CT_171("Transmission pour traitement"),
     FL_CT_172("Validation pour signature"),
     FL_CT_173("Notification"),
+    FL_CT_174("Facturation"),
+    FL_CT_175("Paiement"),
     //
 
     /**
