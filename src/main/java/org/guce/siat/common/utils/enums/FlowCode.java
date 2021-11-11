@@ -447,6 +447,21 @@ public enum FlowCode {
     FL_CT_159("Facturation"),
     //
 
+    //
+    FL_CT_161("Admission du dossier"),
+    FL_CT_162("Signature"),
+    FL_CT_163("Saisie conservatoire"),
+    FL_CT_164("Rejet"),
+    FL_CT_165("Transmission pour traitement"),
+    FL_CT_166("Validation pour signature"),
+    FL_CT_167("Paiement"),
+    FL_CT_168("Admission du dossier"),
+    FL_CT_169("Signature"),
+    FL_CT_170("Rejet"),
+    FL_CT_171("Transmission pour traitement"),
+    FL_CT_172("Validation pour signature"),
+    //
+
     /**
      * AP Flow Code
      */
