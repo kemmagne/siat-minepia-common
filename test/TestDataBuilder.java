@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author ht
  */
-@Transactional
-@Repository
+//@Transactional
+//@Repository
 public class TestDataBuilder {
 
     @Autowired

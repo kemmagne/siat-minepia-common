@@ -454,6 +454,27 @@ public enum FlowCode {
     FL_CT_CCS_04("Rejet demande de modifications suite signature"),
     FL_CT_CCS_05("Validation demande de modification"),
 
+    FL_CT_159("Facturation"),
+    //
+
+    //
+    FL_CT_161("Admission du dossier"),
+    FL_CT_162("Signature"),
+    FL_CT_163("Saisie conservatoire"),
+    FL_CT_164("Rejet"),
+    FL_CT_165("Transmission pour traitement"),
+    FL_CT_166("Validation pour signature"),
+    FL_CT_167("Paiement"),
+    FL_CT_168("Admission du dossier"),
+    FL_CT_169("Signature"),
+    FL_CT_170("Rejet"),
+    FL_CT_171("Transmission pour traitement"),
+    FL_CT_172("Validation pour signature"),
+    FL_CT_173("Notification"),
+    FL_CT_174("Facturation"),
+    FL_CT_175("Paiement"),
+    //
+
     /**
      * AP Flow Code
      */
@@ -2124,6 +2145,7 @@ public enum FlowCode {
      * The F l_ c c_179.
      */
     FL_CC_179("Autorisation modification"),
+    FL_CC_180("Notification signature douane"),
     /**
      * The F l_ c cvs_01.
      */

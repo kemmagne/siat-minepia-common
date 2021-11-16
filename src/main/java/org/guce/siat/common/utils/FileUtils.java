@@ -75,7 +75,7 @@ public class FileUtils {
     public static String getNumeroDossierGuce(File file) {
 
         String numeroDossier = file.getNumeroDossier();
-        if (file.getParent() != null && (file.getReferenceSiat().startsWith(InformationSystemCode.CC.name()) || (file.getReferenceSiat().startsWith(InformationSystemCode.CT.name()) && Arrays.asList(FileTypeCode.CCT_CT_E_PVE, FileTypeCode.CCS_MINSANTE).contains(file.getFileType().getCode())))) {
+        if (file.getParent() != null && (file.getReferenceSiat().startsWith(InformationSystemCode.CC.name()) || (file.getReferenceSiat().startsWith(InformationSystemCode.CT.name()) && Arrays.asList(FileTypeCode.CCT_CSV, FileTypeCode.CCT_CT_E_PVE, FileTypeCode.CCS_MINSANTE).contains(file.getFileType().getCode())))) {
             numeroDossier = file.getParent().getNumeroDossier();
         }
 

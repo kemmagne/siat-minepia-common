@@ -47,6 +47,11 @@ public final class ConstantsXsdPaths {
     public static final String CCT_CT_XSD_PATH = "/xsd/CT/CCT/CCT_CT.xsd";
 
     /**
+     * The Constant CCT_CT_XSD_PATH.
+     */
+    public static final String CCT_CSV_XSD_PATH = "/xsd/CT/CCT/CCT_CSV.xsd";
+
+    /**
      * The Constant CCT_CT_E_XSD_PATH.
      */
     public static final String CCT_CT_E_XSD_PATH = "/xsd/CT/CCT/CCT_CT_E.xsd";

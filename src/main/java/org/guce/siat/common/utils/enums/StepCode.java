@@ -209,6 +209,8 @@ public enum StepCode {
     ST_CT_64("Signature Procès Verbal Empotage"),
     //
     ST_CT_65("Validation pour Signature"),
+    ST_CT_66("Signature"),
+    ST_CT_67("Signature"),
     //Steps pour le CCS MINSANTE
     ST_CT_CCS_01("Etude approfondie suite demande de modification"),
     ST_CT_CCS_02("Signature suite demande de modification"),
