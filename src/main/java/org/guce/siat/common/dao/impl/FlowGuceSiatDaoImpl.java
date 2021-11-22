@@ -1,5 +1,6 @@
 package org.guce.siat.common.dao.impl;
 
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -46,8 +47,7 @@ public class FlowGuceSiatDaoImpl extends AbstractJpaDaoImpl<FlowGuceSiat> implem
             query.setParameter("flowGuce", flowGuce);
             query.setMaxResults(1);
             return query.getSingleResult();
-        } catch (final NoResultException | NonUniqueResultException e) {
-            LOG.info(Objects.toString(e));
+        } catch (final NoResultException e) {
             return null;
         }
     }
@@ -60,10 +60,17 @@ public class FlowGuceSiatDaoImpl extends AbstractJpaDaoImpl<FlowGuceSiat> implem
             query.setParameter("fileTypeId", fileType.getId());
             query.setMaxResults(1);
             return query.getSingleResult();
-        } catch (final NoResultException | NonUniqueResultException e) {
-            LOG.info(Objects.toString(e));
+        } catch (final NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<FlowGuceSiat> findAllFlowGuceSiatsByFlowGuceAndFileType(final String flowGuce, final FileType fileType) {
+        TypedQuery<FlowGuceSiat> query = super.entityManager.createQuery("SELECT b FROM FlowGuceSiat b WHERE b.flowGuce = :flowGuce AND b.fileType.id = :fileTypeId", FlowGuceSiat.class);
+        query.setParameter("flowGuce", flowGuce);
+        query.setParameter("fileTypeId", fileType.getId());
+        return query.getResultList();
     }
 
     /*
