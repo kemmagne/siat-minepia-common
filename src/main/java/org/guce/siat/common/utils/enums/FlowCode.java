@@ -403,6 +403,7 @@ public enum FlowCode {
     //
 
     FL_CT_130("Notification de rendez-vous pour empotage"),
+    FL_CT_EPHYTO001("Notification de reception d'un certificat Phyto venant du HUB"),
     FL_CT_131("Validation sans facturation"),
     FL_CT_132("Facturation"),
     FL_CT_133("Autorisation Facture"),
