@@ -443,7 +443,7 @@ public enum FlowCode {
     FL_CT_155("Demande Complément d'information"),
     FL_CT_156("Complément d'information"),
     //
-    
+
     //CCS MINSANTE new flows
     FL_CT_157("Retour pour réorientation"),
     FL_CT_158("Validation pour paiement"),
@@ -453,7 +453,6 @@ public enum FlowCode {
     FL_CT_CCS_03("Validation pour signature demande de modification suite étude"),
     FL_CT_CCS_04("Rejet demande de modifications suite signature"),
     FL_CT_CCS_05("Validation demande de modification"),
-
     FL_CT_159("Facturation"),
     //
 
@@ -473,6 +472,42 @@ public enum FlowCode {
     FL_CT_173("Notification"),
     FL_CT_174("Facturation"),
     FL_CT_175("Paiement"),
+    /**
+     * The F l_ c cvs_01.
+     */
+    FL_CT_CVS_01("Vérification approfondie"),
+    /**
+     * The F l_ c cvs_02.
+     */
+    FL_CT_CVS_02("Rejet Suite vérification Approfondie"),
+    /**
+     * The F l_ c cvs_03.
+     */
+    FL_CT_CVS_03("Signature du CCT (CVS)"),
+    /**
+     * The F l_ c cvs_04.
+     */
+    FL_CT_CVS_04("CI requis à vérification Approfondie"),
+    /**
+     * The F l_ c cvs_05.
+     */
+    FL_CT_CVS_05("Validation après vérification approfondie CVS"),
+    /**
+     * The F l_ c cvs_06.
+     */
+    FL_CT_CVS_06("Renvoi pour etude approfondie"),
+    /**
+     * The F l_ c cvs_07.
+     */
+    FL_CT_CVS_07("Signature du CCT (CVS)"),
+    /**
+     * The F l_ c cvs_04.
+     */
+    FL_CT_CVS_08("Rejet Suite vérification Approfondie"),
+    /**
+     * The F l_ c cvs_05.
+     */
+    FL_CT_CVS_09("CI requis à vérification Approfondie"),
     //
 
     /**
@@ -2154,41 +2189,37 @@ public enum FlowCode {
     FL_CC_179("Autorisation modification"),
     FL_CC_180("Notification signature douane"),
     /**
-     * The F l_ c cvs_01.
+     * The FL_CC_181.
      */
-    FL_CT_CVS_01("Vérification approfondie"),
+    FL_CC_181("Demande d'annulation"),
     /**
-     * The F l_ c cvs_02.
+     * The FL_CC_182.
      */
-    FL_CT_CVS_02("Rejet Suite vérification Approfondie"),
+    FL_CC_182("Admission du dossier suite demande d'annulation"),
     /**
-     * The F l_ c cvs_03.
+     * The FL_CC_183.
      */
-    FL_CT_CVS_03("Signature du CCT (CVS)"),
+    FL_CC_183("Rejet de la demande d'annulation"),
     /**
-     * The F l_ c cvs_04.
+     * The FL_CC_184.
      */
-    FL_CT_CVS_04("CI requis à vérification Approfondie"),
+    FL_CC_184("Cotation"),
     /**
-     * The F l_ c cvs_05.
+     * The FL_CC_185.
      */
-    FL_CT_CVS_05("Validation après vérification approfondie CVS"),
+    FL_CC_185("Validation de l'annulation suite étude"),
     /**
-     * The F l_ c cvs_06.
+     * The FL_CC_186.
      */
-    FL_CT_CVS_06("Renvoi pour etude approfondie"),
+    FL_CC_186("Rejet de la demande d'annulation"),
     /**
-     * The F l_ c cvs_07.
+     * The FL_CC_187.
      */
-    FL_CT_CVS_07("Signature du CCT (CVS)"),
+    FL_CC_187("Refus d'autorisation de l'annulation - Retour à l'étude"),
     /**
-     * The F l_ c cvs_04.
+     * The FL_CC_188.
      */
-    FL_CT_CVS_08("Rejet Suite vérification Approfondie"),
-    /**
-     * The F l_ c cvs_05.
-     */
-    FL_CT_CVS_09("CI requis à vérification Approfondie");
+    FL_CC_188("Autorisation de l'annulation");
 
     /**
      * The label.

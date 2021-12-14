@@ -186,6 +186,13 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
         }
     }
 
+    @Override
+    public List<File> findByNumeroDossierBase(final String numeroDossierBase) {
+        TypedQuery<File> query = super.entityManager.createQuery("SELECT f FROM File f WHERE f.numeroDossierBase = :numeroDossierBase", File.class);
+        query.setParameter("numeroDossierBase", numeroDossierBase);
+        return query.getResultList();
+    }
+
     /*
          * (non-Javadoc)
          *

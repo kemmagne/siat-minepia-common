@@ -781,6 +781,11 @@ public enum StepCode {
      * The S t_ c c_77.
      */
     ST_CC_77("Signature Demande de modification"),
+    ST_CC_78("Dépôt demande d'annulation"),
+    ST_CC_79("Recevabilité demande d'annulation"),
+    ST_CC_80("Cotation Demande d'annulation"),
+    ST_CC_81("Etude Demande d'annulation"),
+    ST_CC_82("Signature Demande d'annulation"),
     /**
      * The S t_ c c_cvs 01.
      */

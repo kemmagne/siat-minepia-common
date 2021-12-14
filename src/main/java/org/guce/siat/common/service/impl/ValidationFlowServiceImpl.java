@@ -51,6 +51,8 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
 
     private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "CCS009", "VT109");
 
+    private static final List<String> INIT_CANCEL_FLOWS_LIST = Arrays.asList("DVA1", "DMA1");
+
     private static final List<String> NOTIFICATION_FLOWS_LIST = Arrays.asList(FlowCode.FL_CC_180.name(), FlowCode.FL_CT_142.name());
 
     /**
@@ -556,6 +558,12 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      */
     private boolean validateCancelRequest(final Element rootElement) {
         logger.info("####### Start validateCancelRequest ####### ");
+
+        String docType = getDocumentType(rootElement);
+        if (INIT_CANCEL_FLOWS_LIST.contains(docType)) {
+            return true;
+        }
+
         boolean validateCancelRequest = false;
         final List<FileTypeCode> fileTypeListMinusCT = new ArrayList<>();
         fileTypeListMinusCT.addAll(Arrays.asList(FileTypeCode.values()));
@@ -970,7 +978,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             File file = fileDao.findByNumDossierGuce(numDossierGuce);
             String docType = getDocumentType(rootElement);
             validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.VALIDATE_LAST_FLOW.getCode());
-            return file == null || (INIT_MODIFICATION_FLOWS_LIST.contains(docType));
+            return file == null || INIT_MODIFICATION_FLOWS_LIST.contains(docType) || INIT_CANCEL_FLOWS_LIST.contains(docType);
         }
 
         return true;

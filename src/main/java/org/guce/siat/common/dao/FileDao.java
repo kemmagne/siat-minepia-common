@@ -54,6 +54,8 @@ public interface FileDao extends AbstractJpaDao<File> {
      */
     File findByNumDossierGuce(String refGuce);
 
+    List<File> findByNumeroDossierBase(final String numeroDossierBase);
+
     /**
      * Find matching between manifest and prior notice.
      *
