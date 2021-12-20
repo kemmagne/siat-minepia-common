@@ -786,6 +786,8 @@ public enum StepCode {
     ST_CC_80("Cotation Demande d'annulation"),
     ST_CC_81("Etude Demande d'annulation"),
     ST_CC_82("Signature Demande d'annulation"),
+    ST_CC_83("Traitement douane"),
+    ST_CC_84("Fin certificat d'origine"),
     /**
      * The S t_ c c_cvs 01.
      */

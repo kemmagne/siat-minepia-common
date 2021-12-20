@@ -508,6 +508,8 @@ public enum FlowCode {
      * The F l_ c cvs_05.
      */
     FL_CT_CVS_09("CI requis à vérification Approfondie"),
+    FL_CT_176("Signature"),
+    FL_CT_177("Signature"),
     //
 
     /**
@@ -2219,7 +2221,11 @@ public enum FlowCode {
     /**
      * The FL_CC_188.
      */
-    FL_CC_188("Autorisation de l'annulation");
+    FL_CC_188("Autorisation de l'annulation"),
+    FL_CC_189("Autorisation de certificat d'origine"),
+    FL_CC_190("Validation douane"),
+    FL_CC_191("Rejet douane"),
+    FL_CC_192("Validation suite rejet douane");
 
     /**
      * The label.
