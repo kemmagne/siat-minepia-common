@@ -61,17 +61,4 @@ public interface ApplicationPropretiesService {
      */
     String getRepeatableSeparator();
 
-    /**
-     * Gets the max retry time number.
-     *
-     * @return the max retry time number
-     */
-    String getMaxRetryTimeNumber();
-
-    /**
-     * Gets the number of minutes must be exceeded between two send retry.
-     *
-     * @return the number of minutes must be exceeded between two send retry
-     */
-    String getNumberMinuteExceedBetweenTwoRetry();
 }
