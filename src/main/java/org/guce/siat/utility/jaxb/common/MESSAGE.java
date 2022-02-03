@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder =
-{ "typemessage", "dateemission", "etat", "numeromessage", "numeromessageorigine", "dateemissionmsgorigine" })
+{ "typemessage", "ephytomessage" ,  "dateemission", "etat", "numeromessage", "numeromessageorigine", "dateemissionmsgorigine" })
 public class MESSAGE implements Serializable
 {
 
@@ -22,6 +22,9 @@ public class MESSAGE implements Serializable
 	@XmlElement(name = "TYPE_MESSAGE", required = true)
 	protected String typemessage;
 
+        @XmlElement(name = "EPHYTO_MESSAGE", required = true)
+        protected String ephytomessage;
+        
 	/** The dateemission. */
 	@XmlElement(name = "DATE_EMISSION", required = true)
 	protected String dateemission;
@@ -179,5 +182,30 @@ public class MESSAGE implements Serializable
 	{
 		this.dateemissionmsgorigine = value;
 	}
+
+        
+        /**
+         * Obtient la valeur de la propriété ephytomessage.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getEPHYTOMESSAGE() {
+            return ephytomessage;
+        }
+
+        /**
+         * Définit la valeur de la propriété ephytomessage.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setEPHYTOMESSAGE(String value) {
+            this.ephytomessage = value;
+        }
 
 }

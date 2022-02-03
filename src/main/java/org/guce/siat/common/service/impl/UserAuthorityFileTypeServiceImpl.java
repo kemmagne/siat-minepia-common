@@ -119,26 +119,30 @@ public class UserAuthorityFileTypeServiceImpl extends
             final List<UserAuthorityFileType> authorityFileTypes = userAuthorityFileTypeDao
                     .getFileTypeAndAuthorityByUser(user);
             final List<UserAuthority> userAuthorities = new ArrayList<UserAuthority>();
-            final List<Long> userAuthoritiesIds = new ArrayList<Long>();
+            userDao.updateUser(user);
             if (CollectionUtils.isNotEmpty(authorityFileTypes)) {
                 for (final UserAuthorityFileType userAuthorityFileType : authorityFileTypes) {
-                    userAuthoritiesIds.add(userAuthorityFileType.getUserAuthority().getId());
-                }
-
-                if (CollectionUtils.isNotEmpty(userAuthoritiesIds)) {
-                    //Remove used user Authorities file types
-                    userAuthorityFileTypeDao.removeUsedAuthritiesFileTypeByUserAuthorities(userAuthoritiesIds);
-                    //Remove used user Authorities
-                    userAuthorityDao.removeUsedAuthrities(userAuthoritiesIds);
+                    userAuthorityFileTypeDao.delete(userAuthorityFileType);
                 }
             }
             if (CollectionUtils.isNotEmpty(userAuthFileTypes)) {
                 for (final UserAuthorityFileType userAuthorityFileType : userAuthFileTypes) {
 
-                    userAuthorityDao.save(userAuthorityFileType
-                            .getUserAuthority());
+                    final UserAuthority userAuthority = userAuthorityDao
+                            .findByUserAndAuthoriy(user, userAuthorityFileType
+                                    .getUserAuthority().getAuthorityGranted());
+                    if (userAuthority != null) {
+                        userAuthorityFileType.setUserAuthority(userAuthority);
+                        userAuthorities.add(userAuthority);
+                    } else {
+                        userAuthorityDao.save(userAuthorityFileType
+                                .getUserAuthority());
+                        userAuthorities.add(userAuthorityFileType
+                                .getUserAuthority());
+                    }
                     userAuthorityFileTypeDao.save(userAuthorityFileType);
                 }
+                userAuthorityDao.removeUnusedAuthrities(user, userAuthorities);
             }
         } catch (final DAOException e) {
             throw new BusinessException(e,

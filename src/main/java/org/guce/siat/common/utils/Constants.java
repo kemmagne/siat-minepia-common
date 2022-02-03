@@ -625,19 +625,19 @@ public final class Constants {
     /**
      * The Constant FILE_EXIST.
      */
-    public static final String INIT_LOG_FILE_EXIST = "File_ALREADY_EXIST {}"; 
-	
-	/**
+    public static final String INIT_LOG_FILE_EXIST = "File_ALREADY_EXIST {}";
+
+    /**
      * The Constant FOR GLOBAL STAMP CHOICE.
      */
     public static final String CHOICE_GLOBAL_STAMP = "CHOICE_GLOBAL_STAMP";
-	
-	/**
+
+    /**
      * The Constant FOR GLOBAL STAMP.
      */
-    public static final String CHOICE_GLOBAL_URL_STAMP = "CHOICE_GLOBAL_URL_STAMP";
-	
-	/**
+    public static final String CHOICE_GLOBAL_ID_STAMP = "CHOICE_GLOBAL_ID_STAMP";
+
+    /**
      * The Constant FOR VALUE OF GLOBAL STAMP CHOICE.
      */
     public static final String VALUE_CHOICE_GLOBAL_STAMP = "NON";
@@ -655,17 +655,17 @@ public final class Constants {
     /**
      * The Constant MODELE.
      */
-    public static final String MODELE = "MODELE";  
-	/**
+    public static final String MODELE = "MODELE";
+    /**
      * The Constant SIGNATURE.
      */
-    public static final String SIGNATURE = "SIGNATURE";   
-	/**
+    public static final String SIGNATURE = "SIGNATURE";
+    /**
      * The Constant CACHET.
      */
     public static final String STAMP = "STAMP";
-	
-	/**
+
+    /**
      * The Constant CACHET UNIQUE.
      */
     public static final String UNIQUE_STAMP = "UNIQUE_STAMP";
@@ -684,6 +684,11 @@ public final class Constants {
      * The Constant MINADER_MINISTRY.
      */
     public static final String MINADER_MINISTRY = "MINADER";
+
+    /**
+     * The constant MINCOMMERCE_MINISTRY
+     */
+    public static final String MINCOMMERCE_MINISTRY = "MINCOMMERCE";
 
     /**
      * The Constant DOUANE_PARTNER.

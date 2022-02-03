@@ -193,6 +193,11 @@ public class FileServiceImpl extends AbstractServiceImpl<File> implements FileSe
     }
 
     @Override
+    public List<File> findByNumeroDemandeAndFileTypeWithoutParent(String numeroDemande, FileType fileType) {
+        return fileDao.findByNumeroDemandeAndFileTypeWithoutParent(numeroDemande, fileType);
+    }
+
+    @Override
     public List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileTypeCode fileTypeCode) {
         return fileDao.findByNumeroDemandeAndFileType(numeroDemande, fileTypeCode);
     }

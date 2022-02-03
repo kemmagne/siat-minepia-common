@@ -1,15 +1,10 @@
 package org.guce.siat.common.job;
 
-import java.io.File;
-import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.orchestra.core.OrchestraEbxmlMessage;
 import org.guce.orchestra.core.OrchestraEbxmlMessageFactory;
-import org.guce.siat.common.mail.bo.EmailSenderService;
 import org.guce.siat.common.model.MessageToSend;
 import org.guce.siat.common.service.FileProducer;
 import org.guce.siat.common.service.MessageToSendService;
@@ -18,20 +13,16 @@ import org.guce.siat.common.utils.PropertiesLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  *
  * @author lissouck
  */
-@PropertySource("classpath:global-config.properties")
 @Component("taskResenderForMessageToResend")
 public class TaskResendMessageToResend {
 
@@ -49,9 +40,6 @@ public class TaskResendMessageToResend {
     private FileProducer fileProducer;
 
     @Autowired
-    private EmailSenderService emailSenderService;
-
-    @Autowired
     private MessageToSendService messageToSendService;
 
     @Autowired
@@ -60,20 +48,17 @@ public class TaskResendMessageToResend {
     /**
      * The max retry time number for reprocess messages job.
      */
-    @Value("${max.retry.time.number}")
     private String maxRetryTimeNumber;
 
     /**
      * The number of minute to exceed between two retry for reprocess messages
      * job.
      */
-    @Value("${number.minute.exceed.between.two.retry}")
     private String numberMinuteExceedBetweenTwoRetry;
-    
+
     /**
      * The maximum life time in minute
      */
-    @Value("${max.life.time.in.minute}")
     private String maxLifeTime;
 
     @PostConstruct

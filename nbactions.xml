@@ -14,7 +14,19 @@
             <displayName>skip-test-build</displayName>
 
             <goals>
+                <goal>clean</goal>
                 <goal>install</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-deploy-skiping-test</actionName>
+            <displayName>deploy-skiping-test</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>deploy</goal>
             </goals>
             <properties>
                 <skipTests>true</skipTests>
