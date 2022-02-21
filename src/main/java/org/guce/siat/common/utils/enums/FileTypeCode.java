@@ -183,6 +183,10 @@ public enum FileTypeCode {
      */
     DE_MINCOMMERCE("Declarations of Export MINCOMMERCE", "Déclarations d’Exportation MINCOMMERCE"),
     /**
+     *
+     */
+    IM_CARG_MINCOMMERCE("Expédition import - Instruments de mesure", "Expédition import - Instruments de mesure"),
+    /**
      * The idi.
      */
     IDI("Customs charge (Import)", "Imputation Douanière (Import)"),

@@ -480,4 +480,25 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
         return query.getResultList();
     }
 
+    @Override
+    public List<File> findFileByFileFieldCode(String fileFieldCode, String fileTypeCode) {
+        try {
+            final StringBuilder hqlQuery = new StringBuilder();
+            hqlQuery.append("SELECT * FROM FILES F ");
+            hqlQuery.append("LEFT JOIN FILE_FIELD_VALUE FFV on FFV.FILE_ID = F.ID ");
+            hqlQuery.append("LEFT JOIN FILE_FIELD FF on FF.ID = FFV.FILE_FIELD_ID ");
+            hqlQuery.append("WHERE FF.code = :CODE and FFV.VALUE IS NOT NULL and FFV.VALUE = 'NON' and F.FILE_TYPE_ID ");
+            hqlQuery.append("in (SELECT id FROM FILE_TYPE FT WHERE FT.CODE = :fileTypeCode)");
+
+            Query query1 = super.entityManager.createNativeQuery(hqlQuery.toString(), File.class);
+
+            query1.setParameter("CODE", fileFieldCode);
+            query1.setParameter("fileTypeCode", fileTypeCode);
+            return query1.getResultList();
+        } catch (final NoResultException | NonUniqueResultException e) {
+            LOG.info(Objects.toString(e));
+            return null;
+        }
+    }
+
 }
