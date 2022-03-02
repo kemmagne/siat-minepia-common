@@ -879,6 +879,12 @@ public enum FlowCode {
     FL_AP_VT1_05("Demande de modifcation du visa technique"),
     FL_AP_VT1_06("Validation Modification du visa technique"),
     FL_AP_VT1_07("Rejet Modification du visa technique"),
+    FL_AP_AIM_01("Validation Import Autorization for signature"),
+    FL_AP_AIM_02("Decision Refusal - Back to admissibility"),
+    FL_AP_AIM_03("Modification Request of Import autorization"),
+    FL_AP_AIM_04("Validation Modification Request of Import autorization"),
+    FL_AP_AIM_05("Rejection of Modification Request of Import autorization"),
+    
     /**
      * The F l_ a p_85.
      */
