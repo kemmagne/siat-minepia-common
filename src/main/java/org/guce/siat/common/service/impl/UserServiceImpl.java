@@ -416,6 +416,11 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     public List<User> findByStepAndFileTypeAndAdministration(Long stepId, Long fileTypeId, List<Bureau> bureauList) {
         return userDao.findByStepAndFileTypeAndAdministration(stepId, fileTypeId, bureauList);
     }
+    
+    @Override
+    public List<User> findByAdministration( List<Bureau> bureauList) {
+        return userDao.findByAdministration(bureauList);
+    }
 
     /* (non-Javadoc)
 	 * @see org.guce.siat.common.service.UserService#findSuperUserByFileType(org.guce.siat.common.utils.enums.FileTypeCode)

@@ -152,4 +152,9 @@ public class FileItemFieldValue extends AbstractModel implements Serializable
 		this.level = level;
 	}
 
+    @Override
+    public String toString() {
+        return "FileItemFieldValue{" + "primaryKey=" + primaryKey + ", value=" + value + ", level=" + level + ", history=" + history + '}';
+    }
+
 }

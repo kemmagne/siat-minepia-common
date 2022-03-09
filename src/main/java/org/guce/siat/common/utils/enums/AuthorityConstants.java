@@ -98,7 +98,11 @@ public enum AuthorityConstants {
     CAISSIER("CA", "Caissier"),
     GESTION_AGENTS("GA", "Gestion des Agents"),
     VALIDATION_FACTURE("VF", "Validation Facture"),
-    VALIDATION_SIGNATURE("VS", "Validation Signature");
+    VALIDATION_SIGNATURE("VS", "Validation Signature"),
+     /**
+     * Mise à jour des dossiers à partir de l'interface graphique.
+     */
+    ADMIN_UPDATE_FILE("ADMIN_UPDATE_FILE"," Modification des dossiers");
 
     /**
      * The code.

@@ -206,5 +206,10 @@ public class FileServiceImpl extends AbstractServiceImpl<File> implements FileSe
     public File findByRefSiat(String refSiat) {
         return fileDao.findByRefSiat(refSiat);
     }
+        
 
+    @Override
+    public List<File> findByFileType(FileTypeCode fileTypeCode) {
+        return fileDao.findByFileType(fileTypeCode);
+    }
 }

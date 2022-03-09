@@ -522,4 +522,45 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
         return users;
     }
 
+    
+
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.UserDao#findByStepAndFileTypeAndAdministration(java.lang.Long, java.lang.Long,
+	 * java.util.List)
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<User> findByAdministration( final List<Bureau> bureauList) {
+
+        //List<User> users;
+
+        final List<Long> bureauIdList = new ArrayList<>();
+        for (final Bureau bureau : bureauList) {
+            bureauIdList.add(bureau.getId());
+        }
+
+        final StringBuilder sqlQuery = new StringBuilder();
+
+        sqlQuery.append("SELECT usrs from User usrs ");
+        sqlQuery.append("WHERE usrs.administration.id IN (:bureauList) ");
+
+        final Query query = super.entityManager.createQuery(sqlQuery.toString());
+        query.setParameter("bureauList", bureauIdList);
+
+//        @SuppressWarnings("unchecked")
+//        final List<Object[]> resultList = query.getResultList();
+//        users = new ArrayList<>();
+//        for (final Object[] usr : resultList) {
+//            final User user = new User();
+//            user.setPreferedLanguage(String.valueOf(usr[0]));
+//            user.setEmail(String.valueOf(usr[1]));
+//            user.setFirstName(String.valueOf(usr[2]));
+//            users.add(user);
+//        }
+
+        return query.getResultList();
+
+    }
 }

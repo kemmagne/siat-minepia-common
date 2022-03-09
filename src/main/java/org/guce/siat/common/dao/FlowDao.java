@@ -133,5 +133,7 @@ public interface FlowDao extends AbstractJpaDao<Flow> {
     Flow findByToStep(Step step, FileType fileType);
 
     List<Flow> findBeforeCotationStepFlows(File currentFile);
+    
+    List<Flow> findFlowsByToStepAndFileType(final Step step, final FileType fileType);
 
 }

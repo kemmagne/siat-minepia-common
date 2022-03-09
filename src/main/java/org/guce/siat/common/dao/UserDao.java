@@ -129,6 +129,17 @@ public interface UserDao extends AbstractJpaDao<User> {
      */
     List<User> findByStepAndFileTypeAndAdministration(Long stepId, Long fileTypeId, List<Bureau> bureauList);
 
+    
+    /**
+     * Find by administration.
+     *
+
+     * @param bureauList the bureau list
+     * @return the list
+     */
+    List<User> findByAdministration(List<Bureau> bureauList);
+
+    
     /**
      * Find super user by file type.
      *
