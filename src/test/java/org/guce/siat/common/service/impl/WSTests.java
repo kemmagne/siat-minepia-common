@@ -9,7 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.commons.io.IOUtils;
-import org.guce.siat.common.utils.SecurityUtils;
+//import org.guce.siat.common.utils.SecurityUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,6 +39,7 @@ public class WSTests {
      */
     private RestTemplate restTemplate;
 
+    @Ignore
     @Before
     public void before() {
         restTemplate = new RestTemplate();
@@ -61,7 +62,7 @@ public class WSTests {
             @Override
             public void doWithRequest(ClientHttpRequest request) throws IOException {
                 request.getHeaders().add("Content-type", MediaType.APPLICATION_OCTET_STREAM_VALUE);
-                request.getHeaders().add("Authorization", SecurityUtils.getBasicAuth(LOGIN, PASSWORD));
+//                request.getHeaders().add("Authorization", SecurityUtils.getBasicAuth(LOGIN, PASSWORD));
                 IOUtils.copy(in, request.getBody());
             }
         };
@@ -76,7 +77,7 @@ public class WSTests {
     public void test1() {
         String login = "LetRaBleMPbraPsYNeor";
         String password = "rVckh5Td9SsB5G897U3y";
-        System.out.println(SecurityUtils.getBasicAuth(login, password));
+//        System.out.println(SecurityUtils.getBasicAuth(login, password));
     }
 
     @Ignore

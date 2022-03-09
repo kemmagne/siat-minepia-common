@@ -103,6 +103,8 @@ public interface FileService extends AbstractService<File> {
 
     List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileType fileType);
 
+    List<File> findByNumeroDemandeAndFileTypeWithoutParent(String numeroDemande, FileType fileType);
+
     List<File> findByNumeroDemandeAndFileType(String numeroDemande, FileTypeCode fileTypeCode);
 
     /**

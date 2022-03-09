@@ -233,6 +233,15 @@ public class Company extends AbstractModel implements Serializable {
     public Company() {
     }
 
+    public Company(String numContribuable) {
+        this.numContribuable = numContribuable;
+    }
+
+    public Company(String numContribuable, String companyName) {
+        this.numContribuable = numContribuable;
+        this.companyName = companyName;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *

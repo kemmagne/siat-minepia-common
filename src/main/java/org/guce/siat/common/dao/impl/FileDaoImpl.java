@@ -186,6 +186,13 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
         }
     }
 
+    @Override
+    public List<File> findByNumeroDossierBase(final String numeroDossierBase) {
+        TypedQuery<File> query = super.entityManager.createQuery("SELECT f FROM File f WHERE f.numeroDossierBase = :numeroDossierBase", File.class);
+        query.setParameter("numeroDossierBase", numeroDossierBase);
+        return query.getResultList();
+    }
+
     /*
          * (non-Javadoc)
          *
@@ -196,8 +203,7 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
     @Override
     public File findByNumeroDemandeAndFileTypeGuce(final String numeroDemande, final String fileTypeGuce) {
         try {
-            final String hqlString = "FROM File f WHERE f.numeroDemande = :numeroDemande AND f.fileTypeGuce = :fileTypeGuce";
-            final TypedQuery<File> query = super.entityManager.createQuery(hqlString, File.class);
+            final TypedQuery<File> query = super.entityManager.createQuery("SELECT f FROM File f WHERE f.numeroDemande = :numeroDemande AND f.fileTypeGuce = :fileTypeGuce", File.class);
             query.setParameter("numeroDemande", numeroDemande);
             query.setParameter("fileTypeGuce", fileTypeGuce);
             return query.getSingleResult();
@@ -414,8 +420,27 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
         Join<File, FileType> fileTypeJ = from.join(File_.fileType);
         cq.where(builder.and(
                 builder.equal(from.get(File_.numeroDemande), numeroDemande),
-                builder.equal(fileTypeJ.get(FileType_.id), fileType.getId()))
-        );
+                builder.equal(fileTypeJ.get(FileType_.id), fileType.getId())
+        ));
+        cq.orderBy(builder.asc(from.get(File_.id)));
+
+        TypedQuery<File> query = super.entityManager.createQuery(cq);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<File> findByNumeroDemandeAndFileTypeWithoutParent(String numeroDemande, FileType fileType) {
+
+        CriteriaBuilder builder = super.entityManager.getCriteriaBuilder();
+        CriteriaQuery<File> cq = builder.createQuery(getClasse());
+        Root<File> from = cq.from(getClasse());
+        Join<File, FileType> fileTypeJ = from.join(File_.fileType);
+        cq.where(builder.and(
+                builder.equal(from.get(File_.numeroDemande), numeroDemande),
+                builder.equal(fileTypeJ.get(FileType_.id), fileType.getId()),
+                builder.isNull(from.get(File_.parent))
+        ));
         cq.orderBy(builder.asc(from.get(File_.id)));
 
         TypedQuery<File> query = super.entityManager.createQuery(cq);

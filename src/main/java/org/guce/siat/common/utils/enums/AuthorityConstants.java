@@ -63,6 +63,10 @@ public enum AuthorityConstants {
      */
     INSPECTEUR("INS", "Inspecteur"),
     /**
+     * The inspecteur for modification request.
+     */
+    INSPECTEUR_MODIFICATION("IM", "Inspecteur pour modification"),
+    /**
      * The controleur.
      */
     CONTROLEUR("CONT", "Contrôleur"),
@@ -78,6 +82,10 @@ public enum AuthorityConstants {
      * The signataire.
      */
     SIGNATAIRE("SIGN", "Signataire"),
+    /**
+     * The signataire for modification request.
+     */
+    SIGNATAIRE_MODIFICATION("SM", "Signataire pour modification"),
     /**
      * The responsable traitement.
      */

@@ -49,9 +49,11 @@ import org.w3c.dom.Element;
 @Transactional(readOnly = true)
 public class ValidationFlowServiceImpl implements ValidationFlowService {
 
-    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("COCACM1", "COCAFM1", "E009", "E030");
+    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "CCS009", "VT109", "AIM09");
 
-    private static final List<String> NOTIFICATION_FLOWS_LIST = Arrays.asList(FlowCode.FL_CT_142.name());
+    private static final List<String> INIT_CANCEL_FLOWS_LIST = Arrays.asList("DVA1", "DMA1");
+
+    private static final List<String> NOTIFICATION_FLOWS_LIST = Arrays.asList(FlowCode.FL_CC_180.name(), FlowCode.FL_CT_142.name());
 
     /**
      * The Constant LOG.
@@ -218,7 +220,12 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_126.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_135.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_145.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_167.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_175.name())
+                //Flow d'encaissement du CCS_MINSANTE
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_160.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_166.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_VT1_03.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name()));
         logger.info("#######isPaymentRequest result : " + result);
@@ -410,7 +417,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             return true;
         }
         logger.info("#####start validateGeneralInformations");
-        //		Validation Générale
+        //		Validation GÃ©nÃ©rale
         final boolean commonValidation = contentHasDocumentType(rootElement) && contentHasGuceNumber(rootElement) && contentHasNumMessage(rootElement);
         if (!commonValidation) {
             return false;
@@ -551,6 +558,12 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
      */
     private boolean validateCancelRequest(final Element rootElement) {
         logger.info("####### Start validateCancelRequest ####### ");
+
+        String docType = getDocumentType(rootElement);
+        if (INIT_CANCEL_FLOWS_LIST.contains(docType)) {
+            return true;
+        }
+
         boolean validateCancelRequest = false;
         final List<FileTypeCode> fileTypeListMinusCT = new ArrayList<>();
         fileTypeListMinusCT.addAll(Arrays.asList(FileTypeCode.values()));
@@ -566,7 +579,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 if (CollectionUtils.isNotEmpty(fileItems)) {
                     final FileType fileType = fileToSearch.getFileType();
                     Step currentStep;
-                    //Vérifier si le nombre maximal des demandes d'annulation a été atteint
+                    //VÃ©rifier si le nombre maximal des demandes d'annulation a Ã©tÃ© atteint
                     final ParamsOrganism nbrCancelRequestParam = paramsOrganismDao.findParamsOrganismByOrganismAndName(fileItems
                             .get(0).getFile().getBureau().getService().getSubDepartment().getOrganism(), "MaxCancelRequest");
                     Long paramOrganismValue;
@@ -736,13 +749,13 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                     //Demande RDV Visite
                     if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_21.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_20.name());
-                    } //Confirmation Visite à Quai
+                    } //Confirmation Visite Ã  Quai
                     else if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_36.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_18.name());
-                    } //Régularisation
+                    } //RÃ©gularisation
                     else if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_45.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_16.name());
-                    } //Demande de Réexamen
+                    } //Demande de RÃ©examen
                     else if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_49.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_12.name(), FlowCode.FL_CT_73.name());
                     } //Refoulement/Destruction
@@ -965,7 +978,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             File file = fileDao.findByNumDossierGuce(numDossierGuce);
             String docType = getDocumentType(rootElement);
             validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.VALIDATE_LAST_FLOW.getCode());
-            return file == null || (INIT_MODIFICATION_FLOWS_LIST.contains(docType));
+            return file == null || INIT_MODIFICATION_FLOWS_LIST.contains(docType) || INIT_CANCEL_FLOWS_LIST.contains(docType);
         }
 
         return true;

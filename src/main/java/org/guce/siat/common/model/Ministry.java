@@ -22,7 +22,7 @@ public class Ministry extends Administration {
      */
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "CODE", length = 10)
+    @Column(name = "CODE", length = 35)
     private String code;
 
     /**

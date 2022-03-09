@@ -209,6 +209,11 @@ public enum StepCode {
     ST_CT_64("Signature Procès Verbal Empotage"),
     //
     ST_CT_65("Validation pour Signature"),
+    ST_CT_66("Signature"),
+    ST_CT_67("Signature"),
+    //Steps pour le CCS MINSANTE
+    ST_CT_CCS_01("Etude approfondie suite demande de modification"),
+    ST_CT_CCS_02("Signature suite demande de modification"),
     //
     // AP Step Code
     /**
@@ -304,6 +309,8 @@ public enum StepCode {
      */
     ST_AP_64("Paiement"),
     ST_AP_65("Paiement"),
+    ST_AP_VT1_01("Signature Modification du visa techique"),
+    ST_AP_AIM_01("Signature Modification de l'autorisation d'importation"),
     // CO Step Code
     /**
      * The S t_ c o_42.
@@ -775,6 +782,13 @@ public enum StepCode {
      * The S t_ c c_77.
      */
     ST_CC_77("Signature Demande de modification"),
+    ST_CC_78("Dépôt demande d'annulation"),
+    ST_CC_79("Recevabilité demande d'annulation"),
+    ST_CC_80("Cotation Demande d'annulation"),
+    ST_CC_81("Etude Demande d'annulation"),
+    ST_CC_82("Signature Demande d'annulation"),
+    ST_CC_83("Traitement douane"),
+    ST_CC_84("Fin certificat d'origine"),
     /**
      * The S t_ c c_cvs 01.
      */

@@ -16,9 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("applicationPropretiesService")
 @Transactional(readOnly = true)
-@PropertySources(value
-        = {
-            @PropertySource("classpath:global-config.properties")})
+@PropertySources(value = {
+    @PropertySource("classpath:global-config.properties")})
 public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesService {
 
     @Autowired
@@ -61,29 +60,15 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
     private String appVersion;
 
     /**
-     * The max retry time number for reprocess messages job.
-     */
-    @Value("${max.retry.time.number}")
-    private String maxRetryTimeNumber;
-
-    /**
-     * The number of minute to exceed between two retry for reprocess messages
-     * job.
-     */
-    @Value("${number.minute.exceed.between.two.retry}")
-    private String numberMinuteExceedBetweenTwoRetry;
-
-    /**
-     * The attachement folder.
-     */
-    @Value("${attachement.folder}")
-    private String attachementFolder;
-
-    /**
      * The repeatable separator.
      */
     @Value("${repeatableSeparator}")
     private String repeatableSeparator;
+
+    /**
+     * The attachement folder.
+     */
+    private String attachementFolder;
 
     @PostConstruct
     public void init() {
@@ -181,33 +166,5 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
     public String getRepeatableSeparator() {
         return repeatableSeparator;
     }
-    
-    /**
-     * Gets the max retry time number.
-     *
-     * @return the max retry time number
-     */
-    @Override
-    public String getMaxRetryTimeNumber() {
-        return maxRetryTimeNumber;
-    }
-    
-    public void setMaxRetryTimeNumber(String maxRetryTimeNumber) {
-        this.maxRetryTimeNumber = maxRetryTimeNumber;
-    }
 
-    /**
-     * Gets the number of minutes must be exceeded between two send retry.
-     *
-     * @return the number of minutes must be exceeded between two send retry
-     */
-    @Override
-    public String getNumberMinuteExceedBetweenTwoRetry() {
-        return numberMinuteExceedBetweenTwoRetry;
-    }
-
-    
-    public void setNumberMinuteExceedBetweenTwoRetry(String numberMinuteExceedBetweenTwoRetry) {
-        this.numberMinuteExceedBetweenTwoRetry = numberMinuteExceedBetweenTwoRetry;
-    }
 }
