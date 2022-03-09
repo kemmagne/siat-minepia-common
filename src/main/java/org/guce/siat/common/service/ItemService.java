@@ -21,4 +21,5 @@ public interface ItemService extends AbstractService<Item> {
     List<Item> findNSHByFileTypes(FileTypeCode... fileTypeCodes);
     
     List<Item> findNSHByCodeAndDescriptionAndFileTypes(String searchQuery, FileTypeCode... fileTypeCodes);
+    Map<String, Item> getItemsAsMap(); 
 }

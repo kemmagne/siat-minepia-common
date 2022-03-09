@@ -66,4 +66,17 @@ public class ItemServiceImpl extends AbstractServiceImpl<Item> implements ItemSe
     public List<Item> findNSHByCodeAndDescriptionAndFileTypes(String searchQuery, FileTypeCode... fileTypeCodes) {
         return itemDao.findNSHByCodeAndDescriptionAndFileTypes(searchQuery, fileTypeCodes);
     }
+
+    @Override
+    public Map<String, Item> getItemsAsMap() {
+        if (itemsAsMap == null) {
+            //itemsAsMap = getCountries().stream().collect(Collectors.toMap(Country::getId, country -> country));
+            List<Item> listItems = itemDao.findAll();
+            itemsAsMap = new HashMap<>();
+            for (Item item : listItems) {
+                itemsAsMap.put(item.getGoodsItemCode(), item);
+            }
+        }
+        return itemsAsMap;
+    }
 }
