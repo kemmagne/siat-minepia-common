@@ -145,6 +145,14 @@ public interface UserService extends AbstractService<User> {
      * @return the list
      */
     List<User> findByAdministration(List<Bureau> bureauList);
+    
+    /**
+     * 
+     * @param bureauList
+     * @param roleList
+     * @return 
+     */
+    List<User> findSignatoryByAdministration( final List<Bureau> bureauList,  final List<String> roleList);
 
     /**
      * Find super user by file type.

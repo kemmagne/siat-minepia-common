@@ -1,5 +1,6 @@
 package org.guce.siat.common.service;
 
+import java.util.List;
 import org.guce.siat.common.model.FileField;
 import org.guce.siat.common.model.FileItemField;
 import org.guce.siat.common.utils.enums.FileTypeCode;
@@ -20,4 +21,11 @@ public interface FileItemFieldService extends AbstractService<FileItemField>
 	 * @return the file field
 	 */
 	FileItemField findFileItemFieldByCodeAndFileType(String fileItemFieldCode, FileTypeCode fileTypeCode);
+	
+        /**
+         *
+         * @param fileTypeCode
+         * @return 
+         */
+        List<FileItemField> findFileItemFieldByFileType(FileTypeCode fileTypeCode);
 }

@@ -3,6 +3,7 @@
  */
 package org.guce.siat.common.dao.impl;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.NoResultException;
@@ -50,6 +51,26 @@ public class FileFieldDaoImpl extends AbstractJpaDaoImpl<FileField> implements F
             query.setParameter("fileFieldCode", fileFieldCode);
             query.setParameter("fileTypeCode", fileTypeCode);
             return query.getSingleResult();
+
+        } catch (final NoResultException | NonUniqueResultException e) {
+            LOG.info(Objects.toString(e));
+            return null;
+        }
+    }
+    
+    
+
+    /* (non-Javadoc)
+	 * @see org.guce.siat.common.dao.FileFieldDao#findFileFieldByCodeAndFileType(java.lang.String, org.guce.siat.common.utils.enums.FileTypeCode)
+     */
+    @Override
+    public List<FileField> findFileFieldByFileType( final FileTypeCode fileTypeCode) {
+        try {
+            final String hqlString = "SELECT f FROM FileField f WHERE f.fileType.code = :fileTypeCode ";
+            final TypedQuery<FileField> query = super.entityManager.createQuery(hqlString, FileField.class);
+            
+            query.setParameter("fileTypeCode", fileTypeCode);
+            return query.getResultList();
 
         } catch (final NoResultException | NonUniqueResultException e) {
             LOG.info(Objects.toString(e));

@@ -3,6 +3,7 @@
  */
 package org.guce.siat.common.dao.impl;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.NoResultException;
@@ -57,4 +58,17 @@ public class FileItemFieldDaoImpl extends AbstractJpaDaoImpl<FileItemField> impl
         }
     }
 
+     @Override
+    public List<FileItemField> findFileItemFieldByFileType(final FileTypeCode fileTypeCode) {
+        try {
+            final String hqlString = "SELECT f FROM FileItemField f WHERE f.fileType.code = :fileTypeCode ";
+            final TypedQuery<FileItemField> query = super.entityManager.createQuery(hqlString, FileItemField.class);
+            query.setParameter("fileTypeCode", fileTypeCode);
+            return query.getResultList();
+
+        } catch (final NoResultException | NonUniqueResultException e) {
+            LOG.info(Objects.toString(e));
+            return null;
+        }
+    }
 }

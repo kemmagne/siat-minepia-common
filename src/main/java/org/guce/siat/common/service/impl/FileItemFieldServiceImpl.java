@@ -1,5 +1,6 @@
 package org.guce.siat.common.service.impl;
 
+import java.util.List;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.FileItemFieldDao;
 import org.guce.siat.common.model.FileItemField;
@@ -61,5 +62,11 @@ public class FileItemFieldServiceImpl extends AbstractServiceImpl<FileItemField>
 	{
 		return  fileItemFieldDao.findFileItemFieldByCodeAndFileType(fileFieldCode,fileTypeCode);
 	}
-
+        
+        @Override
+	public List<FileItemField> findFileItemFieldByFileType(FileTypeCode fileTypeCode)
+	{
+		return  fileItemFieldDao.findFileItemFieldByFileType(fileTypeCode);
+	}
+        
 }

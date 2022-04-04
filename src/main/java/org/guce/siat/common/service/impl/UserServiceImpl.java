@@ -421,6 +421,11 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
     public List<User> findByAdministration( List<Bureau> bureauList) {
         return userDao.findByAdministration(bureauList);
     }
+    
+    @Override
+    public List<User> findSignatoryByAdministration( final List<Bureau> bureauList,  final List<String> roleList) {
+        return userDao.findSignatoryByAdministration(bureauList, roleList);
+    }
 
     /* (non-Javadoc)
 	 * @see org.guce.siat.common.service.UserService#findSuperUserByFileType(org.guce.siat.common.utils.enums.FileTypeCode)

@@ -138,6 +138,8 @@ public interface UserDao extends AbstractJpaDao<User> {
      * @return the list
      */
     List<User> findByAdministration(List<Bureau> bureauList);
+    
+    List<User> findSignatoryByAdministration( final List<Bureau> bureauList,  final List<String> roleList);
 
     
     /**
