@@ -570,5 +570,43 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 
         return flows;
     }
+    
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.FlowDao#findFlowsByFromStepAndFileType(org.guce.siat.common.model.Step,
+	 * org.guce.siat.common.model.FileType)
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<Flow> findFlowsByToStepAndFileType(final Step step, final FileType fileType) {
+        if (step != null) {
+            final StringBuilder hqlBuilder = new StringBuilder();
+
+            hqlBuilder.append("SELECT f FROM Flow f ");
+            hqlBuilder.append("WHERE f.toStep.id =:stepId ");
+            hqlBuilder.append("AND ( ");
+            hqlBuilder.append("f.fromStep.id IN ");
+            hqlBuilder.append('(');
+            hqlBuilder.append("SELECT fts.primaryKey.step.id ");
+            hqlBuilder.append("FROM FileTypeStep fts ");
+            hqlBuilder.append("WHERE fts.primaryKey.fileType.id = :fileTypeId");
+            hqlBuilder.append(") ");
+            hqlBuilder.append("OR ");
+            hqlBuilder.append("f.fromStep is not null ");
+            hqlBuilder.append(')');
+
+            final TypedQuery<Flow> query = super.entityManager.createQuery(hqlBuilder.toString(), Flow.class);
+            query.setParameter("stepId", step.getId());
+            query.setParameter("fileTypeId", fileType.getId());
+
+            List<Flow> flows = query.getResultList();
+
+            return flows;
+        }
+
+        return Collections.emptyList();
+    }
+
 
 }

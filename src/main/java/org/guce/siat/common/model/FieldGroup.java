@@ -191,4 +191,9 @@ public class FieldGroup extends AbstractModel implements Serializable
 		return true;
 	}
 
+//    @Override
+//    public String toString() {
+//        return "FieldGroup{" + "id=" + id + ", labelFr=" + labelFr + ", labelEn=" + labelEn + ", fileFieldList=" + fileFieldList + ", fileItemFieldList=" + fileItemFieldList + '}';
+//    }
+
 }

@@ -1004,6 +1004,8 @@ public class File extends AbstractModel implements Serializable {
         builder.append(createdDate);
         builder.append(", fileType=");
         builder.append(fileType.getLabelFr());
+        builder.append(", bureau=");
+        builder.append(bureau.getCode());
         builder.append("	]");
         return builder.toString();
     }

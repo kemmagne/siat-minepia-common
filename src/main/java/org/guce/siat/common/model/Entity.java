@@ -44,7 +44,7 @@ public class Entity extends Administration {
     private String fax;
 
     /**
-     * The fax.
+     * The bp.
      */
     @Column(name = "BP", length = 10)
     private String bp;
@@ -61,6 +61,42 @@ public class Entity extends Administration {
     @ManyToOne
     @JoinColumn(name = "SERVICE_ID", referencedColumnName = "ID")
     private Service service;
+    
+    /**
+     * The city in french.
+     */
+    @Column(name = "CITY_FR")
+    private String cityFr;
+    
+    /**
+     * The city in english.
+     */
+    @Column(name = "CITY_EN")
+    private String cityEn;
+    
+    /**
+     * The department in french.
+     */
+    @Column(name = "DEPARTMENT_FR")
+    private String departmentFr;
+    
+    /**
+     * The department in english.
+     */
+    @Column(name = "DEPARTMENT_EN")
+    private String departmentEn;
+    
+    /**
+     * The region in french.
+     */
+    @Column(name = "REGION_FR")
+    private String regionFr;
+    
+    /**
+     * The region in english.
+     */
+    @Column(name = "REGION_EN")
+    private String regionEn;
 
     /**
      * @param id the id to set
@@ -161,6 +197,56 @@ public class Entity extends Administration {
     public void setBp(String bp) {
         this.bp = bp;
     }
+
+    public String getCityFr() {
+        return cityFr;
+    }
+
+    public void setCityFr(String cityFr) {
+        this.cityFr = cityFr;
+    }
+
+    public String getCityEn() {
+        return cityEn;
+    }
+
+    public void setCityEn(String cityEn) {
+        this.cityEn = cityEn;
+    }
+
+    public String getDepartmentFr() {
+        return departmentFr;
+    }
+
+    public void setDepartmentFr(String departmentFr) {
+        this.departmentFr = departmentFr;
+    }
+
+    public String getDepartmentEn() {
+        return departmentEn;
+    }
+
+    public void setDepartmentEn(String departmentEn) {
+        this.departmentEn = departmentEn;
+    }
+
+    public String getRegionFr() {
+        return regionFr;
+    }
+
+    public void setRegionFr(String regionFr) {
+        this.regionFr = regionFr;
+    }
+
+    public String getRegionEn() {
+        return regionEn;
+    }
+
+    public void setRegionEn(String regionEn) {
+        this.regionEn = regionEn;
+    }
+    
+    
 
     /*
 	 * (non-Javadoc)

@@ -15,10 +15,10 @@ import java.util.EnumMap;
 import java.util.Hashtable;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import org.guce.siat.common.model.File;
-import org.guce.siat.common.model.FileField;
-import org.guce.siat.common.model.FileFieldValue;
-import org.guce.siat.common.model.FileType;
+//import org.guce.siat.common.model.File;
+//import org.guce.siat.common.model.FileField;
+//import org.guce.siat.common.model.FileFieldValue;
+//import org.guce.siat.common.model.FileType;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -32,60 +32,60 @@ public class FileUtilsTest {
     @Ignore
     @Test
     public void testApplyModifications() {
-        File source = new File();
-        File dest = new File();
-        FileType fileType = new FileType();
-        fileType.setId(Long.MIN_VALUE);
-        source.setFileType(fileType);
-        dest.setFileType(fileType);
-
-        String code = "CODE";
-        FileField ff = new FileField();
-        ff.setCode(code);
-        ff.setUpdatable(Boolean.TRUE);
-
-        String value = "FINALVALUE";
-
-        FileFieldValue ffv;
-
-        ffv = new FileFieldValue();
-        ffv.setFileField(ff);
-        ffv.setValue(value);
-        source.setFileFieldValueList(Arrays.asList(ffv));
-
-        ffv = new FileFieldValue();
-        ffv.setFileField(ff);
-        ffv.setValue("FIRSTVALUE");
-        dest.setFileFieldValueList(Arrays.asList(ffv));
-
-        FileUtils.applyModifications(source, dest);
-
-        Assert.assertEquals(value, dest.getFileFieldValueList().get(0).getValue());
+//        File source = new File();
+//        File dest = new File();
+//        FileType fileType = new FileType();
+//        fileType.setId(Long.MIN_VALUE);
+//        source.setFileType(fileType);
+//        dest.setFileType(fileType);
+//
+//        String code = "CODE";
+//        FileField ff = new FileField();
+//        ff.setCode(code);
+//        ff.setUpdatable(Boolean.TRUE);
+//
+//        String value = "FINALVALUE";
+//
+//        FileFieldValue ffv;
+//
+//        ffv = new FileFieldValue();
+//        ffv.setFileField(ff);
+//        ffv.setValue(value);
+//        source.setFileFieldValueList(Arrays.asList(ffv));
+//
+//        ffv = new FileFieldValue();
+//        ffv.setFileField(ff);
+//        ffv.setValue("FIRSTVALUE");
+//        dest.setFileFieldValueList(Arrays.asList(ffv));
+//
+//        FileUtils.applyModifications(source, dest);
+//
+//        Assert.assertEquals(value, dest.getFileFieldValueList().get(0).getValue());
     }
 
     @Ignore
     @Test
     public void testGetRootFile() {
 
-        long id = 1l;
-
-        File root = new File();
-        root.setId(id++);
-
-        File current = new File();
-        current.setId(id++);
-        current.setParent(root);
-
-        Assert.assertEquals(root, FileUtils.getRootFile(current));
+//        long id = 1l;
+//
+//        File root = new File();
+//        root.setId(id++);
+//
+//        File current = new File();
+//        current.setId(id++);
+//        current.setParent(root);
+//
+//        Assert.assertEquals(root, FileUtils.getRootFile(current));
     }
 
     @Ignore
     @Test
     public void testQRCodeCreation() throws Exception {
-        String content = "https://localhost:40081/siat-ct-web/pages/unsecure/document.xhtml?file=CTE001533";
-        QRCodeGenerator generator = new QRCodeGenerator();
-        byte[] bytes = generator.generateQR(content);
-        org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("CTE001533-qr-code.png"), bytes);
+//        String content = "https://localhost:40081/siat-ct-web/pages/unsecure/document.xhtml?file=CTE001533";
+//        QRCodeGenerator generator = new QRCodeGenerator();
+//        byte[] bytes = generator.generateQR(content);
+//        org.apache.commons.io.FileUtils.writeByteArrayToFile(new java.io.File("CTE001533-qr-code.png"), bytes);
     }
 
     public static void main1(String[] args) {

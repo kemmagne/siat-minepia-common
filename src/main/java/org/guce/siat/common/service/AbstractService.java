@@ -47,6 +47,15 @@ public interface AbstractService<T extends Serializable> {
      * @return the t
      */
     T save(final T entity);
+    
+    
+    /**
+     * Save.
+     *
+     * @param entity the entity
+     * @return the t
+     */
+    T saveHistory(final T entity);
 
     /**
      * Update.
