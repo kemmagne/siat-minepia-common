@@ -99,5 +99,21 @@ public class BureauDaoImpl extends AbstractJpaDaoImpl<Bureau> implements BureauD
             return null;
         }
     }
+
+    @Override
+    public List<Bureau> findBureauByOrganism(Organism organism) {
+        if (organism != null) {
+            final StringBuilder hqlQuery = new StringBuilder();
+            hqlQuery.append("FROM Bureau b WHERE b.deleted = false AND b.service.subDepartment.organism.id = :organismId ");
+            
+            final TypedQuery<Bureau> query = super.entityManager.createQuery(hqlQuery.toString(), Bureau.class);
+            query.setParameter("organismId", organism.getId());
+            
+            return query.getResultList();
+        }
+        return Collections.emptyList();
+        
+        
+    }
 }
 

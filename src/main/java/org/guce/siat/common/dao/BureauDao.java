@@ -20,6 +20,15 @@ public interface BureauDao extends AbstractJpaDao<Bureau> {
      * @return the list
      */
     List<Bureau> findBureauByTypeAndOrganism(BureauType type, Organism organism);
+    
+     /**
+     * Find bureau by type and organism.
+     *
+     * @param type the type
+     * @param organism the organism
+     * @return the list
+     */
+    List<Bureau> findBureauByOrganism( Organism organism);
 
     /**
      * Find by service and code.

@@ -477,28 +477,28 @@ public class FileItem extends AbstractModel implements Serializable {
 	 *
 	 * @see java.lang.Object#toString()
      */
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("FileItem [id=");
-        builder.append(id);
-        builder.append(", lineNumber=");
-        builder.append(lineNumber);
-        builder.append(", numEbmsMessage=");
-        builder.append(numEbmsMessage);
-        builder.append(", file=");
-        builder.append(file);
-        builder.append(", nsh=");
-        builder.append(nsh);
-        builder.append(", subfamily=");
-        builder.append(subfamily);
-        builder.append(", step=");
-        builder.append(step);
-        builder.append(", draft=");
-        builder.append(draft);
-        builder.append("]");
-        return builder.toString();
-    }
+//    @Override
+//    public String toString() {
+//        final StringBuilder builder = new StringBuilder();
+//        builder.append("FileItem [id=");
+//        builder.append(id);
+//        builder.append(", lineNumber=");
+//        builder.append(lineNumber);
+//        builder.append(", numEbmsMessage=");
+//        builder.append(numEbmsMessage);
+//        builder.append(", file=");
+//        builder.append(file);
+//        builder.append(", nsh=");
+//        builder.append(nsh);
+//        builder.append(", subfamily=");
+//        builder.append(subfamily);
+//        builder.append(", step=");
+//        builder.append(step);
+//        builder.append(", draft=");
+//        builder.append(draft);
+//        builder.append("]");
+//        return builder.toString();
+//    }
 
     /**
      * Gets the repeatablefile item field value list.
@@ -655,6 +655,11 @@ public class FileItem extends AbstractModel implements Serializable {
      */
     public void setNumEbmsMessagePaiement(final String numEbmsMessagePaiement) {
         this.numEbmsMessagePaiement = numEbmsMessagePaiement;
+    }
+
+    @Override
+    public String toString() {
+        return "FileItem{" + "id=" + id + ", lineNumber=" + lineNumber + ", numEbmsMessage=" + numEbmsMessage + ", numEbmsMessageAnnulation=" + numEbmsMessageAnnulation + ", numEbmsMessagePaiement=" + numEbmsMessagePaiement + ", quantity=" + quantity + ", fobValue=" + fobValue + ", file=" + file + ", nsh=" + nsh + ", subfamily=" + subfamily + ", step=" + step + ", itemFlowsList=" + itemFlowsList + ", fileItemFieldValueList=" + fileItemFieldValueList + ", recommandationsList=" + recommandationsList + ", draft=" + draft + ", isFictive=" + isFictive + ", repeatablefileItemFieldValueList=" + repeatablefileItemFieldValueList + ", nonRepeatablefileFieldValueList=" + nonRepeatablefileFieldValueList + ", decisionType=" + decisionType + ", redefinedLabelFr=" + redefinedLabelFr + ", redefinedLabelEn=" + redefinedLabelEn + '}';
     }
 
 }

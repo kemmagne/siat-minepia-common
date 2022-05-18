@@ -280,6 +280,8 @@ public class File extends AbstractModel implements Serializable {
     private String redefinedLabelEn;
     @Transient
     private String redefinedLabelFr;
+    @Transient
+    private boolean ephytoMessage;
 
     /**
      * Gets the id.
@@ -1002,6 +1004,8 @@ public class File extends AbstractModel implements Serializable {
         builder.append(createdDate);
         builder.append(", fileType=");
         builder.append(fileType.getLabelFr());
+        builder.append(", bureau=");
+        builder.append(bureau.getCode());
         builder.append("	]");
         return builder.toString();
     }
@@ -1021,6 +1025,14 @@ public class File extends AbstractModel implements Serializable {
         if (CollectionUtils.isNotEmpty(getFileItemsList())) {
             setStep(getFileItemsList().get(0).getStep());
         }
+    }
+
+    public boolean getEphytoMessage() {
+        return ephytoMessage;
+    }
+
+    public void setEphytoMessage(boolean ephytoMessage) {
+        this.ephytoMessage = ephytoMessage;
     }
 
 }

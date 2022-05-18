@@ -73,6 +73,32 @@ public class BureauServiceImpl extends AbstractServiceImpl<Bureau> implements Bu
         return bureaus;
     }
 
+    @Override
+    public List<Bureau> findBureauByOrganism(final Organism organism) {
+
+        List<Bureau> bureaus = bureauDao.findBureauByOrganism(organism);
+
+        final List<Long> headOfficesIds = new ArrayList<>();
+
+        for (final Bureau bureau : bureaus) {
+            headOfficesIds.add(bureau.getId());
+        }
+
+        final List<User> users = userDao.findUsersByAdministrationsIds(headOfficesIds.toArray(new Long[headOfficesIds.size()]));
+
+        for (final Bureau bureau : bureaus) {
+
+            for (final User user : users) {
+                if (bureau.getId().equals(user.getAdministration().getId()) && PositionType.CHEF_BUREAU.equals(user.getPosition())) {
+                    bureau.setHeadOffice(user);
+                    break;
+                }
+            }
+        }
+
+        return bureaus;
+    }
+    
     /*
 	 * (non-Javadoc)
 	 *

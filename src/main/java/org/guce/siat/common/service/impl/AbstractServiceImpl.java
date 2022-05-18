@@ -81,6 +81,13 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
     public T save(final T entity) {
         return getJpaDao().save(entity);
     }
+    
+    
+    @Transactional(readOnly = false)
+    @Override
+    public T saveHistory(final T entity) {
+        return getJpaDao().save(entity);
+    }
 
     /*
 	 * (non-Javadoc)

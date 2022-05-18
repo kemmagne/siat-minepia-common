@@ -1,6 +1,8 @@
 package org.guce.siat.common.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.ItemDao;
 import org.guce.siat.common.model.Item;
@@ -22,6 +24,8 @@ public class ItemServiceImpl extends AbstractServiceImpl<Item> implements ItemSe
      */
     @Autowired
     private ItemDao itemDao;
+
+    private Map<String, Item> itemsAsMap;
 
     /*
 	 * (non-Javadoc)
@@ -63,4 +67,16 @@ public class ItemServiceImpl extends AbstractServiceImpl<Item> implements ItemSe
         return itemDao.findNSHByCodeAndDescriptionAndFileTypes(searchQuery, fileTypeCodes);
     }
 
+    @Override
+    public Map<String, Item> getItemsAsMap() {
+        if (itemsAsMap == null) {
+            //itemsAsMap = getCountries().stream().collect(Collectors.toMap(Country::getId, country -> country));
+            List<Item> listItems = itemDao.findAll();
+            itemsAsMap = new HashMap<>();
+            for (Item item : listItems) {
+                itemsAsMap.put(item.getGoodsItemCode(), item);
+            }
+        }
+        return itemsAsMap;
+    }
 }

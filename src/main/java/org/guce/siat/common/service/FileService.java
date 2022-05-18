@@ -122,5 +122,17 @@ public interface FileService extends AbstractService<File> {
      * @return the file
      */
     File findByRefSiat(String refSiat);
+    
+    
 
+    List<File> findByFileType(FileTypeCode fileTypeCode);
+
+    /**
+     * Find by ref siat.
+     *
+     * @param fileFieldCode the ref siat
+     * @param fileTypeCode the ref siat
+     * @return the list of file
+     */
+    List<File> findFileByFileFieldCode(String fileFieldCode , String fileTypeCode);
 }

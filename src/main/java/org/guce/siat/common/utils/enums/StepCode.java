@@ -6,6 +6,7 @@ package org.guce.siat.common.utils.enums;
 public enum StepCode {
 
     // CCT Step Code
+    ST_CT_EPHYTO("Consultation des phyto recu depuis la plateForm"),
     /**
      * The S t_ c t_01.
      */

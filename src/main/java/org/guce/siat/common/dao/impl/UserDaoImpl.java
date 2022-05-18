@@ -522,4 +522,79 @@ public class UserDaoImpl extends AbstractJpaDaoImpl<User> implements UserDao, Us
         return users;
     }
 
+    
+
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.common.dao.UserDao#findByStepAndFileTypeAndAdministration(java.lang.Long, java.lang.Long,
+	 * java.util.List)
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<User> findByAdministration( final List<Bureau> bureauList) {
+
+        //List<User> users;
+
+        final List<Long> bureauIdList = new ArrayList<>();
+        for (final Bureau bureau : bureauList) {
+            bureauIdList.add(bureau.getId());
+        }
+
+        final StringBuilder sqlQuery = new StringBuilder();
+
+        sqlQuery.append("SELECT usrs from User usrs ");
+        sqlQuery.append("WHERE usrs.administration.id IN (:bureauList) ");
+
+        final Query query = super.entityManager.createQuery(sqlQuery.toString());
+        query.setParameter("bureauList", bureauIdList);
+
+//        @SuppressWarnings("unchecked")
+//        final List<Object[]> resultList = query.getResultList();
+//        users = new ArrayList<>();
+//        for (final Object[] usr : resultList) {
+//            final User user = new User();
+//            user.setPreferedLanguage(String.valueOf(usr[0]));
+//            user.setEmail(String.valueOf(usr[1]));
+//            user.setFirstName(String.valueOf(usr[2]));
+//            users.add(user);
+//        }
+
+        return query.getResultList();
+
+    }
+    
+    @Transactional(readOnly = true)
+    @Override
+    public List<User> findSignatoryByAdministration( final List<Bureau> bureauList,  final List<String> roleList) {
+
+        //List<User> users;
+
+        final List<Long> bureauIdList = new ArrayList<>();
+        for (final Bureau bureau : bureauList) {
+            bureauIdList.add(bureau.getId());
+        }
+
+        final StringBuilder sqlQuery = new StringBuilder();
+//        sqlQuery.append("SELECT DISTINCT usrs from UserAuthority ua ");
+//        sqlQuery.append("inner join ua.user usrs ");
+//        sqlQuery.append("inner join ua.authorityGranted aut ");
+//        sqlQuery.append("WHERE usrs.administration.id IN (:bureauList) ");
+//        sqlQuery.append("and ua.user.id = usrs.id  ");
+//        sqlQuery.append("and ua.authorityGranted.id = aut.id  ");
+//        sqlQuery.append("and aut.role IN  (:roleList)  ");
+
+//"SELECT DISTINCT usr FROM User usr INNER JOIN usr.userAuthority usAu where usAu.user.id = usr.id and usAu.authority.role='SIGN' and usAu.user.administration in "
+        sqlQuery.append("SELECT DISTINCT usr FROM User usr ");
+        sqlQuery.append("INNER JOIN usr.userAuthorityList usAuth ");
+        sqlQuery.append("INNER JOIN usAuth.authorityGranted  author ");
+        sqlQuery.append(" where  usr.enabled = true AND usr.deleted = false");
+        sqlQuery.append(" and usAuth.authorityGranted.role  IN  (:roleList) and usr.administration.id IN (:bureauList) ");
+        final Query query = super.entityManager.createQuery(sqlQuery.toString(), User.class);
+        query.setParameter("bureauList", bureauIdList);
+        query.setParameter("roleList", roleList);
+
+        return query.getResultList();
+
+    }
 }
