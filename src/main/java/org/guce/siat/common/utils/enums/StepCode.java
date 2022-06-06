@@ -798,7 +798,13 @@ public enum StepCode {
      * The S t_ c c_cvs 02.
      */
     ST_CT_50("Retour du dossier pour réorientation"),
-    ST_CT_CVS_02("Vérification suite validation");
+    ST_CT_CVS_02("Vérification suite validation"),
+    
+    /**
+     * Steps for Airport CTE and PVI
+     */
+    ST_CT_E_AIP_01("Admissibility - Airport phytosanitary certificate request"),
+    ST_CT_E_AIP_02("Signature - Airport phytosanitary certificate request");
 
     /**
      * The label.
