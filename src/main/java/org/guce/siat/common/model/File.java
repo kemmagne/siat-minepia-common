@@ -282,6 +282,8 @@ public class File extends AbstractModel implements Serializable {
     private String redefinedLabelFr;
     @Transient
     private boolean ephytoMessage;
+    @Transient
+    private String ephytoEnv;
 
     /**
      * Gets the id.
@@ -1035,4 +1037,11 @@ public class File extends AbstractModel implements Serializable {
         this.ephytoMessage = ephytoMessage;
     }
 
+    public String getEphytoEnv() {
+        return ephytoEnv;
+    }
+
+    public void setEphytoEnv(String ephytoEnv) {
+        this.ephytoEnv = ephytoEnv;
+    }
 }
