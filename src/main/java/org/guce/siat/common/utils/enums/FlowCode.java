@@ -517,21 +517,21 @@ public enum FlowCode {
      * The Flows for Airport CTE.
      */
     FL_CT_E_AIP_01("Reception du dossier de certificat"),
-    FL_CT_E_AIP_02("Complément d''informations Suite Recevabilité"),
-    FL_CT_E_AIP_03("Validation pour signature"),
-    FL_CT_E_AIP_04("Retour à la recevabilité"),
-    FL_CT_E_AIP_05("Signature du certificat phytosanitaire"),
-    FL_CT_E_AIP_11("Réponse CI Suite recevabilité"),
+//    FL_CT_E_AIP_02("Complément d''informations Suite Recevabilité"),
+//    FL_CT_E_AIP_03("Validation pour signature"),
+//    FL_CT_E_AIP_04("Retour à la recevabilité"),
+//    FL_CT_E_AIP_05("Signature du certificat phytosanitaire"),
+//    FL_CT_E_AIP_11("Réponse CI Suite recevabilité"),
     
     /**
      * The Flows for Airport PVI.
      */
-    FL_CT_E_AIP_06("Reception du dossier d'inspection"),
-    FL_CT_E_AIP_07("Complément d''informations Suite Recevabilité"),
-    FL_CT_E_AIP_08("Validation pour signature"),
-    FL_CT_E_AIP_09("Retour à la recevabilité"),
-    FL_CT_E_AIP_10("Signature du dossier d'inspection"),
-    FL_CT_E_AIP_12("Réponse CI Suite recevabilité"),
+    FL_CT_E_PVI_AIP_01("Reception du dossier d'inspection"),
+//    FL_CT_E_AIP_07("Complément d''informations Suite Recevabilité"),
+//    FL_CT_E_AIP_08("Validation pour signature"),
+//    FL_CT_E_AIP_09("Retour à la recevabilité"),
+//    FL_CT_E_AIP_10("Signature du dossier d'inspection"),
+//    FL_CT_E_AIP_12("Réponse CI Suite recevabilité"),
     //
 
     /**
