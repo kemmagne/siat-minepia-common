@@ -8,10 +8,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -133,7 +136,13 @@ public class FileItem extends AbstractModel implements Serializable {
      */
     @OneToMany(mappedBy = "fileItem")
     private List<Recommandation> recommandationsList;
-
+        
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "DECLARATION_ITEM",
+             joinColumns = @JoinColumn(name = "DECLARATION_ID"),
+             inverseJoinColumns = @JoinColumn(name = "FILEITEM_ID"))
+    private List<AdditionnalDeclaration> additionnalDeclarations;
+    
     /**
      * The draft.
      */
@@ -648,6 +657,14 @@ public class FileItem extends AbstractModel implements Serializable {
         return numEbmsMessagePaiement;
     }
 
+    public List<AdditionnalDeclaration> getAdditionnalDeclarations() {
+        return additionnalDeclarations;
+    }
+
+    public void setAdditionnalDeclarations(List<AdditionnalDeclaration> additionnalDeclarations) {
+        this.additionnalDeclarations = additionnalDeclarations;
+    }
+    
     /**
      * Sets the num ebms message paiement.
      *

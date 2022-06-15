@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -284,6 +285,8 @@ public class File extends AbstractModel implements Serializable {
     private boolean ephytoMessage;
     @Transient
     private String ephytoEnv;
+    @Transient
+    private String stepCode;
 
     /**
      * Gets the id.
@@ -1022,10 +1025,15 @@ public class File extends AbstractModel implements Serializable {
         }
     }
 
-//    @PostLoad
+    @PostLoad
     private void postLoad() {
         if (CollectionUtils.isNotEmpty(getFileItemsList())) {
             setStep(getFileItemsList().get(0).getStep());
+            if (this.step != null && this.step.getStepCode() != null) {
+                setStepCode(this.step.getStepCode().name());
+            }else{
+                setStepCode("");
+            }
         }
     }
 
@@ -1043,5 +1051,13 @@ public class File extends AbstractModel implements Serializable {
 
     public void setEphytoEnv(String ephytoEnv) {
         this.ephytoEnv = ephytoEnv;
+    }
+
+    public String getStepCode() {
+        return stepCode;
+    }
+
+    public void setStepCode(String stepCode) {
+        this.stepCode = stepCode;
     }
 }
