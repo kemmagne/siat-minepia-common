@@ -23,6 +23,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -39,10 +41,10 @@ public class AdditionnalDeclaration extends AbstractModel implements Serializabl
     @SequenceGenerator(name = "DECLARATION_ADD_SEQ", sequenceName = "DECLARATION_ADD_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(name="REFERENCE" , length = 255)
+    @Column(name = "REFERENCE", length = 255)
     private String reference;
-    
-    @Column(name = "DECLARATION" , length = 1000)
+
+    @Column(name = "DECLARATION", length = 1000)
     private String declaration;
 
     @ManyToMany
@@ -96,15 +98,27 @@ public class AdditionnalDeclaration extends AbstractModel implements Serializabl
         this.fileItems = fileItems;
     }
 
+    public String getItem() {
+        List<String> hsCode = new ArrayList<>();
+        if (fileItemIds != null && !fileItemIds.isEmpty()) {
+            for (String fileItemId : fileItemIds) {
+                hsCode.add(fileItemId.split("-")[1]);
+            }
+        }
+        return String.join(" ", hsCode);
+    }
+
     @PrePersist
     public void beforePersist() {
         if (this.fileItems == null) {
             this.fileItems = new ArrayList<>();
         }
-        for (String fileItem : fileItemIds) {
-            FileItem item = new FileItem();
-            item.setId(Long.parseLong(fileItem));
-            this.fileItems.add(item);
+        if (fileItemIds != null) {
+            for (String fileItemId : fileItemIds) {
+                FileItem item = new FileItem();
+                item.setId(Long.parseLong(fileItemId.split("-")[0]));
+                this.fileItems.add(item);
+            }
         }
     }
 }
