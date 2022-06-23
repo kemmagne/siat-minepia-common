@@ -139,8 +139,8 @@ public class FileItem extends AbstractModel implements Serializable {
         
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "DECLARATION_ITEM",
-             joinColumns = @JoinColumn(name = "DECLARATION_ID"),
-             inverseJoinColumns = @JoinColumn(name = "FILEITEM_ID"))
+             joinColumns = @JoinColumn(name = "FILEITEM_ID"),
+             inverseJoinColumns = @JoinColumn(name = "DECLARATION_ID"))
     private List<AdditionnalDeclaration> additionnalDeclarations;
     
     /**

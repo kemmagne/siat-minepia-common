@@ -49,8 +49,8 @@ public class AdditionnalDeclaration extends AbstractModel implements Serializabl
 
     @ManyToMany
     @JoinTable(name = "DECLARATION_ITEM",
-            joinColumns = @JoinColumn(name = "FILEITEM_ID"),
-            inverseJoinColumns = @JoinColumn(name = "DECLARATION_ID"))
+            joinColumns = @JoinColumn(name = "DECLARATION_ID"),
+            inverseJoinColumns = @JoinColumn(name = "FILEITEM_ID"))
     private List<FileItem> fileItems;
 
     @Transient
