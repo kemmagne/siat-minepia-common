@@ -287,6 +287,8 @@ public class File extends AbstractModel implements Serializable {
     private String ephytoEnv;
     @Transient
     private String stepCode;
+    @Transient
+    private String fileName;
 
     /**
      * Gets the id.
@@ -1031,7 +1033,7 @@ public class File extends AbstractModel implements Serializable {
             setStep(getFileItemsList().get(0).getStep());
             if (this.step != null && this.step.getStepCode() != null) {
                 setStepCode(this.step.getStepCode().name());
-            }else{
+            } else {
                 setStepCode("");
             }
         }
@@ -1060,4 +1062,13 @@ public class File extends AbstractModel implements Serializable {
     public void setStepCode(String stepCode) {
         this.stepCode = stepCode;
     }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
 }
