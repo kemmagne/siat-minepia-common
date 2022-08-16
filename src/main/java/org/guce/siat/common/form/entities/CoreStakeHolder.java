@@ -44,15 +44,16 @@ public class CoreStakeHolder implements Serializable {
 
     @Column(name = "TAX_PAYER_NUMBER", length = 35)
     private String taxPayerNumber;
-    @Column(name = "NAME", length = 35)
 
+    @Column(name = "NAME", length = 35)
     private String name;
+
     @Column(name = "AORTIC", length = 255)
     private String aortic;
 
     @Embedded
     private CoreAddress address;
-    
+
     @AttributeOverrides({
         @AttributeOverride(name = "indicatif",
                 column = @Column(name = "PHONE_COUNTRY_CODE")),
@@ -61,7 +62,7 @@ public class CoreStakeHolder implements Serializable {
     })
     @Embedded
     private CorePhone phone;
-    
+
     @AttributeOverrides({
         @AttributeOverride(name = "indicatif",
                 column = @Column(name = "PHONE_MOBILE_COUNTRY_CODE")),
@@ -203,5 +204,33 @@ public class CoreStakeHolder implements Serializable {
     public String toString() {
         return "org.guce.core.entities.CoreEntity[ id=" + stakeholderId + " ]";
     }
+//
+//    public String getAddress1() {
+//        return this.address.getAddress1();
+//    }
+//
+//    public String getAddress2() {
+//        return this.address.getAddress2();
+//    }
+//
+//    public String getAddressBp() {
+//        return this.address.getPostofficebox();
+//    }
+//
+//    public String getAddressCodePays() {
+//        return this.address.getCountry().getCountryIdAlpha2();
+//    }
+//
+//    public String getAddressNomPays() {
+//        return this.address.getCountry().getCountryName();
+//    }
+//
+//    public String getAddressVille() {
+//        return this.address.getCity();
+//    }
+//    
+//    public String get() {
+//        return this.address.getCity();
+//    }
 
 }

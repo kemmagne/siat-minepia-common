@@ -27,7 +27,7 @@ public class CoreGood implements Serializable {
     private Integer lineNumber;
 //    @ManyToOne
 //    private CoreProcessing coreProcessing;
-   //@Size(max = 1500)
+    //@Size(max = 1500)
     //@Column(name = "GOOD_CODE", length = 1500)
     private String goodCode;
 //    @JoinColumn(name = "GOOD_HS_CODE")
@@ -39,7 +39,7 @@ public class CoreGood implements Serializable {
     private BigDecimal quantite;
     //@Column(name = "GOOD_VOLUME", scale = 4)
     private BigDecimal volume;
-   //@Size(max = 35)
+    //@Size(max = 35)
     //@Column(name = "GOOD_PACKAGING_MODE", length = 35)
     private String modeEmballage;
     //@Column(name = "GOOD_CFA_VALUE")
@@ -53,10 +53,10 @@ public class CoreGood implements Serializable {
 //    @ManyToOne
     private String unit;
     //@Column(name = "GOOD_TRADE_NAME", length = 75)
-   //@Size(max = 75)
+    //@Size(max = 75)
     private String tradeName;
     //@Column(name = "GOOD_BRAND", length = 75)
-   //@Size(max = 75)
+    //@Size(max = 75)
     private String brand;
 //    @JoinColumn(name = "RECORD_ID", referencedColumnName = "RECORD_ID")
 //    @ManyToOne
@@ -68,7 +68,7 @@ public class CoreGood implements Serializable {
 //    private List<CoreContainer> conteneurs;
     //@Column(name = "GOOD_PACKAGE_COUNT")
     private Long packageCount;
-    
+
     //@Column(name = "AMM_CODE")
     private String ammCode;
 
@@ -188,9 +188,7 @@ public class CoreGood implements Serializable {
             return unit;
         }
         return null;
-    }  
-
-    
+    }
 
     public void setUnit(String unit) {
         this.unit = unit;
@@ -226,7 +224,6 @@ public class CoreGood implements Serializable {
 //    public void setRecordId(CoreRecord recordId) {
 //        this.recordId = recordId;
 //    }
-
     //@XmlTransient
     public String getBrand() {
         return brand;
@@ -244,10 +241,9 @@ public class CoreGood implements Serializable {
 //    public void setCoreProcessings(List<CoreProcessing> coreProcessings) {
 //        this.coreProcessings = coreProcessings;
 //    }
-
     //@XmlElementWrapper(name = "CONTENEURS")
     //@XmlElements(value = {
-        //@XmlElement(name = "CONTENEUR", type = CoreContainer.class)})
+    //@XmlElement(name = "CONTENEUR", type = CoreContainer.class)})
 //    public List<CoreContainer> getConteneurs() {
 //        return conteneurs;
 //    }
@@ -255,7 +251,6 @@ public class CoreGood implements Serializable {
 //    public void setConteneurs(List<CoreContainer> conteneurs) {
 //        this.conteneurs = conteneurs;
 //    }
-
     //@XmlElement(name = "LINE_NUMBER")
     public Integer getLineNumber() {
         return lineNumber;
@@ -280,7 +275,6 @@ public class CoreGood implements Serializable {
 //    public void setCoreProcessing(CoreProcessing coreProcessing) {
 //        this.coreProcessing = coreProcessing;
 //    }
-
     //@XmlTransient
     public String getID() {
         return ID;
@@ -323,5 +317,4 @@ public class CoreGood implements Serializable {
         return true;
     }
 
-    
 }

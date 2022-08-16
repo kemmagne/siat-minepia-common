@@ -39,4 +39,7 @@ public enum GoodsType {
         return allNames;
     }
 
+    public static List<String> getAirPortProduct() {
+        return new ArrayList<>(Arrays.asList(GoodsType.AUTRES.name(), GoodsType.PLANTES_MEDICINALES.name()));
+    }
 }

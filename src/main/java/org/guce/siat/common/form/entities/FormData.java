@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.guce.siat.common.model.Country;
-import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.Port;
 import org.guce.siat.common.model.TransportMode;
 
@@ -25,10 +24,13 @@ public class FormData implements Serializable {
     private Country destCountry;
     private TransportMode transportMode;
     private Port clearingPlace;
-    private List<FileItem> goodList;
+    private List<CoreGood> goodList;
     private String conditionnement;
+    private String typeProduit;
 
     public FormData() {
+        this.origin = new Country();
+        this.origin.setCountryIdAlpha2("CM");
         this.consignee = new CoreStakeHolder();
         this.exporter = new CoreStakeHolder();
         this.goodList = new ArrayList<>();
@@ -82,11 +84,11 @@ public class FormData implements Serializable {
         this.clearingPlace = clearingPlace;
     }
 
-    public List<FileItem> getGoodList() {
+    public List<CoreGood> getGoodList() {
         return goodList;
     }
 
-    public void setGoodList(List<FileItem> goodList) {
+    public void setGoodList(List<CoreGood> goodList) {
         this.goodList = goodList;
     }
 
@@ -98,4 +100,16 @@ public class FormData implements Serializable {
         this.conditionnement = conditionnement;
     }
 
+    public String getTypeProduit() {
+        return typeProduit;
+    }
+
+    public void setTypeProduit(String typeProduit) {
+        this.typeProduit = typeProduit;
+    }
+
+    @Override
+    public String toString() {
+        return "FormData{" + "origin=" + origin + ", consignee=" + consignee + ", exporter=" + exporter + ", destCountry=" + destCountry + ", transportMode=" + transportMode + ", clearingPlace=" + clearingPlace + ", goodList=" + goodList + ", conditionnement=" + conditionnement + '}';
+    }
 }
