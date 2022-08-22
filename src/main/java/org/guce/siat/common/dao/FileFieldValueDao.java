@@ -1,5 +1,6 @@
 package org.guce.siat.common.dao;
 
+import java.util.List;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileField;
 import org.guce.siat.common.model.FileFieldValue;
@@ -50,4 +51,5 @@ public interface FileFieldValueDao extends AbstractJpaDao<FileFieldValue> {
 
     FileFieldValue findValueByFileFieldAndFile(String fileFieldCode, FileTypeCode fileTypeCode, String numeroDemande);
 
+    List<FileFieldValue> findFileFieldValueByFile(final File file);
 }
