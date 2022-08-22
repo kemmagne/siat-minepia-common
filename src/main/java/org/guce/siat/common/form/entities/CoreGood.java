@@ -71,6 +71,12 @@ public class CoreGood implements Serializable {
 
     //@Column(name = "AMM_CODE")
     private String ammCode;
+    
+    private String declarationId;
+    
+    private String botanicName;
+    
+    private String commercialName;
 
     @Deprecated
     //@XmlTransient
@@ -317,4 +323,28 @@ public class CoreGood implements Serializable {
         return true;
     }
 
+    public String getDeclarationId() {
+        return declarationId;
+    }
+
+    public void setDeclarationId(String declarationId) {
+        this.declarationId = declarationId;
+    }
+
+    public String getBotanicName() {
+        return botanicName;
+    }
+
+    public void setBotanicName(String botanicName) {
+        this.botanicName = botanicName;
+    }
+
+    public String getCommercialName() {
+        return commercialName;
+    }
+
+    public void setCommercialName(String commercialName) {
+        this.commercialName = commercialName;
+    }
+    
 }

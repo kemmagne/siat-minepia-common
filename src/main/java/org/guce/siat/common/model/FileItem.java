@@ -136,13 +136,13 @@ public class FileItem extends AbstractModel implements Serializable {
      */
     @OneToMany(mappedBy = "fileItem")
     private List<Recommandation> recommandationsList;
-        
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "DECLARATION_ITEM",
-             joinColumns = @JoinColumn(name = "FILEITEM_ID"),
-             inverseJoinColumns = @JoinColumn(name = "DECLARATION_ID"))
+            joinColumns = @JoinColumn(name = "FILEITEM_ID"),
+            inverseJoinColumns = @JoinColumn(name = "DECLARATION_ID"))
     private List<AdditionnalDeclaration> additionnalDeclarations;
-    
+
     /**
      * The draft.
      */
@@ -184,6 +184,33 @@ public class FileItem extends AbstractModel implements Serializable {
      */
     @Transient
     private String redefinedLabelEn;
+
+    /**
+     * The botanic Name.
+     */
+    @Transient
+    private String botanicName;
+
+    /**
+     * The commercial Name.
+     */
+    @Transient
+    private String commercialName;
+
+    /**
+     * The redefined label en.
+     */
+    @Transient
+    private double weight;
+
+    @Transient
+    private String unit;
+
+    @Transient
+    private String typeProduct;
+
+    @Transient
+    private String codeBureau;
 
     /**
      * Instantiates a new file item.
@@ -508,7 +535,6 @@ public class FileItem extends AbstractModel implements Serializable {
 //        builder.append("]");
 //        return builder.toString();
 //    }
-
     /**
      * Gets the repeatablefile item field value list.
      *
@@ -664,7 +690,7 @@ public class FileItem extends AbstractModel implements Serializable {
     public void setAdditionnalDeclarations(List<AdditionnalDeclaration> additionnalDeclarations) {
         this.additionnalDeclarations = additionnalDeclarations;
     }
-    
+
     /**
      * Sets the num ebms message paiement.
      *
@@ -674,9 +700,57 @@ public class FileItem extends AbstractModel implements Serializable {
         this.numEbmsMessagePaiement = numEbmsMessagePaiement;
     }
 
+    public String getBotanicName() {
+        return botanicName;
+    }
+
+    public void setBotanicName(String botanicName) {
+        this.botanicName = botanicName;
+    }
+
+    public String getCommercialName() {
+        return commercialName;
+    }
+
+    public void setCommercialName(String commercialName) {
+        this.commercialName = commercialName;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
     @Override
     public String toString() {
         return "FileItem{" + "id=" + id + ", lineNumber=" + lineNumber + ", numEbmsMessage=" + numEbmsMessage + ", numEbmsMessageAnnulation=" + numEbmsMessageAnnulation + ", numEbmsMessagePaiement=" + numEbmsMessagePaiement + ", quantity=" + quantity + ", fobValue=" + fobValue + ", file=" + file + ", nsh=" + nsh + ", subfamily=" + subfamily + ", step=" + step + ", itemFlowsList=" + itemFlowsList + ", fileItemFieldValueList=" + fileItemFieldValueList + ", recommandationsList=" + recommandationsList + ", draft=" + draft + ", isFictive=" + isFictive + ", repeatablefileItemFieldValueList=" + repeatablefileItemFieldValueList + ", nonRepeatablefileFieldValueList=" + nonRepeatablefileFieldValueList + ", decisionType=" + decisionType + ", redefinedLabelFr=" + redefinedLabelFr + ", redefinedLabelEn=" + redefinedLabelEn + '}';
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getTypeProduct() {
+        return typeProduct;
+    }
+
+    public void setTypeProduct(String typeProduct) {
+        this.typeProduct = typeProduct;
+    }
+
+    public String getCodeBureau() {
+        return codeBureau;
+    }
+
+    public void setCodeBureau(String codeBureau) {
+        this.codeBureau = codeBureau;
     }
 
 }

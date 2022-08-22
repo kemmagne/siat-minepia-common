@@ -289,6 +289,8 @@ public class File extends AbstractModel implements Serializable {
     private String stepCode;
     @Transient
     private String fileName;
+    @Transient
+    private String codeBureau;
 
     /**
      * Gets the id.
@@ -1069,6 +1071,14 @@ public class File extends AbstractModel implements Serializable {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getCodeBureau() {
+        return codeBureau;
+    }
+
+    public void setCodeBureau(String codeBureau) {
+        this.codeBureau = codeBureau;
     }
 
 }
