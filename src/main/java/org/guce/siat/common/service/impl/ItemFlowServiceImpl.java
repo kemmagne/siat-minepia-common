@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.AppointmentDao;
 import org.guce.siat.common.dao.FileDao;
+import org.guce.siat.common.dao.FileFieldValueDao;
 import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.dao.FlowDao;
 import org.guce.siat.common.dao.ItemFlowDao;
@@ -18,6 +19,7 @@ import org.guce.siat.common.dao.ParamsDao;
 import org.guce.siat.common.dao.StepDao;
 import org.guce.siat.common.dao.UserDao;
 import org.guce.siat.common.model.File;
+import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
@@ -28,6 +30,7 @@ import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.ItemFlowService;
 import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.enums.AperakType;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.common.utils.enums.StepCode;
 import org.slf4j.Logger;
@@ -98,6 +101,12 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
      */
     @Autowired
     private ParamsDao paramsDao;
+    
+    /**
+     * the fileFieldValueDao dao
+     */
+    @Autowired
+    private FileFieldValueDao fileFieldValueDao;
 
     /**
      * Instantiates a new item flow service impl.
@@ -261,6 +270,15 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
                 } else {
                     // If the executed flow is "Rejet Annulation" (FL_CT_63) --> his toStep is null so we must return the fileItem step to the last step before "Etude demande d'annulation"
                     step = findLastStepBeforeCancellingRequest(fItem);
+                }
+                //Recherche du mode de transport du dossier afin de savoir si c'est un dossier pour les procédure du transport aérien. Puis de l'orienter à la signature après validation à l'étape d'étude approfondie
+                FileFieldValue transportModeFfv = fileFieldValueDao.findValueByFileFieldAndFile("INFORMATIONS_GENERALES_TRANSPORT_MODE_TRANSPORT_CODE", file);
+                if (transportModeFfv != null && ("40".equals(transportModeFfv.getValue()) || "A".equals(transportModeFfv.getValue()))) {
+                    if (FileTypeCode.CCT_CT_E.equals(file.getFileType().getCode())) {
+                        if (decision != null && FlowCode.FL_CT_151.name().equals(decision.getCode())) {
+                            step = stepDao.findByStepCode(StepCode.ST_CT_31);
+                        }
+                    }
                 }
                 fItem.setStep(step);
 

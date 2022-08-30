@@ -61,7 +61,7 @@ public final class ConverterGuceSiatUtils {
 
         message.setNUMEROMESSAGE(IOUtils.generateMessageID());
         message.setDATEEMISSION(EbmsUtility.getCurrentUTCDateTime());
-        message.setNUMEROMESSAGEORIGINE(numMsgOrigine);
+        message.setNUMEROMESSAGEORIGINE(numMsgOrigine != null ? numMsgOrigine : StringUtils.EMPTY);
         message.setDATEEMISSIONMSGORIGINE(StringUtils.EMPTY);
         message.setETAT(StringUtils.EMPTY);
         message.setTYPEMESSAGE(StringUtils.EMPTY);

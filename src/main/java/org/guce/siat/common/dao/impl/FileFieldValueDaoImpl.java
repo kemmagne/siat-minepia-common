@@ -1,5 +1,6 @@
 package org.guce.siat.common.dao.impl;
 
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -151,6 +152,20 @@ public class FileFieldValueDaoImpl extends AbstractJpaDaoImpl<FileFieldValue> im
             return null;
         }
 
+    }
+
+    @Override
+    public List<FileFieldValue> findFileFieldValueByFile(File file) {
+        try {
+            final String hqlString = "FROM FileFieldValue f WHERE f.primaryKey.file.id = :fileId ";
+            final TypedQuery<FileFieldValue> query = super.entityManager.createQuery(hqlString, FileFieldValue.class);
+            query.setParameter("fileId", file.getId());
+            return query.getResultList();
+
+        } catch (final NoResultException | NonUniqueResultException e) {
+            LOG.info(Objects.toString(e));
+            return null;
+        }
     }
 
 }
