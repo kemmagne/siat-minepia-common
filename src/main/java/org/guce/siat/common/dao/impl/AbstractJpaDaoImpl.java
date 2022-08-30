@@ -1,17 +1,22 @@
 package org.guce.siat.common.dao.impl;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
+import org.guce.siat.common.dao.Pageable;
 import org.guce.siat.common.model.Params;
 import org.guce.siat.common.utils.Constants;
+import org.guce.siat.common.utils.RequestPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -227,4 +232,185 @@ public abstract class AbstractJpaDaoImpl<T extends Serializable> implements Abst
         this.entityManager.clear();
     }
 
+    @Override
+    public int count() {
+
+        CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = qb.createQuery(Long.class);
+        cq.select(qb.count(cq.from(getClasse())));
+        Long singleResult = entityManager.createQuery(cq).getSingleResult();
+        return singleResult.intValue();
+    }
+
+    @Override
+    public List<T> findPage(RequestPage requestPage) {
+        final int page = requestPage.getPage();
+        final int pageSize = requestPage.getPageSize();
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery(getClasse());
+        Root<Params> root = cq.from(getClasse());
+        return entityManager.createQuery(cq.select(root))
+                .setFirstResult((page - 1) * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+
+    }
+
+    @Override
+    public List<T> paginate(Map<String, ? extends Object> filters, String sortField, String sortOrder, int first, int limit, int matchMode, Map<String, Integer> matchModes) {
+        StringBuilder sb = new StringBuilder();
+        String s = "SELECT ent FROM " + this.classe.getSimpleName() + " ent ";
+        sb.append(s);
+
+        Query query = this.buildQuery("ent", sb, filters, sortField, sortOrder, first, limit, matchMode, matchModes);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public int paginateCount(Map<String, ? extends Object> filters, int matchMode, Map<String, Integer> matchModes) {
+        StringBuilder sb = new StringBuilder();
+        String s = "SELECT COUNT(ent) FROM " + this.classe.getSimpleName() + " ent ";
+        sb.append(s);
+        Query query = this.buildQuery("ent", sb, filters, null, null, null, null, matchMode, matchModes);
+        return ((Long) query.getSingleResult()).intValue();
+    }
+
+    public Query buildQuery(String filtersPrefix, StringBuilder query, Map<String, ? extends Object> filters, String sortField, String sortOrder, Integer first, Integer limit, int matchMode, Map<String, Integer> matchModes) {
+        String s;
+        if (filters.size() > 0) {
+            if (!query.toString().toLowerCase().contains("where")) {
+                query.append(" WHERE 1=1 ");
+            }
+        }
+        int i = 0;
+        for (Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
+            i++;
+            String filterProperty = it.next();
+            int match = matchMode;
+            if (matchModes != null) {
+                Integer val = matchModes.get(filterProperty);
+                if (val != null) {
+                    match = val;
+                }
+            }
+            int index = filterProperty.indexOf("##");
+            if (index != -1) {
+                filterProperty = filterProperty.substring(0, index);
+            }
+            if (filtersPrefix != null) {
+                filterProperty = filtersPrefix + "." + filterProperty;
+            }
+            switch (match) {
+                case Pageable.MATCH_MODE_CONTAINS:
+                case Pageable.MATCH_MODE_END_WITH:
+                case Pageable.MATCH_MODE_START_WITH:
+                    s = " AND UPPER(" + filterProperty + ") LIKE :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_NOT_CONTAINS:
+                case Pageable.MATCH_MODE_NOT_END_WITH:
+                case Pageable.MATCH_MODE_NOT_START_WITH:
+                    s = " AND UPPER(" + filterProperty + ") NOT LIKE :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_EQUAL:
+                    s = " AND " + filterProperty + " = :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_NOT_EQUAL:
+                    s = " AND " + filterProperty + " != :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_LESS_THAN:
+                    s = " AND " + filterProperty + " < :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_MORE_THAN:
+                    s = " AND " + filterProperty + " > :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_LESS_OR_EQUAL_THAN:
+                    s = " AND " + filterProperty + " <= :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_MORE_OR_EQUAL_THAN:
+                    s = " AND " + filterProperty + " >= :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_IN:
+                    s = " AND " + filterProperty + " IN :param" + i + " ";
+                    break;
+                case Pageable.MATCH_MODE_NOT_IN:
+                    s = " AND " + filterProperty + " NOT IN :param" + i + " ";
+                    break;
+                default:
+                    s = " AND UPPER " + filterProperty + " = :param" + i + " ";
+                    break;
+            }
+            query.append(s);
+        }
+        //sort
+        if (sortField != null && !sortField.trim().isEmpty()) {
+            String sortField0 = sortField;
+            if (filtersPrefix != null) {
+                sortField0 = filtersPrefix + "." + sortField0;
+            }
+            String sort = "";
+            //System.out.println("Sort : "+sortOrder);
+            if (sortOrder != null) {
+                if (sortOrder.equalsIgnoreCase("ASC") || sortOrder.equalsIgnoreCase("DESC")) {
+                    sort = sortOrder;
+                }
+            }
+            //System.out.println("Sort : "+sort);
+            s = " ORDER BY " + sortField0 + " " + sort;
+            query.append(s);
+        }
+        Query q = this.getEntityManager().createQuery(query.toString());
+        //System.out.println("query "+query);
+        //System.out.println("query 2 "+sb.toString());
+        if (limit != null && limit > 0) {
+            q.setMaxResults(limit + first);
+        }
+        if (first != null && first >= 0) {
+            q.setFirstResult(first);
+        }
+        i = 0;
+        for (Iterator<String> it = filters.keySet().iterator(); it.hasNext();) {
+            i++;
+            String filterProperty = it.next();
+            Object filterValue = filters.get(filterProperty);
+            Object value;
+            int match = matchMode;
+            if (matchModes != null) {
+                Integer val = matchModes.get(filterProperty);
+                if (val != null) {
+                    match = val;
+                }
+            }
+            switch (match) {
+                case Pageable.MATCH_MODE_START_WITH:
+                    value = "" + filterValue.toString().toUpperCase() + "%";
+                    break;
+                case Pageable.MATCH_MODE_END_WITH:
+                    value = "%" + filterValue.toString().toUpperCase() + "";
+                    break;
+                case Pageable.MATCH_MODE_CONTAINS:
+                    value = "%" + filterValue.toString().toUpperCase() + "%";
+                    break;
+                case Pageable.MATCH_MODE_NOT_START_WITH:
+                    value = "" + filterValue.toString().toUpperCase() + "%";
+                    break;
+                case Pageable.MATCH_MODE_NOT_END_WITH:
+                    value = "%" + filterValue.toString().toUpperCase() + "";
+                    break;
+                case Pageable.MATCH_MODE_NOT_CONTAINS:
+                    value = "%" + filterValue.toString().toUpperCase() + "%";
+                    break;
+                case Pageable.MATCH_MODE_EQUAL:
+                    value = filterValue;
+                    break;
+                default:
+                    value = filterValue;
+                    break;
+            }
+            String param = "param" + i;
+            q.setParameter(param, value);
+        }
+        return q;
+    }
 }

@@ -24,6 +24,7 @@ public class FormData implements Serializable {
     private Country destCountry;
     private TransportMode transportMode;
     private Port clearingPlace;
+    private Port loadingPlace;
     private List<CoreGood> goodList;
     private String conditionnement;
     private String typeProduit;
@@ -112,4 +113,14 @@ public class FormData implements Serializable {
     public String toString() {
         return "FormData{" + "origin=" + origin + ", consignee=" + consignee + ", exporter=" + exporter + ", destCountry=" + destCountry + ", transportMode=" + transportMode + ", clearingPlace=" + clearingPlace + ", goodList=" + goodList + ", conditionnement=" + conditionnement + '}';
     }
+
+    public Port getLoadingPlace() {
+        return loadingPlace;
+    }
+
+    public void setLoadingPlace(Port loadingPlace) {
+        this.loadingPlace = loadingPlace;
+    }
+    
+    
 }

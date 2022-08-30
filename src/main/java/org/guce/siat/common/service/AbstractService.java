@@ -2,13 +2,15 @@ package org.guce.siat.common.service;
 
 import java.io.Serializable;
 import java.util.List;
+import org.guce.siat.common.dao.Pageable;
+import org.guce.siat.common.utils.RequestPage;
 
 /**
  * The Interface AbstractService.
  *
  * @param <T> the generic type
  */
-public interface AbstractService<T extends Serializable> {
+public interface AbstractService<T extends Serializable> extends Pageable<T> {
 
     /**
      * Find.
@@ -47,8 +49,7 @@ public interface AbstractService<T extends Serializable> {
      * @return the t
      */
     T save(final T entity);
-    
-    
+
     /**
      * Save.
      *
@@ -100,4 +101,17 @@ public interface AbstractService<T extends Serializable> {
      * @param entitiesList the entities list
      */
     void deleteList(final List<T> entitiesList);
+
+    /**
+     * Count list.
+     *
+     * @return
+     */
+    int count();
+
+    /**
+     * @param requestPage
+     * @return
+     */
+    List<T> findPage(RequestPage requestPage);
 }
