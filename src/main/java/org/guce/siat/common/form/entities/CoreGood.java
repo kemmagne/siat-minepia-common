@@ -8,6 +8,7 @@ package org.guce.siat.common.form.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import org.guce.siat.common.model.Declaration;
 import org.guce.siat.common.model.Item;
 
 //@Entity
@@ -73,6 +74,8 @@ public class CoreGood implements Serializable {
     private String ammCode;
     
     private String declarationId;
+    
+    private Declaration declaration;
     
     private String botanicName;
     
@@ -346,5 +349,13 @@ public class CoreGood implements Serializable {
     public void setCommercialName(String commercialName) {
         this.commercialName = commercialName;
     }
-    
+
+    public Declaration getDeclaration() {
+        return declaration;
+    }
+
+    public void setDeclaration(Declaration declaration) {
+        this.declaration = declaration;
+    }
+   
 }

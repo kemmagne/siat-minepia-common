@@ -137,7 +137,7 @@ public class FileItem extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "fileItem")
     private List<Recommandation> recommandationsList;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "DECLARATION_ITEM",
             joinColumns = @JoinColumn(name = "FILEITEM_ID"),
             inverseJoinColumns = @JoinColumn(name = "DECLARATION_ID"))
