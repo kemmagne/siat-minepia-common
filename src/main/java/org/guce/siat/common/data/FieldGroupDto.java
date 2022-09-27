@@ -14,7 +14,7 @@ import org.guce.siat.common.utils.Tab;
  *           the generic type
  */
 public class FieldGroupDto<T>
-{
+{   
 
 	/** The label fr. */
 	private String labelFr;
@@ -24,6 +24,9 @@ public class FieldGroupDto<T>
 
 	/** The field values. */
 	private List<T> fieldValues;
+
+	/** The field values. */
+//	private List<T> wrappedFieldValues;
 
 	private List<Tab> tabs;
 
@@ -110,4 +113,14 @@ public class FieldGroupDto<T>
 	{
 		this.fieldValues = fieldValues;
 	}
+//
+//    public List<T> getWrappedFieldValues() {
+//        return wrappedFieldValues;
+//    }
+//
+//    public void setWrappedFieldValues(final List<T> wrappedFieldValues) {
+//        this.wrappedFieldValues = wrappedFieldValues;
+//    }
+        
+        
 }

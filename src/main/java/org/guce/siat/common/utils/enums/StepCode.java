@@ -6,6 +6,7 @@ package org.guce.siat.common.utils.enums;
 public enum StepCode {
 
     // CCT Step Code
+    ST_CT_EPHYTO("Consultation des phyto recu depuis la plateForm"),
     /**
      * The S t_ c t_01.
      */
@@ -310,6 +311,7 @@ public enum StepCode {
     ST_AP_64("Paiement"),
     ST_AP_65("Paiement"),
     ST_AP_VT1_01("Signature Modification du visa techique"),
+    ST_AP_AIM_01("Signature Modification de l'autorisation d'importation"),
     // CO Step Code
     /**
      * The S t_ c o_42.
@@ -797,6 +799,12 @@ public enum StepCode {
      */
     ST_CT_50("Retour du dossier pour réorientation"),
     ST_CT_CVS_02("Vérification suite validation");
+    
+    /**
+     * Steps for Airport CTE and PVI
+     */
+//    ST_CT_E_AIP_01("Admissibility - Airport phytosanitary certificate request"),
+//    ST_CT_E_AIP_02("Signature - Airport phytosanitary certificate request");
 
     /**
      * The label.

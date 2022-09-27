@@ -21,7 +21,9 @@ public enum AuthorityType {
     /**
      * The supervision.
      */
-    SUPERVISION("Supervision");
+    SUPERVISION("Supervision"),
+    
+    UPDATEFILE("Modification Dosiier");
 
     /**
      * The label.

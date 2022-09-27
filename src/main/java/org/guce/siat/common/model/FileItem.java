@@ -8,10 +8,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -134,6 +137,12 @@ public class FileItem extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "fileItem")
     private List<Recommandation> recommandationsList;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "DECLARATION_ITEM",
+            joinColumns = @JoinColumn(name = "FILEITEM_ID"),
+            inverseJoinColumns = @JoinColumn(name = "DECLARATION_ID"))
+    private List<AdditionnalDeclaration> additionnalDeclarations;
+
     /**
      * The draft.
      */
@@ -175,6 +184,33 @@ public class FileItem extends AbstractModel implements Serializable {
      */
     @Transient
     private String redefinedLabelEn;
+
+    /**
+     * The botanic Name.
+     */
+    @Transient
+    private String botanicName;
+
+    /**
+     * The commercial Name.
+     */
+    @Transient
+    private String commercialName;
+
+    /**
+     * The redefined label en.
+     */
+    @Transient
+    private double weight;
+
+    @Transient
+    private String unit;
+
+    @Transient
+    private String typeProduct;
+
+    @Transient
+    private String codeBureau;
 
     /**
      * Instantiates a new file item.
@@ -477,29 +513,28 @@ public class FileItem extends AbstractModel implements Serializable {
 	 *
 	 * @see java.lang.Object#toString()
      */
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("FileItem [id=");
-        builder.append(id);
-        builder.append(", lineNumber=");
-        builder.append(lineNumber);
-        builder.append(", numEbmsMessage=");
-        builder.append(numEbmsMessage);
-        builder.append(", file=");
-        builder.append(file);
-        builder.append(", nsh=");
-        builder.append(nsh);
-        builder.append(", subfamily=");
-        builder.append(subfamily);
-        builder.append(", step=");
-        builder.append(step);
-        builder.append(", draft=");
-        builder.append(draft);
-        builder.append("]");
-        return builder.toString();
-    }
-
+//    @Override
+//    public String toString() {
+//        final StringBuilder builder = new StringBuilder();
+//        builder.append("FileItem [id=");
+//        builder.append(id);
+//        builder.append(", lineNumber=");
+//        builder.append(lineNumber);
+//        builder.append(", numEbmsMessage=");
+//        builder.append(numEbmsMessage);
+//        builder.append(", file=");
+//        builder.append(file);
+//        builder.append(", nsh=");
+//        builder.append(nsh);
+//        builder.append(", subfamily=");
+//        builder.append(subfamily);
+//        builder.append(", step=");
+//        builder.append(step);
+//        builder.append(", draft=");
+//        builder.append(draft);
+//        builder.append("]");
+//        return builder.toString();
+//    }
     /**
      * Gets the repeatablefile item field value list.
      *
@@ -648,6 +683,14 @@ public class FileItem extends AbstractModel implements Serializable {
         return numEbmsMessagePaiement;
     }
 
+    public List<AdditionnalDeclaration> getAdditionnalDeclarations() {
+        return additionnalDeclarations;
+    }
+
+    public void setAdditionnalDeclarations(List<AdditionnalDeclaration> additionnalDeclarations) {
+        this.additionnalDeclarations = additionnalDeclarations;
+    }
+
     /**
      * Sets the num ebms message paiement.
      *
@@ -655,6 +698,59 @@ public class FileItem extends AbstractModel implements Serializable {
      */
     public void setNumEbmsMessagePaiement(final String numEbmsMessagePaiement) {
         this.numEbmsMessagePaiement = numEbmsMessagePaiement;
+    }
+
+    public String getBotanicName() {
+        return botanicName;
+    }
+
+    public void setBotanicName(String botanicName) {
+        this.botanicName = botanicName;
+    }
+
+    public String getCommercialName() {
+        return commercialName;
+    }
+
+    public void setCommercialName(String commercialName) {
+        this.commercialName = commercialName;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "FileItem{" + "id=" + id + ", lineNumber=" + lineNumber + ", numEbmsMessage=" + numEbmsMessage + ", numEbmsMessageAnnulation=" + numEbmsMessageAnnulation + ", numEbmsMessagePaiement=" + numEbmsMessagePaiement + ", quantity=" + quantity + ", fobValue=" + fobValue + ", file=" + file + ", nsh=" + nsh + ", subfamily=" + subfamily + ", step=" + step + ", itemFlowsList=" + itemFlowsList + ", fileItemFieldValueList=" + fileItemFieldValueList + ", recommandationsList=" + recommandationsList + ", draft=" + draft + ", isFictive=" + isFictive + ", repeatablefileItemFieldValueList=" + repeatablefileItemFieldValueList + ", nonRepeatablefileFieldValueList=" + nonRepeatablefileFieldValueList + ", decisionType=" + decisionType + ", redefinedLabelFr=" + redefinedLabelFr + ", redefinedLabelEn=" + redefinedLabelEn + '}';
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getTypeProduct() {
+        return typeProduct;
+    }
+
+    public void setTypeProduct(String typeProduct) {
+        this.typeProduct = typeProduct;
+    }
+
+    public String getCodeBureau() {
+        return codeBureau;
+    }
+
+    public void setCodeBureau(String codeBureau) {
+        this.codeBureau = codeBureau;
     }
 
 }

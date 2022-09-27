@@ -47,7 +47,12 @@ public class CompanyDaoImpl extends AbstractJpaDaoImpl<Company> implements Compa
             String hqlString = "SELECT c FROM Company c WHERE c.numContribuable = :numContribuable ORDER BY c.id DESC";
             TypedQuery<Company> query = super.entityManager.createQuery(hqlString, Company.class);
             query.setParameter("numContribuable", numContribuable);
-            return query.getSingleResult();
+            List<Company> list = query.getResultList();
+            if (list.isEmpty()) {
+                return null;
+            } else {
+                return list.get(0);
+            }
         } catch (NoResultException | NonUniqueResultException e) {
             logger.error("Error to get Company with num contribuable : {} --- Détails : {}", numContribuable, Objects.toString(e));
             return null;
@@ -69,7 +74,6 @@ public class CompanyDaoImpl extends AbstractJpaDaoImpl<Company> implements Compa
         return companies;
     }
 
-    
     @Override
     public List<Pair> findCompaniesByNumeroContribuableOrCompanyName(String searchQuery) {
 

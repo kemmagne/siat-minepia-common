@@ -307,4 +307,9 @@ public class FileField extends AbstractModel implements Serializable {
         return true;
     }
 
+//    @Override
+//    public String toString() {
+//        return "FileField{" + "id=" + id + ", code=" + code + ", labelFr=" + labelFr + ", labelEn=" + labelEn + ", repeatable=" + repeatable + ", fileType=" + fileType + ", group=" + group + ", updatable=" + updatable + ", hidden=" + hidden + '}';
+//    }
+
 }

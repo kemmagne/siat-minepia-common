@@ -18,4 +18,6 @@ public interface BureauService extends AbstractService<Bureau> {
      * @return the list
      */
     List<Bureau> findBureauByTypeAndOrganism(BureauType type, Organism organism);
+    
+    List<Bureau> findBureauByOrganism(final Organism organism); 
 }

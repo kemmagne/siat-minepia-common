@@ -141,5 +141,7 @@ public interface FlowService extends AbstractService<Flow> {
      * @return the flow
      */
     Flow findCiResponseFlow(String flowSiatCode);
+    
+    List<Flow> findFlowsByToStepAndFileType(final Step step, final FileType fileType);
 
 }
