@@ -137,11 +137,11 @@ public class FileItem extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "fileItem")
     private List<Recommandation> recommandationsList;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "DECLARATION_ITEM",
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "FILE_ITEM_DECLARATION",
             joinColumns = @JoinColumn(name = "FILEITEM_ID"),
             inverseJoinColumns = @JoinColumn(name = "DECLARATION_ID"))
-    private List<AdditionnalDeclaration> additionnalDeclarations;
+    private List<Declaration> additionnalDeclarations;
 
     /**
      * The draft.
@@ -683,11 +683,11 @@ public class FileItem extends AbstractModel implements Serializable {
         return numEbmsMessagePaiement;
     }
 
-    public List<AdditionnalDeclaration> getAdditionnalDeclarations() {
+    public List<Declaration> getAdditionnalDeclarations() {
         return additionnalDeclarations;
     }
 
-    public void setAdditionnalDeclarations(List<AdditionnalDeclaration> additionnalDeclarations) {
+    public void setAdditionnalDeclarations(List<Declaration> additionnalDeclarations) {
         this.additionnalDeclarations = additionnalDeclarations;
     }
 
