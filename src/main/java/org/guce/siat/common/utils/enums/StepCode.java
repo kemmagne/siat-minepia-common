@@ -312,6 +312,24 @@ public enum StepCode {
     ST_AP_65("Paiement"),
     ST_AP_VT1_01("Signature Modification du visa techique"),
     ST_AP_AIM_01("Signature Modification de l'autorisation d'importation"),
+    
+    //Etapes de la procédure permis d'importation
+    /* Etape de recevabilité */
+    ST_AP_PIM_01("Recevabilité"),
+    /* Etape d'étude approfondie */
+    ST_AP_PIM_02("Etude approfondie"),
+    /* Etape visa 1 */
+    ST_AP_PIM_03("Visa 1"),
+    /* Etape visa 1 */
+    ST_AP_PIM_04("Visa 2"),
+    /* Etape visa 1 */
+    ST_AP_PIM_05("Signature"),
+    /* Etape signature annulation  */
+    ST_AP_PIM_06("Signature Annulation"),
+    /* Etape signature prorogation*/
+    ST_AP_PIM_07("Signature Prorogation"),
+    /* Etape signature modification*/
+    ST_AP_PIM_08("Signature Modification"),
     // CO Step Code
     /**
      * The S t_ c o_42.
