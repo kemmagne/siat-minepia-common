@@ -14,7 +14,7 @@ public enum StepCode {
     /**
      * The S t_ c t_02.
      */
-    ST_CT_02("Etude de recevabilitÃ© suite demande d'inspection"),
+    ST_CT_02("Etude de recevabilité suite demande d'inspection"),
     /**
      * The S t_ c t_03.
      */
@@ -22,7 +22,7 @@ public enum StepCode {
     /**
      * The S t_ c t_04.
      */
-    ST_CT_04("Ã‰tude Approfondie"),
+    ST_CT_04("Étude Approfondie"),
     /**
      * The S t_ c t_05.
      */
@@ -38,27 +38,27 @@ public enum StepCode {
     /**
      * The S t_ c t_08.
      */
-    ST_CT_08("Demande de Confirmation RDV Visite Ã  quai"),
+    ST_CT_08("Demande de Confirmation RDV Visite à quai"),
     /**
      * The S t_ c t_09.
      */
-    ST_CT_09("Demande de RÃ©gularisation"),
+    ST_CT_09("Demande de Régularisation"),
     /**
      * The S t_ c t_10.
      */
-    ST_CT_10("Etude de recevabilitÃ© suite Demande RDV Visite"),
+    ST_CT_10("Etude de recevabilité suite Demande RDV Visite"),
     /**
      * The S t_ c t_11.
      */
-    ST_CT_11("Affectation RDV Chez DÃ©clarant"),
+    ST_CT_11("Affectation RDV Chez Déclarant"),
     /**
      * The S t_ c t_12.
      */
-    ST_CT_12("Inspection et PrÃ©lÃ¨vement Chez DÃ©clarant"),
+    ST_CT_12("Inspection et Prélèvement Chez Déclarant"),
     /**
      * The S t_ c t_13.
      */
-    ST_CT_13("DÃ©cision Suite ContÃ´le"),
+    ST_CT_13("Décision Suite Contôle"),
     /**
      * The S t_ c t_14.
      */
@@ -70,39 +70,39 @@ public enum StepCode {
     /**
      * The S t_ c t_16.
      */
-    ST_CT_16("Etude de recevabilitÃ© suite Confirmation Visite Ã  Quai"),
+    ST_CT_16("Etude de recevabilité suite Confirmation Visite à Quai"),
     /**
      * The S t_ c t_17.
      */
-    ST_CT_17("Affectation RDV Visite Ã  Quai"),
+    ST_CT_17("Affectation RDV Visite à Quai"),
     /**
      * The S t_ c t_18.
      */
-    ST_CT_18("Confirmation RDV Visite Ã  Quai"),
+    ST_CT_18("Confirmation RDV Visite à Quai"),
     /**
      * The S t_ c t_19.
      */
-    ST_CT_19("Inspection et PrÃ©lÃ¨vement Ã  Quai"),
+    ST_CT_19("Inspection et Prélèvement à Quai"),
     /**
      * The S t_ c t_20.
      */
-    ST_CT_20("Etude de recevabilitÃ© suite RÃ©gularisation"),
+    ST_CT_20("Etude de recevabilité suite Régularisation"),
     /**
      * The S t_ c t_21.
      */
-    ST_CT_21("Demande de RÃ©examen"),
+    ST_CT_21("Demande de Réexamen"),
     /**
      * The S t_ c t_22.
      */
-    ST_CT_22("Etude de recevabilitÃ© suite Demande de RÃ©examen"),
+    ST_CT_22("Etude de recevabilité suite Demande de Réexamen"),
     /**
      * The S t_ c t_23.
      */
-    ST_CT_23("Confirmation de DÃ©struction"),
+    ST_CT_23("Confirmation de Déstruction"),
     /**
      * The S t_ c t_24.
      */
-    ST_CT_24("Etude de recevabilitÃ© suite Confirmation de DÃ©struction"),
+    ST_CT_24("Etude de recevabilité suite Confirmation de Déstruction"),
     /**
      * The S t_ c t_25.
      */
@@ -138,11 +138,11 @@ public enum StepCode {
     /**
      * The S t_ c t_34.
      */
-    ST_CT_34("Signature Suite MEC (RÃ©gularisation)"),
+    ST_CT_34("Signature Suite MEC (Régularisation)"),
     /**
      * The S t_ c t_35.
      */
-    ST_CT_35("Signature Suite Visite Ã  Quai"),
+    ST_CT_35("Signature Suite Visite à Quai"),
     /**
      * The S t_ c t_36.
      */
@@ -180,16 +180,16 @@ public enum StepCode {
      * The S t_ c o_65.
      */
     ST_CT_43("Demande de Traitement"),
-    ST_CT_44("RecevabilitÃ© - Demande de Traitement"),
+    ST_CT_44("Recevabilité - Demande de Traitement"),
     ST_CT_45("Demande de supervision"),
-    ST_CT_46("RecevabilitÃ© - Demande de supervision"),
+    ST_CT_46("Recevabilité - Demande de supervision"),
     ST_CT_47("Cotation"),
     ST_CT_48("Confirmation RDV pour traitement"),
     //
     ST_CT_49("Confirmation RDV pour inspection"),
     //
     ST_CT_51("Demande de modification"),
-    ST_CT_52("RecevabilitÃ© - Demande de modification"),
+    ST_CT_52("Recevabilité - Demande de modification"),
     ST_CT_53("Cotation - Demande de modification"),
     ST_CT_54("Rejet demande de modification"),
     ST_CT_55("Traitement demande de modification"),
@@ -201,13 +201,13 @@ public enum StepCode {
      */
     ST_CT_57("Validation Facture"),
     //
-    ST_CT_58("DÃ©pot Dossier Empotage Suite Notification RDV"),
-    ST_CT_59("RecevabilitÃ© suite notification de RDV pour empotage"),
+    ST_CT_58("Dépot Dossier Empotage Suite Notification RDV"),
+    ST_CT_59("Recevabilité suite notification de RDV pour empotage"),
     ST_CT_60("Validation Facture"),
     ST_CT_61("Encaissement"),
     ST_CT_62("Cotation"),
-    ST_CT_63("Validation ProcÃ¨s Verbal Empotage"),
-    ST_CT_64("Signature ProcÃ¨s Verbal Empotage"),
+    ST_CT_63("Validation Procès Verbal Empotage"),
+    ST_CT_64("Signature Procès Verbal Empotage"),
     //
     ST_CT_65("Validation pour Signature"),
     ST_CT_66("Signature"),
@@ -220,7 +220,7 @@ public enum StepCode {
     /**
      * The S t_ a p_42.
      */
-    ST_AP_42("DÃ©pÃ´t Dossier AP"),
+    ST_AP_42("Dépôt Dossier AP"),
     /**
      * The S t_ a p_43.
      */
@@ -236,7 +236,7 @@ public enum StepCode {
     /**
      * The S t_ a p_46.
      */
-    ST_AP_46("RecevabilitÃ© AP"),
+    ST_AP_46("Recevabilité AP"),
     /**
      * The S t_ a p_47.
      */
@@ -314,10 +314,10 @@ public enum StepCode {
     ST_AP_AIM_01("Signature Modification de l'autorisation d'importation"),
     ST_AP_AIM_02("Signature Prorogation de l'autorisation d'importation"),
     
-    //Etapes de la procÃ©dure permis d'importation
-    /* Etape de recevabilitÃ© */
-    ST_AP_PIM_01("RecevabilitÃ©"),
-    /* Etape d'Ã©tude approfondie */
+    //Etapes de la procédure permis d'importation
+    /* Etape de recevabilité */
+    ST_AP_PIM_01("Recevabilité"),
+    /* Etape d'étude approfondie */
     ST_AP_PIM_02("Etude approfondie"),
     /* Etape visa 1 */
     ST_AP_PIM_03("Visa 1"),
@@ -332,11 +332,18 @@ public enum StepCode {
     /* Etape signature modification*/
     ST_AP_PIM_08("Signature Modification"),
 
+
+    ST_AP_VT2_01("Signature Modification du visa techique"),
+    ST_AP_VT2_02("Cotation"),
+    ST_AP_VT2_03("Etude approfondie"),
+    ST_AP_VT2_04("Etude approfondie Modification du visa techique"),
+
+
     // CO Step Code
     /**
      * The S t_ c o_42.
      */
-    ST_CO_42("DÃ©pÃ´t Dossier CO"),
+    ST_CO_42("Dépôt Dossier CO"),
     /**
      * The S t_ c o_43.
      */
@@ -352,7 +359,7 @@ public enum StepCode {
     /**
      * The S t_ c o_46.
      */
-    ST_CO_46("RecevabilitÃ© CO"),
+    ST_CO_46("Recevabilité CO"),
     /**
      * The S t_ c o_47.
      */
@@ -433,7 +440,7 @@ public enum StepCode {
     /**
      * The S t_ a m_42.
      */
-    ST_AM_42("DÃ©pÃ´t Dossier AM"),
+    ST_AM_42("Dépôt Dossier AM"),
     /**
      * The S t_ a m_43.
      */
@@ -449,7 +456,7 @@ public enum StepCode {
     /**
      * The S t_ a m_46.
      */
-    ST_AM_46("RecevabilitÃ© AM"),
+    ST_AM_46("Recevabilité AM"),
     /**
      * The S t_ a m_47.
      */
@@ -521,19 +528,19 @@ public enum StepCode {
     /**
      * The S t_ a m_64.
      */
-    ST_AM_64("Traitement ContrÃ´le"),
+    ST_AM_64("Traitement Contrôle"),
     /**
      * The S t_ a m_65.
      */
-    ST_AM_65("Demande DÃ©pÃ´t Manifeste"),
+    ST_AM_65("Demande Dépôt Manifeste"),
     /**
      * The S t_ a m_66.
      */
-    ST_AM_66("RecevabilitÃ© Manifest"),
+    ST_AM_66("Recevabilité Manifest"),
     /**
      * The S t_ f t_42.
      */
-    ST_FT_42("DÃ©pÃ´t Dossier FT"),
+    ST_FT_42("Dépôt Dossier FT"),
     /**
      * The S t_ f t_43.
      */
@@ -550,7 +557,7 @@ public enum StepCode {
     /**
      * The S t_ s f_42.
      */
-    ST_SF_42("DÃ©pÃ´t Dossier SF"),
+    ST_SF_42("Dépôt Dossier SF"),
     /**
      * The S t_ s f_43.
      */
@@ -566,7 +573,7 @@ public enum StepCode {
     /**
      * The S t_ s f_46.
      */
-    ST_SF_46("RecevabilitÃ© SF"),
+    ST_SF_46("Recevabilité SF"),
     /**
      * The S t_ s f_47.
      */
@@ -638,7 +645,7 @@ public enum StepCode {
     /**
      * The S t_ s f_64.
      */
-    ST_SF_64("Etude RecevabilitÃ© suite demande prorogation"),
+    ST_SF_64("Etude Recevabilité suite demande prorogation"),
     /**
      * The S t_ s f_65.
      */
@@ -646,11 +653,11 @@ public enum StepCode {
     /**
      * The S t_ s f_66.
      */
-    ST_SF_66("Signature suite Ã©tude demande de prorogation"),
+    ST_SF_66("Signature suite étude demande de prorogation"),
     /**
      * The S t_ s f_67.
      */
-    ST_SF_67("Etude RecevabilitÃ© suite demande de modification"),
+    ST_SF_67("Etude Recevabilité suite demande de modification"),
     /**
      * The S t_ s f_68.
      */
@@ -658,11 +665,11 @@ public enum StepCode {
     /**
      * The S t_ s f_69.
      */
-    ST_SF_69("Signature suite Ã©tude demande de modification"),
+    ST_SF_69("Signature suite étude demande de modification"),
     /**
      * The S t_ c c_42.
      */
-    ST_CC_42("DÃ©pÃ´t Dossier CC"),
+    ST_CC_42("Dépôt Dossier CC"),
     /**
      * The S t_ c o_43.
      */
@@ -678,7 +685,7 @@ public enum StepCode {
     /**
      * The S t_ c o_46.
      */
-    ST_CC_46("RecevabilitÃ© CC"),
+    ST_CC_46("Recevabilité CC"),
     /**
      * The S t_ c o_47.
      */
@@ -762,7 +769,7 @@ public enum StepCode {
     /**
      * The S t_ c c_67.
      */
-    ST_CC_67("RecevabilitÃ© Contre Analyse"),
+    ST_CC_67("Recevabilité Contre Analyse"),
     /**
      * The S t_ c c_68.
      */
@@ -786,11 +793,11 @@ public enum StepCode {
     /**
      * The S t_ c c_73.
      */
-    ST_CC_73("DÃ©pÃ´t demande de modification"),
+    ST_CC_73("Dépôt demande de modification"),
     /**
      * The S t_ c c_74.
      */
-    ST_CC_74("RecevabilitÃ© demande de modification"),
+    ST_CC_74("Recevabilité demande de modification"),
     /**
      * The S t_ c c_75.
      */
@@ -803,8 +810,8 @@ public enum StepCode {
      * The S t_ c c_77.
      */
     ST_CC_77("Signature Demande de modification"),
-    ST_CC_78("DÃ©pÃ´t demande d'annulation"),
-    ST_CC_79("RecevabilitÃ© demande d'annulation"),
+    ST_CC_78("Dépôt demande d'annulation"),
+    ST_CC_79("Recevabilité demande d'annulation"),
     ST_CC_80("Cotation Demande d'annulation"),
     ST_CC_81("Etude Demande d'annulation"),
     ST_CC_82("Signature Demande d'annulation"),
@@ -813,12 +820,12 @@ public enum StepCode {
     /**
      * The S t_ c c_cvs 01.
      */
-    ST_CT_CVS_01("VÃ©rification approfondie"),
+    ST_CT_CVS_01("Vérification approfondie"),
     /**
      * The S t_ c c_cvs 02.
      */
-    ST_CT_50("Retour du dossier pour rÃ©orientation"),
-    ST_CT_CVS_02("VÃ©rification suite validation");
+    ST_CT_50("Retour du dossier pour réorientation"),
+    ST_CT_CVS_02("Vérification suite validation");
     
     /**
      * Steps for Airport CTE and PVI

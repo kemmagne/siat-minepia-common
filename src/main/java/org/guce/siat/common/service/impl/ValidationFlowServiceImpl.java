@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
 @Transactional(readOnly = true)
 public class ValidationFlowServiceImpl implements ValidationFlowService {
 
-    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "CCS009", "VT109", "AIM07", "AIM09", "PI005", "PI007", "PI009");
+    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "CCS009", "VT109", "AIM07", "VT209", "AIM09", "PI005", "PI007", "PI009");
 
     private static final List<String> INIT_CANCEL_FLOWS_LIST = Arrays.asList("DVA1", "DMA1");
 
@@ -226,6 +226,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_160.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_166.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_VT1_03.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_VT2_03.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name()));
         logger.info("#######isPaymentRequest result : " + result);
@@ -417,7 +418,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             return true;
         }
         logger.info("#####start validateGeneralInformations");
-        //		Validation GÃ©nÃ©rale
+        //		Validation Générale
         final boolean commonValidation = contentHasDocumentType(rootElement) && contentHasGuceNumber(rootElement) && contentHasNumMessage(rootElement);
         if (!commonValidation) {
             return false;
@@ -579,7 +580,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 if (CollectionUtils.isNotEmpty(fileItems)) {
                     final FileType fileType = fileToSearch.getFileType();
                     Step currentStep;
-                    //VÃ©rifier si le nombre maximal des demandes d'annulation a Ã©tÃ© atteint
+                    //Vérifier si le nombre maximal des demandes d'annulation a été atteint
                     final ParamsOrganism nbrCancelRequestParam = paramsOrganismDao.findParamsOrganismByOrganismAndName(fileItems
                             .get(0).getFile().getBureau().getService().getSubDepartment().getOrganism(), "MaxCancelRequest");
                     Long paramOrganismValue;
@@ -749,13 +750,13 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                     //Demande RDV Visite
                     if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_21.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_20.name());
-                    } //Confirmation Visite Ã  Quai
+                    } //Confirmation Visite à Quai
                     else if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_36.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_18.name());
-                    } //RÃ©gularisation
+                    } //Régularisation
                     else if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_45.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_16.name());
-                    } //Demande de RÃ©examen
+                    } //Demande de Réexamen
                     else if (toBeExecutedFlow.getCode().equals(FlowCode.FL_CT_49.name())) {
                         returnedValue = validateLastFlow(fileItems, FlowCode.FL_CT_12.name(), FlowCode.FL_CT_73.name());
                     } //Refoulement/Destruction
