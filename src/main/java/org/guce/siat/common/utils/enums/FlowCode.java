@@ -906,6 +906,9 @@ public enum FlowCode {
     FL_AP_AIM_03("Modification Request of Import autorization"),
     FL_AP_AIM_04("Validation Modification Request of Import autorization"),
     FL_AP_AIM_05("Rejection of Modification Request of Import autorization"),
+    FL_AP_AIM_07("Extension Request of Import autorization"),
+    FL_AP_AIM_08("Validation Extension Request of Import autorization"),
+    FL_AP_AIM_09("Rejection of Extension Request of Import autorization"),
     
     /**
      * Les décisions de la procédure du permis d'imporation MINADER
