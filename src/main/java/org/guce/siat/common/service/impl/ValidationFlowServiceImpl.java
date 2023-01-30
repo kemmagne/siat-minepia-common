@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
 @Transactional(readOnly = true)
 public class ValidationFlowServiceImpl implements ValidationFlowService {
 
-    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "CCS009", "VT109", "AIM09");
+    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "CCS009", "VT109", "AIM09", "VT209");
 
     private static final List<String> INIT_CANCEL_FLOWS_LIST = Arrays.asList("DVA1", "DMA1");
 
@@ -226,6 +226,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CT_160.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_166.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_VT1_03.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_VT2_03.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name()));
         logger.info("#######isPaymentRequest result : " + result);

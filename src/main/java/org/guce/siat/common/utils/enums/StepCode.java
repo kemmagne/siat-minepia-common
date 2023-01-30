@@ -312,6 +312,10 @@ public enum StepCode {
     ST_AP_65("Paiement"),
     ST_AP_VT1_01("Signature Modification du visa techique"),
     ST_AP_AIM_01("Signature Modification de l'autorisation d'importation"),
+    ST_AP_VT2_01("Signature Modification du visa techique"),
+    ST_AP_VT2_02("Cotation"),
+    ST_AP_VT2_03("Etude approfondie"),
+    ST_AP_VT2_04("Etude approfondie Modification du visa techique"),
     // CO Step Code
     /**
      * The S t_ c o_42.
