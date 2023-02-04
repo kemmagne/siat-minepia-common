@@ -53,6 +53,16 @@ public enum AuthorityConstants {
      * The AGEN t_ cotatio n_6.
      */
     AGENT_COTATION_6("AC6", "Agent de Cotation 6"),
+    
+    /**
+     * The AGEN t_ validation n_1.
+     */
+    AGENT_VILIDATION_1("AV1", "Agent de Validation 1"),
+    
+    /**
+     * The AGEN t_ cotatio n_6.
+     */
+    AGENT_VALIDATION_2("AV2", "Agent de Validation 2"),
     //Authorities of type 'DECISION'
     /**
      * The agent recevabilite.

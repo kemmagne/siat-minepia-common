@@ -46,6 +46,7 @@ public class AdditionnalDeclaration extends AbstractModel implements Serializabl
 
     @Column(name = "DECLARATION", length = 1000)
     private String declaration;
+    
 
     @ManyToMany
     @JoinTable(name = "DECLARATION_ITEM",
@@ -53,6 +54,9 @@ public class AdditionnalDeclaration extends AbstractModel implements Serializabl
             inverseJoinColumns = @JoinColumn(name = "FILEITEM_ID"))
     private List<FileItem> fileItems;
 
+    @Transient
+    private Declaration selectedDeclaration;
+    
     @Transient
     private List<String> fileItemIds;
 
@@ -96,6 +100,14 @@ public class AdditionnalDeclaration extends AbstractModel implements Serializabl
 
     public void setFileItems(List<FileItem> fileItems) {
         this.fileItems = fileItems;
+    }
+
+    public Declaration getSelectedDeclaration() {
+        return selectedDeclaration;
+    }
+
+    public void setSelectedDeclaration(Declaration selectedDeclaration) {
+        this.selectedDeclaration = selectedDeclaration;
     }
 
     public String getItem() {
