@@ -273,7 +273,7 @@ public class File extends AbstractModel implements Serializable {
 
     @OneToMany(mappedBy = "file", orphanRemoval = true)
     private List<Container> containers;
-
+    
     @Transient
     private Step step;
     @Transient
