@@ -202,4 +202,9 @@ public class FlowServiceImpl extends AbstractServiceImpl<Flow> implements FlowSe
         return flowDao.findCiResponseFlow(flowSiatCode);
     }
 
+    @Override
+    public List<Flow> findFlowsByToStepAndFileType(final Step step, final FileType fileType) {
+        return flowDao.findFlowsByToStepAndFileType(step, fileType);
+    }
+
 }

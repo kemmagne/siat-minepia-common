@@ -16,6 +16,7 @@ import org.guce.siat.common.model.FileField;
 import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileItemFieldValue;
+import org.guce.siat.common.model.WrapperFileFieldValue;
 import org.guce.siat.common.service.ApplicationPropretiesService;
 
 /**
@@ -338,6 +339,7 @@ public final class RepetableUtil {
      * @param locale the locale
      * @return the list
      */
+
     public static List<FieldGroupDto<FileFieldValue>> groupFileFieldValues(final List<FileFieldValue> nonRepetableFiledValues,
             final List<FileFieldValue> repetablefileFiledValues, final List<FieldGroup> fieldGroups,
             final ApplicationPropretiesService applicationPropretiesService, final FileItem fileItem, final Locale locale) {
@@ -357,7 +359,7 @@ public final class RepetableUtil {
                     // tabs.add(initDynamicTabs(listFileFieldValues).get(0));
                 }
             }
-
+            
             for (final FileFieldValue repFileItemFieldValue : repetablefileFiledValues) {
                 if (!BooleanUtils.toBoolean(repFileItemFieldValue.getFileField().getHidden()) && fieldGroup.getId().equals(repFileItemFieldValue.getFileField().getGroup().getId())) {
                     final List<FileFieldValue> repetables = new ArrayList<>();
@@ -962,6 +964,77 @@ public final class RepetableUtil {
         fieldValues.add(0, referenceGuce);
 
         fileFieldGroupDto.setFieldValues(fieldValues);
+    }
+
+    /**
+     * Group file item field values.
+     *
+     * @param nonRepetableFiledValues the non repetable filed values
+     * @param repetablefileFiledValues the repetablefile filed values
+     * @param fieldGroups the field groups
+     * @param applicationPropretiesService the application propreties service
+     * @param fileItem the file item
+     * @param locale the locale
+     * @return the list
+     */
+    public static List<FieldGroupDto<WrapperFileFieldValue>> groupOnlyFileFieldValues(final List<FileFieldValue> nonRepetableFiledValues,
+            final List<FileFieldValue> repetablefileFiledValues, final List<FieldGroup> fieldGroups,
+            final ApplicationPropretiesService applicationPropretiesService, final FileItem fileItem, final Locale locale) {
+        RepetableUtil.locale = locale;
+        RepetableUtil.selectedFileItem = fileItem;
+        RepetableUtil.applicationPropretiesService = applicationPropretiesService;
+        //final List<FieldGroupDto<FileFieldValue>> fileFieldGroupDtos = new ArrayList<>();        
+        
+        final List<FieldGroupDto<WrapperFileFieldValue>> wrapperFileFieldGroupDtos = new ArrayList<>();
+        for (final FieldGroup fieldGroup : fieldGroups) {
+            //final FieldGroupDto<FileFieldValue> fileFieldGroupDto = new FieldGroupDto<>();
+            
+            final FieldGroupDto<WrapperFileFieldValue> wrapperFileFieldGroupDto = new FieldGroupDto<>();
+            wrapperFileFieldGroupDto.setLabelFr(fieldGroup.getLabelFr());
+            wrapperFileFieldGroupDto.setLabelEn(fieldGroup.getLabelEn());
+            final List<FileFieldValue> listFileFieldValues = new ArrayList<>();
+            final List<WrapperFileFieldValue> listWrapperFileFieldValues = new ArrayList<>();
+            final List<Tab> tabs = new ArrayList<>();
+            for (final FileFieldValue fileFieldValue : nonRepetableFiledValues) {
+                if (!BooleanUtils.toBoolean(fileFieldValue.getFileField().getHidden()) && fieldGroup.getId().equals(fileFieldValue.getFileField().getGroup().getId())) {
+                    listFileFieldValues.add(fileFieldValue);
+                    // tabs.add(initDynamicTabs(listFileFieldValues).get(0));
+                }
+            }
+//            for (FileFieldValue fileFiledValue : listFileFieldValues) {
+//                System.out.println(" **** valeurs ******* " + fileFiledValue.getFileField().getCode());
+//            }
+            for (final FileFieldValue repFileItemFieldValue : repetablefileFiledValues) {
+                if (!BooleanUtils.toBoolean(repFileItemFieldValue.getFileField().getHidden()) && fieldGroup.getId().equals(repFileItemFieldValue.getFileField().getGroup().getId())) {
+                    final List<FileFieldValue> repetables = new ArrayList<>();
+                    repetables.add(repFileItemFieldValue);
+                    tabs.add(initDynamicTabs(repetables).get(0));
+                }
+            }
+            // convertit les filefields values en  wrapper
+            for (FileFieldValue fileFiledValue : listFileFieldValues) {
+                //System.out.println(" **** valeurs ******* " + fileFiledValue.getFileField().getCode());
+                WrapperFileFieldValue wrapper = new WrapperFileFieldValue();
+                wrapper.setFilefieldValue(fileFiledValue);
+                wrapper.setOldValue(fileFiledValue.getValue());
+                listWrapperFileFieldValues.add(wrapper);
+            }
+            wrapperFileFieldGroupDto.setFieldValues(listWrapperFileFieldValues);
+
+//            if (fieldGroup.getLabelEn().equals("General")) {
+//                populateFileGeneralGroup(fileFieldGroupDto);
+//            }
+//
+
+            if (!tabs.isEmpty()) {
+                wrapperFileFieldGroupDto.setTabs(tabs);
+            }
+
+            if (!listFileFieldValues.isEmpty() || !tabs.isEmpty()) {
+                wrapperFileFieldGroupDtos.add(wrapperFileFieldGroupDto);
+            }
+        }
+        return wrapperFileFieldGroupDtos;
     }
 
 }

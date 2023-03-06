@@ -7,177 +7,214 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
  * The Class MESSAGE.
  */
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder =
-{ "typemessage", "dateemission", "etat", "numeromessage", "numeromessageorigine", "dateemissionmsgorigine" })
-public class MESSAGE implements Serializable
-{
+@XmlType(name = "", propOrder
+        = {"typemessage", "ephytomessage", "ephytoenv", "dateemission", "etat", "numeromessage", "numeromessageorigine", "dateemissionmsgorigine"})
+public class MESSAGE implements Serializable {
 
-	/** The typemessage. */
-	@XmlElement(name = "TYPE_MESSAGE", required = true)
-	protected String typemessage;
+    /**
+     * The typemessage.
+     */
+    @XmlElement(name = "TYPE_MESSAGE", required = true)
+    protected String typemessage;
 
-	/** The dateemission. */
-	@XmlElement(name = "DATE_EMISSION", required = true)
-	protected String dateemission;
+    @XmlElement(name = "EPHYTO_MESSAGE", required = false)
+    protected String ephytomessage;
 
-	/** The etat. */
-	@XmlElement(name = "ETAT", required = true)
-	protected String etat;
+    @XmlElement(name = "EPHYTO_ENV", required = false)
+    protected String ephytoenv;
+    /**
+     * The dateemission.
+     */
+    @XmlElement(name = "DATE_EMISSION", required = true)
+    protected String dateemission;
 
-	/** The numeromessage. */
-	@XmlElement(name = "NUMERO_MESSAGE", required = true)
-	protected String numeromessage;
+    /**
+     * The etat.
+     */
+    @XmlElement(name = "ETAT", required = true)
+    protected String etat;
 
-	/** The numromessageorigine. */
-	@XmlElement(name = "NUMERO_MESSAGE_ORIGINE", required = true)
-	protected String numeromessageorigine;
+    /**
+     * The numeromessage.
+     */
+    @XmlElement(name = "NUMERO_MESSAGE", required = true)
+    protected String numeromessage;
 
-	/** The dateemissionmsgorigine. */
-	@XmlElement(name = "DATE_EMISSION_MSG_ORIGINE", required = true)
-	protected String dateemissionmsgorigine;
+    /**
+     * The numromessageorigine.
+     */
+    @XmlElement(name = "NUMERO_MESSAGE_ORIGINE", required = true)
+    protected String numeromessageorigine;
 
-	/**
-	 * Obtient la valeur de la propriété typemessage.
-	 *
-	 * @return possible object is {@link String }
-	 *
-	 */
-	public String getTYPEMESSAGE()
-	{
-		return typemessage;
-	}
+    /**
+     * The dateemissionmsgorigine.
+     */
+    @XmlElement(name = "DATE_EMISSION_MSG_ORIGINE", required = true)
+    protected String dateemissionmsgorigine;
 
-	/**
-	 * Définit la valeur de la propriété typemessage.
-	 *
-	 * @param value
-	 *           allowed object is {@link String }
-	 *
-	 */
-	public void setTYPEMESSAGE(final String value)
-	{
-		this.typemessage = value;
-	}
+    /**
+     * Obtient la valeur de la propriété typemessage.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getTYPEMESSAGE() {
+        return typemessage;
+    }
 
-	/**
-	 * Obtient la valeur de la propriété dateemission.
-	 *
-	 * @return possible object is {@link String }
-	 *
-	 */
-	public String getDATEEMISSION()
-	{
-		return dateemission;
-	}
+    /**
+     * Définit la valeur de la propriété typemessage.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setTYPEMESSAGE(final String value) {
+        this.typemessage = value;
+    }
 
-	/**
-	 * Définit la valeur de la propriété dateemission.
-	 *
-	 * @param value
-	 *           allowed object is {@link String }
-	 *
-	 */
-	public void setDATEEMISSION(final String value)
-	{
-		this.dateemission = value;
-	}
+    /**
+     * Obtient la valeur de la propriété dateemission.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getDATEEMISSION() {
+        return dateemission;
+    }
 
-	/**
-	 * Obtient la valeur de la propriété etat.
-	 *
-	 * @return possible object is {@link String }
-	 *
-	 */
-	public String getETAT()
-	{
-		return etat;
-	}
+    /**
+     * Définit la valeur de la propriété dateemission.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setDATEEMISSION(final String value) {
+        this.dateemission = value;
+    }
 
-	/**
-	 * Définit la valeur de la propriété etat.
-	 *
-	 * @param value
-	 *           allowed object is {@link String }
-	 *
-	 */
-	public void setETAT(final String value)
-	{
-		this.etat = value;
-	}
+    /**
+     * Obtient la valeur de la propriété etat.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getETAT() {
+        return etat;
+    }
 
-	/**
-	 * Obtient la valeur de la propriété numeromessage.
-	 *
-	 * @return possible object is {@link String }
-	 *
-	 */
-	public String getNUMEROMESSAGE()
-	{
-		return numeromessage;
-	}
+    /**
+     * Définit la valeur de la propriété etat.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setETAT(final String value) {
+        this.etat = value;
+    }
 
-	/**
-	 * Définit la valeur de la propriété numeromessage.
-	 *
-	 * @param value
-	 *           allowed object is {@link String }
-	 *
-	 */
-	public void setNUMEROMESSAGE(final String value)
-	{
-		this.numeromessage = value;
-	}
+    /**
+     * Obtient la valeur de la propriété numeromessage.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getNUMEROMESSAGE() {
+        return numeromessage;
+    }
 
-	/**
-	 * Obtient la valeur de la propriété numromessageorigine.
-	 *
-	 * @return possible object is {@link String }
-	 *
-	 */
-	public String getNUMEROMESSAGEORIGINE()
-	{
-		return numeromessageorigine;
-	}
+    /**
+     * Définit la valeur de la propriété numeromessage.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setNUMEROMESSAGE(final String value) {
+        this.numeromessage = value;
+    }
 
-	/**
-	 * Définit la valeur de la propriété numromessageorigine.
-	 *
-	 * @param value
-	 *           allowed object is {@link String }
-	 *
-	 */
-	public void setNUMEROMESSAGEORIGINE(final String value)
-	{
-		this.numeromessageorigine = value;
-	}
+    /**
+     * Obtient la valeur de la propriété numromessageorigine.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getNUMEROMESSAGEORIGINE() {
+        return numeromessageorigine;
+    }
 
-	/**
-	 * Obtient la valeur de la propriété dateemissionmsgorigine.
-	 *
-	 * @return possible object is {@link String }
-	 *
-	 */
-	public String getDATEEMISSIONMSGORIGINE()
-	{
-		return dateemissionmsgorigine;
-	}
+    /**
+     * Définit la valeur de la propriété numromessageorigine.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setNUMEROMESSAGEORIGINE(final String value) {
+        this.numeromessageorigine = value;
+    }
 
-	/**
-	 * Définit la valeur de la propriété dateemissionmsgorigine.
-	 *
-	 * @param value
-	 *           allowed object is {@link String }
-	 *
-	 */
-	public void setDATEEMISSIONMSGORIGINE(final String value)
-	{
-		this.dateemissionmsgorigine = value;
-	}
+    /**
+     * Obtient la valeur de la propriété dateemissionmsgorigine.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getDATEEMISSIONMSGORIGINE() {
+        return dateemissionmsgorigine;
+    }
+
+    /**
+     * Définit la valeur de la propriété dateemissionmsgorigine.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setDATEEMISSIONMSGORIGINE(final String value) {
+        this.dateemissionmsgorigine = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété ephytomessage.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getEPHYTOMESSAGE() {
+        return ephytomessage;
+    }
+
+    /**
+     * Définit la valeur de la propriété ephytomessage.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setEPHYTOMESSAGE(String value) {
+        this.ephytomessage = value;
+    }
+
+    /**
+     * Obtient la valeur de la propriété ephytoenv.
+     *
+     * @return possible object is {@link String }
+     *
+     */
+    public String getEPHYTOENV() {
+        return ephytoenv;
+    }
+
+    /**
+     * Définit la valeur de la propriété ephytoenv.
+     *
+     * @param value allowed object is {@link String }
+     *
+     */
+    public void setEPHYTOENV(String value) {
+        this.ephytoenv = value;
+    }
 
 }

@@ -6,14 +6,10 @@ package org.guce.siat.common.service.impl;
 import java.util.List;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
-import org.guce.siat.common.model.Organism;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.common.dao.ProductCategoryDao;
-import org.guce.siat.core.ct.dao.TreatmentTypeDao;
 import org.guce.siat.common.model.ProductCategory;
-import org.guce.siat.core.ct.model.TreatmentType;
 import org.guce.siat.common.service.ProductCategoryService;
-import org.guce.siat.core.ct.service.TreatmentTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

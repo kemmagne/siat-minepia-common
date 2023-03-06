@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import org.guce.siat.common.dao.impl.AbstractJpaDaoImpl;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.dao.ProductCategoryDao;
 import org.guce.siat.common.model.ProductCategory;

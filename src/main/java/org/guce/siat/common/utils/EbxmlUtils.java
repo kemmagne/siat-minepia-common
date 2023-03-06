@@ -80,7 +80,7 @@ public class EbxmlUtils {
 
         final String service = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/REFERENCE_DOSSIER/SERVICE");
         final String action = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/TYPE_DOCUMENT");
-        final String conversationId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_GUCE");
+        final String conversationId = action.trim().equalsIgnoreCase("CTE005") ? null : SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_GUCE");
         final String fromPartyId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/ROUTAGE/EMETTEUR");
         final String toPartyId = SiatUtils.getValueFromXml(xmlBytes, "/DOCUMENT/ROUTAGE/DESTINATAIRE");
         final String messageId = Generator.generateMessageID();
@@ -134,7 +134,7 @@ public class EbxmlUtils {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public static void setEbxmlMessageByteStream(final EbxmlMessage ebxmlMessage) throws SOAPException, IOException {
-        try ( ByteArrayOutputStream ebxmlMessageByteStream = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream ebxmlMessageByteStream = new ByteArrayOutputStream()) {
             ebxmlMessage.getSOAPMessage().writeTo(ebxmlMessageByteStream);
             ebxmlMessage.setBytes(ebxmlMessageByteStream.toByteArray());
         }

@@ -120,14 +120,6 @@ public class ProductCategory extends AbstractModel implements Serializable {
         this.active = active;
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-
     /*
 	 * (non-Javadoc)
 	 *
