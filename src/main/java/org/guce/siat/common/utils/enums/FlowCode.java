@@ -906,6 +906,55 @@ public enum FlowCode {
     FL_AP_AIM_03("Modification Request of Import autorization"),
     FL_AP_AIM_04("Validation Modification Request of Import autorization"),
     FL_AP_AIM_05("Rejection of Modification Request of Import autorization"),
+    FL_AP_AIM_07("Extension Request of Import autorization"),
+    FL_AP_AIM_08("Validation Extension Request of Import autorization"),
+    FL_AP_AIM_09("Rejection of Extension Request of Import autorization"),
+    
+    /**
+     * Les décisions de la procédure du permis d'imporation MINADER
+     */
+    
+    FL_AP_PIM_01("Request for the Permis of importation"),
+    FL_AP_PIM_02("Additional information for the Permis of importation"),
+    FL_AP_PIM_03("Validation of the permis of importation for study"),
+    FL_AP_PIM_04("Decision Refusal - Back to admissibility"),
+    FL_AP_PIM_05("Additional information for the Permis of importation"),
+    FL_AP_PIM_06("Validation of the permis of importation for first visa"),
+    FL_AP_PIM_07("Decision Refusal - Back to study"),
+    FL_AP_PIM_08("Validation of the permis of importation for second visa"),
+    FL_AP_PIM_09("Decision Refusal - Back to first visa"),
+    FL_AP_PIM_10("Validation of the permis of importation for signature"),
+    FL_AP_PIM_11("Decision Refusal - Back to second visa"),
+    FL_AP_PIM_12("Authorization of the permis of importation"),
+    FL_AP_PIM_13("Cancelling Request of the Permis d''importation"),
+    FL_AP_PIM_14("Validation of cancelling of the Permis of importation"),
+    FL_AP_PIM_15("Rejection of cancelling of the permis d''importation"),
+    FL_AP_PIM_16("Extension Request of the Permis of importation"),
+    FL_AP_PIM_17("Validation Extension Request of the Permis of importation"),
+    FL_AP_PIM_18("Rejection of Extension Request of the Permis of importation"),
+    FL_AP_PIM_19("Modification Request of the Permis of importation"),
+    FL_AP_PIM_20("Validation Modification Request of the Permis of importation"),
+    FL_AP_PIM_21("Rejection of Modification Request of the Permis of importation"),
+    FL_AP_PIM_22("Response to additional information for the Permis of importation"),
+    FL_AP_PIM_23("Response to additional information for the Permis of importation"),
+
+
+    FL_AP_VT2_01("Demande de visa technique"),
+    FL_AP_VT2_02("Validation suite recevabilité pour cotation"),
+    FL_AP_VT2_03("Encaissement des frais de visa technique"),
+    FL_AP_VT2_04("Retour pour cotation - Etude approfondie"),
+    FL_AP_VT2_05("Demande de modifcation du visa technique"),
+    FL_AP_VT2_06("Validation Modification du visa technique"),
+    FL_AP_VT2_07("Rejet Modification du visa technique"),
+    FL_AP_VT2_08("Cotation pour Etude approfondie du visa"),
+    FL_AP_VT2_09("Complément d''information de Visa Technique"),
+    FL_AP_VT2_10("Validation demande de visa technique pour signature"),
+    FL_AP_VT2_11("Refus Décision - Retour à l''etude approfondie"),
+    FL_AP_VT2_12("Validation Modification du visa technique"),
+    FL_AP_VT2_13("Rejet Modification du visa technique suite étude"),
+    FL_AP_VT2_14("Réponse complément d''information de Visa Technique"),
+
+    
     
     /**
      * The F l_ a p_85.
