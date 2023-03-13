@@ -31,7 +31,7 @@ public class ProductCategory extends AbstractModel implements Serializable {
      */
     @Id
     @Basic(optional = false)
-    @Column(name = "id")
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCT_CATEGORY_SEQ")
     @SequenceGenerator(name = "PRODUCT_CATEGORY_SEQ", sequenceName = "PRODUCT_CATEGORY_SEQ", allocationSize = 1)
     private Long id;

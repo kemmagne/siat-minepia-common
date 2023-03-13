@@ -277,10 +277,10 @@ public class File extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "file", orphanRemoval = true)
     private List<Container> containers;
     
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "FILE_PRODUCT_CATEGORY",
-            joinColumns = @JoinColumn(name = "FILE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_CATEGORY_ID"))
+            joinColumns = @JoinColumn(name = "FILE_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_CATEGORY_ID", referencedColumnName = "ID"))
     private List<ProductCategory> productCategories;
     
     @Transient
