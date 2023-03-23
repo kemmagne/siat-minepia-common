@@ -39,7 +39,10 @@ public final class PropertiesConstants {
 
     public static final String XML_FOLDER = "xml.folder".intern();
     public static final String ATTACHMENT_FOLDER = "attachement.folder".intern();
-
+    
+    public static final String LISTING_PAYMENT_FILES_INTERVAL_TIME = "listing.payment.files.filter.interval.time".intern();
+    public static final String LISTING_PAYMENT_FILES_INTERVAL_TIME_NUMBER = "listing.payment.files.filter.interval.time.number".intern();
+    
     private PropertiesConstants() {
     }
 
