@@ -167,4 +167,9 @@ public class ApplicationPropretiesServiceImpl implements ApplicationPropretiesSe
         return repeatableSeparator;
     }
 
+    @Override
+    public PropertiesLoader getPropertiesLoader() {
+        return propertiesLoader;
+    }
+
 }
