@@ -1046,13 +1046,8 @@ public class File extends AbstractModel implements Serializable {
 
     @PostLoad
     private void postLoad() {
-        if (CollectionUtils.isNotEmpty(getFileItemsList())) {
-            setStep(getFileItemsList().get(0).getStep());
-            if (this.step != null && this.step.getStepCode() != null) {
-                setStepCode(this.step.getStepCode().name());
-            } else {
-                setStepCode("");
-            }
+        if (this.step != null) {
+            setStepCode(this.step.getStepCode().name());            
         }
     }
 
