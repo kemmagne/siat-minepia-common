@@ -283,8 +283,15 @@ public class File extends AbstractModel implements Serializable {
         @JoinColumn(name = "PRODUCTCATEGORIES_CODE", referencedColumnName = "CODE")})
     private List<ProductCategory> productCategories;
     
-    @Transient
+    //@Transient
+    
+    /**
+     * The step.
+     */
+    @ManyToOne
+    @JoinColumn(name = "STEP_ID", referencedColumnName = "ID", updatable = true)
     private Step step;
+    
     @Transient
     private String redefinedLabelEn;
     @Transient

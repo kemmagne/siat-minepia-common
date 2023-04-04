@@ -367,9 +367,8 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
         }
         filesWithoutDraft = fileItemDao.findFilesByServiceAndAuthoritiesAndFileType(bureaus, loggedUser, fileTypeCodeList,
                 excludedStepList);
-
+        
         final List<File> returnFiles = new ArrayList<>();
-
         for (final File file : filesWithoutDraft) {
             final FileType fileType = file.getFileType();
             final User assignedUser = file.getAssignedUser();
