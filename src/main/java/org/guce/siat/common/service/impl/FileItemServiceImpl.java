@@ -67,7 +67,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
      */
     private static final List<FileTypeCode> FILETYPE_CCT_CODE_LIST = Arrays.asList(FileTypeCode.CCT_CSV, FileTypeCode.CCT_CT, FileTypeCode.CCT_CT_E,
             FileTypeCode.CC_CT, FileTypeCode.CQ_CT, FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_ATP, FileTypeCode.CCT_CT_E_FSTP, FileTypeCode.CCT_CT_E_PVE,
-            FileTypeCode.CCS_MINSANTE , FileTypeCode.EPHYTO);
+            FileTypeCode.CCS_MINSANTE, FileTypeCode.EPHYTO);
 
     /**
      * The Constant FILETYPE_AP_CODE_LIST.
@@ -367,7 +367,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
         }
         filesWithoutDraft = fileItemDao.findFilesByServiceAndAuthoritiesAndFileType(bureaus, loggedUser, fileTypeCodeList,
                 excludedStepList);
-        
+
         final List<File> returnFiles = new ArrayList<>();
         for (final File file : filesWithoutDraft) {
             final FileType fileType = file.getFileType();
@@ -511,5 +511,83 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
     public FileItemFieldValue findFileItemFieldValueByFieldCode(final Long idFile, final Long idItemField) {
         return fileItemDao.findFileItemFieldValueByFieldCode(idFile, idItemField);
 
+    }
+
+    @Override
+    public List<File> findFilesByServiceAndAuthoritiesAndFileType2(List<Bureau> bureaus, User loggedUser, InformationSystemCode informationSystemCode, List<UserAuthorityFileType> listUserAuthorityFileTypes) {
+        List<Long> fileTypeIdList = new ArrayList<>();
+        final List<StepCode> excludedStepList = new ArrayList<>();
+        List<File> filesWithoutDraft;
+        if (listUserAuthorityFileTypes != null) {
+            for (UserAuthorityFileType uaft : listUserAuthorityFileTypes) {
+                fileTypeIdList.add(uaft.getFileType().getId());
+            }
+        }
+        if (null != informationSystemCode) {
+            switch (informationSystemCode) {
+                case CCT:
+                    excludedStepList.add(StepCode.ST_CT_06);
+                    break;
+                case AP:
+                    excludedStepList.add(StepCode.ST_AP_44);
+                    break;
+                case CO:
+                    excludedStepList.add(StepCode.ST_CO_44);
+                    break;
+                case AM:
+                    excludedStepList.add(StepCode.ST_AM_44);
+                    break;
+                case FT:
+                    excludedStepList.add(StepCode.ST_FT_44);
+                    break;
+                case SF:
+                    excludedStepList.add(StepCode.ST_SF_44);
+                    break;
+                case CC:
+                    excludedStepList.add(StepCode.ST_CC_44);
+                    break;
+                case BQ:
+                    excludedStepList.add(StepCode.ST_CC_44);
+                    break;
+                default:
+                    break;
+            }
+        }
+        filesWithoutDraft = fileItemDao.findFilesByServiceAndAuthoritiesAndFileType2(bureaus, loggedUser, fileTypeIdList,
+                excludedStepList);
+
+        final List<File> returnFiles = new ArrayList<>();
+        for (final File file : filesWithoutDraft) {
+            final FileType fileType = file.getFileType();
+            final User assignedUser = file.getAssignedUser();
+
+            final List<Authority> assignedUserAuthorities = userAuthorityFileTypeDao.findAuthoritiesByFileTypeAndUser(fileType,
+                    assignedUser);
+
+            for (final UserAuthorityFileType userAuthorityFileType : listUserAuthorityFileTypes) {
+                final boolean loggedUserHasAuthorityOnFileType = fileType.getId().equals(userAuthorityFileType.getFileType().getId());
+
+                final boolean loggedUserHasRoleOnFileItemStep = file.getStep().getRoleList()
+                        .contains(userAuthorityFileType.getUserAuthority().getAuthorityGranted());
+
+                final boolean assignedUserAllowed = assignedUser == null
+                        // logged user == assigned user
+                        || (assignedUser != null && SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(
+                                assignedUser.getId()))
+                        // logged user != assigned user AND role of logged user != role of assigned user  AND l'aasignedUser have not an authority on step authorities
+                        || (assignedUser != null
+                        && !SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(assignedUser.getId())
+                        && !assignedUserAuthorities.contains(userAuthorityFileType.getUserAuthority().getAuthorityGranted()) && !CollectionUtils
+                        .containsAny(assignedUserAuthorities, file.getStep().getRoleList()));
+
+                if (loggedUserHasAuthorityOnFileType && loggedUserHasRoleOnFileItemStep && assignedUserAllowed) {
+                    returnFiles.add(file);
+                    break;
+                }
+            }
+
+        }
+
+        return returnFiles;
     }
 }

@@ -155,6 +155,22 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
         
         return query.getResultList();
     }
+    
+    @Override
+    public List<File> findFilesByServiceAndAuthoritiesAndFileType2(List<Bureau> bureauList, User loggedUser, List<Long> fileTypeIdLIst, List<StepCode> excludedStepList) {
+        final StringBuilder hqlBuilder = new StringBuilder();
+        hqlBuilder.append("SELECT DISTINCT fi FROM File fi ");
+        hqlBuilder.append("WHERE fi.bureau IN (:bureauList) ");
+        hqlBuilder.append("AND fi.step.stepCode NOT IN (:excludedStepList) ");
+        hqlBuilder.append("AND fi.fileType.id IN (:fileTypeIdList)");
+        final TypedQuery<File> query = super.entityManager.createQuery(hqlBuilder.toString(), File.class);
+        
+        query.setParameter("bureauList", bureauList);
+        query.setParameter("fileTypeIdList", fileTypeIdLIst);
+        query.setParameter("excludedStepList", excludedStepList);
+        
+        return query.getResultList();
+    }
 
     /*
 	 * (non-Javadoc)
