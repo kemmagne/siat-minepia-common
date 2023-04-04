@@ -22,7 +22,7 @@ public enum StepCode {
     /**
      * The S t_ c t_04.
      */
-    ST_CT_04("Étude Approfondie"),
+    ST_CT_04("étude Approfondie"),
     /**
      * The S t_ c t_05.
      */
@@ -98,11 +98,11 @@ public enum StepCode {
     /**
      * The S t_ c t_23.
      */
-    ST_CT_23("Confirmation de Déstruction"),
+    ST_CT_23("Confirmation de Destruction"),
     /**
      * The S t_ c t_24.
      */
-    ST_CT_24("Etude de recevabilité suite Confirmation de Déstruction"),
+    ST_CT_24("Etude de recevabilité suite Confirmation de Destruction"),
     /**
      * The S t_ c t_25.
      */
@@ -312,6 +312,33 @@ public enum StepCode {
     ST_AP_65("Paiement"),
     ST_AP_VT1_01("Signature Modification du visa techique"),
     ST_AP_AIM_01("Signature Modification de l'autorisation d'importation"),
+    ST_AP_AIM_02("Signature Prorogation de l'autorisation d'importation"),
+    
+    //Etapes de la procédure permis d'importation
+    /* Etape de recevabilité */
+    ST_AP_PIM_01("Recevabilité"),
+    /* Etape d'étude approfondie */
+    ST_AP_PIM_02("Etude approfondie"),
+    /* Etape visa 1 */
+    ST_AP_PIM_03("Visa 1"),
+    /* Etape visa 1 */
+    ST_AP_PIM_04("Visa 2"),
+    /* Etape visa 1 */
+    ST_AP_PIM_05("Signature"),
+    /* Etape signature annulation  */
+    ST_AP_PIM_06("Signature Annulation"),
+    /* Etape signature prorogation*/
+    ST_AP_PIM_07("Signature Prorogation"),
+    /* Etape signature modification*/
+    ST_AP_PIM_08("Signature Modification"),
+
+
+    ST_AP_VT2_01("Signature Modification du visa techique"),
+    ST_AP_VT2_02("Cotation"),
+    ST_AP_VT2_03("Etude approfondie"),
+    ST_AP_VT2_04("Etude approfondie Modification du visa techique"),
+
+
     // CO Step Code
     /**
      * The S t_ c o_42.
@@ -429,7 +456,7 @@ public enum StepCode {
     /**
      * The S t_ a m_46.
      */
-    ST_AM_46("Recevabilité AM"),
+    ST_AM_46("Recevabilit� AM"),
     /**
      * The S t_ a m_47.
      */
@@ -501,19 +528,19 @@ public enum StepCode {
     /**
      * The S t_ a m_64.
      */
-    ST_AM_64("Traitement Contrôle"),
+    ST_AM_64("Traitement Contr�le"),
     /**
      * The S t_ a m_65.
      */
-    ST_AM_65("Demande Dépôt Manifeste"),
+    ST_AM_65("Demande D�p�t Manifeste"),
     /**
      * The S t_ a m_66.
      */
-    ST_AM_66("Recevabilité Manifest"),
+    ST_AM_66("Recevabilit� Manifest"),
     /**
      * The S t_ f t_42.
      */
-    ST_FT_42("Dépôt Dossier FT"),
+    ST_FT_42("D�p�t Dossier FT"),
     /**
      * The S t_ f t_43.
      */
@@ -530,7 +557,7 @@ public enum StepCode {
     /**
      * The S t_ s f_42.
      */
-    ST_SF_42("Dépôt Dossier SF"),
+    ST_SF_42("D�p�t Dossier SF"),
     /**
      * The S t_ s f_43.
      */
@@ -546,7 +573,7 @@ public enum StepCode {
     /**
      * The S t_ s f_46.
      */
-    ST_SF_46("Recevabilité SF"),
+    ST_SF_46("Recevabilit� SF"),
     /**
      * The S t_ s f_47.
      */
@@ -618,7 +645,7 @@ public enum StepCode {
     /**
      * The S t_ s f_64.
      */
-    ST_SF_64("Etude Recevabilité suite demande prorogation"),
+    ST_SF_64("Etude Recevabilit� suite demande prorogation"),
     /**
      * The S t_ s f_65.
      */
@@ -626,11 +653,11 @@ public enum StepCode {
     /**
      * The S t_ s f_66.
      */
-    ST_SF_66("Signature suite étude demande de prorogation"),
+    ST_SF_66("Signature suite �tude demande de prorogation"),
     /**
      * The S t_ s f_67.
      */
-    ST_SF_67("Etude Recevabilité suite demande de modification"),
+    ST_SF_67("Etude Recevabilit� suite demande de modification"),
     /**
      * The S t_ s f_68.
      */
@@ -638,11 +665,11 @@ public enum StepCode {
     /**
      * The S t_ s f_69.
      */
-    ST_SF_69("Signature suite étude demande de modification"),
+    ST_SF_69("Signature suite �tude demande de modification"),
     /**
      * The S t_ c c_42.
      */
-    ST_CC_42("Dépôt Dossier CC"),
+    ST_CC_42("D�p�t Dossier CC"),
     /**
      * The S t_ c o_43.
      */
@@ -658,7 +685,7 @@ public enum StepCode {
     /**
      * The S t_ c o_46.
      */
-    ST_CC_46("Recevabilité CC"),
+    ST_CC_46("Recevabilit� CC"),
     /**
      * The S t_ c o_47.
      */
@@ -742,7 +769,7 @@ public enum StepCode {
     /**
      * The S t_ c c_67.
      */
-    ST_CC_67("Recevabilité Contre Analyse"),
+    ST_CC_67("Recevabilit� Contre Analyse"),
     /**
      * The S t_ c c_68.
      */
@@ -766,11 +793,11 @@ public enum StepCode {
     /**
      * The S t_ c c_73.
      */
-    ST_CC_73("Dépôt demande de modification"),
+    ST_CC_73("D�p�t demande de modification"),
     /**
      * The S t_ c c_74.
      */
-    ST_CC_74("Recevabilité demande de modification"),
+    ST_CC_74("Recevabilit� demande de modification"),
     /**
      * The S t_ c c_75.
      */
@@ -783,8 +810,8 @@ public enum StepCode {
      * The S t_ c c_77.
      */
     ST_CC_77("Signature Demande de modification"),
-    ST_CC_78("Dépôt demande d'annulation"),
-    ST_CC_79("Recevabilité demande d'annulation"),
+    ST_CC_78("D�p�t demande d'annulation"),
+    ST_CC_79("Recevabilit� demande d'annulation"),
     ST_CC_80("Cotation Demande d'annulation"),
     ST_CC_81("Etude Demande d'annulation"),
     ST_CC_82("Signature Demande d'annulation"),
@@ -793,12 +820,18 @@ public enum StepCode {
     /**
      * The S t_ c c_cvs 01.
      */
-    ST_CT_CVS_01("Vérification approfondie"),
+    ST_CT_CVS_01("V�rification approfondie"),
     /**
      * The S t_ c c_cvs 02.
      */
-    ST_CT_50("Retour du dossier pour réorientation"),
-    ST_CT_CVS_02("Vérification suite validation");
+    ST_CT_50("Retour du dossier pour r�orientation"),
+    ST_CT_CVS_02("V�rification suite validation");
+    
+    /**
+     * Steps for Airport CTE and PVI
+     */
+//    ST_CT_E_AIP_01("Admissibility - Airport phytosanitary certificate request"),
+//    ST_CT_E_AIP_02("Signature - Airport phytosanitary certificate request");
 
     /**
      * The label.

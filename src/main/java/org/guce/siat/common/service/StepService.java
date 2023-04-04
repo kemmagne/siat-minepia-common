@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.guce.siat.common.model.Authority;
 import org.guce.siat.common.model.Step;
+import org.guce.siat.common.utils.enums.StepCode;
 
 
 
@@ -22,5 +23,7 @@ public interface StepService extends AbstractService<Step>
 	 * @return the list
 	 */
 	List<Step> findByAuthority(Authority authority);
+        
+        Step findByStepCode(StepCode stepCode);
 
 }

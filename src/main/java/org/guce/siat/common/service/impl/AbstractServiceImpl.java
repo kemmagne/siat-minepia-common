@@ -2,9 +2,11 @@ package org.guce.siat.common.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.service.AbstractService;
 import org.guce.siat.common.service.annotations.Audit;
+import org.guce.siat.common.utils.RequestPage;
 import org.guce.siat.common.utils.enums.AuditConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,8 +83,7 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
     public T save(final T entity) {
         return getJpaDao().save(entity);
     }
-    
-    
+
     @Transactional(readOnly = false)
     @Override
     public T saveHistory(final T entity) {
@@ -159,6 +160,26 @@ public abstract class AbstractServiceImpl<T extends Serializable> implements Abs
     @Override
     public void deleteList(final List<T> entitiesList) {
         getJpaDao().deleteList(entitiesList);
+    }
+
+    @Override
+    public int count() {
+        return getJpaDao().count();
+    }
+
+    @Override
+    public List<T> findPage(final RequestPage requestPage) {
+        return getJpaDao().findPage(requestPage);
+    }
+
+    @Override
+    public List<T> paginate(Map<String, ? extends Object> filters, String sortField, String sortOrder, int first, int limit, int matchMode, Map<String, Integer> matchModes) {
+        return getJpaDao().paginate(filters, sortField, sortOrder, first, limit, matchMode, matchModes);
+    }
+
+    @Override
+    public int paginateCount(Map<String, ? extends Object> filters, int matchMode, Map<String, Integer> matchModes) {
+        return getJpaDao().paginateCount(filters, matchMode, matchModes);
     }
 
 }

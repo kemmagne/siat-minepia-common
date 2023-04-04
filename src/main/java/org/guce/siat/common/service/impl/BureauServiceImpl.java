@@ -98,7 +98,7 @@ public class BureauServiceImpl extends AbstractServiceImpl<Bureau> implements Bu
 
         return bureaus;
     }
-    
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -129,8 +129,10 @@ public class BureauServiceImpl extends AbstractServiceImpl<Bureau> implements Bu
     public Bureau find(final Long id) {
         final List<Long> headServicesAndOfficesIds = new ArrayList<>();
         final Bureau bureau = getJpaDao().find(id);
+        if (bureau == null) {
+            return null;
+        }
         headServicesAndOfficesIds.add(id);
-        headServicesAndOfficesIds.add(bureau.getService().getId());
         final List<User> users = userDao.findUsersByAdministrationsIds(headServicesAndOfficesIds.toArray(new Long[headServicesAndOfficesIds.size()]));
         for (final User user : users) {
             if (bureau.getId().equals(user.getAdministration().getId())) {

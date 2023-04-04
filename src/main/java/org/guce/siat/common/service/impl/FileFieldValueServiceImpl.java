@@ -1,5 +1,6 @@
 package org.guce.siat.common.service.impl;
 
+import java.util.List;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.FileFieldValueDao;
 import org.guce.siat.common.model.File;
@@ -78,6 +79,11 @@ public class FileFieldValueServiceImpl extends AbstractServiceImpl<FileFieldValu
     @Override
     public FileItemFieldValue findFileItemFieldValueByCodeAndFileItem(final String code, final FileItem fileItem) {
         return fileFieldValueDao.findFileItemFieldValueByCodeAndFileItem(code, fileItem);
+    }
+
+    @Override
+    public List<FileFieldValue> findFileFieldValueByFile(final File file) {
+        return fileFieldValueDao.findFileFieldValueByFile(file);
     }
 
 }
