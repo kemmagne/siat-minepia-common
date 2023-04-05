@@ -379,7 +379,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
             for (final UserAuthorityFileType userAuthorityFileType : listUserAuthorityFileTypes) {
                 final boolean loggedUserHasAuthorityOnFileType = fileType.getId().equals(userAuthorityFileType.getFileType().getId());
 
-                final boolean loggedUserHasRoleOnFileItemStep = file.getFileItemsList().get(0).getStep().getRoleList()
+                final boolean loggedUserHasRoleOnFileItemStep = file.getStep().getRoleList()
                         .contains(userAuthorityFileType.getUserAuthority().getAuthorityGranted());
 
                 final boolean assignedUserAllowed = assignedUser == null
@@ -390,7 +390,7 @@ public class FileItemServiceImpl extends AbstractServiceImpl<FileItem> implement
                         || (assignedUser != null
                         && !SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()).contains(assignedUser.getId())
                         && !assignedUserAuthorities.contains(userAuthorityFileType.getUserAuthority().getAuthorityGranted()) && !CollectionUtils
-                        .containsAny(assignedUserAuthorities, file.getFileItemsList().get(0).getStep().getRoleList()));
+                        .containsAny(assignedUserAuthorities, file.getStep().getRoleList()));
 
                 if (loggedUserHasAuthorityOnFileType && loggedUserHasRoleOnFileItemStep && assignedUserAllowed) {
                     returnFiles.add(file);
