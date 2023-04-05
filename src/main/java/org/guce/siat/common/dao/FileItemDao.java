@@ -61,6 +61,18 @@ public interface FileItemDao extends AbstractJpaDao<FileItem> {
      *
      * @param bureauList
      * @param loggedUser
+     * @param fileTypeCodeList
+     * @param excludedStepList
+     * @return
+     */
+    List<File> findFilesByServiceAndAuthoritiesAndFileTypeUsingFile(List<Bureau> bureauList, User loggedUser,
+            List<FileTypeCode> fileTypeCodeList, List<StepCode> excludedStepList);
+    
+    /**
+     * Find files by service and authorities and file type.
+     *
+     * @param bureauList
+     * @param loggedUser
      * @param fileTypeIdList
      * @param excludedStepList
      * @return
