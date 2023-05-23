@@ -277,12 +277,9 @@ public class File extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "file", orphanRemoval = true)
     private List<Container> containers;
     
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "FILES_PRODUCT_CATEGORY", joinColumns = {
-        @JoinColumn(name = "FILE_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "PRODUCTCATEGORIES_CODE", referencedColumnName = "CODE")})
-    private List<ProductCategory> productCategories;
-    
+    @OneToMany(mappedBy = "file", orphanRemoval = true)
+    private List<FileProductCategory> productCategories;
+
     //@Transient
     
     /**
@@ -1091,11 +1088,11 @@ public class File extends AbstractModel implements Serializable {
         this.codeBureau = codeBureau;
     }
 
-    public List<ProductCategory> getProductCategories() {
+    public List<FileProductCategory> getProductCategories() {
         return productCategories;
     }
 
-    public void setProductCategories(List<ProductCategory> productCategories) {
+    public void setProductCategories(List<FileProductCategory> productCategories) {
         this.productCategories = productCategories;
     }
     
