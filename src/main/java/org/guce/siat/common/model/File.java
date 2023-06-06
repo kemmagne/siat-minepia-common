@@ -28,6 +28,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.utils.enums.FinalDecisionType;
 
 /**
@@ -963,6 +964,9 @@ public class File extends AbstractModel implements Serializable {
     }
 
     public String getRedefinedLabelEn() {
+        if (StringUtils.isEmpty(redefinedLabelEn) && step != null) {
+            redefinedLabelEn = step.getLabelEn();
+        }
         return redefinedLabelEn;
     }
 
@@ -971,6 +975,9 @@ public class File extends AbstractModel implements Serializable {
     }
 
     public String getRedefinedLabelFr() {
+        if (StringUtils.isEmpty(redefinedLabelFr) && step != null) {
+            redefinedLabelFr = step.getLabelFr();
+        }
         return redefinedLabelFr;
     }
 
