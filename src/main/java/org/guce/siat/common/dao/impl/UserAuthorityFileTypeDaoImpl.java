@@ -168,6 +168,7 @@ public class UserAuthorityFileTypeDaoImpl extends AbstractJpaDaoImpl<UserAuthori
             hqlBuilder.append("FROM UserAuthorityFileType ua ");
             hqlBuilder.append("WHERE ua.primaryKey.fileType.code = :codeFileType ");
             hqlBuilder.append("AND ua.primaryKey.userAuthority.authorityGranted IN (:authorityList)");
+            hqlBuilder.append("AND ua.primaryKey.userAuthority.user.administration IS NOT NULL");
 
             final TypedQuery<UserAuthorityFileType> query = super.entityManager.createQuery(hqlBuilder.toString(), UserAuthorityFileType.class);
 
