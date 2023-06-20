@@ -208,10 +208,11 @@ public enum StepCode {
     ST_CT_62("Cotation"),
     ST_CT_63("Validation Procès Verbal Empotage"),
     ST_CT_64("Signature Procès Verbal Empotage"),
-    //
+    //Steps for CSV MINEPIA
     ST_CT_65("Validation pour Signature"),
     ST_CT_66("Signature"),
     ST_CT_67("Signature"),
+    ST_CT_68("Demande Certificat sanitaire vétérinaire"),
     //Steps pour le CCS MINSANTE
     ST_CT_CCS_01("Etude approfondie suite demande de modification"),
     ST_CT_CCS_02("Signature suite demande de modification"),
