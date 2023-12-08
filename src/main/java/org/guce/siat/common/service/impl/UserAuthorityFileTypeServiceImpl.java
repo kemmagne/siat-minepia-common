@@ -317,8 +317,9 @@ public class UserAuthorityFileTypeServiceImpl extends
             for (FileAdministration fa : list) {
                 admList.add(fa.getAdministration());
             }
-            List<Administration> administrations = getRecursiveParentAdministations(admList, user.getAdministration().getClass());
-            /*
+            if (user.getAdministration() != null) {
+                List<Administration> administrations = getRecursiveParentAdministations(admList, user.getAdministration().getClass());
+                /*
 			//recherche les administrations de même type que ceux de User mais faisant partir de l'arborescence du bureau actuellement affecté au dossier
 			List<? extends Administration> fileAdminList = new ArrayList<Administration>();
 			if (user.getAdministration() instanceof Ministry) {
@@ -331,28 +332,29 @@ public class UserAuthorityFileTypeServiceImpl extends
 			} else if (user.getAdministration() instanceof Bureau) {
 			fileAdminList = file.getBureau().getService().getEntityList();
 			}*/
-            //On recherche les administrations qui sons succeptible de traiter le dossier actuel.
-            //En principe, si assignedUser est indiqué, on prend toutes les administration qui sont sous lui
-            //On prend les administrations qui sont sous l'utilisateur actuellement connecté
-            List<Administration> fileAdminList = administrations;
-            if (file.getAssignedUser() != null || loggedUser != null) {
-                List<Administration> listAdm = new ArrayList<>();
-                if (file.getAssignedUser() != null) {
-                    listAdm.add(file.getAssignedUser().getAdministration());
+                //On recherche les administrations qui sons succeptible de traiter le dossier actuel.
+                //En principe, si assignedUser est indiqué, on prend toutes les administration qui sont sous lui
+                //On prend les administrations qui sont sous l'utilisateur actuellement connecté
+                List<Administration> fileAdminList = administrations;
+                if (file.getAssignedUser() != null || loggedUser != null) {
+                    List<Administration> listAdm = new ArrayList<>();
+                    if (file.getAssignedUser() != null) {
+                        listAdm.add(file.getAssignedUser().getAdministration());
+                    }
+                    if (loggedUser != null) {
+                        listAdm.add(loggedUser.getAdministration());
+                    }
+                    fileAdminList = getRecursiveSubAdministations(listAdm);
                 }
-                if (loggedUser != null) {
-                    listAdm.add(loggedUser.getAdministration());
+                //filtre les administrations pour ne garder que ceux qui matchent la liste
+                List<Administration> filteredAdms = new ArrayList<>();
+                for (Administration a : administrations) {
+                    if (fileAdminList.contains(a)) {
+                        filteredAdms.add(a);
+                    }
                 }
-                fileAdminList = getRecursiveSubAdministations(listAdm);
+                res = filteredAdms.contains(user.getAdministration());
             }
-            //filtre les administrations pour ne garder que ceux qui matchent la liste
-            List<Administration> filteredAdms = new ArrayList<>();
-            for (Administration a : administrations) {
-                if (fileAdminList.contains(a)) {
-                    filteredAdms.add(a);
-                }
-            }
-            res = filteredAdms.contains(user.getAdministration());
         }
         return res;
     }

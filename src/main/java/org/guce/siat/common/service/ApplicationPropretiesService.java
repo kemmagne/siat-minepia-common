@@ -1,5 +1,7 @@
 package org.guce.siat.common.service;
 
+import org.guce.siat.common.utils.PropertiesLoader;
+
 /**
  * The Interface ApplicationPropretiesService.
  */
@@ -60,5 +62,12 @@ public interface ApplicationPropretiesService {
      * @return the repeatable separator
      */
     String getRepeatableSeparator();
+    
+    /**
+     * Gets the PropertiesLoader.
+     *
+     * @return the PropertiesLoader
+     */
+    PropertiesLoader getPropertiesLoader();
 
 }

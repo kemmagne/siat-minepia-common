@@ -105,7 +105,13 @@ public class Step extends AbstractModel implements Serializable {
 
     @Column(name = "IS_TREATMENT_STEP")
     private Boolean treatmentStep;
-
+    
+    /**
+     * The file list.
+     */
+    @OneToMany(mappedBy = "step")
+    private List<File> filesList;
+    
     /**
      * Instantiates a new step.
      */
@@ -303,6 +309,16 @@ public class Step extends AbstractModel implements Serializable {
     public void setTreatmentStep(Boolean treatmentStep) {
         this.treatmentStep = treatmentStep;
     }
+
+    public List<File> getFilesList() {
+        return filesList;
+    }
+
+    public void setFileList(List<File> filesList) {
+        this.filesList = filesList;
+    }
+    
+    
 
     /*
 	 * (non-Javadoc)

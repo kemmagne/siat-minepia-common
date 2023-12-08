@@ -28,6 +28,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.utils.enums.FinalDecisionType;
 
 /**
@@ -277,14 +278,18 @@ public class File extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "file", orphanRemoval = true)
     private List<Container> containers;
     
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "FILE_PRODUCT_CATEGORY",
-            joinColumns = @JoinColumn(name = "FILE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_CATEGORY_ID"))
-    private List<ProductCategory> productCategories;
+    @OneToMany(mappedBy = "file", orphanRemoval = true)
+    private List<FileProductCategory> productCategories;
+
+    //@Transient
     
-    @Transient
+    /**
+     * The step.
+     */
+    @ManyToOne
+    @JoinColumn(name = "STEP_ID", referencedColumnName = "ID", updatable = true)
     private Step step;
+    
     @Transient
     private String redefinedLabelEn;
     @Transient
@@ -959,6 +964,9 @@ public class File extends AbstractModel implements Serializable {
     }
 
     public String getRedefinedLabelEn() {
+        if (StringUtils.isEmpty(redefinedLabelEn) && step != null) {
+            redefinedLabelEn = step.getLabelEn();
+        }
         return redefinedLabelEn;
     }
 
@@ -967,6 +975,9 @@ public class File extends AbstractModel implements Serializable {
     }
 
     public String getRedefinedLabelFr() {
+        if (StringUtils.isEmpty(redefinedLabelFr) && step != null) {
+            redefinedLabelFr = step.getLabelFr();
+        }
         return redefinedLabelFr;
     }
 
@@ -1039,13 +1050,8 @@ public class File extends AbstractModel implements Serializable {
 
     @PostLoad
     private void postLoad() {
-        if (CollectionUtils.isNotEmpty(getFileItemsList())) {
-            setStep(getFileItemsList().get(0).getStep());
-            if (this.step != null && this.step.getStepCode() != null) {
-                setStepCode(this.step.getStepCode().name());
-            } else {
-                setStepCode("");
-            }
+        if (this.step != null) {
+            setStepCode(this.step.getStepCode().name());            
         }
     }
 
@@ -1089,11 +1095,11 @@ public class File extends AbstractModel implements Serializable {
         this.codeBureau = codeBureau;
     }
 
-    public List<ProductCategory> getProductCategories() {
+    public List<FileProductCategory> getProductCategories() {
         return productCategories;
     }
 
-    public void setProductCategories(List<ProductCategory> productCategories) {
+    public void setProductCategories(List<FileProductCategory> productCategories) {
         this.productCategories = productCategories;
     }
     

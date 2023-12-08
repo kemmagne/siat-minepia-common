@@ -53,6 +53,10 @@ public interface FileItemService extends AbstractService<FileItem> {
 
     List<File> findFilesByServiceAndAuthoritiesAndFileType(List<Bureau> bureaus, User loggedUser,
             InformationSystemCode informationSystemCode, List<UserAuthorityFileType> listUserAuthorityFileTypes);
+    
+    
+    List<File> findFilesByServiceAndAuthoritiesAndFileType2(List<Bureau> bureaus, User loggedUser,
+            InformationSystemCode informationSystemCode, List<UserAuthorityFileType> listUserAuthorityFileTypes);
 
     /**
      * Find file item field value by code.

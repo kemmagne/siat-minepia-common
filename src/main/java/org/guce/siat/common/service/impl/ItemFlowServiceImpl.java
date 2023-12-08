@@ -281,7 +281,6 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
                     }
                 }
                 fItem.setStep(step);
-
                 fItem.setDraft(Boolean.FALSE);
                 items.add(fItem);
 
@@ -294,6 +293,10 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
             }
 
         }
+        
+        file.setStep(step);
+        fileDao.update(file);
+        
         fileItemDao.saveOrUpdateList(items);
         itemFlowDao.saveOrUpdateList(draftItemFlows);
 
@@ -381,8 +384,11 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
                 fileItems.add(fileItem);
                 draftItemFlow.setSent(Boolean.TRUE);
                 draftItemFlows.add(draftItemFlow);
+                file.setStep(draftItemFlow.getFlow().getToStep());
             }
         }
+        fileDao.update(file);
+        
         fileItemDao.saveOrUpdateList(fileItems);
         itemFlowDao.saveOrUpdateList(draftItemFlows);
     }
@@ -406,8 +412,14 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
                 items.add(fileItem);
                 draftItemFlow.setSent(Boolean.TRUE);
                 draftItemFlows.add(draftItemFlow);
+                
+                //on update le step du dossier
+                file.setStep(draftItemFlow.getFlow().getToStep());
             }
         }
+        
+        
+        fileDao.update(file);
         fileItemDao.saveOrUpdateList(items);
         itemFlowDao.saveOrUpdateList(draftItemFlows);
     }
@@ -676,9 +688,10 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
         Map<FileItem, Flow> returnedMap = new HashMap<>();
         User systemUser = userDao.getUserByLogin(Constants.SYSTEM_USER_LOGIN);
         List<ItemFlow> itemFlows = new ArrayList<>();
+        File file = null;
         for (FileItem fileItem : fileItems) {
             ItemFlow itemFlow = new ItemFlow();
-
+            file = fileItem.getFile();
             itemFlow.setFileItem(fileItem);
             itemFlow.setFlow(flow);
             itemFlow.setReceived(AperakType.APERAK_D.getCharCode());
@@ -695,8 +708,12 @@ public class ItemFlowServiceImpl extends AbstractServiceImpl<ItemFlow> implement
 
             itemFlows.add(itemFlow);
         }
-
         itemFlowDao.saveList(itemFlows);
+        
+        if(file !=null){
+            file.setStep(flow.getToStep());
+            fileDao.update(file);
+        }
         fileItemDao.saveOrUpdateList(fileItems);
 
         return returnedMap;
