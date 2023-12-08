@@ -458,7 +458,7 @@ public enum FlowCode {
     FL_CT_159("Facturation"),
     //
 
-    //
+    //CSV MINEPIA
     FL_CT_161("Admission du dossier"),
     FL_CT_162("Signature"),
     FL_CT_163("Saisie conservatoire"),
@@ -474,6 +474,15 @@ public enum FlowCode {
     FL_CT_173("Notification"),
     FL_CT_174("Facturation"),
     FL_CT_175("Paiement"),
+    FL_CT_176("Signature"),
+    FL_CT_177("Signature"),
+    FL_CT_180("Demande Certificat sanitaire vétérinaire"),
+    FL_CT_181("Demande de CI - Etude Approfondie"),
+    FL_CT_182("Demande de modification"),
+    FL_CT_183("Rejet"),
+    FL_CT_184("Retour à la recevabilité"),
+    FL_CT_185("Réponse au CI - Etude Approfondie"),
+    
     /**
      * The F l_ c cvs_01.
      */
@@ -510,8 +519,6 @@ public enum FlowCode {
      * The F l_ c cvs_05.
      */
     FL_CT_CVS_09("CI requis à vérification Approfondie"),
-    FL_CT_176("Signature"),
-    FL_CT_177("Signature"),
     
     /**
      * The Flows for Airport CTE.
