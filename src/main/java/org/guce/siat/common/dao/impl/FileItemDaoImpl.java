@@ -114,10 +114,10 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
         query.setParameter("userListIds", SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()));
         query.setParameter("listFileTypeCode", fileTypeCodeList);
         query.setParameter("excludedStepList", excludedStepList);
-
+        
         return query.getResultList();
     }
-
+    
     /**
      * (non-Javadoc)
      *
@@ -153,6 +153,61 @@ public class FileItemDaoImpl extends AbstractJpaDaoImpl<FileItem> implements Fil
         query.setParameter("listFileTypeCode", fileTypeCodeList);
         query.setParameter("excludedStepList", excludedStepList);
 
+        return query.getResultList();
+    }
+
+
+    /**
+     * (non-Javadoc)
+     *
+     * @see
+     * org.guce.siat.common.dao.FileItemDao#findFilesByServiceAndAuthoritiesAndFileType(java.util.List,
+     * org.guce.siat.common.model.User, java.util.List, java.util.List)
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public List<File> findFilesByServiceAndAuthoritiesAndFileTypeUsingFile(final List<Bureau> bureauList, final User loggedUser, final List<FileTypeCode> fileTypeCodeList, final List<StepCode> excludedStepList) {
+        final StringBuilder hqlBuilder = new StringBuilder();
+        hqlBuilder.append("SELECT DISTINCT fi FROM File fi ");
+        hqlBuilder.append("WHERE fi.bureau IN (:bureauList) ");
+        hqlBuilder.append("AND fi.step.stepCode NOT IN (:excludedStepList) ");
+        hqlBuilder.append("AND fi.fileType.id = ");
+
+        hqlBuilder.append("(");
+        hqlBuilder.append("SELECT DISTINCT authFi.primaryKey.fileType.id ");
+        hqlBuilder.append("FROM UserAuthorityFileType authFi ");
+        hqlBuilder.append("WHERE authFi.primaryKey.userAuthority.user.id IN (:userListIds) ");
+        hqlBuilder.append("AND authFi.primaryKey.fileType.id = fi.fileType.id ");
+        hqlBuilder.append("AND authFi.primaryKey.fileType.code IN (:listFileTypeCode) ");
+        hqlBuilder.append(")");
+//        hqlBuilder.append(") ORDER BY fi.file.lastDecisionDate DESC");
+
+        final TypedQuery<File> query = super.entityManager.createQuery(hqlBuilder.toString(), File.class);
+        
+        query.setParameter("bureauList", bureauList);
+		//The ids of the logged user combined with their delegator users
+		List<Long> listId = SiatUtils.getUserIds(loggedUser.getMergedDelegatorList());
+		System.out.println(" liste : " + listId);
+        query.setParameter("userListIds", SiatUtils.getUserIds(loggedUser.getMergedDelegatorList()));
+        query.setParameter("listFileTypeCode", fileTypeCodeList);
+        query.setParameter("excludedStepList", excludedStepList);
+        
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<File> findFilesByServiceAndAuthoritiesAndFileType2(List<Bureau> bureauList, User loggedUser, List<Long> fileTypeIdLIst, List<StepCode> excludedStepList) {
+        final StringBuilder hqlBuilder = new StringBuilder();
+        hqlBuilder.append("SELECT DISTINCT fi FROM File fi ");
+        hqlBuilder.append("WHERE fi.bureau IN (:bureauList) ");
+        hqlBuilder.append("AND fi.step.stepCode NOT IN (:excludedStepList) ");
+        hqlBuilder.append("AND fi.fileType.id IN (:fileTypeIdList)");
+        final TypedQuery<File> query = super.entityManager.createQuery(hqlBuilder.toString(), File.class);
+        
+        query.setParameter("bureauList", bureauList);
+        query.setParameter("fileTypeIdList", fileTypeIdLIst);
+        query.setParameter("excludedStepList", excludedStepList);
+        
         return query.getResultList();
     }
 

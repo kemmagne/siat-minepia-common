@@ -15,7 +15,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.Pageable;
 import org.guce.siat.common.model.Params;
-import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.RequestPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

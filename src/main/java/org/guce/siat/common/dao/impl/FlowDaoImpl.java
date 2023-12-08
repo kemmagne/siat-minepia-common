@@ -306,6 +306,9 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
             case FL_AP_PIM_05: {
                 return findFlowByCode(FlowCode.FL_AP_PIM_23.name());
             }
+            case FL_AP_VT2_09: {
+                return findFlowByCode(FlowCode.FL_AP_VT2_14.name());
+            }
             
             // CO
             case FL_CO_86: {
@@ -421,7 +424,10 @@ public class FlowDaoImpl extends AbstractJpaDaoImpl<Flow> implements FlowDao {
 //            case FL_CT_E_AIP_07: {
 //                return findFlowByCode(FlowCode.FL_CT_E_AIP_12.name());
 //            }
-
+            case FL_CT_181: {
+                //Complement d'information à l'étude approfondie (CSV MINEPIA)
+                return findFlowByCode(FlowCode.FL_CT_185.name());
+            }
             // FT
             case FL_FT_86: {
                 return findFlowByCode(FlowCode.FL_FT_154.name());
