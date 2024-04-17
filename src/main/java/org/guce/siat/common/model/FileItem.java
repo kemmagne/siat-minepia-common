@@ -84,6 +84,18 @@ public class FileItem extends AbstractModel implements Serializable {
     @Column(name = "QUANTITY", length = 10)
     private String quantity;
 
+    @Column(name = "DESCRIPTIOM")
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
     /**
      * The valeur fob.
      */

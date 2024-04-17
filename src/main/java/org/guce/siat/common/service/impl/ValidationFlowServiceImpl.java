@@ -48,8 +48,10 @@ import org.w3c.dom.Element;
 @Service("validationFlowService")
 @Transactional(readOnly = true)
 public class ValidationFlowServiceImpl implements ValidationFlowService {
+    
+    private static final List<String> INIT_EXTENSION_FLOWS_LIST = Arrays.asList("ATM09R","ATM03R","ATM10R");
 
-    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "CCS009", "VT109", "AIM07", "VT209", "AIM09", "PI005", "PI007", "PI009");
+    private static final List<String> INIT_MODIFICATION_FLOWS_LIST = Arrays.asList("DV09", "DM09", "COCACM1", "COCAFM1", "E009", "E030", "CSV009", "CCS009", "VT109", "AIM07", "VT209", "AIM09", "PI005", "PI007", "PI009", "ATM01", "ATM02", "ATM03", "ATM04", "ATM09", "ATM10", "ATM11", "ATM601", "ATM602");
 
     private static final List<String> INIT_CANCEL_FLOWS_LIST = Arrays.asList("DVA1", "DMA1");
 
@@ -228,7 +230,8 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_VT1_03.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_VT2_03.name())
                 || flowSiat.getFlowSiat().equals(FlowCode.FL_CO_156.name())
-                || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name()));
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_CC_156.name())
+                || flowSiat.getFlowSiat().equals(FlowCode.FL_AP_ATM_02.name()));
         logger.info("#######isPaymentRequest result : " + result);
         return result;
     }
@@ -979,7 +982,7 @@ public class ValidationFlowServiceImpl implements ValidationFlowService {
             File file = fileDao.findByNumDossierGuce(numDossierGuce);
             String docType = getDocumentType(rootElement);
             validationExceptionMessage = ResourceBundle.getBundle(LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ValidationType.VALIDATE_LAST_FLOW.getCode());
-            return file == null || INIT_MODIFICATION_FLOWS_LIST.contains(docType) || INIT_CANCEL_FLOWS_LIST.contains(docType);
+            return file == null || INIT_MODIFICATION_FLOWS_LIST.contains(docType) || INIT_CANCEL_FLOWS_LIST.contains(docType) || INIT_EXTENSION_FLOWS_LIST.contains(docType);
         }
 
         return true;

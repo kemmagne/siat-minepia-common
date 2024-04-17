@@ -176,7 +176,7 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
     @Override
     public File findByNumDossierGuce(final String numDossierGuce) {
         try {
-            final String hqlString = "FROM File f WHERE f.numeroDossier = :numDossierGuce";
+            final String hqlString = "SELECT f FROM File f WHERE f.numeroDossier = :numDossierGuce";
             final TypedQuery<File> query = super.entityManager.createQuery(hqlString, File.class);
             query.setParameter("numDossierGuce", numDossierGuce);
             return query.getSingleResult();
@@ -516,6 +516,26 @@ public class FileDaoImpl extends AbstractJpaDaoImpl<File> implements FileDao {
             LOG.info(Objects.toString(e));
             return null;
         }
+    }
+    
+     /**
+     * To get the last file signed
+     * @param numeroDossier
+     * @return 
+     */
+    @Override
+    public File findLastFileSigned(String numeroDemande) {
+        CriteriaBuilder builder = super.entityManager.getCriteriaBuilder();
+        CriteriaQuery<File> cq = builder.createQuery(getClasse());
+        Root<File> from = cq.from(getClasse());
+        cq.where(
+               builder.and(
+                   builder.equal(from.get(File_.numeroDemande), numeroDemande),
+                   builder.isNotNull(from.get(File_.lastDecisionDate))
+               ));
+        cq.orderBy(builder.desc(from.get(File_.lastDecisionDate)));
+        TypedQuery<File> query = super.entityManager.createQuery(cq);
+        return query.getResultList() != null && !query.getResultList().isEmpty() ? query.getResultList().get(0) : null;
     }
 
 }

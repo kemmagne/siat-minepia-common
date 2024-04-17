@@ -146,6 +146,11 @@ public final class ConverterGuceSiatUtils {
             case CO_MINFOF_FAUNE:
                 referencedossier.setSI(InformationSystemCode.CT.name());
                 break;
+                
+            case ATM_MINEPIA:
+                referencedossier.setSI(InformationSystemCode.AP.name());
+                break;
+                
             case CCT_CT:
             case CCT_CSV:
             case CCT_CT_E:

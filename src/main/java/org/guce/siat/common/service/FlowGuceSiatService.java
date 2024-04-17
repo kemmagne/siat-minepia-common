@@ -1,6 +1,7 @@
 package org.guce.siat.common.service;
 
 import org.guce.siat.common.model.FlowGuceSiat;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 
 
 /**
@@ -28,4 +29,16 @@ public interface FlowGuceSiatService extends AbstractService<FlowGuceSiat>
 	 * @return the flow guce siat
 	 */
 	FlowGuceSiat findFlowGuceSiatByFlowSiatAndFileType(String flowSiat, Long fileTypeId);
+        
+        
+	/**
+	 * Find flow-guce-siat by flow guce and file type .
+	 *
+	 * @param flowGuce
+	 *           the flow guce
+	 * @param fileType
+	 *           the file type code
+	 * @return FlowGuceSiat
+	 */
+	FlowGuceSiat findFlowGuceSiatFlowGuceAndFileType(final String flowGuce, final FileTypeCode fileType);
 }

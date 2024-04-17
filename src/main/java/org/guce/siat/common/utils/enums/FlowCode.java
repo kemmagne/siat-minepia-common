@@ -960,7 +960,84 @@ public enum FlowCode {
     FL_AP_VT2_12("Validation Modification du visa technique"),
     FL_AP_VT2_13("Rejet Modification du visa technique suite étude"),
     FL_AP_VT2_14("Réponse complément d''information de Visa Technique"),
+    
+    FL_AP_DEM_01("Facturation"),
+    FL_AP_DEM_02("Encaissement des frais"),
+    FL_AP_DEM_03("Demande de declaration d''existence"),
+    FL_AP_DEM_04("Complément d''information de Declaration d''existence"),
+    FL_AP_DEM_05("Réponse au Complement d''information"),
+    FL_AP_DEM_06("Validation de la conformité du dossier"),
+    FL_AP_DEM_07("Cotation automatique"),
+    FL_AP_DEM_08("Complément d''information de Declaration d''existence"),
+    FL_AP_DEM_09("Réponse au Complement d''information"),
+    FL_AP_DEM_10("Validation pour Signature"),
+    FL_AP_DEM_11("Retour du dossier"),
+    FL_AP_DEM_12("Signature de la declaration d''existence"),
+    
 
+    /**
+     * Flow des modifications de la declaration d'existence mincommerce
+     */
+    
+   FL_AP_DEM_21("Demande Modification"),
+   FL_AP_DEM_22("Validation de la Comformite du dossier"),
+   FL_AP_DEM_23("Reject de la declaration d''existence"),
+   FL_AP_DEM_24("Cotation Demande"),
+   FL_AP_DEM_25("Validation de la declaration d''existence"),
+   FL_AP_DEM_26("Rejet de la declaration d''existence"),
+   FL_AP_DEM_27("Signature de la declaration d''existence"),
+   FL_AP_DEM_28("Rejet de la declaration d''existence"),
+
+     /**
+     * Les décisions de la procédure de L'avis Technique Minepiad
+     */
+    
+    FL_AP_ATM_01("Facturation"),
+    FL_AP_ATM_02("Encaissement des frais"),
+    FL_AP_ATM_03("Demande de l'avis Technique"),
+    FL_AP_ATM_04("Complément d'information de Avis Technique"),
+    FL_AP_ATM_05("Réponse au Complement d'information"),
+    FL_AP_ATM_06("Validation de la conformité du dossier"),
+    FL_AP_ATM_07("Cotation automatique"),
+    FL_AP_ATM_08("Complément d''information pour l''avis technique"),
+    FL_AP_ATM_09("Réponse au Complement d''information"),
+    FL_AP_ATM_10("Validation pour etude approfondie"),
+    FL_AP_ATM_11("Complément d''information pour l''avis technique"),
+    FL_AP_ATM_12("Réponse au Complement d''information"),
+    FL_AP_ATM_13("Validation pour Signature l'avis Technique MINEPIA"),
+    FL_AP_ATM_14("Retour du dossier"),
+    FL_AP_ATM_15("Retour du dossier"),
+    FL_AP_ATM_16("Signature de l'avis technique MINEPIA"),
+    
+    FL_AP_ATM_21("demande Modification"),
+    FL_AP_ATM_22("Validation de la conformite du dossier"),
+    FL_AP_ATM_23("Reject de l'avis technique"),
+    FL_AP_ATM_24("Cotation du dossier"),
+    FL_AP_ATM_25("Validation de l'avis technique"),
+    FL_AP_ATM_26("Reject de l'avis techniqur"),
+    FL_AP_ATM_27("Validation pour signature"),
+    FL_AP_ATM_28("Reject de l'avis technique"),
+    FL_AP_ATM_29("signature de l'avis technique"),
+    FL_AP_ATM_30("Reject de l'avis technique"),
+    
+    
+    FL_AP_ATM_01R("Facturation"),
+    FL_AP_ATM_02R("Encaissement des frais"),
+    FL_AP_ATM_03R("Demande de l'avis Technique"),
+    FL_AP_ATM_04R("Complément d'information de Avis Technique"),
+    FL_AP_ATM_05R("Réponse au Complement d'information"),
+    FL_AP_ATM_06R("Validation de la conformité du dossier"),
+    FL_AP_ATM_07R("Cotation automatique"),
+    FL_AP_ATM_08R("Complément d''information pour l''avis technique"),
+    FL_AP_ATM_09R("Réponse au Complement d''information"),
+    FL_AP_ATM_10R("Validation pour etude approfondie"),
+    FL_AP_ATM_11R("Complément d''information pour l''avis technique"),
+    FL_AP_ATM_12R("Réponse au Complement d''information"),
+    FL_AP_ATM_13R("Validation pour Signature l'avis Technique MINEPIA"),
+    FL_AP_ATM_14R("Retour du dossier"),
+    FL_AP_ATM_15R("Retour du dossier"),
+    FL_AP_ATM_16R("Signature de l'avis technique MINEPIA"),
+    
     
     
     /**

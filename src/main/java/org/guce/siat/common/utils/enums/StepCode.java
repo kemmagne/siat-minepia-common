@@ -195,6 +195,24 @@ public enum StepCode {
     ST_CT_55("Traitement demande de modification"),
     ST_CT_56("Signature demande de modification"),
     // The S t_ c t for payment
+    
+    
+     ST_AP_DEM_01("Encaissement"),
+    ST_AP_DEM_02("Récevabilité de Declaration d''existence"),
+    ST_AP_DEM_03("La cotation"),
+    ST_AP_DEM_04("Etape d''étude approfondie du dossier"),
+    ST_AP_DEM_05("Signature"),
+    
+    
+    /**
+     * Step des modification de la
+     * d'existence mincommerce
+     */
+    
+    ST_AP_DEM_21("Récevabilité de Declaration d''existence"),
+    ST_AP_DEM_22("La cotation"),
+    ST_AP_DEM_23("Etape d''étude approfondie du dossier"),
+    ST_AP_DEM_24("Signature"),
 
     /**
      * The S t_ c t_57.
@@ -237,7 +255,7 @@ public enum StepCode {
     /**
      * The S t_ a p_46.
      */
-    ST_AP_46("Recevabilité AP"),
+     ST_AP_46("Recevabilité AP"),
     /**
      * The S t_ a p_47.
      */
@@ -818,6 +836,34 @@ public enum StepCode {
     ST_CC_82("Signature Demande d'annulation"),
     ST_CC_83("Traitement douane"),
     ST_CC_84("Fin certificat d'origine"),
+    
+    
+    /**
+     *  Avis Technique MINEPIA
+     */
+    ST_AP_ATM_01("Encaissement"),
+    ST_AP_ATM_02("Récevabilité de l'avis technique minepia"),
+    ST_AP_ATM_03("Cotation"),
+    ST_AP_ATM_04("'Etape d''étude approfondie du dossier"),
+    ST_AP_ATM_05("Controler le dossier"),
+    ST_AP_ATM_06("Signature de l'avis technique minepia"),
+    
+    ST_AP_ATM_21("Recevabilite de l'avis technique minepia"),
+    ST_AP_ATM_22("Cotation"),
+    ST_AP_ATM_23("Etude Approfondi de l'avis technique"),
+    ST_AP_ATM_24("Controle du dossier de l'avis technique"),
+    ST_AP_ATM_25("Signature de l'avis technique"),    
+    
+    
+    ST_AP_ATM_01R("Encaissement"),
+    ST_AP_ATM_02R("Récevabilité de l'avis technique minepia"),
+    ST_AP_ATM_03R("Cotation"),
+    ST_AP_ATM_04R("'Etape d''étude approfondie du dossier"),
+    ST_AP_ATM_05R("Controler le dossier"),
+    ST_AP_ATM_06R("Signature de l'avis technique minepia"),
+    
+   
+
     /**
      * The S t_ c c_cvs 01.
      */

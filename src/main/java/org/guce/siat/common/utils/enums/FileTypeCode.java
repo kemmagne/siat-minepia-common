@@ -254,6 +254,8 @@ public enum FileTypeCode {
      * Procès verbal d'inspection phytosanitaire
      */
     CCT_CT_E_PVI("Phytosanitary inspection report", "Procès verbal d'inspection phytosanitaire"),
+    
+    ATM_MINEPIA("Technical avis MINEPIA", "Avis technique MINEPIA"),
     /**
      * Procès verbal d'emptage
      */

@@ -4,6 +4,7 @@ import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.FlowGuceSiatDao;
 import org.guce.siat.common.model.FlowGuceSiat;
 import org.guce.siat.common.service.FlowGuceSiatService;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,4 +76,9 @@ public class FlowGuceSiatServiceImpl extends AbstractServiceImpl<FlowGuceSiat> i
 
 		return flowGuceSiatDao.findFlowGuceSiatByFlowSiatAndFileType(flowSiat, fileTypeId);
 	}
+        
+        @Override
+         public FlowGuceSiat findFlowGuceSiatFlowGuceAndFileType(final String flowGuce, final FileTypeCode fileType) {
+        return flowGuceSiatDao.findFlowGuceSiatFlowGuceAndFileType(flowGuce, fileType);
+    }
 }

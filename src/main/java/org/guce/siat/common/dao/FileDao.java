@@ -142,4 +142,5 @@ public interface FileDao extends AbstractJpaDao<File> {
 
     List<File> findFileByFileFieldCode(String fileFieldCode, String fileTypeCode);
 
+    File findLastFileSigned(String numeroDossier);
 }

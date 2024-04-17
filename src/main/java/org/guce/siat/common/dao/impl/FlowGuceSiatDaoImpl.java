@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 import org.guce.siat.common.dao.FlowGuceSiatDao;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.FlowGuceSiat;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -81,14 +82,34 @@ public class FlowGuceSiatDaoImpl extends AbstractJpaDaoImpl<FlowGuceSiat> implem
     @Override
     public FlowGuceSiat findFlowGuceSiatByFlowSiatAndFileType(final String flowSiat, final Long fileTypeId) {
         try {
-            final String hqlString = "FROM FlowGuceSiat b WHERE b.flowSiat = :flowSiat AND b.fileType.id = :fileTypeId";
+            //final String hqlString = "FROM FlowGuceSiat b WHERE b.flowSiat = :flowSiat AND b.fileType.id = :fileTypeId";
+            final String hqlString = "SELECT b FROM FlowGuceSiat b WHERE b.flowSiat = :flowSiat AND b.fileType.id = :fileTypeId";
             final TypedQuery<FlowGuceSiat> query = super.entityManager.createQuery(hqlString, FlowGuceSiat.class);
             query.setParameter("flowSiat", flowSiat);
             query.setParameter("fileTypeId", fileTypeId);
+            query.setMaxResults(1);
             return query.getSingleResult();
         } catch (final NoResultException | NonUniqueResultException e) {
             LOG.info(Objects.toString(e));
             return null;
         }
     }
+
+    @Override
+    public FlowGuceSiat findFlowGuceSiatFlowGuceAndFileType(final String flowGuce, final FileTypeCode fileType) {
+        try {
+            final String hqlString = "SELECT b FROM FlowGuceSiat b WHERE b.flowGuce = :flowGuce and b.fileType.code = :fileType";
+            final TypedQuery<FlowGuceSiat> query = super.entityManager.createQuery(hqlString, FlowGuceSiat.class);
+            query.setParameter("flowGuce", flowGuce);
+            query.setParameter("fileType", fileType);
+            query.setMaxResults(1);
+            return query.getSingleResult();
+        } catch (final NoResultException e) {
+            return null;
+        }    
+    }
+    
+    
+    
+    
 }

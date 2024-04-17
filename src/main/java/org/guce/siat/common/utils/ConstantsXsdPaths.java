@@ -306,11 +306,26 @@ public final class ConstantsXsdPaths {
      * The Constant LVTB_MINFOF_XSD_PATH.
      */
     public static final String LVTB_MINFOF_XSD_PATH = "xsd/CT/AP/LVTB_MINFOF.xsd";
+    
+     /**
+     * The Constant ATM MINEPIA.
+     */
+    public static final String DIMI_MINADER_XSD_PATH = "xsd/CT/AP/ATM_MINEPIA.xsd";
+    
+    
 
     /**
      * The Constant BSBE_MINFOF_XSD_PATH.
      */
     public static final String BSBE_MINFOF_XSD_PATH = "xsd/CT/AP/BSBE_MINFOF.xsd";
+    
+    
+    
+     /**
+     * The Constant ATM_MINEPIA_XSD_PATH.
+     */
+    public static final String ATM_MINEPIA_XSD_PATH = "xsd/CT/AP/ATM_MINEPIA.xsd";
+    
 
     /**
      * The Constant APERAK_DF_XSD_PATH.

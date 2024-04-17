@@ -3,6 +3,7 @@ package org.guce.siat.common.dao;
 import java.util.List;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.FlowGuceSiat;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 
 /**
  * The Interface FlowGuceSiatDao.
@@ -34,4 +35,6 @@ public interface FlowGuceSiatDao extends AbstractJpaDao<FlowGuceSiat> {
      * @return the flow guce siat
      */
     FlowGuceSiat findFlowGuceSiatByFlowSiatAndFileType(String flowSiat, Long fileTypeId);
+    
+    FlowGuceSiat findFlowGuceSiatFlowGuceAndFileType(final String flowGuce, final FileTypeCode fileType);
 }
