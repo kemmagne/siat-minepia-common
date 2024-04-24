@@ -55,5 +55,9 @@ public interface ControllerHolidayDao extends AbstractJpaDao<ControllerHoliday>
 	 * @return the list
 	 */
 	List<ControllerHoliday> findByOrganism(Organism organism);
+        
+        
+        ControllerHoliday findHolidayByController(final User controller) ;
+
 
 }

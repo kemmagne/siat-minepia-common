@@ -136,5 +136,20 @@ public class ControllerHolidayDaoImpl extends AbstractJpaDaoImpl<ControllerHolid
 		}
 		return Collections.emptyList();
 	}
+        
+       @Override
+	public ControllerHoliday findHolidayByController(final User controller) {
+		if (!Objects.equals(controller, null)) {
+			try {
+				final String hqlString = "SELECT h FROM ControllerHoliday h WHERE h.user.id=:controllerId order by h.toDate desc";
+				final TypedQuery<ControllerHoliday> query = super.entityManager.createQuery(hqlString, ControllerHoliday.class);
+				query.setParameter("controllerId", controller.getId());
+				return query != null && !query.getResultList().isEmpty() ?  query.getResultList().get(0): null ;
+			} catch (final NoResultException | NonUniqueResultException e) {
+				LOG.info(Objects.toString(e));
+			}
+		}
+		return null;
+	}
 
 }

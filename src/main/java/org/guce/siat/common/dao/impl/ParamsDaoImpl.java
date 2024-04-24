@@ -42,7 +42,8 @@ public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsD
 	 *
 	 * @see org.guce.siat.common.dao.ParamsDao#findParamsByName(java.lang.String)
      */
-    @Transactional(readOnly = true)
+    
+     @Transactional(readOnly = true)
     @Override
     public Params findParamsByName(final String name) {
         try {
@@ -57,7 +58,8 @@ public class ParamsDaoImpl extends AbstractJpaDaoImpl<Params> implements ParamsD
             return null;
         }
     }
-
+    
+ 
     /*
 	 * (non-Javadoc)
 	 *

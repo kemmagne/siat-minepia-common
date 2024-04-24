@@ -94,5 +94,11 @@ public class ControllerHolidayServiceImpl extends AbstractServiceImpl<Controller
 	{
 		return controllerHolidayDao.findByOrganism(organism);
 	}
+        
+        @Override
+	public  ControllerHoliday findHolidayByController(User user)
+	{
+		return controllerHolidayDao.findHolidayByController(user);
+	}
 
 }

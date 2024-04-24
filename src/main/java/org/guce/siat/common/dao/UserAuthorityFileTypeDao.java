@@ -75,4 +75,6 @@ public interface UserAuthorityFileTypeDao extends AbstractJpaDao<UserAuthorityFi
      * @param userAuthoritiesIds the user authorities ids
      */
     void removeUsedAuthritiesFileTypeByUserAuthorities(final List<Long> userAuthoritiesIds);
+    
+    List<UserAuthority> findUserAuthorityByFileType(FileType fileType);
 }

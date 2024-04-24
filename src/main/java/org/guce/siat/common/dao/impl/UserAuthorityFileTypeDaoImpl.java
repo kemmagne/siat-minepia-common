@@ -19,6 +19,7 @@ import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
+import org.guce.siat.common.model.UserAuthority;
 import org.guce.siat.common.model.UserAuthorityFileType;
 import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.enums.AuthorityConstants;
@@ -256,5 +257,19 @@ public class UserAuthorityFileTypeDaoImpl extends AbstractJpaDaoImpl<UserAuthori
 			query.executeUpdate();
 		}
 	}
+        
+    @Override
+    public List<UserAuthority> findUserAuthorityByFileType( FileType fileType) {
+        if (!Objects.equals(fileType, null)) {
+            final StringBuilder hqlBuilder = new StringBuilder();
+            hqlBuilder.append("SELECT ua.primaryKey.userAuthority ");
+            hqlBuilder.append("FROM UserAuthorityFileType ua ");
+            hqlBuilder.append("WHERE ua.primaryKey.fileType.code = :fileTypeCode ");
+            final TypedQuery<UserAuthority> query = super.entityManager.createQuery(hqlBuilder.toString(),UserAuthority.class);
+            query.setParameter("fileTypeCode", fileType.getCode());
+            return query.getResultList();
+        }
+        return null;
+    }
 
 }

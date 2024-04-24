@@ -57,6 +57,9 @@ public interface ControllerHolidayService extends AbstractService<ControllerHoli
 	 * @return the list
 	 */
 	List<ControllerHoliday> findByOrganism(Organism organism);
+        
+        
+        ControllerHoliday findHolidayByController(User controller);
 
 
 }

@@ -1008,6 +1008,7 @@ public enum FlowCode {
     FL_AP_ATM_14("Retour du dossier"),
     FL_AP_ATM_15("Retour du dossier"),
     FL_AP_ATM_16("Signature de l'avis technique MINEPIA"),
+    FL_AP_ATM_17("Reject de l'avis technique"),
     
     FL_AP_ATM_21("demande Modification"),
     FL_AP_ATM_22("Validation de la conformite du dossier"),
